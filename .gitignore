@@ -2,6 +2,7 @@
 *.project
 .settings/
 target/
+classes/
 .mvn/
 mvnw
 mvnw.cmd
