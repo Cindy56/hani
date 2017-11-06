@@ -190,7 +190,7 @@
 	
 	<!-- [INSERT FRAGMENT HERE] -->
 
-	<!-- Session configure, to "jeesite.properties" file "session.sessionTimeout" parameter.
+	<!-- Session configure, to "application.properties" file "session.sessionTimeout" parameter.
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>-->
