@@ -16,6 +16,7 @@ import com.game.manager.common.persistence.DataEntity;
 public class LotteryType extends DataEntity<LotteryType> {
 
     private static final long serialVersionUID = 1L;
+
     /**
      * 彩种代码
      */
@@ -97,7 +98,6 @@ public class LotteryType extends DataEntity<LotteryType> {
     public void setCode(String code) {
         this.code = code;
     }
-	
 
     @Length(min = 1, max = 50, message = "彩种类型长度必须介于 1 和 50 之间")
     public String getParentCode() {
@@ -107,16 +107,16 @@ public class LotteryType extends DataEntity<LotteryType> {
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
     }
-	
-	@Length(min=1, max=50, message="彩种名称长度必须介于 1 和 50 之间")
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+    @Length(min = 1, max = 50, message = "彩种名称长度必须介于 1 和 50 之间")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Length(min = 1, max = 1, message = "是否自动开奖长度必须介于 1 和 1 之间")
     public String getIsAuto() {
         return isAuto;
@@ -135,7 +135,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.isEnable = isEnable;
     }
 
-	@Length(min=0, max=50, message="每日开售时间长度必须介于 0 和 50 之间")
+    @Length(min = 0, max = 50, message = "每日开售时间长度必须介于 0 和 50 之间")
     public String getStartDate() {
         return startDate;
     }
@@ -143,8 +143,8 @@ public class LotteryType extends DataEntity<LotteryType> {
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
-	
-	@Length(min=0, max=50, message="每日停售时间长度必须介于 0 和 50 之间")
+
+    @Length(min = 0, max = 50, message = "每日停售时间长度必须介于 0 和 50 之间")
     public String getEndDate() {
         return endDate;
     }

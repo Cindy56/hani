@@ -39,7 +39,7 @@
             <label class="control-label">彩种类型：</label>
             <div class="controls">
                 <form:select path="parentCode" class="input-xlarge required">
-                    <form:option value="" label=""/>
+                    <form:option value="0" label="新的类型"/>
                     <form:options items="${fns:getDictList('lottery_category')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
                 <span class="help-inline"><font color="red">*</font> </span>
@@ -111,6 +111,18 @@
             <div class="controls">
                 <form:input path="amountMaxBet" htmlEscape="false" class="input-xlarge "/>
                 <span class="help-inline"> 元</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">当前期号：</label>
+            <div class="controls">
+                <form:input path="currentIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">下期期号：</label>
+            <div class="controls">
+                <form:input path="nextIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
             </div>
         </div>
         <div class="form-actions">
