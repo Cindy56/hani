@@ -68,8 +68,8 @@
         <div class="control-group">
             <label class="control-label">是否自动开奖：</label>
             <div class="controls">
-                <form:radiobuttons path="isAuto" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
-                <span class="help-inline"><font color="red">*</font> </span>
+                <form:radiobutton path="isAuto" label="是" value="1" htmlEscape="false" class="required" checked="true"/>
+                <form:radiobutton path="isAuto" label="否" value="0" htmlEscape="false" class="required"/>
             </div>
         </div>
         
@@ -77,8 +77,8 @@
         <div class="control-group">
             <label class="control-label">是否有效：</label>
             <div class="controls">
-                <form:radiobuttons path="isEnable" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
-                <span class="help-inline"><font color="red">*</font> </span>
+                <form:radiobutton path="isEnable" label="是" value="1" htmlEscape="false" class="required" checked="true"/>
+                <form:radiobutton path="isEnable" label="否" value="0" htmlEscape="false" class="required"/>
             </div>
         </div>
         

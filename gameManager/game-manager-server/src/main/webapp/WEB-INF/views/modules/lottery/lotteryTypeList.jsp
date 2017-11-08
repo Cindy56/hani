@@ -70,13 +70,13 @@
                     ${lotteryType.name}
                 </a></td>
                 <td>
-                    ${lotteryType.parentCode}
+                    ${fns:getDictLabelForList('lottery_category', lotteryType.parentCode, '')}
                 </td>
                 <td>
-                    ${lotteryType.isAuto}
+                    ${fns:getDictLabelForList('yes_no', lotteryType.isAuto, '')}
                 </td>
                 <td>
-                    ${lotteryType.isEnable}
+                    ${fns:getDictLabelForList('yes_no', lotteryType.isEnable, '')}
                 </td>
                 <td>
                     ${lotteryType.startDate}
