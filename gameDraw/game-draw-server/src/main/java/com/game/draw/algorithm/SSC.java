@@ -16,6 +16,7 @@ import com.game.draw.model.Star5;
 import com.game.draw.util.BetNoSeparate;
 import com.game.draw.util.Combination;
 import com.game.draw.util.Common;
+import com.game.draw.util.Constant;
 
 public class SSC {
 
@@ -609,6 +610,33 @@ public class SSC {
 		return ol;
 	}
 
+	/**
+	 * 5星直选和值
+	 * 
+	 * @param winNo
+	 * @param betNos
+	 *            { 1,1,0,0,1... }投注和值数
+	 * @return
+	 */
+	public OpenLottery _5_Z_Sum(int[] winNo, int[][] betNos) {
+
+		OpenLottery ol = new OpenLottery();
+
+		// separate
+		for (int i = 0; i < betNos[0].length; i++) {
+			if (betNos[0][i] == 1)
+				ol.betNum += Constant.S5_Z_Sum[i][1];
+		}
+
+		int winSum = Common.SumOfArray(winNo);
+
+		if (Common.IsInArray(winSum, betNos[0])) {
+			ol.winNum++;
+		}
+
+		return ol;
+	}
+
 	/*
 	 * **********************************************************************
 	 */
@@ -1125,9 +1153,131 @@ public class SSC {
 
 	}
 
+	/**
+	 * 3星 2No no fix 选择2个号，包含即中奖。
+	 * 
+	 * @param winNo
+	 * @param betNos
+	 * @return
+	 */
+	public OpenLottery _3_2_nofix(int[] winNo, int[][] betNos) {
+		// TODO Auto-generated method stub
+
+		// separate
+		List<Star2> lsStar2 = BetNoSeparate.separate3_2_nofix(betNos);
+
+		OpenLottery ol = new OpenLottery();
+		ol.betNum = lsStar2.size();
+
+		// sort winNo
+		Arrays.sort(winNo);
+
+		// compare
+		int wbCount = 0;
+		for (int i = 0; i < lsStar2.size(); i++) {
+			if (Common.IsInArray(lsStar2.get(i).star2[0], winNo) && Common.IsInArray(lsStar2.get(i).star2[1], winNo)) {
+
+				wbCount++;
+			}
+
+		}
+
+		ol.winNum = wbCount;
+
+		return ol;
+	}
+
+	/**
+	 * 3星 1No no fix 选择1个号，包含即中奖。一帆风顺
+	 * 
+	 * @param winNo
+	 * @param betNos
+	 * @return
+	 */
+	public OpenLottery _3_1_nofix(int[] winNo, int[][] betNos) {
+		// TODO Auto-generated method stub
+
+		// separate
+		// List<Integer> lsStar1 = BetNoSeparate.separate5_1_nofix(betNos);
+		int[] betNo = betNos[0];
+
+		OpenLottery ol = new OpenLottery();
+		ol.betNum = betNo.length;
+
+		// sort winNo
+		Arrays.sort(winNo);
+
+		// compare
+		int wbCount = 0;
+		for (int i = 0; i < betNo.length; i++) {
+			if (Common.IsInArray(betNo[i], winNo)) {
+
+				wbCount++;
+			}
+
+		}
+
+		ol.winNum = wbCount;
+
+		return ol;
+	}
+
+	/**
+	 * 3星直选和值
+	 * 
+	 * @param winNo
+	 * @param betNos
+	 *            { 1,2,3,5,10... }投注和值数
+	 * @return
+	 */
+	public OpenLottery _3_Z_Sum(int[] winNo, int[][] betNos) {
+
+		OpenLottery ol = new OpenLottery();
+
+		// separate
+		for (int i = 0; i < betNos[0].length; i++) {
+			int betNo = betNos[0][i];
+			ol.betNum += Constant.S3_Z_Sum[betNo][1];
+		}
+
+		int winSum = Common.SumOfArray(winNo);
+
+		if (Common.IsInArray(winSum, betNos[0])) {
+			ol.winNum++;
+		}
+
+		return ol;
+	}
+
+	/**
+	 * 3星组选和值
+	 * 
+	 * @param winNo
+	 * @param betNos
+	 *            { 1,2,3,5,10... }投注和值数
+	 * @return
+	 */
+	public OpenLottery _3_Group_Sum(int[] winNo, int[][] betNos) {
+
+		OpenLottery ol = new OpenLottery();
+
+		// separate
+		for (int i = 0; i < betNos[0].length; i++) {
+			int betNo = betNos[0][i];
+			ol.betNum += Constant.S3_Group_Sum[betNo-1][1];
+		}
+
+		int winSum = Common.SumOfArray(winNo);
+
+		if (Common.IsInArray(winSum, betNos[0])) {
+			ol.winNum++;
+		}
+
+		return ol;
+	}
+
 	/*
-	 *********************************************************************** 
-	 * 2星
+	 * *********************************************************************** 2星
 	 */
 
 	/**
@@ -1161,7 +1311,7 @@ public class SSC {
 	}
 
 	/**
-	 * 3星直选复式 betNos 在前端已经拆过号，这里只需要对比是否中奖
+	 * 2星直选复式 betNos 在前端已经拆过号，这里只需要对比是否中奖
 	 * 
 	 * @return
 	 */
@@ -1188,6 +1338,253 @@ public class SSC {
 		ol.winNum = wbCount;
 
 		return ol;
+	}
+
+	/**
+	 * 2星组选复式 选择2个单号组成一注。号码一致，顺序不限
+	 * 
+	 * @param winNo
+	 *            2位开奖号（前后）
+	 * @param betNos
+	 * @return
+	 */
+	public OpenLottery _2_Group_Fu(int[] winNo, int[][] betNos) {
+		// TODO Auto-generated method stub
+
+		// separate
+		List<Star2> lsStar2 = BetNoSeparate.separateS2GroupFu(betNos);
+
+		OpenLottery ol = new OpenLottery();
+		ol.betNum = lsStar2.size();
+
+		// sort winNo
+		Arrays.sort(winNo);
+
+		// compare
+		int wbCount = 0;
+		for (int i = 0; i < lsStar2.size(); i++) {
+
+			Star2 s2 = lsStar2.get(i);
+
+			if (s2.star2[0] == winNo[0] && s2.star2[1] == winNo[1])// win
+			{
+
+				wbCount++;
+			}
+
+		}
+
+		ol.winNum = wbCount;
+
+		return ol;
+	}
+
+	/**
+	 * 2星组选单式 选择2个单号组成一注。号码一致，顺序不限
+	 * 
+	 * @param winNo
+	 *            2位开奖号（前后）
+	 * @param betNos
+	 * @return
+	 */
+	public OpenLottery _2_Group_Dan(int[] winNo, int[][] betNos) {
+		// TODO Auto-generated method stub
+
+		OpenLottery ol = new OpenLottery();
+		ol.betNum = betNos.length;
+
+		// sort winNo
+		Arrays.sort(winNo);
+
+		// compare
+		int wbCount = 0;
+		for (int i = 0; i < betNos.length; i++) {
+
+			int[] betNo2 = { betNos[i][0], betNos[i][1] };
+
+			Arrays.sort(betNo2);
+
+			if (betNo2[0] == winNo[0] && betNo2[1] == winNo[1])// win
+			{
+
+				wbCount++;
+			}
+
+		}
+
+		ol.winNum = wbCount;
+
+		return ol;
+	}
+
+	/**
+	 * 2星大小单双（前后） 在个位和十位上，选择大小单号组成一注。
+	 * 
+	 * @param winNo
+	 *            2位开奖号（前后）
+	 * @param betNos
+	 *            {{大小单双},{大小单双}} 10位大小 10位单双，个位大小，个位单双
+	 * @return
+	 */
+	public OpenLottery _2_BigSmall_Double_Sigle(int[] winNo, int[][] betNos) {
+
+		OpenLottery ol = new OpenLottery();
+
+		// 十位 大小单双 9，2，1，0
+		// 可投入为P42=16，中奖00 ，01，02，03-33 ，16种
+		// separate bet
+		List<Star2> lsStar2 = BetNoSeparate.separateS2BSDS(betNos);
+
+		ol.betNum = lsStar2.size();
+
+		// transform winNo to BSDS
+		int[] result = { 0, 0 };// 十位大小，十位单双，个位大小，个位单双
+		// 十大小，个大小 = 大大，大小，小小，小大
+		// 十大小，个单双 = 大单，大双，小单，小双
+		// 十单双，个大小 = 单大，单小，双大，双小
+		// 十单双，个单双 = 单单，单双，双单，双双
+
+		// 10大10单，个大个单 = { 大大，大单，单大，单单 }
+
+		if (Common.IsBigOrSmall(winNo[0]) == 0) {// 十位小
+			result[0] = 2;
+		} else {// 十位大
+			result[0] = 9;
+		}
+
+		if (Common.IsSingelOrDouble(winNo[0]) == 0) {// 十位双
+			result[0] = 0;
+		} else {// 十位单
+			result[0] = 1;
+		}
+
+		if (Common.IsBigOrSmall(winNo[1]) == 0) {// 个位小
+			result[1] = 2;
+		} else {// 个位大
+			result[1] = 9;
+		}
+
+		if (Common.IsSingelOrDouble(winNo[1]) == 0) {// 个位双
+			result[1] = 0;
+		} else {// 个位单
+			result[1] = 1;
+		}
+
+		// separate winNo
+		int[] arrSepWinNo = new int[2];
+
+		arrSepWinNo[0] = result[0];// 大小单双;
+		arrSepWinNo[1] = result[1];// 大小单双;
+
+		for (int i = 0; i < lsStar2.size(); i++) {
+			Star2 s2 = lsStar2.get(i);
+
+			// 结果组和投注组比较
+			// 十位 大,小,单，双 0，1，2，3
+			if (arrSepWinNo[0] == s2.star2[0] && arrSepWinNo[1] == s2.star2[1]) {// 十位小，个位小
+				ol.winNum++;
+			}
+
+		}
+
+		return ol;
+
+	}
+	
+	
+
+	/**
+	 * 2星直选和值
+	 * 
+	 * @param winNo 0-18
+	 * @param betNos
+	 *            { 1,2,3,5,10... }投注和值数
+	 * @return
+	 */
+	public OpenLottery _2_Z_Sum(int[] winNo, int[][] betNos) {
+
+		OpenLottery ol = new OpenLottery();
+
+		// separate
+		for (int i = 0; i < betNos[0].length; i++) {
+			int betNo = betNos[0][i];
+			ol.betNum += Constant.S2_Z_Sum[betNo][1];
+		}
+
+		int winSum = Common.SumOfArray(winNo);
+
+		if (Common.IsInArray(winSum, betNos[0])) {
+			ol.winNum++;
+		}
+
+		return ol;
+	}
+
+	/**
+	 * 2星组选和值
+	 * 
+	 * @param winNo 1-17
+	 * @param betNos
+	 *            { 1,2,3,5,10... }投注和值数
+	 * @return
+	 */
+	public OpenLottery _2_Group_Sum(int[] winNo, int[][] betNos) {
+
+		OpenLottery ol = new OpenLottery();
+
+		// separate
+		for (int i = 0; i < betNos[0].length; i++) {
+			int betNo = betNos[0][i];
+			ol.betNum += Constant.S2_Group_Sum[betNo-1][1];
+		}
+
+		int winSum = Common.SumOfArray(winNo);
+
+		if (Common.IsInArray(winSum, betNos[0])) {
+			ol.winNum++;
+		}
+
+		return ol;
+	}
+
+
+	/*
+	 * ***************************************************************************
+	 * 
+	 * 一星
+	 */
+
+	/**
+	 * 1星定位胆
+	 * 
+	 * @param winNo
+	 *            2位开奖号（前后）
+	 * 
+	 * @param betNos
+	 * 
+	 * @return
+	 */
+	public OpenLottery _1_Fix_Dan(int[] winNo, int[][] betNos) {
+		// TODO Auto-generated method stub
+
+		OpenLottery ol = new OpenLottery();
+
+		// if no bet is -1
+
+		for (int i = 0; i < betNos.length; i++) {
+			for (int ipos = 0; ipos < betNos[i].length; ipos++) {// 万位
+				int betNo = betNos[i][ipos];
+				if (betNo >= 0) {
+					ol.betNum++;
+				}
+
+				if (betNo == winNo[i]) {
+					ol.winNum++;
+				}
+			}
+		}
+		return ol;
+
 	}
 
 }

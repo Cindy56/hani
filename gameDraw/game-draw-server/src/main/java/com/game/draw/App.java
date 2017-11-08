@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import com.game.draw.algorithm.SSC;
 import com.game.draw.model.OpenLottery;
 import com.game.draw.util.Combination;
+import com.game.draw.util.Common;
+import com.game.draw.util.math;
 
 /**
  * Hello world!
@@ -19,10 +21,37 @@ public class App {
 		LOG.debug("Hello World!");
 
 		// testCombination();
-		testOpenLottery();
+		 testOpenLottery();
 
 		// int[] array0 = {1,1,1,1,5,5,8,9};
 		// Common.SameInArray(array0);
+
+		// int ret = Common.IsBigOrSmall(5);
+		// LOG.info(ret);
+		// ret = Common.IsBigOrSmall(4);
+		// LOG.info(ret);
+		//
+		// ret = Common.IsSingelOrDouble(5);
+		// LOG.info(ret);
+		//
+		// ret = Common.IsSingelOrDouble(4);
+		// LOG.info(ret);
+
+	}
+
+	static void test3_Z_Sum() {
+		int sum = 0;
+		int n = 3;
+		int[] ret = new int[3];
+		int[] resCount = { 0 };
+
+		for (int i = 0; i <= 27; i++) {
+			sum = i;
+			Common.PrintAllArrangeSum(sum, n, ret, resCount);
+			LOG.info(i + "," + resCount[0]);
+
+			resCount[0] = 0;
+		}
 
 	}
 
@@ -56,7 +85,7 @@ public class App {
 		SSC ssc = new SSC();
 
 		// int[] winNo = { 0, 2, 2, 2, 1 };
-		int[] winNo = { 3, 3, 3 };
+		int[] winNo = { 7,2 };
 
 		/*
 		 * ***************************************************************** 5星
@@ -119,7 +148,13 @@ public class App {
 		// int[][] betNos = { { 0, 1, 2 }, { 1, 2, 4 }, { 0, 2, 3 },};//3星直选单式
 
 		// int[][] betNos = { { 0, 1,2 }, { 0, 2 }, { 0, 1, 2, 3, 6 } };//3星直选复式
-		int[][] betNos = { { 0, 1, 2 } };// 3星组3
+		// int[][] betNos = { { 0, 1, 2 } };// 3星组3
+
+		// int[][] betNos = { { 0, 1 }, { 0, 1 }, { 0, 1 }, { 0, 1 }, { 0, 1 }
+		// };//2星组选单式
+
+		int[][] betNos = { {  1, 2, 9 } };
+		// 2星大小单双 16注 2X2X2X2 10位大小 10位单双，个位大小，个位单双
 
 		// String lotteryName = "_4_Z_Dan";// 4星直选单式
 		// String lotteryName = "_4_Z_Fu";// 4星直选复式
@@ -132,11 +167,20 @@ public class App {
 		// String lotteryName = "_3_Group_3";// 3星组3
 		// String lotteryName = "_3_Group_6";// 3星组6
 		// String lotteryName = "_3_Group_Mix";// 3星组mix
-		//String lotteryName = "_3_Treble";// 3星豹子
-		//String lotteryName = "_3_double";// 3星对子
-		String lotteryName = "_3_Sequence";// 3星顺子
-		
-		
+		// String lotteryName = "_3_Treble";// 3星豹子
+		// String lotteryName = "_3_double";// 3星对子
+		// String lotteryName = "_3_Sequence";// 3星顺子
+		// String lotteryName = "_2_Group_Fu";// 2星复式
+
+		// String lotteryName = "_2_Group_Dan";// 2星单式
+		// String lotteryName = "_1_Fix_Dan";// 1星定位胆
+
+		//String lotteryName = "_2_BigSmall_Double_Sigle";// 2星大小单双
+		//String lotteryName = "_3_Group_Sum";// 3星组选和值
+		//String lotteryName = "_3_Z_Sum";// 3星直选和值
+		//String lotteryName = "_2_Group_Sum";// 2星组选和值
+		String lotteryName = "_2_Z_Sum";// 2星直选和值
+				
 		
 
 		// OpenLottery ol = (OpenLottery) ssc.reflectMethod(winNo, betNos, lotteryCode,

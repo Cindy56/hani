@@ -734,4 +734,106 @@ public class BetNoSeparate {
 
 	}
 
+	/**
+	 * 2星组选复式
+	 * 
+	 * @param betNos
+	 * @return
+	 */
+	public static List<Star2> separateS2GroupFu(int[][] betNos) {
+
+		List<Star2> lsStar2 = new ArrayList<Star2>();
+
+		// single No array
+		int[] singleNo = betNos[0];
+
+		// single No array => combination N,2
+		ArrayList<Integer> t = new ArrayList<Integer>();
+		ArrayList<ArrayList<Integer>> arr_C_N_2 = Combination.Combination(singleNo, singleNo.length, 2, t);
+
+		for (int i = 0; i < arr_C_N_2.size(); i++) {
+
+			ArrayList<Integer> ls = arr_C_N_2.get(i);
+			int an[] = { ls.get(0), ls.get(1) };
+			Arrays.sort(an);
+			Star2 s = new Star2(an);
+			lsStar2.add(s);
+		}
+
+		return lsStar2;
+	}
+
+	/**
+	 * 分离三星2码不定位
+	 * 
+	 * @param betNos
+	 * @return
+	 */
+	public static List<Star2> separate3_2_nofix(int[][] betNos) {
+
+		List<Star2> lsStar2 = new ArrayList<Star2>();
+
+		int a0 = 0;
+		int a1 = 0;
+		int a2 = 0;
+
+		// _2nofix No array
+		int[] _2nofixNo = betNos[0];
+
+		// _2nofix No array => combination N,2
+		ArrayList<Integer> t = new ArrayList<Integer>();
+		ArrayList<ArrayList<Integer>> arr2nofix_C_N_2 = Combination.Combination(_2nofixNo, _2nofixNo.length, 2, t);
+
+		for (int i = 0; i < arr2nofix_C_N_2.size(); i++) {
+
+			a0 = arr2nofix_C_N_2.get(i).get(0);
+			a1 = arr2nofix_C_N_2.get(i).get(1);
+
+			int arrAN[] = new int[2];
+			arrAN[0] = a0;
+			arrAN[1] = a1;
+
+			Arrays.sort(arrAN);
+
+			Star2 s2 = new Star2(arrAN);
+
+			lsStar2.add(s2);
+		}
+
+		return lsStar2;
+
+	}
+
+	/**
+	 * 分离2星大小单双
+	 * 
+	 * @param betNos
+	 * @return
+	 */
+	public static List<Star2> separateS2BSDS(int[][] betNos) {
+
+		List<Star2> lsStar2 = new ArrayList<Star2>();
+
+		int a0 = 0;// 十位 大,小,单，双9210
+		int a1 = 0;// 个位 大,小,单，双9210
+
+		// 第一组数据
+		for (int i0 = 0; i0 < betNos[0].length; i0++) {
+
+			a0 = betNos[0][i0];
+			// 第二组数据
+			for (int i1 = 0; i1 < betNos[1].length; i1++) {
+				a1 = betNos[1][i1];
+
+				Star2 s2 = new Star2(a0, a1);
+
+				lsStar2.add(s2);
+
+			}
+		}
+
+		return lsStar2;
+
+	}
+
 }
