@@ -5,7 +5,6 @@
 	<title>会员管理管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		var arr = new Array();
 		$(document).ready(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
@@ -24,34 +23,6 @@
 				}
 			});
 		});
-		
-		
-		$(function(){
-			$.ajax({
-			    url:"${ctx}/member/memberAccount/select",    //请求的url地址
-			    dataType:"json",   //返回格式为json
-			    async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-			    type:"GET",   //请求方式
-		
-			    success:function(data){
-			   	for(var i = 0 ; i<data.list.length ; i++){
-			   			var str  = data.list[i].id = data.list[i].id.substring(1,data.list[i].id.length - 1);
-			   			//arr[i] = JSON.stringify(str);
-			    		//alert(str);
-			    		$("#selectId").append("<option value='"+str+"'>"+str+"</option>");
-			    	} 
-			    	
-			
-			        //请求成功时处理
-			        // alert(JSON.stringify(data.list[0].id));
-			    },
-			    error:function(){
-			        //请求出错处理
-			    }
-			});
-			
-			
-		})
 	</script>
 </head>
 <body>
@@ -61,39 +32,39 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="memberAccount" action="${ctx}/member/memberAccount/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
+		<sys:message content="${message}"/>	
+<!-- 用户信息 -->	
 		<div class="control-group">
-			<label class="control-label">上级代理账号id：</label>
+			<label class="control-label">登录名:</label>
 			<div class="controls">
-				<form:input path="parentAgentId" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
+				<form:input path="user.loginName" htmlEscape="false" maxlength="50" class="required userName"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">用户表主键id：</label>
+			<label class="control-label">密码:</label>
 			<div class="controls">
-			
-		     	<form:select path="user.id" class="input-xlarge required" id="selectId">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-				<span class="help-inline"><font color="red">*</font> </span>  
+				<input id="newPassword" name="newPassword" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''}"/>
+				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
+				<c:if test="${not empty user.id}"><span class="help-inline">若不修改密码，请留空。</span></c:if>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">机构id，盘口id：</label>
+			<label class="control-label">确认密码:</label>
 			<div class="controls">
-				<form:input path="orgId" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input id="confirmNewPassword" name="confirmNewPassword" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword"/>
+				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
 			</div>
-		</div>
+		</div>				
+		<ul class="ul-form">
+			<li class="clearfix"></li>
+		</ul>		
+		<!-- 会员信息 -->			
 		<div class="control-group">
-			<label class="control-label">会员类型：</label>
+			<label class="control-label">会员类型：：</label>
 			<div class="controls">
-				<form:select path="accountType" class="input-xlarge required">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
+				<form:radiobuttons path="accountType" items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -105,11 +76,32 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">开户行代码：</label>
+			<label class="control-label">开户行：</label>
 			<div class="controls">
-				<form:input path="bankCode" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<form:select path="bankCode" class="input-xlarge required">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
+			<label class="control-label">开户行省份：</label>
+			<div class="controls">
+				<form:select path="bankBranchProvince" class="input-xlarge ">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			<label class="control-label">开户行城市：</label>
+			<div class="controls">
+				<form:select path="bankBranchCity" class="input-xlarge ">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			<label class="control-label">开户行全称：</label>
+			<div class="controls">
+				<form:input path="bankBranchName" htmlEscape="false" maxlength="500" class="input-xlarge "/>
+			</div>									
 		</div>
 		<div class="control-group">
 			<label class="control-label">银行卡账号：</label>
@@ -117,34 +109,14 @@
 				<form:input path="bankCardNo" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">银行卡开卡人名称：</label>
+			<label class="control-label">开卡人名称：</label>
 			<div class="controls">
 				<form:input path="bankCardHolder" htmlEscape="false" maxlength="500" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
+			</div>			
 		</div>
 		<div class="control-group">
-			<label class="control-label">开户行省份：</label>
-			<div class="controls">
-				<form:input path="bankBranchProvince" htmlEscape="false" maxlength="50" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">开户行城市：</label>
-			<div class="controls">
-				<form:input path="bankBranchCity" htmlEscape="false" maxlength="50" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">开户行全称：</label>
-			<div class="controls">
-				<form:input path="bankBranchName" htmlEscape="false" maxlength="500" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">qq号码，用户：</label>
+			<label class="control-label">qq号码：</label>
 			<div class="controls">
 				<form:input path="qqNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
@@ -156,25 +128,9 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">余额：</label>
+			<label class="control-label">状态：</label>
 			<div class="controls">
-				<form:input path="blance" htmlEscape="false" class="input-xlarge required"/>
-				元
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">冻结余额：</label>
-			<div class="controls">
-				<form:input path="blanceFrozen" htmlEscape="false" class="input-xlarge "/>
-			元
-			<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">冻结,正常：</label>
-			<div class="controls">
-				<form:input path="status" htmlEscape="false" maxlength="1" class="input-xlarge required"/>
+				<form:radiobuttons path="status" items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

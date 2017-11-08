@@ -13,19 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
 import com.game.manager.common.web.BaseController;
 import com.game.manager.common.utils.StringUtils;
 import com.game.manager.modules.member.entity.MemberAccount;
 import com.game.manager.modules.member.service.MemberAccountService;
-import com.game.manager.modules.sys.entity.User;
-import com.game.manager.modules.sys.service.SystemService;
 
 /**
  * 会员管理Controller
@@ -38,8 +33,6 @@ public class MemberAccountController extends BaseController {
 
 	@Autowired
 	private MemberAccountService memberAccountService;
-	@Autowired
-	private SystemService systemService;
 	
 	@ModelAttribute
 	public MemberAccount get(@RequestParam(required=false) String id) {
@@ -85,25 +78,6 @@ public class MemberAccountController extends BaseController {
 		memberAccountService.delete(memberAccount);
 		addMessage(redirectAttributes, "删除会员管理成功");
 		return "redirect:"+Global.getAdminPath()+"/member/memberAccount/?repage";
-	}
-	
-	
-	@RequiresPermissions("sys:user:edit")
-	@RequestMapping(value = "select")
-	@ResponseBody
-	public String list(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
-        model.addAttribute("page", page);
-        ObjectMapper mapper = new ObjectMapper();  
-        String json = null;
-		try {
-			json = mapper.writeValueAsString(page);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-		System.out.println("=========================="+json);
-        return json;
 	}
 
 }

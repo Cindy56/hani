@@ -25,6 +25,47 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><label>会员类型：：</label>
+				<form:radiobuttons path="accountType" items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+			</li>
+			<li><label>开户行：</label>
+				<form:select path="bankCode" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
+			<li><label>开卡人名称：</label>
+				<form:input path="bankCardHolder" htmlEscape="false" maxlength="500" class="input-medium"/>
+			</li>
+			<li><label>开户行省份：</label>
+				<form:select path="bankBranchProvince" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
+			<li><label>开户行城市：</label>
+				<form:select path="bankBranchCity" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
+			<li><label>开户行全称：</label>
+				<form:input path="bankBranchName" htmlEscape="false" maxlength="500" class="input-medium"/>
+			</li>
+			<li><label>qq号码：</label>
+				<form:input path="qqNo" htmlEscape="false" maxlength="50" class="input-medium"/>
+			</li>
+			<li><label>手机号码：</label>
+				<form:input path="mobileNo" htmlEscape="false" maxlength="50" class="input-medium"/>
+			</li>
+			<li><label>状态：</label>
+				<form:radiobuttons path="status" items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+			</li>
+			<li><label>创建日期：</label>
+				<input name="createDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="<fmt:formatDate value="${memberAccount.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -33,20 +74,20 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>机构id,盘口id</th>
-				<th>会员类型</th>
+				<th>机构id，盘口id</th>
+				<th>会员类型：</th>
 				<th>安全密码</th>
-				<th>开户行代码</th>
+				<th>开户行</th>
 				<th>银行卡账号</th>
-				<th>银行卡开卡人名称</th>
+				<th>开卡人名称</th>
 				<th>开户行省份</th>
 				<th>开户行城市</th>
 				<th>开户行全称</th>
 				<th>qq号码</th>
 				<th>手机号码</th>
-				<th>余额</th>
-				<th>冻结余额</th>
-				<th>冻结,正常</th>
+				<th>账户余额</th>
+				<th>冻结金额</th>
+				<th>状态</th>
 				<shiro:hasPermission name="member:memberAccount:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -63,7 +104,7 @@
 					${memberAccount.secPassword}
 				</td>
 				<td>
-					${memberAccount.bankCode}
+					${fns:getDictLabel(memberAccount.bankCode, '', '')}
 				</td>
 				<td>
 					${memberAccount.bankCardNo}
@@ -72,10 +113,10 @@
 					${memberAccount.bankCardHolder}
 				</td>
 				<td>
-					${memberAccount.bankBranchProvince}
+					${fns:getDictLabel(memberAccount.bankBranchProvince, '', '')}
 				</td>
 				<td>
-					${memberAccount.bankBranchCity}
+					${fns:getDictLabel(memberAccount.bankBranchCity, '', '')}
 				</td>
 				<td>
 					${memberAccount.bankBranchName}
@@ -93,7 +134,7 @@
 					${memberAccount.blanceFrozen}
 				</td>
 				<td>
-					${memberAccount.status}
+					${fns:getDictLabel(memberAccount.status, '', '')}
 				</td>
 				<shiro:hasPermission name="member:memberAccount:edit"><td>
     				<a href="${ctx}/member/memberAccount/form?id=${memberAccount.id}">修改</a>
