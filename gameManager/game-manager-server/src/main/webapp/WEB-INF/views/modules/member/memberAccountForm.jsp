@@ -2,6 +2,22 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
+	
+<style type="text/css">
+		#one {
+     width: 125px;
+
+    float:left;     
+}
+
+#two {
+    width: 125px;
+
+  
+    
+}
+	
+	</style>
 	<title>会员管理管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
@@ -62,9 +78,9 @@
 		</ul>		
 		<!-- 会员信息 -->			
 		<div class="control-group">
-			<label class="control-label">会员类型：：</label>
+			<label class="control-label">会员类型：</label>
 			<div class="controls">
-				<form:radiobuttons path="accountType" items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<form:radiobuttons path="accountType" items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required" checked="true"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -75,34 +91,68 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		<div class="control-group">
+			<div style="display:inline">
 			<label class="control-label">开户行：</label>
-			<div class="controls">
-				<form:select path="bankCode" class="input-xlarge required">
+				<div class="controls" style="width: 20%;display:inline;margin-left: 20px;">
+					<form:select path="bankCode" class="input-xlarge required" >
+						<form:option value="" label=""/>
+						<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
+					<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			
+			<div  style="display:inline">
+			&nbsp;&nbsp;&nbsp;&nbsp;
+				<label>开户行省份：</label>
+				<form:select path="bankBranchProvince" class="input-xlarge ">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-			<label class="control-label">开户行省份：</label>
-			<div class="controls">
-				<form:select path="bankBranchProvince" class="input-xlarge ">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-			<label class="control-label">开户行城市：</label>
-			<div class="controls">
+		</div>
+			
+		
+		<div class="control-group">
+			<div style="display:inline">
+				<label class="control-label">开户行城市：</label>
+				<div class="controls" style="width: 20%;display:inline;margin-left: 20px;">
 				<form:select path="bankBranchCity" class="input-xlarge ">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
 			</div>
-			<label class="control-label">开户行全称：</label>
-			<div class="controls">
+			
+ 			<div  style="display:inline">
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<label>开户行全称：</label>
+			
 				<form:input path="bankBranchName" htmlEscape="false" maxlength="500" class="input-xlarge "/>
-			</div>									
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
 		</div>
+		
+		
 		<div class="control-group">
 			<label class="control-label">银行卡账号：</label>
 			<div class="controls">
@@ -130,10 +180,13 @@
 		<div class="control-group">
 			<label class="control-label">状态：</label>
 			<div class="controls">
-				<form:radiobuttons path="status" items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<form:radiobuttons path="status" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required" checked="true"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+		
+		
+		
 		<div class="form-actions">
 			<shiro:hasPermission name="member:memberAccount:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
