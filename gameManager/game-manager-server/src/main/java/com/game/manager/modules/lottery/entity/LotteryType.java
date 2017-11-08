@@ -117,7 +117,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.name = name;
     }
 
-    @Length(min = 1, max = 1, message = "是否自动开奖长度必须介于 1 和 1 之间")
+    @Length(min = 1, max = 1, message = "是否自动开奖长度必须为 1")
     public String getIsAuto() {
         return isAuto;
     }
@@ -126,7 +126,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.isAuto = isAuto;
     }
 
-    @Length(min = 1, max = 1, message = "是否有效长度必须介于 1 和 1 之间")
+    @Length(min = 1, max = 1, message = "是否有效长度必须为 1")
     public String getIsEnable() {
         return isEnable;
     }

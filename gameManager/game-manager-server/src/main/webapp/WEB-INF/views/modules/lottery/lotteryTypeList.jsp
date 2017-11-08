@@ -25,6 +25,13 @@
         <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
         <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
         <ul class="ul-form">
+            <li>
+                <label>彩种类型：</label>
+                <form:select path="parentCode" class="input-medium">
+                    <form:option value="" label="-- 请选择 --"/>
+                    <form:options items="${fns:getDictList('lottery_category')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
+            </li>
             <li><label>彩种名称：</label>
                 <form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
             </li>
@@ -36,17 +43,16 @@
     <table id="contentTable" class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th>彩种代码</th>
                 <th>彩种名称</th>
                 <th>彩种类型</th>
                 <th>是否自动开奖</th>
                 <th>是否有效</th>
                 <th>每日开售时间</th>
                 <th>每日停售时间</th>
-                <th>每日期数</th>
-                <th>开奖周期</th>
-                <th>封单时间</th>
-                <th>每期投注最高金额</th>
+                <th>每日期数(期)</th>
+                <th>开奖周期(分钟)</th>
+                <th>封单时间(秒钟)</th>
+                <th>每期投注最高金额(元)</th>
                 <shiro:hasPermission name="lottery:lotteryType:edit"><th>操作</th></shiro:hasPermission>
             </tr>
         </thead>
@@ -54,11 +60,8 @@
         <c:forEach items="${page.list}" var="lotteryType">
             <tr>
                 <td><a href="${ctx}/lottery/lotteryType/form?id=${lotteryType.id}">
-                    ${lotteryType.code}
-                </a></td>
-                <td>
                     ${lotteryType.name}
-                </td>
+                </a></td>
                 <td>
                     ${lotteryType.parentCode}
                 </td>
