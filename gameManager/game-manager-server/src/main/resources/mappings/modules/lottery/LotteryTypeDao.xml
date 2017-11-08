@@ -2,149 +2,152 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.game.manager.modules.lottery.dao.LotteryTypeDao">
     
-	<sql id="lotteryTypeColumns">
-		a.id AS "id",
-		a.code AS "code",
-		a.name AS "name",
-		a.parent_code AS "parentCode",
-		a.is_auto AS "isAuto",
-		a.is_enable AS "isEnable",
-		a.start_date AS "startDate",
-		a.end_date AS "endDate",
-		a.times AS "times",
-		a.period_total_time AS "periodTotalTime",
-		a.period_halt_time AS "periodHaltTime",
-		a.amount_max_bet AS "amountMaxBet",
-		a.current_issue_no AS "currentIssueNo",
-		a.next_issue_no AS "nextIssueNo",
-		a.create_date AS "createDate",
-		a.create_by AS "createBy.id",
-		a.update_date AS "updateDate",
-		a.update_by AS "updateBy.id",
-		a.del_flag AS "delFlag"
-	</sql>
-	
-	<sql id="lotteryTypeJoins">
-	</sql>
+    <!-- 彩种基础表字段 -->
+    <sql id="lotteryTypeColumns">
+        a.id AS "id",
+        a.code AS "code",
+        a.name AS "name",
+        a.parent_code AS "parentCode",
+        a.is_auto AS "isAuto",
+        a.is_enable AS "isEnable",
+        a.start_date AS "startDate",
+        a.end_date AS "endDate",
+        a.times AS "times",
+        a.period_total_time AS "periodTotalTime",
+        a.period_halt_time AS "periodHaltTime",
+        a.amount_max_bet AS "amountMaxBet",
+        a.current_issue_no AS "currentIssueNo",
+        a.next_issue_no AS "nextIssueNo",
+        a.create_date AS "createDate",
+        a.create_by AS "createBy.id",
+        a.update_date AS "updateDate",
+        a.update_by AS "updateBy.id",
+        a.del_flag AS "delFlag"
+    </sql>
     
-	<select id="get" resultType="LotteryType">
-		SELECT 
-			<include refid="lotteryTypeColumns"/>
-		FROM lottery_type a
-		<include refid="lotteryTypeJoins"/>
-		WHERE a.id = #{id}
-	</select>
-	
-	<select id="findList" resultType="LotteryType">
-		SELECT 
-			<include refid="lotteryTypeColumns"/>
-		FROM lottery_type a
-		<include refid="lotteryTypeJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="name != null and name != ''">
-				AND a.name LIKE 
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
-			</if>
-		</where>
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
-	</select>
-	
-	<select id="findAllList" resultType="LotteryType">
-		SELECT 
-			<include refid="lotteryTypeColumns"/>
-		FROM lottery_type a
-		<include refid="lotteryTypeJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>		
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
-	</select>
-	
-	<insert id="insert">
-		INSERT INTO lottery_type(
-			id,
-			code,
-			name,
-			parent_code,
-			is_auto,
-			is_enable,
-			start_date,
-			end_date,
-			times,
-			period_total_time,
-			period_halt_time,
-			amount_max_bet,
-			current_issue_no,
-			next_issue_no,
-			create_date,
-			create_by,
-			update_date,
-			update_by,
-			del_flag
-		) VALUES (
-			#{id},
-			#{code},
-			#{name},
-			#{parentCode},
-			#{isAuto},
-			#{isEnable},
-			#{startDate},
-			#{endDate},
-			#{times},
-			#{periodTotalTime},
-			#{periodHaltTime},
-			#{amountMaxBet},
-			#{currentIssueNo},
-			#{nextIssueNo},
-			#{createDate},
-			#{createBy.id},
-			#{updateDate},
-			#{updateBy.id},
-			#{delFlag}
-		)
-	</insert>
-	
-	<update id="update">
-		UPDATE lottery_type SET 	
-			code = #{code},
-			name = #{name},
-			parent_code = #{parentCode},
-			is_auto = #{isAuto},
-			is_enable = #{isEnable},
-			start_date = #{startDate},
-			end_date = #{endDate},
-			times = #{times},
-			period_total_time = #{periodTotalTime},
-			period_halt_time = #{periodHaltTime},
-			amount_max_bet = #{amountMaxBet},
-			current_issue_no = #{currentIssueNo},
-			next_issue_no = #{nextIssueNo},
-			update_date = #{updateDate},
-			update_by = #{updateBy.id}
-		WHERE id = #{id}
-	</update>
-	
-	<update id="delete">
-		UPDATE lottery_type SET 
-			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
-	</update>
-	
+    <sql id="lotteryTypeJoins">
+    </sql>
+    
+    <!-- 根据数据记录ID获取单条数据 -->
+    <select id="get" resultType="LotteryType">
+        SELECT 
+            <include refid="lotteryTypeColumns"/>
+        FROM lottery_type a
+        WHERE a.id = #{id}
+    </select>
+    
+    <!-- 根据彩种类型或彩种名称查找指定删除状态的彩种信息 -->
+    <select id="findList" resultType="LotteryType">
+        SELECT 
+            <include refid="lotteryTypeColumns"/>
+        FROM lottery_type a
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="parentCode != null and parentCode != ''">
+                AND a.parent_code = #{parentCode}
+            </if>
+            <if test="name != null and name != ''">
+                AND a.name LIKE concat('%', #{name}, '%')
+            </if>
+        </where>
+        <choose>
+            <when test="page != null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+    
+    <!-- 查询指定删除状态的所有彩种数据 -->
+    <select id="findAllList" resultType="LotteryType">
+        SELECT 
+            <include refid="lotteryTypeColumns"/>
+        FROM lottery_type a
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+    
+    <!-- 插入单条数据 -->
+    <insert id="insert">
+        INSERT INTO lottery_type(
+            id,
+            code,
+            name,
+            parent_code,
+            is_auto,
+            is_enable,
+            start_date,
+            end_date,
+            times,
+            period_total_time,
+            period_halt_time,
+            amount_max_bet,
+            current_issue_no,
+            next_issue_no,
+            create_date,
+            create_by,
+            update_date,
+            update_by,
+            del_flag
+        ) VALUES (
+            #{id},
+            #{code},
+            #{name},
+            #{parentCode},
+            #{isAuto},
+            #{isEnable},
+            #{startDate},
+            #{endDate},
+            #{times},
+            #{periodTotalTime},
+            #{periodHaltTime},
+            #{amountMaxBet},
+            #{currentIssueNo},
+            #{nextIssueNo},
+            #{createDate},
+            #{createBy.id},
+            #{updateDate},
+            #{updateBy.id},
+            #{delFlag}
+        )
+    </insert>
+    
+    <!-- 根据记录ID更新数据 -->
+    <update id="update">
+        UPDATE lottery_type SET     
+            code = #{code},
+            name = #{name},
+            parent_code = #{parentCode},
+            is_auto = #{isAuto},
+            is_enable = #{isEnable},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            times = #{times},
+            period_total_time = #{periodTotalTime},
+            period_halt_time = #{periodHaltTime},
+            amount_max_bet = #{amountMaxBet},
+            current_issue_no = #{currentIssueNo},
+            next_issue_no = #{nextIssueNo},
+            update_date = #{updateDate},
+            update_by = #{updateBy.id}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 根据记录ID删除数据（修改删除标识为1） -->
+    <update id="delete">
+        UPDATE lottery_type SET 
+            del_flag = #{DEL_FLAG_DELETE}
+        WHERE id = #{id}
+    </update>
 </mapper>

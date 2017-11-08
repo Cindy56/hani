@@ -17,10 +17,15 @@
     </script>
 </head>
 <body>
+    <%-- 链接页签 --%>
     <ul class="nav nav-tabs">
         <li class="active"><a href="${ctx}/lottery/lotteryType/">彩种基本信息列表</a></li>
-        <shiro:hasPermission name="lottery:lotteryType:edit"><li><a href="${ctx}/lottery/lotteryType/form">彩种基本信息添加</a></li></shiro:hasPermission>
+        <shiro:hasPermission name="lottery:lotteryType:edit">
+            <li><a href="${ctx}/lottery/lotteryType/form">彩种基本信息添加</a></li>
+        </shiro:hasPermission>
     </ul>
+    
+    <%-- 搜索条件 --%>
     <form:form id="searchForm" modelAttribute="lotteryType" action="${ctx}/lottery/lotteryType/" method="post" class="breadcrumb form-search">
         <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
         <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -39,6 +44,8 @@
             <li class="clearfix"></li>
         </ul>
     </form:form>
+    
+    <%-- 列表主体 --%>
     <sys:message content="${message}"/>
     <table id="contentTable" class="table table-striped table-bordered table-condensed">
         <thead>
