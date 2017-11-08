@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.manager.modules.member.dao.MemberAccountDao">
+    
+	<sql id="memberAccountColumns">
+		a.id AS "id",
+		a.parent_agent_id AS "parentAgentId",
+		a.user_id AS "user.id",
+		a.org_id AS "orgId",
+		a.account_type AS "accountType",
+		a.sec_password AS "secPassword",
+		a.bank_code AS "bankCode",
+		a.bank_card_no AS "bankCardNo",
+		a.bank_card_holder AS "bankCardHolder",
+		a.bank_branch_province AS "bankBranchProvince",
+		a.bank_branch_city AS "bankBranchCity",
+		a.bank_branch_name AS "bankBranchName",
+		a.qq_no AS "qqNo",
+		a.mobile_no AS "mobileNo",
+		a.blance AS "blance",
+		a.blance_frozen AS "blanceFrozen",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="memberAccountJoins">
+	</sql>
+    
+	<select id="get" resultType="MemberAccount">
+		SELECT 
+			<include refid="memberAccountColumns"/>
+		FROM member_account a
+		<include refid="memberAccountJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MemberAccount">
+		SELECT 
+			<include refid="memberAccountColumns"/>
+		FROM member_account a
+		<include refid="memberAccountJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MemberAccount">
+		SELECT 
+			<include refid="memberAccountColumns"/>
+		FROM member_account a
+		<include refid="memberAccountJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO member_account(
+			id,
+			parent_agent_id,
+			user_id,
+			org_id,
+			account_type,
+			sec_password,
+			bank_code,
+			bank_card_no,
+			bank_card_holder,
+			bank_branch_province,
+			bank_branch_city,
+			bank_branch_name,
+			qq_no,
+			mobile_no,
+			blance,
+			blance_frozen,
+			status,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{parentAgentId},
+			#{user.id},
+			#{orgId},
+			#{accountType},
+			#{secPassword},
+			#{bankCode},
+			#{bankCardNo},
+			#{bankCardHolder},
+			#{bankBranchProvince},
+			#{bankBranchCity},
+			#{bankBranchName},
+			#{qqNo},
+			#{mobileNo},
+			#{blance},
+			#{blanceFrozen},
+			#{status},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE member_account SET 	
+			parent_agent_id = #{parentAgentId},
+			user_id = #{user.id},
+			org_id = #{orgId},
+			account_type = #{accountType},
+			sec_password = #{secPassword},
+			bank_code = #{bankCode},
+			bank_card_no = #{bankCardNo},
+			bank_card_holder = #{bankCardHolder},
+			bank_branch_province = #{bankBranchProvince},
+			bank_branch_city = #{bankBranchCity},
+			bank_branch_name = #{bankBranchName},
+			qq_no = #{qqNo},
+			mobile_no = #{mobileNo},
+			blance = #{blance},
+			blance_frozen = #{blanceFrozen},
+			status = #{status},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE member_account SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
