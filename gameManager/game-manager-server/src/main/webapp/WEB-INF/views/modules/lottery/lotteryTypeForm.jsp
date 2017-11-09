@@ -75,7 +75,7 @@
         
         <%-- 是否有效 --%>
         <div class="control-group">
-            <label class="control-label">是否有效：</label>
+            <label class="control-label">是否启用：</label>
             <div class="controls">
                 <form:radiobutton path="isEnable" label="是" value="1" htmlEscape="false" class="required" checked="true"/>
                 <form:radiobutton path="isEnable" label="否" value="0" htmlEscape="false" class="required"/>
