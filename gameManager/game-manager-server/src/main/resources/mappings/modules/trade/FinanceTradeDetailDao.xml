@@ -117,26 +117,22 @@
 			account_blance_after,
 			create_date,
 			create_by,
-			update_date,
-			update_by,
 			del_flag
 			)
 	    values 
 	    <foreach collection="list" item="item" index="index" separator="," >
 	        #{item.id},
-			#{user.id},
-			#{userName},
-			#{accountId},
-			#{busiNo},
-			#{tradeType},
-			#{amount},
-			#{accountBlanceBefore},
-			#{accountBlanceAfter},
-			#{createDate},
-			#{createBy.id},
-			#{updateDate},
-			#{updateBy.id},
-			#{delFlag}
+			#{item.user.id},
+			#{item.userName},
+			#{item.accountId},
+			#{item.busiNo},
+			#{item.tradeType},
+			#{item.amount},
+			#{item.accountBlanceBefore},
+			#{item.accountBlanceAfter},
+			#{item.createDate},
+			#{item.createBy.id},
+			#{item.delFlag}
 	    </foreach>
 	</insert>
 	

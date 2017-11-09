@@ -5,12 +5,14 @@ package com.game.manager.modules.trade.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.game.manager.common.persistence.Page;
 import com.game.manager.common.service.CrudService;
 import com.game.manager.modules.trade.entity.FinanceTradeDetail;
+import com.game.manager.modules.gen.entity.GenScheme;
 import com.game.manager.modules.trade.dao.FinanceTradeDetailDao;
 
 /**
@@ -21,7 +23,10 @@ import com.game.manager.modules.trade.dao.FinanceTradeDetailDao;
 @Service
 @Transactional(readOnly = true)
 public class FinanceTradeDetailService extends CrudService<FinanceTradeDetailDao, FinanceTradeDetail> {
-
+	
+	@Autowired
+	private FinanceTradeDetailDao financeTradeDetailDao;
+	
 	public FinanceTradeDetail get(String id) {
 		return super.get(id);
 	}
@@ -42,6 +47,15 @@ public class FinanceTradeDetailService extends CrudService<FinanceTradeDetailDao
 	@Transactional(readOnly = false)
 	public void delete(FinanceTradeDetail financeTradeDetail) {
 		super.delete(financeTradeDetail);
+	}
+	
+	/**
+	 * 批量插入账变流水
+	 * @param list
+	 */
+	@Transactional(readOnly = false)
+	public void batchTrade(List<FinanceTradeDetail> list) {
+		financeTradeDetailDao.batchTrade(list);
 	}
 	
 }
