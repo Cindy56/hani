@@ -22,23 +22,38 @@ import com.game.manager.modules.lottery.entity.LotteryType;
 @Transactional(readOnly = true)
 public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType> {
 
+    /**
+     * 通过记录编号获取单行数据
+     */
     public LotteryType get(String id) {
         return super.get(id);
     }
 
+    /**
+     * 查询所有指定删除状态的数据
+     */
     public List<LotteryType> findList(LotteryType lotteryType) {
         return super.findList(lotteryType);
     }
 
+    /**
+     * 分页查询所有指定删除状态的数据
+     */
     public Page<LotteryType> findPage(Page<LotteryType> page, LotteryType lotteryType) {
         return super.findPage(page, lotteryType);
     }
 
+    /**
+     * 更新信息
+     */
     @Transactional(readOnly = false)
     public void save(LotteryType lotteryType) {
         super.save(lotteryType);
     }
 
+    /**
+     * 删除信息（更新数据删除标识为1）
+     */
     @Transactional(readOnly = false)
     public void delete(LotteryType lotteryType) {
         super.delete(lotteryType);

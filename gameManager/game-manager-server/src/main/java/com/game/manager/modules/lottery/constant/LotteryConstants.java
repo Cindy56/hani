@@ -1,7 +1,7 @@
 package com.game.manager.modules.lottery.constant;
 
 /**
- * 彩种管理常量类
+ * 彩种管理操作信息常量类
  * @author Terry
  */
 public interface LotteryConstants {
