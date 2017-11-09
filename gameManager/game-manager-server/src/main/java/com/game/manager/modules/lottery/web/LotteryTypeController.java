@@ -19,6 +19,7 @@ import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
 import com.game.manager.common.utils.StringUtils;
 import com.game.manager.common.web.BaseController;
+import com.game.manager.modules.lottery.constant.LotteryConstants;
 import com.game.manager.modules.lottery.entity.LotteryType;
 import com.game.manager.modules.lottery.service.LotteryTypeService;
 
@@ -104,7 +105,7 @@ public class LotteryTypeController extends BaseController {
         }
         // 校验通过更新数据到数据库
         lotteryTypeService.save(lotteryType);
-        addMessage(redirectAttributes, "保存彩种基本信息成功");
+        addMessage(redirectAttributes, LotteryConstants.SAVE_SUCCESS);
         // 重定向到查询列表页面
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryType/?repage";
     }
@@ -120,7 +121,7 @@ public class LotteryTypeController extends BaseController {
     @RequestMapping(value = "delete")
     public String delete(LotteryType lotteryType, RedirectAttributes redirectAttributes) {
         lotteryTypeService.delete(lotteryType);
-        addMessage(redirectAttributes, "删除彩种基本信息成功");
+        addMessage(redirectAttributes, LotteryConstants.REMOVE_SUCCESS);
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryType/?repage";
     }
 }

@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.alibaba.fastjson.JSON;
 import com.game.manager.common.persistence.DataEntity;
+import com.game.manager.modules.lottery.constant.LotteryConstants;
+import com.game.manager.modules.lottery.constant.RegexConstants;
 
 /**
  * 彩种基本信息管理Entity
@@ -92,7 +94,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         super(id);
     }
 
-    @Pattern(regexp = "\\w{1,50}", message = "彩种代码长度必须介于 1 和 50 之间，且必须是数字或字母")
+    @Pattern(regexp = RegexConstants.LETTER_AND_NUMBER_1_50, message = LotteryConstants.CODE_CHECK_MESSAGE)
     public String getCode() {
         return code;
     }
@@ -101,7 +103,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.code = code;
     }
 
-    @Pattern(regexp = "\\w{1,50}", message = "彩种类型长度必须介于 1 和 50 之间，且必须是数字或字母")
+    @Pattern(regexp = RegexConstants.LETTER_AND_NUMBER_1_50, message = LotteryConstants.PARENTCODE_CHECK_MESSAGE)
     public String getParentCode() {
         return parentCode;
     }
@@ -110,7 +112,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.parentCode = parentCode;
     }
 
-    @Length(min = 1, max = 50, message = "彩种名称长度必须介于 1 和 50 之间")
+    @Length(min = RegexConstants.LENGTH_1, max = RegexConstants.LENGTH_50, message = LotteryConstants.NAME_CHECK_MESSAGE)
     public String getName() {
         return name;
     }
@@ -119,7 +121,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.name = name;
     }
 
-    @Length(min = 1, max = 1, message = "是否自动开奖长度必须为 1")
+    @Length(min = RegexConstants.LENGTH_1, max = RegexConstants.LENGTH_1, message = LotteryConstants.ISAUTO_CHECK_MESSAGE)
     public String getIsAuto() {
         return isAuto;
     }
@@ -128,7 +130,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.isAuto = isAuto;
     }
 
-    @Length(min = 1, max = 1, message = "是否有效长度必须为 1")
+    @Length(min = RegexConstants.LENGTH_1, max = RegexConstants.LENGTH_1, message = LotteryConstants.ISENABLE_CHECK_MESSAGE)
     public String getIsEnable() {
         return isEnable;
     }
@@ -137,7 +139,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.isEnable = isEnable;
     }
 
-    @Pattern(regexp = "[0-1]?[0-9]{1}:{1}[0-5]{1}[0-9]{1}", message = "每日开售时刻格式有误，正确格式：HH:mm")
+    @Pattern(regexp = RegexConstants.TIME_HH_MM, message = LotteryConstants.STARTDATE_CHECK_MESSAGE)
     public String getStartDate() {
         return startDate;
     }
@@ -146,7 +148,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.startDate = startDate;
     }
 
-    @Pattern(regexp = "[0-1]?[0-9]{1}:{1}[0-5]{1}[0-9]{1}", message = "每日停售时刻格式有误，正确格式：HH:mm")
+    @Pattern(regexp = RegexConstants.TIME_HH_MM, message = LotteryConstants.ENDDATE_CHECK_MESSAGE)
     public String getEndDate() {
         return endDate;
     }
@@ -155,7 +157,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.endDate = endDate;
     }
 
-    @Pattern(regexp = "\\d{1,6}", message = "每日期数长度必须介于 1 和 6 之间，且必须为数字")
+    @Pattern(regexp = RegexConstants.NUM_1_6, message = LotteryConstants.TIMES_CHECK_MESSAGE)
     public String getTimes() {
         return times;
     }
@@ -164,7 +166,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.times = times;
     }
 
-    @Pattern(regexp = "\\d{1,255}", message = "开奖周期长度必须介于 1 和 255 之间，且必须为数字")
+    @Pattern(regexp = RegexConstants.NUM_1_255, message = LotteryConstants.PERIODTOTALTIME_CHECK_MESSAGE)
     public String getPeriodTotalTime() {
         return periodTotalTime;
     }
@@ -173,7 +175,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.periodTotalTime = periodTotalTime;
     }
 
-    @Pattern(regexp = "\\d{1,255}", message = "封单时间长度必须介于 1 和 255 之间，且必须为数字")
+    @Pattern(regexp = RegexConstants.NUM_1_255, message = LotteryConstants.PERIODHALTTIMEE_CHECK_MESSAGE)
     public String getPeriodHaltTime() {
         return periodHaltTime;
     }
@@ -190,7 +192,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.amountMaxBet = amountMaxBet;
     }
 
-    @Length(min = 0, max = 50, message = "当前期号长度必须介于 0 和 50 之间")
+    @Length(min = RegexConstants.LENGTH_0, max = RegexConstants.LENGTH_50, message = LotteryConstants.CURRENTISSUENO_CHECK_MESSAGE)
     public String getCurrentIssueNo() {
         return currentIssueNo;
     }
@@ -199,7 +201,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.currentIssueNo = currentIssueNo;
     }
 
-    @Length(min = 0, max = 50, message = "下期期号长度必须介于 0 和 50 之间")
+    @Length(min = RegexConstants.LENGTH_0, max = RegexConstants.LENGTH_50, message = LotteryConstants.NEXTISSUNO_CHECK_MESSAGE)
     public String getNextIssueNo() {
         return nextIssueNo;
     }
