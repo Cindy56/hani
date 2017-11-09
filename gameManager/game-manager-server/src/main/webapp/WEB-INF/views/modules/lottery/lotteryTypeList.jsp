@@ -37,7 +37,7 @@
             <li><label>彩种名称：</label>
                 <form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
             </li>
-            <li class="btns"><button id="clearSearch" type="reset" class="btn reset">Reset</button></li>
+            <li class="btns"><button id="clearSearch" type="reset" class="btn reset">清空搜索</button></li>
             <li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="搜索"/></li>
             <li class="clearfix"></li>
         </ul>
