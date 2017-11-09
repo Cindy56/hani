@@ -92,7 +92,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         super(id);
     }
 
-    @Pattern(regexp = "\\w{1, 50}", message = "彩种代码长度必须介于 1 和 50 之间，且必须是数字或字母")
+    @Pattern(regexp = "\\w{1,50}", message = "彩种代码长度必须介于 1 和 50 之间，且必须是数字或字母")
     public String getCode() {
         return code;
     }
@@ -101,7 +101,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.code = code;
     }
 
-    @Pattern(regexp = "\\w{1, 50}", message = "彩种类型长度必须介于 1 和 50 之间，且必须是数字或字母")
+    @Pattern(regexp = "\\w{1,50}", message = "彩种类型长度必须介于 1 和 50 之间，且必须是数字或字母")
     public String getParentCode() {
         return parentCode;
     }
@@ -155,7 +155,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.endDate = endDate;
     }
 
-    @Pattern(regexp = "\\d{1, 6}", message = "每日期数长度必须介于 1 和 6 之间，且必须为数字")
+    @Pattern(regexp = "\\d{1,6}", message = "每日期数长度必须介于 1 和 6 之间，且必须为数字")
     public String getTimes() {
         return times;
     }
@@ -164,7 +164,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.times = times;
     }
 
-    @Pattern(regexp = "\\d{1, 255}", message = "开奖周期长度必须介于 1 和 6 之间，且必须为数字")
+    @Pattern(regexp = "\\d{1,255}", message = "开奖周期长度必须介于 1 和 255 之间，且必须为数字")
     public String getPeriodTotalTime() {
         return periodTotalTime;
     }
@@ -173,7 +173,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.periodTotalTime = periodTotalTime;
     }
 
-    @Pattern(regexp = "\\d{1, 255}", message = "封单时间长度必须介于 1 和 255 之间，且必须为数字")
+    @Pattern(regexp = "\\d{1,255}", message = "封单时间长度必须介于 1 和 255 之间，且必须为数字")
     public String getPeriodHaltTime() {
         return periodHaltTime;
     }
