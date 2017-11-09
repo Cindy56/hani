@@ -105,6 +105,42 @@
 		)
 	</insert>
 	
+	<insert id="batchTrade" parameterType="java.util.List">
+	    insert into words (id,
+			user_id,
+			user_name,
+			account_id,
+			busi_no,
+			trade_type,
+			amount,
+			account_blance_before,
+			account_blance_after,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+			)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator="," >
+	        #{item.id},
+			#{user.id},
+			#{userName},
+			#{accountId},
+			#{busiNo},
+			#{tradeType},
+			#{amount},
+			#{accountBlanceBefore},
+			#{accountBlanceAfter},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag}
+	    </foreach>
+	</insert>
+	
+	
 	<update id="update">
 		UPDATE finance_trade_detail SET 	
 			id = #{id},

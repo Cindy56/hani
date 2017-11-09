@@ -16,5 +16,5 @@ import com.game.manager.modules.trade.entity.FinanceTradeDetail;
  */
 @MyBatisDao
 public interface FinanceTradeDetailDao extends CrudDao<FinanceTradeDetail> {
-
+	public void batchTrade(List<FinanceTradeDetail> financeTradeDetail);
 }
