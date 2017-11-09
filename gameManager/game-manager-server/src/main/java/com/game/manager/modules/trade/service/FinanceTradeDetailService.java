@@ -55,6 +55,9 @@ public class FinanceTradeDetailService extends CrudService<FinanceTradeDetailDao
 	 */
 	@Transactional(readOnly = false)
 	public void batchTrade(List<FinanceTradeDetail> list) {
+		list.stream().forEach(c->{
+			c.preInsert();
+		});
 		financeTradeDetailDao.batchTrade(list);
 	}
 	
