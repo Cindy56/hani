@@ -5,9 +5,6 @@
     <title>彩种基本信息管理</title>
     <meta name="decorator" content="default"/>
     <script type="text/javascript">
-        $(document).ready(function() {
-            
-        });
         function page(n,s){
             $("#pageNo").val(n);
             $("#pageSize").val(s);
@@ -24,7 +21,7 @@
             <li><a href="${ctx}/lottery/lotteryType/form">彩种基本信息添加</a></li>
         </shiro:hasPermission>
     </ul>
-    
+
     <%-- 搜索条件 --%>
     <form:form id="searchForm" modelAttribute="lotteryType" action="${ctx}/lottery/lotteryType/" method="post" class="breadcrumb form-search">
         <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -40,11 +37,12 @@
             <li><label>彩种名称：</label>
                 <form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
             </li>
-            <li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+            <li class="btns"><button id="clearSearch" type="reset" class="btn reset">Reset</button></li>
+            <li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="搜索"/></li>
             <li class="clearfix"></li>
         </ul>
     </form:form>
-    
+
     <%-- 列表主体 --%>
     <sys:message content="${message}"/>
     <table id="contentTable" class="table table-striped table-bordered table-condensed">
@@ -105,5 +103,13 @@
         </tbody>
     </table>
     <div class="pagination">${page}</div>
+    <script type="text/javascript">
+        /**
+         * 清空搜索事件
+         */
+        $("#clearSearch").click(function() {
+            $("span.select2-chosen").text("-- 请选择 --");
+        });
+    </script>
 </body>
 </html>
