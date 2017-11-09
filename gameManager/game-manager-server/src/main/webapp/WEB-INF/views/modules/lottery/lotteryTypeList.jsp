@@ -53,11 +53,11 @@
                 <th>彩种名称</th>
                 <th>彩种类型</th>
                 <th>是否自动开奖</th>
-                <th>是否有效</th>
-                <th>每日开售时间(时:分)</th>
-                <th>每日停售时间(时:分)</th>
+                <th>是否启用</th>
+                <th>每日开售时间(HH:mm)</th>
+                <th>每日停售时间(HH:mm)</th>
                 <th>每日期数(期)</th>
-                <th>开奖周期(分钟)</th>
+                <th>开奖周期(分钟/期)</th>
                 <th>封单时间(秒钟)</th>
                 <th>每期投注最高金额(元)</th>
                 <shiro:hasPermission name="lottery:lotteryType:edit"><th>操作</th></shiro:hasPermission>

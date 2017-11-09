@@ -6,7 +6,6 @@
     <meta name="decorator" content="default"/>
     <script type="text/javascript">
         $(document).ready(function() {
-            //$("#name").focus();
             $("#inputForm").validate({
                 submitHandler: function(form){
                     loading('正在提交，请稍等...');
@@ -50,7 +49,7 @@
         <div class="control-group">
             <label class="control-label">彩种代码：</label>
             <div class="controls">
-                <form:input path="code" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+                <form:input path="code" htmlEscape="false" maxlength="50" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'')" class="input-xlarge required" placeholder="请输入1-50位字母或数字的彩种代码..."/>
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
@@ -59,7 +58,7 @@
         <div class="control-group">
             <label class="control-label">彩种名称：</label>
             <div class="controls">
-                <form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+                <form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入长度为1-50的彩种名称..."/>
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
@@ -86,7 +85,7 @@
         <div class="control-group">
             <label class="control-label">每日开售时间：</label>
             <div class="controls">
-                <form:input path="startDate" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+                <form:input path="startDate" htmlEscape="false" maxlength="5" class="input-xlarge" onclick="WdatePicker({dateFmt:'HH:mm'})" onkeyup="this.value=this.value.replace('：', ':').replace(/[^0-9]:/g,'')" placeholder="点击选择或手动输入，格式为 HH:mm..."/>
             </div>
         </div>
         
@@ -94,7 +93,7 @@
         <div class="control-group">
             <label class="control-label">每日停售时间：</label>
             <div class="controls">
-                <form:input path="endDate" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+                <form:input path="endDate" htmlEscape="false" maxlength="5" class="input-xlarge" onclick="WdatePicker({dateFmt:'HH:mm'})" onkeyup="this.value=this.value.replace('：', ':').replace(/[^0-9:]/g,'')" placeholder="点击选择或手动输入，格式为 HH:mm..."/>
             </div>
         </div>
         
@@ -102,7 +101,7 @@
         <div class="control-group">
             <label class="control-label">每日期数：</label>
             <div class="controls">
-                <form:input path="times" htmlEscape="false" maxlength="6" class="input-xlarge required"/>
+                <form:input type="number" path="times" htmlEscape="false" maxlength="6" class="input-xlarge required"placeholder="请输入长度为1-6的每日期数..."/>
                 <span class="help-inline">期 <font color="red">*</font> </span>
             </div>
         </div>
@@ -111,8 +110,8 @@
         <div class="control-group">
             <label class="control-label">开奖周期：</label>
             <div class="controls">
-                <form:input path="periodTotalTime" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
-                <span class="help-inline">分钟 <font color="red">*</font> </span>
+                <form:input type="number" path="periodTotalTime" htmlEscape="false" maxlength="255" class="input-xlarge required" placeholder="请输入 1-255位数字的开奖周期..."/>
+                <span class="help-inline">分钟/期<font color="red">*</font> </span>
             </div>
         </div>
         
@@ -120,7 +119,7 @@
         <div class="control-group">
             <label class="control-label">封单时间：</label>
             <div class="controls">
-                <form:input path="periodHaltTime" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
+                <form:input type="number" path="periodHaltTime" htmlEscape="false" maxlength="255" class="input-xlarge required" placeholder="请输入  1-255位数字的封单时间..."/>
                 <span class="help-inline">秒钟 <font color="red">*</font> </span>
             </div>
         </div>
@@ -129,7 +128,7 @@
         <div class="control-group">
             <label class="control-label">每期投注最高金额：</label>
             <div class="controls">
-                <form:input path="amountMaxBet" htmlEscape="false" class="input-xlarge" value="0" />
+                <form:input type="number" path="amountMaxBet" htmlEscape="false" class="input-xlarge" placeholder="请输入最高投注金额，不输默认为0..."/>
                 <span class="help-inline"> 元</span>
             </div>
         </div>
@@ -138,7 +137,7 @@
         <div class="control-group">
             <label class="control-label">当前期号：</label>
             <div class="controls">
-                <form:input path="currentIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+                <form:input path="currentIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge" placeholder="请输入当前开奖期号..."/>
             </div>
         </div>
         
@@ -146,7 +145,7 @@
         <div class="control-group">
             <label class="control-label">下期期号：</label>
             <div class="controls">
-                <form:input path="nextIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+                <form:input path="nextIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge" placeholder="请输入下期开奖期号..."/>
             </div>
         </div>
         
