@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.alibaba.fastjson.JSON;
 import com.game.manager.common.persistence.DataEntity;
+import com.game.manager.common.utils.StringUtils;
 import com.game.manager.modules.lottery.constant.LotteryConstants;
 import com.game.manager.modules.lottery.constant.RegexConstants;
 
@@ -189,6 +190,9 @@ public class LotteryType extends DataEntity<LotteryType> {
     }
 
     public void setAmountMaxBet(String amountMaxBet) {
+        if (StringUtils.isBlank(amountMaxBet)) {
+            amountMaxBet = "0";
+        }
         this.amountMaxBet = amountMaxBet;
     }
 
