@@ -3,6 +3,8 @@
  */
 package com.game.manager.modules.lottery.entity;
 
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.alibaba.fastjson.JSON;
@@ -90,7 +92,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         super(id);
     }
 
-    @Length(min = 1, max = 50, message = "彩种代码长度必须介于 1 和 50 之间")
+    @Pattern(regexp = "\\w{1, 50}", message = "彩种代码长度必须介于 1 和 50 之间，且必须是数字或字母")
     public String getCode() {
         return code;
     }
@@ -99,7 +101,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.code = code;
     }
 
-    @Length(min = 1, max = 50, message = "彩种类型长度必须介于 1 和 50 之间")
+    @Pattern(regexp = "\\w{1, 50}", message = "彩种类型长度必须介于 1 和 50 之间，且必须是数字或字母")
     public String getParentCode() {
         return parentCode;
     }
@@ -135,7 +137,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.isEnable = isEnable;
     }
 
-    @Length(min = 0, max = 50, message = "每日开售时间长度必须介于 0 和 50 之间")
+    @Pattern(regexp = "[0-1]?[0-9]{1}:{1}[0-5]{1}[0-9]{1}", message = "每日开售时刻格式有误，正确格式：HH:mm")
     public String getStartDate() {
         return startDate;
     }
@@ -144,7 +146,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.startDate = startDate;
     }
 
-    @Length(min = 0, max = 50, message = "每日停售时间长度必须介于 0 和 50 之间")
+    @Pattern(regexp = "[0-1]?[0-9]{1}:{1}[0-5]{1}[0-9]{1}", message = "每日停售时刻格式有误，正确格式：HH:mm")
     public String getEndDate() {
         return endDate;
     }
@@ -153,7 +155,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.endDate = endDate;
     }
 
-    @Length(min = 1, max = 6, message = "每日期数长度必须介于 1 和 6 之间")
+    @Pattern(regexp = "\\d{1, 6}", message = "每日期数长度必须介于 1 和 6 之间，且必须为数字")
     public String getTimes() {
         return times;
     }
@@ -162,7 +164,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.times = times;
     }
 
-    @Length(min = 1, max = 255, message = "开奖周期长度必须介于 1 和 255 之间")
+    @Pattern(regexp = "\\d{1, 255}", message = "开奖周期长度必须介于 1 和 6 之间，且必须为数字")
     public String getPeriodTotalTime() {
         return periodTotalTime;
     }
@@ -171,7 +173,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.periodTotalTime = periodTotalTime;
     }
 
-    @Length(min = 1, max = 255, message = "封单时间长度必须介于 1 和 255 之间")
+    @Pattern(regexp = "\\d{1, 255}", message = "封单时间长度必须介于 1 和 255 之间，且必须为数字")
     public String getPeriodHaltTime() {
         return periodHaltTime;
     }
