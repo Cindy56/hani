@@ -120,7 +120,7 @@
 					${fns:getDictLabel(financeTradeDetail.tradeType, 'trade_Type', '')}
 				</td>
 				
-				<td >
+				<td style="text-align:right">
 					<c:choose>
 						<c:when test="${financeTradeDetail.tradeType==1 || financeTradeDetail.tradeType==2}">
 							<font color="red" >${financeTradeDetail.amount}</font>
@@ -131,10 +131,10 @@
 					</c:choose>
 				</td>
 				
-				<td>
+				<td style="text-align:right">
 					${financeTradeDetail.accountBlanceBefore}
 				</td>
-				<td>
+				<td style="text-align:right">
 					${financeTradeDetail.accountBlanceAfter}
 				</td>
 				<td>
