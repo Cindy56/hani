@@ -110,9 +110,6 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="financeTradeDetail">
 			<tr>
-				<td><a href="${ctx}/trade/financeTradeDetail/form?id=${financeTradeDetail.id}">
-					${financeTradeDetail.id}
-				</a></td>
 				<td>
 					${financeTradeDetail.userName}
 				</td>
