@@ -145,6 +145,14 @@
     <example>${fns:getDictListJson(type)}</example>  
   </function>
   
+  <function>
+    <description>从List中获取字典标签</description>
+    <name>getDictLabelForList</name>
+    <function-class>com.game.manager.modules.sys.utils.DictUtils</function-class>
+    <function-signature>java.lang.String getDictLabelForList(java.lang.String, java.lang.String, java.lang.String)</function-signature>
+    <example>${fns:getDictLabelForList(type, value, defauleValue)}</example>  
+  </function>
+  
   <!-- Encodes -->
   <function>
     <description>URL编码</description>
