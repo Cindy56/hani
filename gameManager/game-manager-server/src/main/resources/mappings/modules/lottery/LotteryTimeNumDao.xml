@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.manager.modules.lottery.dao.LotteryTimeNumDao">
+    
+	<sql id="lotteryTimeNumColumns">
+		a.id AS "id",
+		a.lottery_code AS "lotteryCode",
+		a.lottery_issue_no AS "lotteryIssueNo",
+		a.bet_start_gmt AS "betStartGmt",
+		a.bet_end_gmt AS "betEndGmt",
+		a.bet_halt_time AS "betHaltTime",
+		a.draw_num AS "drawNum",
+		a.draw_num_detail AS "drawNumDetail",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="lotteryTimeNumJoins">
+	</sql>
+    
+	<select id="get" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		<include refid="lotteryTimeNumJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		<include refid="lotteryTimeNumJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="lotteryCode != null and lotteryCode != ''">
+				AND a.lottery_code = #{lotteryCode}
+			</if>
+			<if test="lotteryIssueNo != null and lotteryIssueNo != ''">
+				AND a.lottery_issue_no = #{lotteryIssueNo}
+			</if>
+			<if test="betStartGmt != null and betStartGmt != ''">
+				AND a.bet_start_gmt = #{betStartGmt}
+			</if>
+			<if test="betEndGmt != null and betEndGmt != ''">
+				AND a.bet_end_gmt = #{betEndGmt}
+			</if>
+			<if test="drawNum != null and drawNum != ''">
+				AND a.draw_num = #{drawNum}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		<include refid="lotteryTimeNumJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO lottery_time_num(
+			id,
+			lottery_code,
+			lottery_issue_no,
+			bet_start_gmt,
+			bet_end_gmt,
+			bet_halt_time,
+			draw_num,
+			status,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{lotteryCode},
+			#{lotteryIssueNo},
+			#{betStartGmt},
+			#{betEndGmt},
+			#{betHaltTime},
+			#{drawNum},
+			#{status},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			0
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE lottery_time_num SET 	
+			id = #{id},
+			lottery_code = #{lotteryCode},
+			lottery_issue_no = #{lotteryIssueNo},
+			bet_start_gmt = #{betStartGmt},
+			bet_end_gmt = #{betEndGmt},
+			bet_halt_time = #{betHaltTime},
+			draw_num = #{drawNum},
+			draw_num_detail = #{drawNumDetail},
+			status = #{status},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE lottery_time_num SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

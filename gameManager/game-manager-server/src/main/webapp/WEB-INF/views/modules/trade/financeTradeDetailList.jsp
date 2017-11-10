@@ -104,8 +104,7 @@
 				<th>账变金额</th>
 				<th>账变前金额</th>
 				<th>账变后金额</th>
-				<th>创建</th>
-				<th>创建人</th>
+				<th>创建时间</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -143,9 +142,6 @@
 				</td>
 				<td>
 					<fmt:formatDate value="${financeTradeDetail.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${financeTradeDetail.createBy.id}
 				</td>
 				<!-- 
 				<td>
