@@ -16,7 +16,7 @@ import com.game.manager.modules.member.dao.MemberAccountDao;
 /**
  * 会员管理Service
  * @author David
- * @version 2017-11-08
+ * @version 2017-11-09
  */
 @Service
 @Transactional(readOnly = true)

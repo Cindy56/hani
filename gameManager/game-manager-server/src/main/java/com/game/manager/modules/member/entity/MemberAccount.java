@@ -5,7 +5,6 @@ package com.game.manager.modules.member.entity;
 
 import org.hibernate.validator.constraints.Length;
 import com.game.manager.modules.sys.entity.User;
-import javax.validation.constraints.NotNull;
 import com.game.manager.modules.sys.entity.Office;
 
 import com.game.manager.common.persistence.DataEntity;
@@ -13,7 +12,7 @@ import com.game.manager.common.persistence.DataEntity;
 /**
  * 会员管理Entity
  * @author David
- * @version 2017-11-08
+ * @version 2017-11-09
  */
 public class MemberAccount extends DataEntity<MemberAccount> {
 	
@@ -43,7 +42,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		super(id);
 	}
 
-	@Length(min=1, max=50, message="上级代理账号id长度必须介于 1 和 50 之间")
+	@Length(min=0, max=50, message="上级代理账号id长度必须介于 0 和 50 之间")
 	public String getParentAgentId() {
 		return parentAgentId;
 	}
@@ -52,7 +51,6 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.parentAgentId = parentAgentId;
 	}
 	
-	@NotNull(message="用户表主键id不能为空")
 	public User getUser() {
 		return user;
 	}
@@ -61,7 +59,6 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.user = user;
 	}
 	
-	@NotNull(message="机构id，盘口id不能为空")
 	public Office getOrgId() {
 		return orgId;
 	}
@@ -70,7 +67,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.orgId = orgId;
 	}
 	
-	@Length(min=1, max=1, message="会员类型：长度必须介于 1 和 1 之间")
+	@Length(min=0, max=1, message="会员类型：长度必须介于 0 和 1 之间")
 	public String getAccountType() {
 		return accountType;
 	}
@@ -79,7 +76,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.accountType = accountType;
 	}
 	
-	@Length(min=1, max=50, message="安全密码长度必须介于 1 和 50 之间")
+	@Length(min=0, max=50, message="安全密码长度必须介于 0 和 50 之间")
 	public String getSecPassword() {
 		return secPassword;
 	}
@@ -88,7 +85,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.secPassword = secPassword;
 	}
 	
-	@Length(min=1, max=50, message="开户行长度必须介于 1 和 50 之间")
+	@Length(min=0, max=50, message="开户行长度必须介于 0 和 50 之间")
 	public String getBankCode() {
 		return bankCode;
 	}
@@ -97,7 +94,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.bankCode = bankCode;
 	}
 	
-	@Length(min=1, max=50, message="银行卡账号长度必须介于 1 和 50 之间")
+	@Length(min=0, max=50, message="银行卡账号长度必须介于 0 和 50 之间")
 	public String getBankCardNo() {
 		return bankCardNo;
 	}
@@ -106,7 +103,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.bankCardNo = bankCardNo;
 	}
 	
-	@Length(min=1, max=500, message="开卡人名称长度必须介于 1 和 500 之间")
+	@Length(min=0, max=500, message="开卡人名称长度必须介于 0 和 500 之间")
 	public String getBankCardHolder() {
 		return bankCardHolder;
 	}
@@ -176,7 +173,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.blanceFrozen = blanceFrozen;
 	}
 	
-	@Length(min=1, max=1, message="状态长度必须介于 1 和 1 之间")
+	@Length(min=0, max=1, message="状态长度必须介于 0 和 1 之间")
 	public String getStatus() {
 		return status;
 	}

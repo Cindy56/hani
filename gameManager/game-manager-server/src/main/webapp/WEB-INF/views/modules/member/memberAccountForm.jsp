@@ -21,6 +21,8 @@
 	<title>会员管理管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+
+	
 		$(document).ready(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
@@ -54,14 +56,14 @@
 			<label class="control-label">登录名:</label>
 			<div class="controls">
 				<input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
-				<form:input path="user.loginName" htmlEscape="false" maxlength="50" class="required userName"/>
+				<form:input path="user.loginName" htmlEscape="false" maxlength="50" class="required userName" placeholder="请输入登录名"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">密码:</label>
 			<div class="controls">
-				<input id="newPassword" name="newPassword" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''}"/>
+				<input id="newPassword" name="user.newPassword" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''}" placeholder="请输入密码"/>
 				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
 				<c:if test="${not empty user.id}"><span class="help-inline">若不修改密码，请留空。</span></c:if>
 			</div>
@@ -69,25 +71,23 @@
 		<div class="control-group">
 			<label class="control-label">确认密码:</label>
 			<div class="controls">
-				<input id="confirmNewPassword" name="confirmNewPassword" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword"/>
+				<input id="confirmNewPassword" name="user.newPassword" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword" placeholder="请输入确认密码"/>
 				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
 			</div>
 		</div>				
-		<ul class="ul-form">
-			<li class="clearfix"></li>
-		</ul>		
+	
 		<!-- 会员信息 -->			
 		<div class="control-group">
 			<label class="control-label">会员类型：</label>
 			<div class="controls">
-				<form:radiobuttons path="accountType" items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required" checked="true"/>
+				<form:radiobuttons path="accountType" items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">安全密码：</label>
 			<div class="controls">
-				<form:input path="secPassword" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<form:input path="secPassword" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入安全密码"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -104,7 +104,7 @@
 		
 		
 		
-		
+<%-- 		
 		
 		
 		<div class="control-group">
@@ -113,7 +113,7 @@
 				<div class="controls" style="width: 20%;display:inline;margin-left: 20px;">
 					<form:select path="bankCode" class="input-xlarge required" >
 						<form:option value="" label=""/>
-						<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						<form:options items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 					</form:select>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
@@ -124,7 +124,7 @@
 				<label>开户行省份：</label>
 				<form:select path="bankBranchProvince" class="input-xlarge ">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
@@ -137,7 +137,7 @@
 				<div class="controls" style="width: 20%;display:inline;margin-left: 20px;">
 				<form:select path="bankBranchCity" class="input-xlarge ">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 				</div>
@@ -147,40 +147,50 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<label>开户行全称：</label>
 			
-				<form:input path="bankBranchName" htmlEscape="false" maxlength="500" class="input-xlarge "/>
+				<form:input path="bankBranchName" htmlEscape="false" maxlength="500" class="input-xlarge " placeholder="请输入开户行全称"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		
+		
+			
+		
+		<div >
+			<form:input path="orgId" htmlEscape="false" maxlength="500" class="input-xlarge " value="123" />
+			<form:input path="parentAgentId" htmlEscape="false" maxlength="500" class="input-xlarge " value="123" />
+			<form:input path="user" htmlEscape="false" maxlength="500" class="input-xlarge " value="123" />
+		</div> 
+		
+	
 		
 		<div class="control-group">
 			<label class="control-label">银行卡账号：</label>
 			<div class="controls">
-				<form:input path="bankCardNo" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<form:input path="bankCardNo" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入银行卡账号"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 			<label class="control-label">开卡人名称：</label>
 			<div class="controls">
-				<form:input path="bankCardHolder" htmlEscape="false" maxlength="500" class="input-xlarge required"/>
+				<form:input path="bankCardHolder" htmlEscape="false" maxlength="500" class="input-xlarge required" placeholder="请输入开卡人名称"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>			
-		</div>
+		</div> --%>
 		<div class="control-group">
 			<label class="control-label">qq号码：</label>
 			<div class="controls">
-				<form:input path="qqNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+				<form:input path="qqNo" htmlEscape="false" maxlength="50" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入QQ号码"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">手机号码：</label>
 			<div class="controls">
-				<form:input path="mobileNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+				<form:input path="mobileNo" htmlEscape="false" maxlength="50"  onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入手机号码"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" id="typeRadiobuttons">
 			<label class="control-label">状态：</label>
 			<div class="controls">
-				<form:radiobuttons path="status" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required" checked="true"/>
+				<form:radiobuttons path="status" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

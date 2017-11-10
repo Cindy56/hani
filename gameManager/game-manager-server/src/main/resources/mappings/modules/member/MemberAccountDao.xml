@@ -6,15 +6,9 @@
 		a.id AS "id",
 		a.parent_agent_id AS "parentAgentId",
 		a.user_id AS "user.id",
-		a.org_id AS "orgId",
+		a.org_id AS "orgId.id",
 		a.account_type AS "accountType",
 		a.sec_password AS "secPassword",
-		a.bank_code AS "bankCode",
-		a.bank_card_no AS "bankCardNo",
-		a.bank_card_holder AS "bankCardHolder",
-		a.bank_branch_province AS "bankBranchProvince",
-		a.bank_branch_city AS "bankBranchCity",
-		a.bank_branch_name AS "bankBranchName",
 		a.qq_no AS "qqNo",
 		a.mobile_no AS "mobileNo",
 		a.blance AS "blance",
@@ -48,21 +42,7 @@
 			<if test="accountType != null and accountType != ''">
 				AND a.account_type = #{accountType}
 			</if>
-			<if test="bankCode != null and bankCode != ''">
-				AND a.bank_code = #{bankCode}
-			</if>
-			<if test="bankCardHolder != null and bankCardHolder != ''">
-				AND a.bank_card_holder = #{bankCardHolder}
-			</if>
-			<if test="bankBranchProvince != null and bankBranchProvince != ''">
-				AND a.bank_branch_province = #{bankBranchProvince}
-			</if>
-			<if test="bankBranchCity != null and bankBranchCity != ''">
-				AND a.bank_branch_city = #{bankBranchCity}
-			</if>
-			<if test="bankBranchName != null and bankBranchName != ''">
-				AND a.bank_branch_name = #{bankBranchName}
-			</if>
+			
 			<if test="qqNo != null and qqNo != ''">
 				AND a.qq_no = #{qqNo}
 			</if>
@@ -112,12 +92,6 @@
 			org_id,
 			account_type,
 			sec_password,
-			bank_code,
-			bank_card_no,
-			bank_card_holder,
-			bank_branch_province,
-			bank_branch_city,
-			bank_branch_name,
 			qq_no,
 			mobile_no,
 			blance,
@@ -132,15 +106,9 @@
 			#{id},
 			#{parentAgentId},
 			#{user.id},
-			#{orgId},
+			#{orgId.id},
 			#{accountType},
 			#{secPassword},
-			#{bankCode},
-			#{bankCardNo},
-			#{bankCardHolder},
-			#{bankBranchProvince},
-			#{bankBranchCity},
-			#{bankBranchName},
 			#{qqNo},
 			#{mobileNo},
 			#{blance},
@@ -161,12 +129,6 @@
 			org_id = #{orgId},
 			account_type = #{accountType},
 			sec_password = #{secPassword},
-			bank_code = #{bankCode},
-			bank_card_no = #{bankCardNo},
-			bank_card_holder = #{bankCardHolder},
-			bank_branch_province = #{bankBranchProvince},
-			bank_branch_city = #{bankBranchCity},
-			bank_branch_name = #{bankBranchName},
 			qq_no = #{qqNo},
 			mobile_no = #{mobileNo},
 			blance = #{blance},

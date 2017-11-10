@@ -10,7 +10,7 @@ import com.game.manager.modules.member.entity.MemberAccount;
 /**
  * 会员管理DAO接口
  * @author David
- * @version 2017-11-08
+ * @version 2017-11-09
  */
 @MyBatisDao
 public interface MemberAccountDao extends CrudDao<MemberAccount> {
