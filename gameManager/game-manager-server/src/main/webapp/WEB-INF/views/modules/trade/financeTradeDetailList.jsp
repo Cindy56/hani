@@ -25,13 +25,13 @@
 		        		var arr = type.split("-");
 		        		var amout=parseFloat(arr[1]); 
 		        		if(arr[0] == 0){//投注扣款
-		        			totalSum += amout;  
+		        			disbursementAmout += amout;  
 			        	}else if(arr[0] == 1){//追号扣款
-			        		totalSum += amout;   
+			        		disbursementAmout += amout;   
 			        	} if(arr[0] == 2){//合买扣款
-			        		totalSum += amout;  
+			        		disbursementAmout += amout;  
 			        	}else if(arr[0] == 3){//投注撤单
-			        		
+			        		disbursementAmout += amout;  
 			        	}else if(arr[0] == 4){//奖金派送
 			        		
 			        	}else if(arr[0] == 5){//投注返点
