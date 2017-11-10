@@ -97,7 +97,6 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>id</th>
 				<th>用户名称</th>
 				<th>业务编号</th>
 				<th>账变交易类型</th>
