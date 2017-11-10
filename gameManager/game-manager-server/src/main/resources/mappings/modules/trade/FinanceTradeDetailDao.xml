@@ -42,6 +42,19 @@
 			<if test="userName != null and userName != ''">
 				AND a.user_name = #{userName}
 			</if>
+			<if test="busiNo != null and busiNo != ''">
+				AND a.busi_no = #{busiNo}
+			</if>
+			<if test="tradeType != null and tradeType != ''">
+				AND a.trade_type = #{tradeType}
+			</if>
+			
+				<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				<![CDATA[
+					AND a.create_date >= #{beginCreateDate} AND a.create_date <= #{endCreateDate}
+					]]>
+				</if>
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

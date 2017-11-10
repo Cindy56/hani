@@ -6,7 +6,50 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			$('#resetBtn').click(function(){
+				$("#searchForm")[0].reset();
+				  $(':input','#searchForm').not(':button,:submit,:reset,:hidden').val('').removeAttr('checked').removeAttr('selected') 
+				
+			})
 			
+			var totalSum = 0  ; //汇总金额
+			
+			var disbursementAmout = 0  ;//支出金额
+			
+			var revenueAmout = 0  ;//收入金额
+			
+		    $('#contentTable tr').each(function(index,element) { 
+		    	$(this).find('td').each(function(){  
+		        	var type = $(this).data("type");
+		        	if(type != undefined){
+		        		var arr = type.split("-");
+		        		var amout=parseFloat(arr[1]); 
+		        		if(arr[0] == 0){//投注扣款
+		        			totalSum += amout;  
+			        	}else if(arr[0] == 1){//追号扣款
+			        		totalSum += amout;   
+			        	} if(arr[0] == 2){//合买扣款
+			        		totalSum += amout;  
+			        	}else if(arr[0] == 3){//投注撤单
+			        		
+			        	}else if(arr[0] == 4){//奖金派送
+			        		
+			        	}else if(arr[0] == 5){//投注返点
+			        		
+			        	}else if(arr[0] == 6){//活动礼金
+			        		
+			        	}else if(arr[0] == 7){//追号停止
+			        		
+			        	}
+		        	}
+		        	//totalSum += parseFloat($(this).text());   
+		        });  
+		    });  
+			$("#disbursementAmout").append(disbursementAmout.toFixed(4)); 
+			
+			$("#revenueAmout").append(revenueAmout.toFixed(4)); 
+			
+			$("#totalSum").append(totalSum.toFixed(4)); 
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -28,7 +71,25 @@
 			<li><label>用户名称：</label>
 				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
+			<li><label>业务编号：</label>
+				<form:input path="busiNo" htmlEscape="false" maxlength="50" class="input-medium"/>
+			</li>
+			<li><label>交易类型：</label>
+				<form:select path="tradeType" id="tradeType" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('trade_Type')}" itemLabel="label" itemValue="value" htmlEscape="true"/>
+				</form:select>
+			</li>
+			<li><label>创建时间：</label>
+				<input name="beginCreateDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="<fmt:formatDate value="${financeTradeDetail.beginCreateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/> - 
+				<input name="endCreateDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="<fmt:formatDate value="${financeTradeDetail.endCreateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<!-- <li class="btns"><button type="button" id="resetBtn" class="btn btn-success">重置</button></li> -->
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
@@ -59,12 +120,21 @@
 				<td>
 					${financeTradeDetail.busiNo}
 				</td>
-				<td>
-					${financeTradeDetail.tradeType}
+				<td data-type=${financeTradeDetail.tradeType}-${financeTradeDetail.amount}>
+					${fns:getDictLabel(financeTradeDetail.tradeType, 'trade_Type', '')}
 				</td>
-				<td>
-					${financeTradeDetail.amount}
+				
+				<td >
+					<c:choose>
+						<c:when test="${financeTradeDetail.tradeType==1 || financeTradeDetail.tradeType==2}">
+							<font color="red" >${financeTradeDetail.amount}</font>
+						</c:when>
+						<c:otherwise>
+							${financeTradeDetail.amount}
+						</c:otherwise>
+					</c:choose>
 				</td>
+				
 				<td>
 					${financeTradeDetail.accountBlanceBefore}
 				</td>
@@ -88,8 +158,31 @@
 				</td></shiro:hasPermission> -->
 			</tr>
 		</c:forEach>
+		<!-- 
+			<c:if test="${page.list!= null || fn:length(page.list) != 0}">
+				<td colspan="4"  style="text-align:right;">
+					汇总金额
+				</td>
+				<td id = "totalSum1">
+					 <c:forEach items="${page.list}" var="financeTradeDetail">
+						<c:set var="amount" value="${financeTradeDetail.amount}"></c:set>
+						<c:set var="sum" value="${sum+amount}"></c:set>
+					</c:forEach>
+					
+				</td>
+				<td colspan="4">
+				
+				</td>
+			</c:if>
+			-->
 		</tbody>
 	</table>
-	<div class="pagination">${page}</div>
+	
+	<div class="pagination" style="float:left">${page}</div>
+	<div style="padding-top:12px;padding-right:50px" align="right">
+		<span><b>当前页支出金额：</b> <font color="red" id = "disbursementAmout"></font></span>
+		<span><b>当前页收入金额：</b> <font color="red" id = "revenueAmout"></font></span>
+		<span><b>当前页收益金额：</b> <font  id = "totalSum"></font></span>		 
+	</div>
 </body>
 </html>
