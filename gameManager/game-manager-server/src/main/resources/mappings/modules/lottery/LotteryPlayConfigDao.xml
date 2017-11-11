@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.manager.modules.lottery.dao.LotteryPlayConfigDao">
+    
+    <!-- 查询字段 -->
+    <sql id="lotteryPlayConfigColumns">
+        a.id AS "id",
+        a.lottery_code AS "lotteryCode",
+        b.name AS "lotteryName",
+        a.play_code AS "playCode",
+        a.name AS "name",
+        a.play_type AS "playType",
+        a.winning_probability AS "winningProbability",
+        a.commission_rate AS "commissionRate",
+        a.bet_rate_limit AS "betRateLimit",
+        a.explain AS "explain",
+        a.example AS "example",
+        a.create_date AS "createDate",
+        a.create_by AS "createBy.id",
+        a.update_date AS "updateDate",
+        a.update_by AS "updateBy.id",
+        a.del_flag AS "delFlag"
+    </sql>
+    
+    <!-- 查询表关联引用 -->
+    <sql id="lotteryPlayConfigJoins">
+        LEFT JOIN lottery_type b ON a.lottery_code = b.code AND a.del_flag = b.del_flag
+    </sql>
+    
+    <!-- 查询单条数据 -->
+    <select id="get" resultType="LotteryPlayConfig">
+        SELECT 
+            <include refid="lotteryPlayConfigColumns"/>
+        FROM lottery_play_config a
+        <include refid="lotteryPlayConfigJoins"/>
+        WHERE a.id = #{id}
+    </select>
+    
+    <!-- 根据玩法名称和玩法类型查询指定删除状态的数据 -->
+    <select id="findList" resultType="LotteryPlayConfig">
+        SELECT 
+            <include refid="lotteryPlayConfigColumns"/>
+        FROM lottery_play_config a
+        <include refid="lotteryPlayConfigJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="name != null and name != ''">
+                AND a.name LIKE 
+                    <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+            </if>
+            <if test="lotteryCode != null and lotteryCode != ''">
+                AND a.lottery_code = #{lotteryCode}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+    
+    <select id="findAllList" resultType="LotteryPlayConfig">
+        SELECT 
+            <include refid="lotteryPlayConfigColumns"/>
+        FROM lottery_play_config a
+        <include refid="lotteryPlayConfigJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+    
+    <!-- 插入单条数据 -->
+    <insert id="insert">
+        INSERT INTO lottery_play_config(
+            `id`,
+            `lottery_code`,
+            `play_code`,
+            `name`,
+            `play_type`,
+            `winning_probability`,
+            `commission_rate`,
+            `bet_rate_limit`,
+            `explain`,
+            `example`,
+            `create_date`,
+            `create_by`,
+            `update_date`,
+            `update_by`,
+            `del_flag`
+        ) VALUES (
+            #{id},
+            #{lotteryCode},
+            #{playCode},
+            #{name},
+            #{playType},
+            #{winningProbability},
+            #{commissionRate},
+            #{betRateLimit},
+            #{explain},
+            #{example},
+            #{createDate},
+            #{createBy.id},
+            #{updateDate},
+            #{updateBy.id},
+            #{delFlag}
+        )
+    </insert>
+    
+    <update id="update">
+        UPDATE lottery_play_config SET     
+            lottery_code = #{lotteryCode},
+            play_code = #{playCode},
+            name = #{name},
+            play_type = #{playType},
+            winning_probability = #{winningProbability},
+            commission_rate = #{commissionRate},
+            bet_rate_limit = #{betRateLimit},
+            explain = #{explain},
+            example = #{example},
+            update_date = #{updateDate},
+            update_by = #{updateBy.id}
+        WHERE id = #{id}
+    </update>
+    
+    <update id="delete">
+        UPDATE lottery_play_config SET 
+            del_flag = #{DEL_FLAG_DELETE}
+        WHERE id = #{id}
+    </update>
+</mapper>
