@@ -45,6 +45,12 @@ public class LotteryPlayConfigController extends BaseController {
     @Autowired
     private LotteryTypeService lotteryTypeService;
 
+    /**
+     * 前置方法，查询时如果传入记录ID，直接通过记录ID查找数据
+     * @param id 记录ID
+     * @return 如果存在记录ID，返回数据库对应的数据记录，如果不存在，返回一个初始化的玩法实体对象
+     * @author Terry
+     */
     @ModelAttribute
     public LotteryPlayConfig get(@RequestParam(required = false) String id) {
         LotteryPlayConfig entity = null;
@@ -57,6 +63,15 @@ public class LotteryPlayConfigController extends BaseController {
         return entity;
     }
 
+    /**
+     * 分页查询，进入玩法列表页
+     * @param lotteryPlayConfig 查询参数封装玩法实体对象
+     * @param request 请求消息体
+     * @param response 响应消息体
+     * @param model 参数传递model
+     * @return 视图解析路径
+     * @author Terry
+     */
     @RequiresPermissions("lottery:lotteryPlayConfig:view")
     @RequestMapping(value = { "list", "" })
     public String list(LotteryPlayConfig lotteryPlayConfig, HttpServletRequest request, HttpServletResponse response,
@@ -71,6 +86,13 @@ public class LotteryPlayConfigController extends BaseController {
         return "modules/lottery/lotteryPlayConfigList";
     }
 
+    /**
+     * 进入玩法管理编辑页面（新增或者编辑），带入已知参数
+     * @param lotteryPlayConfig 一直的玩法实体属性对象
+     * @param model 参数传递model
+     * @return 视图解析路径
+     * @author Terry
+     */
     @RequiresPermissions("lottery:lotteryPlayConfig:view")
     @RequestMapping(value = "form")
     public String form(LotteryPlayConfig lotteryPlayConfig, Model model) {
@@ -82,6 +104,14 @@ public class LotteryPlayConfigController extends BaseController {
         return "modules/lottery/lotteryPlayConfigForm";
     }
 
+    /**
+     * 更新数据到数据库（新增或编辑）
+     * @param lotteryPlayConfig 要更新的数据记录
+     * @param model 参数传递model
+     * @param redirectAttributes 重定向属性对象
+     * @return 视图解析路径
+     * @author Terry
+     */
     @RequiresPermissions("lottery:lotteryPlayConfig:edit")
     @RequestMapping(value = "save")
     public String save(LotteryPlayConfig lotteryPlayConfig, Model model, RedirectAttributes redirectAttributes) {
@@ -93,6 +123,13 @@ public class LotteryPlayConfigController extends BaseController {
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryPlayConfig/?repage";
     }
 
+    /**
+     * 删除指定记录（修改数据库删除标识为1）
+     * @param lotteryPlayConfig 要删除的记录属性实体对象
+     * @param redirectAttributes 重定向属性对象
+     * @return 视图解析路径
+     * @author Terry
+     */
     @RequiresPermissions("lottery:lotteryPlayConfig:edit")
     @RequestMapping(value = "delete")
     public String delete(LotteryPlayConfig lotteryPlayConfig, RedirectAttributes redirectAttributes) {
@@ -100,5 +137,4 @@ public class LotteryPlayConfigController extends BaseController {
         addMessage(redirectAttributes, "删除玩法基本信息成功");
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryPlayConfig/?repage";
     }
-
 }

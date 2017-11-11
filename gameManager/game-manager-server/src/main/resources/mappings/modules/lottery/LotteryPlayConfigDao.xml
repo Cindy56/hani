@@ -62,6 +62,7 @@
         </choose>
     </select>
     
+    <!-- 查询所有玩法列表 -->
     <select id="findAllList" resultType="LotteryPlayConfig">
         SELECT 
             <include refid="lotteryPlayConfigColumns"/>
@@ -117,6 +118,7 @@
         )
     </insert>
     
+    <!-- 更新已存在数据 -->
     <update id="update">
         UPDATE lottery_play_config SET     
             lottery_code = #{lotteryCode},
@@ -133,6 +135,7 @@
         WHERE id = #{id}
     </update>
     
+    <!-- 删除数据记录（更新记录的删除标识为1） -->
     <update id="delete">
         UPDATE lottery_play_config SET 
             del_flag = #{DEL_FLAG_DELETE}
