@@ -85,7 +85,7 @@
         <div class="control-group">
             <label class="control-label">每日开售时间：</label>
             <div class="controls">
-                <form:input path="startDate" htmlEscape="false" maxlength="5" class="input-xlarge" onclick="WdatePicker({dateFmt:'HH:mm'})" onkeyup="this.value=this.value.replace('：', ':').replace(/[^0-9]:/g,'')" placeholder="点击选择或手动输入，格式为 HH:mm..."/>
+                <form:input path="startDate" htmlEscape="false" maxlength="5" class="input-xlarge" onclick="WdatePicker({dateFmt:'HH:mm'})" onchange="this.value=this.value.replace('：', ':').replace(/[^0-9]:/g,'')" placeholder="点击选择或手动输入，格式为 HH:mm..."/>
             </div>
         </div>
         
@@ -93,43 +93,43 @@
         <div class="control-group">
             <label class="control-label">每日停售时间：</label>
             <div class="controls">
-                <form:input path="endDate" htmlEscape="false" maxlength="5" class="input-xlarge" onclick="WdatePicker({dateFmt:'HH:mm'})" onkeyup="this.value=this.value.replace('：', ':').replace(/[^0-9:]/g,'')" placeholder="点击选择或手动输入，格式为 HH:mm..."/>
+                <form:input path="endDate" htmlEscape="false" maxlength="5" class="input-xlarge" onclick="WdatePicker({dateFmt:'HH:mm'})" onchange="this.value=this.value.replace('：', ':').replace(/[^0-9:]/g,'')" placeholder="点击选择或手动输入，格式为 HH:mm..."/>
             </div>
         </div>
         
         <%-- 每日期数 --%>
         <div class="control-group">
-            <label class="control-label">每日期数：</label>
+            <label class="control-label">每日期数(期)：</label>
             <div class="controls">
-                <form:input type="number" path="times" htmlEscape="false" maxlength="6" class="input-xlarge required"placeholder="请输入长度为1-6的每日期数..."/>
-                <span class="help-inline">期 <font color="red">*</font> </span>
+                <form:input path="times" htmlEscape="false" maxlength="6" class="input-xlarge required" onchange="this.value=this.value.replace(/\D/g,'')" placeholder="请输入长度为1-6的每日期数..."/>
+                <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
         
         <%-- 开奖周期 --%>
         <div class="control-group">
-            <label class="control-label">开奖周期：</label>
+            <label class="control-label">开奖周期(分钟/期)：</label>
             <div class="controls">
-                <form:input type="number" path="periodTotalTime" htmlEscape="false" maxlength="255" class="input-xlarge required" placeholder="请输入 1-255位数字的开奖周期..."/>
-                <span class="help-inline">分钟/期<font color="red">*</font> </span>
+                <form:input  path="periodTotalTime" htmlEscape="false" maxlength="255" class="input-xlarge required" onchange="this.value=this.value.replace(/\D/g,'')" placeholder="请输入 1-255位数字的开奖周期..."/>
+                <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
         
         <%-- 封单时间 --%>
         <div class="control-group">
-            <label class="control-label">封单时间：</label>
+            <label class="control-label">封单时间(秒钟)：</label>
             <div class="controls">
-                <form:input type="number" path="periodHaltTime" htmlEscape="false" maxlength="255" class="input-xlarge required" placeholder="请输入  1-255位数字的封单时间..."/>
-                <span class="help-inline">秒钟 <font color="red">*</font> </span>
+                <form:input path="periodHaltTime" htmlEscape="false" maxlength="255" class="input-xlarge required" onchange="this.value=this.value.replace(/\D/g,'')" placeholder="请输入  1-255位数字的封单时间..."/>
+                <span class="help-inline"> <font color="red">*</font> </span>
             </div>
         </div>
         
         <%-- 每期投注最高金额 --%>
         <div class="control-group">
-            <label class="control-label">每期投注最高金额：</label>
+            <label class="control-label">每期投注最高金额(元)：</label>
             <div class="controls">
-                <form:input type="number" path="amountMaxBet" htmlEscape="false" class="input-xlarge" placeholder="请输入最高投注金额，不输默认为0..."/>
-                <span class="help-inline"> 元</span>
+                <form:input path="amountMaxBet" htmlEscape="false" class="input-xlarge" onchange="this.value=this.value.replace(/\D/g,'')" placeholder="请输入最高投注金额，不输默认为0..."/>
+                <span class="help-inline"></span>
             </div>
         </div>
         
