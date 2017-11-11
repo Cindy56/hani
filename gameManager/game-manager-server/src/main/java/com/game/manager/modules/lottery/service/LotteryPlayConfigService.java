@@ -5,6 +5,7 @@ package com.game.manager.modules.lottery.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,12 @@ import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
 public class LotteryPlayConfigService extends CrudService<LotteryPlayConfigDao, LotteryPlayConfig> {
 
     /**
+     * 玩法管理DAO对象
+     */
+    @Autowired
+    private LotteryPlayConfigDao lotteryPlayConfigDao;
+
+    /**
      * 根据记录ID查询单条数据
      * @param id 数据记录ID
      * @return 查询的数据实体对象
@@ -30,6 +37,16 @@ public class LotteryPlayConfigService extends CrudService<LotteryPlayConfigDao, 
      */
     public LotteryPlayConfig get(String id) {
         return super.get(id);
+    }
+
+    /**
+     * 通过玩法代码查询单条数据
+     * @param code 玩法代码
+     * @return 查询的数据实体对象
+     * @author Terry
+     */
+    public LotteryPlayConfig getByCode(String code) {
+        return lotteryPlayConfigDao.getByCode(code);
     }
 
     /**

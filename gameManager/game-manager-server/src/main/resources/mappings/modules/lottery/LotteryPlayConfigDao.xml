@@ -27,7 +27,7 @@
         LEFT JOIN lottery_type b ON a.lottery_code = b.code AND a.del_flag = b.del_flag
     </sql>
     
-    <!-- 查询单条数据 -->
+    <!-- 根据记录ID查询单条数据 -->
     <select id="get" resultType="LotteryPlayConfig">
         SELECT 
             <include refid="lotteryPlayConfigColumns"/>
@@ -35,7 +35,16 @@
         <include refid="lotteryPlayConfigJoins"/>
         WHERE a.id = #{id}
     </select>
-    
+
+    <!-- 根据玩法代码查询单条数据 -->
+    <select id="getByCode" resultType="LotteryPlayConfig">
+        SELECT 
+            <include refid="lotteryPlayConfigColumns"/>
+        FROM lottery_play_config a
+        <include refid="lotteryPlayConfigJoins"/>
+        WHERE a.play_code = #{playCode}
+    </select>
+
     <!-- 根据玩法名称和玩法类型查询指定删除状态的数据 -->
     <select id="findList" resultType="LotteryPlayConfig">
         SELECT 

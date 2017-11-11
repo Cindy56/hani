@@ -15,4 +15,11 @@ import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
 @MyBatisDao
 public interface LotteryPlayConfigDao extends CrudDao<LotteryPlayConfig> {
 
+    /**
+     * 通过玩法代码查询单条数据
+     * @param code 玩法代码
+     * @return 返回查询的实体对象
+     * @author Terry
+     */
+    LotteryPlayConfig getByCode(String code);
 }

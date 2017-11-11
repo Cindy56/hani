@@ -65,6 +65,24 @@ public class LotteryPlayConfigController extends BaseController {
     }
 
     /**
+     * 前置方法，查询时如果传入玩法代码，直接通过玩法代码查找数据
+     * @param code 玩法代码
+     * @return 如果存在玩法代码，返回数据库对应的数据记录，如果不存在，返回一个初始化的玩法实体对象
+     * @author Terry
+     */
+    @ModelAttribute
+    public LotteryPlayConfig getByCode(@RequestParam(required = false) String code) {
+        LotteryPlayConfig entity = null;
+        if (StringUtils.isNotBlank(code)) {
+            entity = lotteryPlayConfigService.getByCode(code);
+        }
+        if (entity == null) {
+            entity = new LotteryPlayConfig();
+        }
+        return entity;
+    }
+
+    /**
      * 分页查询，进入玩法列表页
      * @param lotteryPlayConfig 查询参数封装玩法实体对象
      * @param request 请求消息体

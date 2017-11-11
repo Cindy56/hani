@@ -5,6 +5,7 @@ package com.game.manager.modules.lottery.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,12 @@ import com.game.manager.modules.lottery.entity.LotteryType;
 public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType> {
 
     /**
+     * 彩种管理DAO对象
+     */
+    @Autowired
+    private LotteryTypeDao lotteryTypeDao;
+
+    /**
      * 通过记录编号获取单行数据
      */
     public LotteryType get(String id) {
@@ -36,7 +43,7 @@ public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType>
      * @author Terry
      */
     public LotteryType getByCode(String code) {
-        return super.get(code);
+        return lotteryTypeDao.getByCode(code);
     }
 
     /**
