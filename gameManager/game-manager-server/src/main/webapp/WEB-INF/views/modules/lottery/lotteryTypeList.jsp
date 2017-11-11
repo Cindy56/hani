@@ -76,22 +76,22 @@
                 <td>
                     ${fns:getDictLabelForList('yes_no', lotteryType.isEnable, '')}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryType.startDate}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryType.endDate}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryType.times}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryType.periodTotalTime}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryType.periodHaltTime}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryType.amountMaxBet}
                 </td>
                 <shiro:hasPermission name="lottery:lotteryType:edit"><td>

@@ -30,6 +30,16 @@ public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType>
     }
 
     /**
+     * 通过彩种编号获取单条数据
+     * @param code 彩种编号
+     * @return 查询的数据实体对象
+     * @author Terry
+     */
+    public LotteryType getByCode(String code) {
+        return super.get(code);
+    }
+
+    /**
      * 查询所有指定删除状态的数据
      */
     public List<LotteryType> findList(LotteryType lotteryType) {

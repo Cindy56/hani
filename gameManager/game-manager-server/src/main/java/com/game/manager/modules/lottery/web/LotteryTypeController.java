@@ -58,6 +58,24 @@ public class LotteryTypeController extends BaseController {
     }
 
     /**
+     * 根据彩种代码获取单条数据
+     * @param code 彩种代码
+     * @return 返回查询的实体对象，如果没有数据返回一个初始化的实体对象
+     * @author Terry
+     */
+    @ModelAttribute
+    public LotteryType getByCode(@RequestParam(required = false) String code) {
+        LotteryType entity = null;
+        if (StringUtils.isNotBlank(code)) {
+            entity = lotteryTypeService.getByCode(code);
+        }
+        if (entity == null) {
+            entity = new LotteryType();
+        }
+        return entity;
+    }
+
+    /**
      * 分页查询数据
      * @param lotteryType 提供查询的参数对象
      * @param request 请求消息体

@@ -63,13 +63,13 @@
                 <td>
                     ${fns:getDictLabel(lotteryPlayConfig.playType, 'play_type', '')}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryPlayConfig.winningProbability}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryPlayConfig.commissionRate}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryPlayConfig.betRateLimit}
                 </td>
                 <td>
