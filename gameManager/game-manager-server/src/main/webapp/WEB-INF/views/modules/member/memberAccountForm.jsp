@@ -2,7 +2,21 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
+<script type="text/javascript">
+$(function(){
+/* 	if("${memberAccount.id}" == ""){
+		alert("注册");
+		
+	}else{
+		alert("修改");
+	}  */
 	
+})
+
+
+
+</script>
+
 <style type="text/css">
 		#one {
      width: 125px;
@@ -48,15 +62,15 @@
 		<li><a href="${ctx}/member/memberAccount/">会员管理列表</a></li>
 		<li class="active"><a href="${ctx}/member/memberAccount/form?id=${memberAccount.id}">会员管理<shiro:hasPermission name="member:memberAccount:edit">${not empty memberAccount.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="member:memberAccount:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="memberAccount" action="${ctx}/member/memberAccount/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="memberAccount" action="${ctx}/member/memberAccount/save?${memberAccount.user.id}" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	
 <!-- 用户信息 -->	
 		<div class="control-group">
 			<label class="control-label">登录名:</label>
 			<div class="controls">
-				<input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
-				<form:input path="user.loginName" htmlEscape="false" maxlength="50" class="required userName" placeholder="请输入登录名"/>
+				<input id="oldLoginName" name="oldLoginName" type="hidden" value="${memberAccount.user.loginName}">
+				<form:input path="user.loginName" htmlEscape="false" maxlength="50" class="required userName" placeholder="请输入登录名" id="loginName"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

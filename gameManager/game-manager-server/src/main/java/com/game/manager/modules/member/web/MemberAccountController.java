@@ -63,66 +63,90 @@ public class MemberAccountController extends BaseController {
 	@RequiresPermissions("member:memberAccount:view")
 	@RequestMapping(value = "form")
 	public String form(MemberAccount memberAccount, Model model) {
+			if(memberAccount.getId() != null) {
+				//封装模型对象 通过userId查找user对象 把所有user对象信息封装到模型
+				User user = systemService.getUser(memberAccount.getUser().getId());	
+				memberAccount.setUser(user);
+			}
 		model.addAttribute("memberAccount", memberAccount);
+
 		return "modules/member/memberAccountForm";
 	}
 
 	@RequiresPermissions("member:memberAccount:edit")
 	@RequestMapping(value = "save")
-	public String save(MemberAccount memberAccount, Model model, RedirectAttributes redirectAttributes) {
+	public String save(HttpServletRequest request,MemberAccount memberAccount, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, memberAccount)){
 			return form(memberAccount, model);
 		}
-		//保存会员信息
-		User user = new User();
-		//获取当前用户信息 从seesion取出
-		User seesionUser = UserUtils.getUser();
-		//新开户用户设置和开户者同一个公司
-		user.setCompany(seesionUser.getCompany());
-		//新开户用户设置和开户者同一个机构
-		user.setOffice(seesionUser.getOffice());
+		//需要修改的user的id
+	//	String userId = request.getQueryString();
+		//第一次保存用户操作
+		if(memberAccount.getUser().getId() == null) {
+			//保存会员信息
+			User user = new User();
+			//获取当前用户信息 从seesion取出
+			User seesionUser = UserUtils.getUser();
+			//新开户用户设置和开户者同一个公司
+			user.setCompany(seesionUser.getCompany());
+			//新开户用户设置和开户者同一个机构
+			user.setOffice(seesionUser.getOffice());
+			
+			user.setCreateBy(seesionUser.getCreateBy());	
+			user.setCreateDate(seesionUser.getCreateDate());
+			user.setCurrentUser(seesionUser.getCurrentUser());
+			user.setLoginDate(seesionUser.getLoginDate());
+			user.setLoginFlag(seesionUser.getLoginFlag());	
+			user.setDelFlag(seesionUser.getDelFlag());
+			user.setEmail(seesionUser.getEmail());
+			user.setIsNewRecord(seesionUser.getIsNewRecord());
+			user.setLoginIp(seesionUser.getLoginIp());
+			user.setLoginName(seesionUser.getLoginName());
+			user.setMobile(seesionUser.getMobile());
+			user.setName(seesionUser.getName());
+			user.setNo(seesionUser.getNo());	
+			user.setOldLoginDate(seesionUser.getOldLoginDate());
+			user.setOldLoginIp(seesionUser.getOldLoginIp());
+			user.setOldLoginName(seesionUser.getOldLoginName());
+			user.setPage(seesionUser.getPage());
+			user.setPassword(seesionUser.getPassword());
+			user.setPhone(seesionUser.getPhone());
+			user.setPhoto(seesionUser.getPhoto());
+			user.setRemarks(seesionUser.getRemarks());
+			user.setRole(seesionUser.getRole());
+			user.setRoleIdList(seesionUser.getRoleIdList());
+			user.setSqlMap(seesionUser.getSqlMap());
+			user.setUpdateBy(seesionUser.getUpdateBy());
+			user.setUpdateDate(seesionUser.getUpdateDate());
+			user.setUserType(seesionUser.getUserType());
+			user.setLoginName(memberAccount.getUser().getLoginName());
+			user.setNewPassword(memberAccount.getUser().getNewPassword());
+			
+			//保存会员信息
+			this.systemService.saveUser(user);	
+			//保存账户信息
+			
+			//设置账户上级ID（登录账号id）
+			memberAccount.setParentAgentId(seesionUser.getId());
+			//设置账户对应的user表主键
+			memberAccount.setUser(user);
+			//设置账户对应的机构（登录账号同机构）
+			memberAccount.setOrgId(seesionUser.getOffice());
+			memberAccountService.save(memberAccount);
+		}
+		else {
+			// 修改会员信息
+			User user = new User();
+			user.setLoginName(memberAccount.getUser().getLoginName());
+			user.setNewPassword(memberAccount.getUser().getNewPassword());		
+			systemService.updatePasswordById(memberAccount.getUser().getId(), memberAccount.getUser().getLoginName(), memberAccount.getUser().getNewPassword());
+			//设置账户对应的user表主键
+			memberAccount.setUser(memberAccount.getUser());	
+			memberAccountService.save(memberAccount);
+	
+			
+		}
 		
-		user.setCreateBy(seesionUser.getCreateBy());	
-		user.setCreateDate(seesionUser.getCreateDate());
-		user.setCurrentUser(seesionUser.getCurrentUser());
-		user.setLoginDate(seesionUser.getLoginDate());
-		user.setLoginFlag(seesionUser.getLoginFlag());	
-		user.setDelFlag(seesionUser.getDelFlag());
-		user.setEmail(seesionUser.getEmail());
-		user.setIsNewRecord(seesionUser.getIsNewRecord());
-		user.setLoginIp(seesionUser.getLoginIp());
-		user.setLoginName(seesionUser.getLoginName());
-		user.setMobile(seesionUser.getMobile());
-		user.setName(seesionUser.getName());
-		user.setNo(seesionUser.getNo());	
-		user.setOldLoginDate(seesionUser.getOldLoginDate());
-		user.setOldLoginIp(seesionUser.getOldLoginIp());
-		user.setOldLoginName(seesionUser.getOldLoginName());
-		user.setPage(seesionUser.getPage());
-		user.setPassword(seesionUser.getPassword());
-		user.setPhone(seesionUser.getPhone());
-		user.setPhoto(seesionUser.getPhoto());
-		user.setRemarks(seesionUser.getRemarks());
-		user.setRole(seesionUser.getRole());
-		user.setRoleIdList(seesionUser.getRoleIdList());
-		user.setSqlMap(seesionUser.getSqlMap());
-		user.setUpdateBy(seesionUser.getUpdateBy());
-		user.setUpdateDate(seesionUser.getUpdateDate());
-		user.setUserType(seesionUser.getUserType());
-		user.setLoginName(memberAccount.getUser().getLoginName());
-		user.setNewPassword(memberAccount.getUser().getNewPassword());
-		
-		//保存会员信息
-		this.systemService.saveUser(user);	
-		//保存账户信息
-		
-		//设置账户上级ID（登录账号id）
-		memberAccount.setParentAgentId(seesionUser.getId());
-		//设置账户对应的user表主键
-		memberAccount.setUser(user);
-		//设置账户对应的机构（登录账号同机构）
-		memberAccount.setOrgId(seesionUser.getOffice());
-		memberAccountService.save(memberAccount);
 		
 		addMessage(redirectAttributes, "保存会员管理成功");
 		return "redirect:"+Global.getAdminPath()+"/member/memberAccount/?repage";

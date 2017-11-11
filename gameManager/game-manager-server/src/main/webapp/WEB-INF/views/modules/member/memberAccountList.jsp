@@ -82,7 +82,7 @@
 					${memberAccount.blanceFrozen}
 				</td>
 				<td>
-					${fns:getDictLabel(memberAccount.status, '', '')}
+					${fns:getDictLabel(memberAccount.status, 'yes_no', '')}
 				</td>
 				<shiro:hasPermission name="member:memberAccount:edit"><td>
     				<a href="${ctx}/member/memberAccount/form?id=${memberAccount.id}">修改</a>

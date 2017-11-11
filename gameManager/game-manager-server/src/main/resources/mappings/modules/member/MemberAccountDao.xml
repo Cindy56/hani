@@ -126,7 +126,7 @@
 		UPDATE member_account SET 	
 			parent_agent_id = #{parentAgentId},
 			user_id = #{user.id},
-			org_id = #{orgId},
+			org_id = #{orgId.id},
 			account_type = #{accountType},
 			sec_password = #{secPassword},
 			qq_no = #{qqNo},
