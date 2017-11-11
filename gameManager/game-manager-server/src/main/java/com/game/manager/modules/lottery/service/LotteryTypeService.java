@@ -5,6 +5,7 @@ package com.game.manager.modules.lottery.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,10 @@ import com.game.manager.modules.lottery.entity.LotteryType;
 @Service
 @Transactional(readOnly = true)
 public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType> {
-
+	
+	@Autowired
+    private LotteryTypeDao lotteryTypeDao;
+	
     /**
      * 通过记录编号获取单行数据
      */
@@ -58,4 +62,15 @@ public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType>
     public void delete(LotteryType lotteryType) {
         super.delete(lotteryType);
     }
+    
+    /**
+     * 根据彩种code查询彩种信息
+     */
+   
+    public LotteryType queryLotteryType(String lotteryCode) {
+        return lotteryTypeDao.queryLotteryType(lotteryCode);
+    }
+ 
+  
+    
 }

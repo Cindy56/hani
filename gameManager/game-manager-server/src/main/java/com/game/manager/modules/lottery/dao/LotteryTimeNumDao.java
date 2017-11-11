@@ -3,9 +3,12 @@
  */
 package com.game.manager.modules.lottery.dao;
 
+import java.util.List;
+
 import com.game.manager.common.persistence.CrudDao;
 import com.game.manager.common.persistence.annotation.MyBatisDao;
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
+import com.game.manager.modules.trade.entity.FinanceTradeDetail;
 
 /**
  * 开奖时刻和开奖结果DAO接口
@@ -14,5 +17,5 @@ import com.game.manager.modules.lottery.entity.LotteryTimeNum;
  */
 @MyBatisDao
 public interface LotteryTimeNumDao extends CrudDao<LotteryTimeNum> {
-	
+	public void batchTimeNum(List<LotteryTimeNum> lotteryTimeNums);
 }

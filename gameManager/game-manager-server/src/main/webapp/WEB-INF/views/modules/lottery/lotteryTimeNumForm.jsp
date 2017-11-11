@@ -38,61 +38,27 @@
 			<div class="controls">
 				<form:select path="lotteryCode" class="input-xlarge required">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('lottery_category')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('SSC')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">开奖期号：</label>
+			<label class="control-label">期号：</label>
 			<div class="controls">
-				<form:input path="lotteryIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<input name="runStartTime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
+					value="<fmt:formatDate value="${lotteryTimeNum.betStartDate}" pattern="yyyy-MM-dd"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				-
+				<input name="runEndTime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
+					value="<fmt:formatDate value="${lotteryTimeNum.betEndDate}" pattern="yyyy-MM-dd"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">投注开始时间：</label>
-			<div class="controls">
-				<input name="betStartGmt" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
-					value="<fmt:formatDate value="${lotteryTimeNum.betStartGmt}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">投注截止时间：</label>
-			<div class="controls">
-				<input name="betEndGmt" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
-					value="<fmt:formatDate value="${lotteryTimeNum.betEndGmt}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">封单时间(秒)：</label>
-			<div class="controls">
-				<form:input path="betHaltTime" htmlEscape="false" maxlength="4" class="input-xlarge required digits"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">开奖号码：</label>
-			<div class="controls">
-				<form:input path="drawNum"  class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">状态：</label>
-			<div class="controls">
-				<form:select path="status" class="input-xlarge required">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('draw_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+		
 		<div class="form-actions">
-			<shiro:hasPermission name="lottery:lotteryTimeNum:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="lottery:lotteryTimeNum:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="生成时刻表"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

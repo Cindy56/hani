@@ -24,7 +24,8 @@
 		<shiro.version>1.2.3</shiro.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
 		<activiti.version>5.21.0</activiti.version>
-		
+		<quartz.version>2.3.0</quartz.version>
+
 		<!-- tools version setting -->
 		<slf4j.version>1.7.7</slf4j.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
@@ -33,7 +34,7 @@
 		<commons-fileupload.version>1.3.1</commons-fileupload.version>
 		<commons-beanutils.version>1.9.1</commons-beanutils.version>
 		<jackson.version>2.2.3</jackson.version>
-		<fastjson.version>1.1.40</fastjson.version>
+		<fastjson.version>1.2.40</fastjson.version>
 		<xstream.version>1.4.7</xstream.version>
 		<guava.version>17.0</guava.version>
 		<dozer.version>5.5.1</dozer.version>
@@ -144,6 +145,17 @@
 			<version>3.1</version>
 		</dependency>
 		<!-- AOP end -->
+		
+	    <dependency>
+	        <groupId>org.quartz-scheduler</groupId>
+	        <artifactId>quartz</artifactId>
+	        <version>${quartz.version}</version>
+	    </dependency>  
+	    <dependency>
+	      <groupId>org.quartz-scheduler</groupId>
+	      <artifactId>quartz-jobs</artifactId>
+	      <version>${quartz.version}</version>
+	    </dependency>			
 		
 		<!-- PERSISTENCE begin -->
 		
@@ -413,7 +425,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.39</version>
+			<version>${fastjson.version}</version>
 		</dependency>
 		
 		<!-- xstream xml -->

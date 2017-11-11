@@ -134,6 +134,7 @@
 			)
 	    values 
 	    <foreach collection="list" item="item" index="index" separator="," >
+	    (
 	        #{item.id},
 			#{item.user.id},
 			#{item.userName},
@@ -146,6 +147,7 @@
 			#{item.createDate},
 			#{item.createBy.id},
 			#{item.delFlag}
+			)
 	    </foreach>
 	</insert>
 	

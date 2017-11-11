@@ -3,10 +3,19 @@
  */
 package com.game.manager.modules.lottery.web;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +26,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
-import com.game.manager.common.web.BaseController;
 import com.game.manager.common.utils.StringUtils;
+import com.game.manager.common.web.BaseController;
+import com.game.manager.modules.lottery.dto.TimeTaskDTO;
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
 import com.game.manager.modules.lottery.service.LotteryTimeNumService;
 
@@ -63,12 +73,9 @@ public class LotteryTimeNumController extends BaseController {
 
 	@RequiresPermissions("lottery:lotteryTimeNum:edit")
 	@RequestMapping(value = "save")
-	public String save(LotteryTimeNum lotteryTimeNum, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, lotteryTimeNum)){
-			return form(lotteryTimeNum, model);
-		}
-		lotteryTimeNumService.save(lotteryTimeNum);
-		addMessage(redirectAttributes, "保存保存开奖时刻成功成功");
+	public String save(TimeTaskDTO timeTaskDTO, Model model, RedirectAttributes redirectAttributes) throws SchedulerException {
+		lotteryTimeNumService.generatePlanTime(timeTaskDTO);
+		addMessage(redirectAttributes,"生成计划时刻成功！");
 		return "redirect:"+Global.getAdminPath()+"/lottery/lotteryTimeNum/?repage";
 	}
 	
@@ -80,4 +87,5 @@ public class LotteryTimeNumController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/lottery/lotteryTimeNum/?repage";
 	}
 
+	
 }
