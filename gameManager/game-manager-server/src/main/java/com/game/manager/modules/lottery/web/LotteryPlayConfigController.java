@@ -19,6 +19,7 @@ import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
 import com.game.manager.common.utils.StringUtils;
 import com.game.manager.common.web.BaseController;
+import com.game.manager.modules.lottery.constant.LotteryConstants;
 import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
 import com.game.manager.modules.lottery.entity.LotteryType;
 import com.game.manager.modules.lottery.service.LotteryPlayConfigService;
@@ -119,7 +120,7 @@ public class LotteryPlayConfigController extends BaseController {
             return form(lotteryPlayConfig, model);
         }
         lotteryPlayConfigService.save(lotteryPlayConfig);
-        addMessage(redirectAttributes, "保存玩法基本信息成功");
+        addMessage(redirectAttributes, LotteryConstants.SAVE_SUCCESS);
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryPlayConfig/?repage";
     }
 
@@ -134,7 +135,7 @@ public class LotteryPlayConfigController extends BaseController {
     @RequestMapping(value = "delete")
     public String delete(LotteryPlayConfig lotteryPlayConfig, RedirectAttributes redirectAttributes) {
         lotteryPlayConfigService.delete(lotteryPlayConfig);
-        addMessage(redirectAttributes, "删除玩法基本信息成功");
+        addMessage(redirectAttributes, LotteryConstants.REMOVE_SUCCESS);
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryPlayConfig/?repage";
     }
 }

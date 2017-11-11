@@ -17,6 +17,21 @@ public interface RegexConstants {
     String NUM_1_6 = "\\d{1,6}";
 
     /**
+     * 长度为1-4的数字字符串
+     */
+    String NUM_1_4 = "\\d{1,4}";
+
+    /**
+     * 长度为1-50的小数字符串
+     */
+    String NUM_OR_FLOAT_1_50 = "\\d?\\.?\\d{0,50}";
+
+    /**
+     * 长度为1-6的小数字符串
+     */
+    String NUM_OR_FLOAT_1_6 = "\\d?\\.?\\d{0,6}";
+
+    /**
      * 长度为1-255的数字字符串
      */
     String NUM_1_255 = "\\d{1,255}";

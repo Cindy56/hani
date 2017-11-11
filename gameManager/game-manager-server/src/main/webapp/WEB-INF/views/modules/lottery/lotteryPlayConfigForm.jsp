@@ -53,7 +53,7 @@
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
-        
+
         <%-- 玩法名称 --%>
         <div class="control-group">
             <label class="control-label">玩法名称：</label>
@@ -62,7 +62,7 @@
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
-        
+
         <%-- 玩法模式 --%>
         <div class="control-group">
             <label class="control-label">玩法模式：</label>
@@ -74,15 +74,16 @@
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
-        
+
         <%-- 中奖概率 --%>
         <div class="control-group">
             <label class="control-label">中奖概率：</label>
             <div class="controls">
-                <form:input path="winningProbability" htmlEscape="false" maxlength="50" class="input-xlarge" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-50的小数形式中奖概率..."/>
+                <form:input path="winningProbability" htmlEscape="false" maxlength="50" class="input-xlarge required" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-50的小数形式中奖概率..."/>
+                <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
-        
+
         <%-- 平台抽水 --%>
         <div class="control-group">
             <label class="control-label">平台抽水：</label>
@@ -90,7 +91,7 @@
                 <form:input path="commissionRate" htmlEscape="false" maxlength="6" class="input-xlarge" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-6的小数形式平台抽水..."/>
             </div>
         </div>
-        
+
         <%-- 单人单注投注限制 --%>
         <div class="control-group">
             <label class="control-label">单人单期投注倍数限制：</label>
@@ -106,7 +107,7 @@
                 <form:textarea path="explain" htmlEscape="false" rows="4" maxlength="500" class="input-xxlarge" placeholder="请输入字数500以内的玩法说明..."/>
             </div>
         </div>
-        
+
         <%-- 玩法示例 --%>
         <div class="control-group">
             <label class="control-label">玩法示例：</label>
