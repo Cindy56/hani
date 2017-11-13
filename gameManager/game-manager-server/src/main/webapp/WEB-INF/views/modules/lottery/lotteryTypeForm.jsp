@@ -158,7 +158,7 @@
                         var playCode = data.lotteryPlayCode;
                         if (playCode) {
                             // 先清空上一个分类的关联数据
-                            var tmpStr = "";
+                            var tmpStr = "<option>-- 请选择 --</option>";
                             for (var i = 0;i < playCode.length; i++) {
                                 tmpStr += "<option value='" + playCode[i].value + "'>" + playCode[i].label + "</option>";
                             }
