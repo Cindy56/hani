@@ -3,6 +3,9 @@
  */
 package com.game.manager.modules.lottery.web;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.alibaba.fastjson.JSON;
 import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
 import com.game.manager.common.utils.StringUtils;
@@ -22,6 +26,7 @@ import com.game.manager.common.web.BaseController;
 import com.game.manager.modules.lottery.constant.LotteryConstants;
 import com.game.manager.modules.lottery.entity.LotteryType;
 import com.game.manager.modules.lottery.service.LotteryTypeService;
+import com.game.manager.modules.sys.utils.DictUtils;
 
 /**
  * 彩种基本信息管理Controller
@@ -141,5 +146,22 @@ public class LotteryTypeController extends BaseController {
         lotteryTypeService.delete(lotteryType);
         addMessage(redirectAttributes, LotteryConstants.REMOVE_SUCCESS);
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryType/?repage";
+    }
+
+    /**
+     * 页面通过ajax实现下拉框级联
+     * @param request 请求消息对象
+     * @param response 响应消息对象
+     * @param model 消息传递model
+     * @throws IOException 可能抛出IO异常
+     * @author Terry
+     */
+    @RequiresPermissions("lottery:lotteryPlayConfig:view")
+    @RequestMapping(value = "findPlayCode")
+    public void findPlayCode(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+        model.addAttribute("lotteryPlayCode", DictUtils.getDictList(request.getParameter("lotterytype")));
+        PrintWriter p = response.getWriter();
+        p.write(JSON.toJSONString(model));
+        p.close();
     }
 }

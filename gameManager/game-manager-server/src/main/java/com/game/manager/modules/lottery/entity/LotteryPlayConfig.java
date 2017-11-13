@@ -7,6 +7,7 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.alibaba.fastjson.JSON;
 import com.game.manager.common.persistence.DataEntity;
 import com.game.manager.modules.lottery.constant.LotteryConstants;
 import com.game.manager.modules.lottery.constant.RegexConstants;
@@ -165,5 +166,10 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
 
     public void setLotteryName(String lotteryName) {
         this.lotteryName = lotteryName;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

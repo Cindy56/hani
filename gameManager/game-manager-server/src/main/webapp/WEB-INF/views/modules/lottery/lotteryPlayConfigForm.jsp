@@ -37,7 +37,7 @@
         <div class="control-group">
             <label class="control-label">彩种类型：</label>
             <div class="controls">
-                <form:select path="lotteryCode" class="input-xlarge required">
+                <form:select id="lotteryCode" path="lotteryCode" class="input-xlarge required">
                     <form:option value="" label="-- 请选择 --"/>
                     <form:options items="${lotteryTypeList}" itemLabel="name" itemValue="code" htmlEscape="false"/>
                 </form:select>
@@ -49,7 +49,10 @@
         <div class="control-group">
             <label class="control-label">玩法代码：</label>
             <div class="controls">
-                <form:input path="playCode" htmlEscape="false" maxlength="50" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9_]/g,'')" class="input-xlarge required" placeholder="请输入1-50位字母或数字的玩法代码..."/>
+                <form:select path="playCode" class="input-xlarge required">
+                    <form:option value="" label="-- 请选择 --"/>
+                    <form:options items="${fns:getDictList('lottery_play_code')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>

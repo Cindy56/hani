@@ -49,7 +49,10 @@
         <div class="control-group">
             <label class="control-label">彩种代码：</label>
             <div class="controls">
-                <form:input path="code" htmlEscape="false" maxlength="50" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'')" class="input-xlarge required" placeholder="请输入1-50位字母或数字的彩种代码..."/>
+                <form:select id="code" path="code" class="input-xlarge required">
+                    <form:option value="" label="-- 请选择 --"/>
+                    <form:options items="${}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
@@ -133,22 +136,6 @@
             </div>
         </div>
         
-        <%-- 当前期号 --%>
-        <div class="control-group">
-            <label class="control-label">当前期号：</label>
-            <div class="controls">
-                <form:input path="currentIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge" placeholder="请输入当前开奖期号..."/>
-            </div>
-        </div>
-        
-        <%-- 下期期号 --%>
-        <div class="control-group">
-            <label class="control-label">下期期号：</label>
-            <div class="controls">
-                <form:input path="nextIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge" placeholder="请输入下期开奖期号..."/>
-            </div>
-        </div>
-        
         <%-- 操作按钮 --%>
         <div class="form-actions">
             <shiro:hasPermission name="lottery:lotteryType:edit">
@@ -157,5 +144,30 @@
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
         </div>
     </form:form>
+    <script type="text/javascript">
+        $("#parentCode").change(function() {
+            $.ajax({
+                type: "post",
+                async: false,
+                url: ctx+"/lottery/lotteryType/findPlayCode",
+                dataType: "json",
+                data: "lotterytype="+this.value,
+                success: function(data) {
+                    // 如果相应数据不为空则继续解析
+                    if (data) {
+                        var playCode = data.lotteryPlayCode;
+                        if (playCode) {
+                            // 先清空上一个分类的关联数据
+                            var tmpStr = "";
+                            for (var i = 0;i < playCode.length; i++) {
+                                tmpStr += "<option value='" + playCode[i].value + "'>" + playCode[i].label + "</option>";
+                            }
+                            $("#code").html(tmpStr);
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
