@@ -5,7 +5,7 @@
     <title>彩种基本信息管理</title>
     <meta name="decorator" content="default"/>
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function() {ddd
             $("#inputForm").validate({
                 submitHandler: function(form){
                     loading('正在提交，请稍等...');
