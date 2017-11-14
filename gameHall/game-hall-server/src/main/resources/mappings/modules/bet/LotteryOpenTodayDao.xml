@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.hall.modules.bet.dao.LotteryOpenTodayDao">
+
+
+	<sql id="lotteryTimeNumColumns">
+		a.id AS "id",
+		a.lottery_code AS "lotteryCode",
+		a.lottery_issue_no AS "lotteryIssueNo",
+		a.bet_start_date AS
+		"betStartDate",
+		a.bet_end_date AS "betEndDate",
+		a.bet_halt_date AS
+		"betHaltDate",
+		a.draw_num AS "drawNum",
+		a.draw_num_detail AS
+		"drawNumDetail",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="lotteryTimeNumJoins">
+	</sql>
+
+	<select id="get" resultType="com.game.hall.modules.bet.entity.LotteryTimeNum">
+		SELECT
+		<include refid="lotteryTimeNumColumns" />
+		FROM lottery_time_num a
+		WHERE a.id = #{id}
+	</select>
+
+	<resultMap id="aResult"
+		type="com.game.hall.modules.bet.entity.LotteryTimeNum">
+		<id property="id" column="id" />
+		<result property="lotteryCode" column="lotteryCode" />
+		<result property="lotteryIssueNo" column="lotteryIssueNo" />
+		<result property="betStartDate" column="betStartDate" />
+		<result property="betEndDate" column="betEndDate" />
+		<result property="betHaltDate" column="betHaltDate" />
+		<result property="drawNum" column="drawNum" />
+		<result property="drawNumDetail" column="drawNumDetail" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<!-- private String lotteryCode; // 彩票代码 private String lotteryIssueNo; 
+		// 开奖期号 private Date betStartDate; // 投注开始时间：只是用来记录由于存在封单时间，封单开始，用户就可以投注下一期，所以真实投注时间大于这个如果追号，也相当于提前投注 
+		private Date betEndDate; // 投注截止时间，用于系统计算，如果当前时间晚于（截止时间-封单时间），就拒绝投注 private 
+		Date betHaltDate; // 封单时间，单位为秒 private String drawNum; // 当期开奖号码 private 
+		String drawNumDetail; // 开奖号码生成的玩法详情。暂时预留，方便以后出走势图 private String status; 
+		// 状态：0等待开奖1已经开奖2人工开奖3未开奖，人工撤单 -->
+
+
+	<select id="OpenToday" resultMap="aResult">
+		SELECT
+		<include refid="lotteryTimeNumColumns" />
+		FROM lottery_time_num a
+		ORDER BY lottery_issue_no DESC
+		LIMIT 5
+	</select>
+
+
+	<select id="CurrentIssue" resultMap="aResult">
+		SELECT
+		<include refid="lotteryTimeNumColumns" />
+		FROM lottery_time_num a
+		WHERE #{dt} BETWEEN a.bet_start_date AND
+		a.`bet_end_date`
+	</select>
+
+
+
+
+</mapper>
