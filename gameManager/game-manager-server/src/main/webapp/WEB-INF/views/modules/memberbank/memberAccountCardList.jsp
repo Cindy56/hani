@@ -106,9 +106,9 @@
 				<td>
 					<fmt:formatDate value="${memberAccountCard.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<td><a href="${ctx}/memberbank/memberAccountCard/form?id=${memberAccountCard.id}">
+				<td><%-- <a href="${ctx}/memberbank/memberAccountCard/form?id=${memberAccountCard.id}"> --%>
 					${fns:getDictLabel(memberAccountCard.bankCode, '', '')}
-				</a></td>
+				<!-- </a> --></td>
 				<td>
 					${memberAccountCard.bankCardNo}
 				</td>
