@@ -1,5 +1,6 @@
 package com.game.manager.modules.lottery.schedule;
 
+import com.game.manager.modules.lottery.dto.OpenCaiResult;
 import com.game.manager.modules.lottery.exception.LotteryNumDrawException;
 
 /**
@@ -15,5 +16,5 @@ public interface LotteryNumDrawService {
 	 * @param issueNo 彩票期号
 	 * @return
 	 */
-	String drawLotteryNum(String lotteryCode, String issueNo) throws LotteryNumDrawException;
+	OpenCaiResult drawLotteryNum(String lotteryCode, String issueNo) throws LotteryNumDrawException;
 }

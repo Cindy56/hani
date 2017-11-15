@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.game.manager.common.utils.DateUtils;
-import com.game.manager.modules.lottery.dto.TimeTaskDTO;
+import com.game.manager.modules.lottery.dto.TimeTask;
 
 /**
  * 定时任务管理Service
@@ -77,8 +77,10 @@ public class TimeTaskService {
      * @param timeTaskList
      * @throws SchedulerException
      */
-    public void addJobs(List<TimeTaskDTO> timeTaskList) throws SchedulerException {
-    	
+    public void addJobs(List<TimeTask> timeTaskList) throws SchedulerException {
+    	for(TimeTask timeTask:timeTaskList) {
+    		addJob(timeTask);
+    	}
     }
     
     /** 
@@ -87,7 +89,7 @@ public class TimeTaskService {
      * @throws SchedulerException 
      */  
     @Transactional(readOnly = false)
-    public void addJob(TimeTaskDTO timeTask) throws SchedulerException {
+    public void addJob(TimeTask timeTask) throws SchedulerException {
     	StringBuilder taskname = new StringBuilder();
     	taskname.append(timeTask.getLotteryCode()).append(":").append(timeTask.getLotteryIssueNo());
     	JobDetail jobDetail = JobBuilder.newJob(LotteryNumJob.class)
@@ -98,7 +100,7 @@ public class TimeTaskService {
     	
     	Trigger trigger = TriggerBuilder.newTrigger()
 	    		.withIdentity(taskname.toString(), "lotteryNumTrigger-group001")
-	    		.withSchedule(SimpleScheduleBuilder.repeatSecondlyForTotalCount(5, 10))
+	    		.withSchedule(SimpleScheduleBuilder.repeatSecondlyForTotalCount(5, 30))
 	    		.startAt(timeTask.getRunAtTime())
 //	    		.withSchedule(CronScheduleBuilder.cronSchedule(timeTask.getCronExpression()))//设置定时任务执行的表达式
 	    		.build();

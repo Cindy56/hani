@@ -11,7 +11,7 @@ import com.game.manager.common.persistence.DataEntity;
  * @author vinton
  * @version 2017-11-08
  */
-public class TimeTaskDTO extends DataEntity<TimeTaskDTO> {
+public class TimeTask extends DataEntity<TimeTask> {
 	
 	private static final long serialVersionUID = 1L;
 	private String lotteryCode;
@@ -29,11 +29,11 @@ public class TimeTaskDTO extends DataEntity<TimeTaskDTO> {
 //	private String runServerIp;		// 任务运行服务器IP
 //	private String runServer;		// 远程主机（域名/IP+项目路径）
 	
-	public TimeTaskDTO() {
+	public TimeTask() {
 		super();
 	}
 
-	public TimeTaskDTO(String id){
+	public TimeTask(String id){
 		super(id);
 	}
 

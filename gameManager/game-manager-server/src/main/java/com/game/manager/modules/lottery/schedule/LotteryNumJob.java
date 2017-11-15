@@ -2,6 +2,7 @@ package com.game.manager.modules.lottery.schedule;
 
 import java.util.Date;
 
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -10,10 +11,15 @@ import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.game.manager.common.utils.SpringContextHolder;
+import com.game.manager.common.utils.StringUtils;
+import com.game.manager.modules.lottery.dto.OpenCaiResp;
+import com.game.manager.modules.lottery.dto.OpenCaiResult;
 import com.game.manager.modules.lottery.exception.LotteryNumDrawException;
+import com.game.manager.modules.lottery.service.LotteryTimeNumService;
 
 /**
  * 拉奖号码执行器
@@ -22,8 +28,12 @@ import com.game.manager.modules.lottery.exception.LotteryNumDrawException;
  *
  */
 @Service
+@DisallowConcurrentExecution
 public class LotteryNumJob implements Job {
 	private static final Logger  logger = LoggerFactory.getLogger(LotteryNumJob.class);
+	
+	/*@Autowired
+    private LotteryTimeNumService lotteryTimeNumService;*/
 	
 	/* *
 	 * 获取当前任务的key,比如:SSC_CQ:21071118085
@@ -50,16 +60,21 @@ public class LotteryNumJob implements Job {
 		
 		//从拉奖通道获取开奖提供方
 		LotteryNumDrawService lotteryNumDrawService = SpringContextHolder.getBean("openCaiDrawService");
+		//保存拉奖号码
+		LotteryTimeNumService lotteryTimeNumService = SpringContextHolder.getBean("lotteryTimeNumService");
 		try {
 			//调用服务，获取开奖数据
-			String lotteryNum = lotteryNumDrawService.drawLotteryNum(lotteryCode, issueNo);
+			OpenCaiResult openCaiResult = lotteryNumDrawService.drawLotteryNum(lotteryCode, issueNo);
 			//如果获取到开奖号码，就把号码结果放到redis中
 			logger.debug("clotteryCode[{}], issueNo[{}], lotteryNum[{}]", 
-					new Object[] {lotteryCode, issueNo, lotteryNum});
+					new Object[] {lotteryCode, issueNo, openCaiResult.getOpencode()});
 			
-			
-			
-	        //结束当前job:删除定时任务时   先暂停任务，然后再删除  
+			if(null == openCaiResult) {
+				return;//continue;
+			}
+			//拉奖号码更新到数据库
+			lotteryTimeNumService.updateLotteryNum(openCaiResult.getOpencode(), lotteryCode, issueNo,"1",openCaiResult.getOpentime());
+			//结束当前job:删除定时任务时   先暂停任务，然后再删除  
 	        context.getScheduler().pauseJob(jobKey);  
 	        context.getScheduler().deleteJob(jobKey); 
 		} catch (LotteryNumDrawException e) {

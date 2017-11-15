@@ -35,7 +35,7 @@
 				<form:input path="lotteryIssueNo" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>开奖号码：</label>
-				<form:input path="drawNum" htmlEscape="false" maxlength="50" class="input-medium"/>
+				<form:input path="openNum" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>状态：</label>
 				<form:select path="status" class="input-medium">
@@ -85,7 +85,7 @@
 					<fmt:formatDate value="${lotteryTimeNum.betHaltDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${lotteryTimeNum.drawNum}
+					${lotteryTimeNum.openNum}
 				</td>
 				<td>
 					${fns:getDictLabel(lotteryTimeNum.status, 'draw_status', '')}

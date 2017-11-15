@@ -3,13 +3,7 @@
  */
 package com.game.manager.modules.lottery.web;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,20 +16,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
-import com.game.manager.common.utils.StringUtils;
 import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.lottery.dto.TimeTaskDTO;
+import com.game.manager.common.utils.StringUtils;
+import com.game.manager.modules.lottery.dto.ResponseLotteryNumDto;
+import com.game.manager.modules.lottery.dto.TimeTask;
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
 import com.game.manager.modules.lottery.service.LotteryTimeNumService;
 
 /**
  * 开奖时刻和开奖结果Controller
  * @author jerry
- * @version 2017-11-10
+ * @version 2017-11-15
  */
 @Controller
 @RequestMapping(value = "${adminPath}/lottery/lotteryTimeNum")
@@ -73,7 +69,7 @@ public class LotteryTimeNumController extends BaseController {
 
 	@RequiresPermissions("lottery:lotteryTimeNum:edit")
 	@RequestMapping(value = "save")
-	public String save(TimeTaskDTO timeTaskDTO, Model model, RedirectAttributes redirectAttributes) throws SchedulerException {
+	public String save(TimeTask timeTaskDTO, Model model, RedirectAttributes redirectAttributes) throws SchedulerException {
 		lotteryTimeNumService.generatePlanTime(timeTaskDTO);
 		addMessage(redirectAttributes,"生成计划时刻成功！");
 		return "redirect:"+Global.getAdminPath()+"/lottery/lotteryTimeNum/?repage";
@@ -87,5 +83,18 @@ public class LotteryTimeNumController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/lottery/lotteryTimeNum/?repage";
 	}
 
+	
+	@RequestMapping(value = "findCurrentIssueNo")
+	@ResponseBody
+	public LotteryTimeNum findCurrentIssueNo(String lotteryCode) {
+		
+		return lotteryTimeNumService.findCurrentIssueNo(lotteryCode);
+	}
+	
+	@RequestMapping(value = "findLotteryTimeNum")
+	@ResponseBody
+	public List<LotteryTimeNum> findLotteryTimeNum(TimeTask timeTaskDTO) {
+		return lotteryTimeNumService.findLotteryTimeNum(timeTaskDTO.getLotteryCode(),5);
+	}
 	
 }
