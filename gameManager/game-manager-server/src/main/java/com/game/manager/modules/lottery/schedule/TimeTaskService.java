@@ -100,7 +100,7 @@ public class TimeTaskService {
     	
     	Trigger trigger = TriggerBuilder.newTrigger()
 	    		.withIdentity(taskname.toString(), "lotteryNumTrigger-group001")
-	    		.withSchedule(SimpleScheduleBuilder.repeatSecondlyForTotalCount(5, 30))
+	    		.withSchedule(SimpleScheduleBuilder.repeatSecondlyForTotalCount(10, 5))
 	    		.startAt(timeTask.getRunAtTime())
 //	    		.withSchedule(CronScheduleBuilder.cronSchedule(timeTask.getCronExpression()))//设置定时任务执行的表达式
 	    		.build();

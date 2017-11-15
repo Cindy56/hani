@@ -94,55 +94,7 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 		lotteryTimeNumDao.updateLotteryNum(lotteryNum, lotteryCode, lotteryIssueNo,status,openDate);
 	}
 	
-	 /**
-     * 生成开奖时刻明细
-	 * @throws SchedulerException 
-     * 
-     */
-   /*
-    public Map<String,Object> generatePlanTime (LotteryTimeNum lotteryTimeNum) {
-    	Map<String,Object> msg = new HashMap<String,Object>();
-    	Double num = DateUtils.getDistanceOfTwoDate(lotteryTimeNum.getBetStartDate(),lotteryTimeNum.getBetEndDate());
-    	LotteryType lotteryType = lotteryTypeService.queryLotteryType(lotteryTimeNum.getLotteryCode());
-    	if(null != lotteryType) {
-    		try {
-    			List<LotteryTimeNum> timeNumList = new ArrayList<LotteryTimeNum>();
-    			Date  betStartDate = DateUtils.parseDate(DateUtils.formatDateTime(lotteryTimeNum.getBetStartDate())+" "+lotteryType.getStartDate(), "yyyy-MM-dd HH:mm:ss");
-    			Date  betEndDate = DateUtils.parseDate(DateUtils.formatDateTime(lotteryTimeNum.getBetStartDate())+" "+lotteryType.getEndDate(), "yyyy-MM-dd HH:mm:ss");
-    			Calendar calStart= Calendar.getInstance();
-    			Calendar calEnd= Calendar.getInstance();
-    			calStart.setTime(betStartDate);
-    			calEnd.setTime(betStartDate);
-        		for (int i = 0; i < num; i++) {
-        			calStart.add(Calendar.DATE, i);
-        			calEnd.add(Calendar.DATE, i);
-        			if(calStart.getTime().getTime() <= betEndDate.getTime()) {
-        				int times = Integer.parseInt(lotteryType.getTimes());
-        				for (int j = 1; j <= times; j++) {
-        						LotteryTimeNum timeNum =new LotteryTimeNum();
-        					//timeNum.preInsert();
-        					timeNum.setLotteryIssueNo(DateUtils.formatDate(calStart.getTime(),"yyyyMMdd")+String.format("%03d", j));//期数
-        					timeNum.setLotteryCode(lotteryTimeNum.getLotteryCode());
-        					timeNum.setBetStartDate(calStart.getTime());//开始时间
-        					calStart.add(Calendar.MINUTE, Integer.parseInt(lotteryType.getPeriodTotalTime()));
-        					cal.setTime(calStart.getTime());
-        					timeNum.setBetEndDate(calStart.getTime());//截至时间
-        					cal.add(Calendar.SECOND,-(Integer.parseInt(lotteryType.getPeriodHaltTime())));
-        					timeNum.setBetHaltDate(cal.getTime());//封单时刻时间
-        					timeNumList.add(timeNum);
-						}
-            		}		
-				}
-    		} catch (Exception e) {
-    			msg.put("msg", "生成开奖计划失败!");
-    			logger.error("生成开奖计划失败！",e);
-			}
-    	}else {
-    		msg.put("msg", "该彩种未配置");
-    	}
-        return msg;
-    }
-    */
+	
 	@Transactional(readOnly = false)
     public  void  generatePlanTime (TimeTask timeTask) throws SchedulerException {
 		//TODO:返回一个数组
@@ -202,17 +154,20 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 			tempDate = tempDate.plusDays(1);
 		}
 		lotteryTimeNumList.sort((h1, h2) -> h1.getBetStartDate().compareTo(h2.getBetStartDate()));
-		LotteryTimeNum current = null;
-		LotteryTimeNum next = null;
+		LotteryTimeNum current = null;//当前期号
+		LotteryTimeNum next = null;//下一下期号
 		Date convertEndDate = Date.from(endDatex.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		List<LotteryTimeNum> list = new ArrayList<LotteryTimeNum>();
+		//记录下一期 期号 、 封单时间 
 		for (Iterator<LotteryTimeNum> iterator = lotteryTimeNumList.iterator(); iterator.hasNext();) {
 			LotteryTimeNum lotteryTimeNum =  iterator.next();
 			if(next != null) {
+				//第二次  next  就是 当前期  current 当前期就是下一期 的期号
 				current = lotteryTimeNum; 
 				lotteryTimeNum = next; 
 				next = current; 
 			}else {
+				//第一次 进来 生成下一期 期号
 				next =  iterator.next();  
 			}
 			if(!next.getBetEndDate().after(convertEndDate)) {
@@ -227,12 +182,16 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 				break;
 			}
 		}
-		
+		Calendar cal = Calendar.getInstance();
+		//生成定时任务
 		list.stream().forEach(c->{
 			TimeTask task = new TimeTask();
 			task.setLotteryCode(c.getLotteryCode());
 			task.setLotteryIssueNo(c.getLotteryIssueNo());
-			task.setRunAtTime(c.getBetEndDate());// 截止时间后10秒开始拉开奖号码
+			cal.setTime(c.getBetEndDate());
+			cal.add(Calendar.SECOND, 40);
+			//延迟40s 
+			task.setRunAtTime(cal.getTime());
 			timeTaskList.add(task);
 		});
 		//掉服务保存，生成定时

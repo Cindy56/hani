@@ -80,6 +80,7 @@ public class LotteryNumJob implements Job {
 		} catch (LotteryNumDrawException e) {
 			//TODO:更换其他通道,  或者继续运行拉奖服务
 			e.printStackTrace();
+			logger.error("22");
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

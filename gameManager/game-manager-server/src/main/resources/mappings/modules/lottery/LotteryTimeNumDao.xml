@@ -43,6 +43,10 @@
 		 <if test="lotteryIssueNo != null and lotteryIssueNo != ''">
                AND a.lottery_issue_no LIKE concat('%', #{lotteryIssueNo}, '%')
            </if>
+            <if test="lotteryCode != null and lotteryCode != ''">
+               AND a.lottery_code = #{lotteryCode}
+           </if>
+           ORDER BY a.bet_start_date 
 	</select>
 	
 	<select id="findAllList" resultType="LotteryTimeNum">
