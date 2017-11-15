@@ -17,7 +17,7 @@ import com.game.hall.modules.bet.service.LotteryOpenTodayService;
 
 /**
  * @author antonio
- *
+ * 开奖信息
  */
 @Controller
 @RequestMapping("/bet/opentoday")
