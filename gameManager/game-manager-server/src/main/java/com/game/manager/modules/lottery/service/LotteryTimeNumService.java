@@ -259,7 +259,12 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 		}
 		return lotteryTimeNum;
 	}
-	
+	/**
+	 * 获取历史期号
+	 * @param lotteryCode 彩种code
+	 * @param rows 行数
+	 * @return 
+	 */
 	public List<LotteryTimeNum> findLotteryTimeNum(String lotteryCode,int rows) {
 		if(StringUtils.isBlank(lotteryCode)) {
 			return null;

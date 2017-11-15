@@ -67,7 +67,7 @@ public class LotteryNumJob implements Job {
 			OpenCaiResult openCaiResult = lotteryNumDrawService.drawLotteryNum(lotteryCode, issueNo);
 			//如果获取到开奖号码，就把号码结果放到redis中
 			logger.debug("clotteryCode[{}], issueNo[{}], lotteryNum[{}]", 
-					new Object[] {lotteryCode, issueNo, openCaiResult.getOpencode()});
+					new Object[] {lotteryCode, issueNo,openCaiResult == null?null:openCaiResult.getOpencode()});
 			
 			if(null == openCaiResult) {
 				return;//continue;
