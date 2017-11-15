@@ -31,7 +31,7 @@ import com.game.manager.modules.memberbank.service.MemberAccountCardService;
 @RequestMapping(value = "${adminPath}/memberbank/memberAccountCard")
 public class MemberAccountCardController extends BaseController {
 
-	//银行卡状态
+	//银行卡状态---
 	private static final String NORMAL = "1";//1正常
 	private static final String FREEZE = "2";//2冻结
 	
