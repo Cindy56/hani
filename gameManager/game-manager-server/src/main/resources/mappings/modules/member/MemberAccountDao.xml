@@ -6,6 +6,7 @@
 		a.id AS "id",
 		a.parent_agent_id AS "parentAgentId",
 		a.user_id AS "user.id",
+		b.login_name AS "user.loginName",
 		a.org_id AS "orgId.id",
 		a.account_type AS "accountType",
 		a.sec_password AS "secPassword",
@@ -20,25 +21,22 @@
 		a.update_by AS "updateBy.id",
 		a.del_flag AS "delFlag"
 	</sql>
-	
-	<sql id="memberAccountJoins">
-	</sql>
     
 	<select id="get" resultType="MemberAccount">
 		SELECT 
 			<include refid="memberAccountColumns"/>
-		FROM member_account a
-		<include refid="memberAccountJoins"/>
+		FROM member_account a, sys_user b
 		WHERE a.id = #{id}
+		and b.id = a.user_id
 	</select>
 	
 	<select id="findList" resultType="MemberAccount">
 		SELECT 
 			<include refid="memberAccountColumns"/>
-		FROM member_account a
-		<include refid="memberAccountJoins"/>
+		FROM member_account a, sys_user b
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			and b.id = a.user_id
 			<if test="accountType != null and accountType != ''">
 				AND a.account_type = #{accountType}
 			</if>
@@ -69,10 +67,10 @@
 	<select id="findAllList" resultType="MemberAccount">
 		SELECT 
 			<include refid="memberAccountColumns"/>
-		FROM member_account a
-		<include refid="memberAccountJoins"/>
+		FROM member_account a, sys_user b
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			and b.id = a.user_id
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -104,7 +102,7 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{parentAgentId},
+			#{parentAgentId, },
 			#{user.id},
 			#{orgId.id},
 			#{accountType},

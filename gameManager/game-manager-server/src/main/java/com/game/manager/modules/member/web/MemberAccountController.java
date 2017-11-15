@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,7 +55,7 @@ public class MemberAccountController extends BaseController {
 	
 	@RequiresPermissions("member:memberAccount:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(MemberAccount memberAccount, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String list(MemberAccount memberAccount, HttpServletRequest request, HttpServletResponse response, Model model) {	
 		Page<MemberAccount> page = memberAccountService.findPage(new Page<MemberAccount>(request, response), memberAccount); 
 		model.addAttribute("page", page);
 		return "modules/member/memberAccountList";
@@ -63,7 +64,7 @@ public class MemberAccountController extends BaseController {
 	@RequiresPermissions("member:memberAccount:view")
 	@RequestMapping(value = "form")
 	public String form(MemberAccount memberAccount, Model model) {
-			if(memberAccount.getId() != null) {
+			if(memberAccount.getId() != null && !("".equals(memberAccount.getId()))) {
 				//封装模型对象 通过userId查找user对象 把所有user对象信息封装到模型
 				User user = systemService.getUser(memberAccount.getUser().getId());	
 				memberAccount.setUser(user);
@@ -132,14 +133,28 @@ public class MemberAccountController extends BaseController {
 			memberAccount.setUser(user);
 			//设置账户对应的机构（登录账号同机构）
 			memberAccount.setOrgId(seesionUser.getOffice());
+			//安全码MD5加密
+			String secPassword = SystemService.entryptPassword(memberAccount.getSecPassword());
+			memberAccount.setSecPassword(secPassword);
+
+			//设置默认金额
+			memberAccount.setBlance("0");
+			//设置默认冻结金额
+			memberAccount.setBlanceFrozen("0");
+			//验证安全码长度
+			//@Length(min=0, max=50, message="安全密码长度必须介于 0 和 50 之间")
+			if(memberAccount.getSecPassword().length()<=0 && memberAccount.getSecPassword().length()>=50 ) {
+				addMessage(redirectAttributes, "安全密码长度必须介于 0 和 50 之间");
+				return "redirect:"+Global.getAdminPath()+"/member/memberAccount/?repage";
+			}
 			memberAccountService.save(memberAccount);
 		}
 		else {
 			// 修改会员信息
 			User user = new User();
-			user.setLoginName(memberAccount.getUser().getLoginName());
-			user.setNewPassword(memberAccount.getUser().getNewPassword());		
-			systemService.updatePasswordById(memberAccount.getUser().getId(), memberAccount.getUser().getLoginName(), memberAccount.getUser().getNewPassword());
+		//	user.setLoginName(memberAccount.getUser().getLoginName());
+		//	user.setNewPassword(memberAccount.getUser().getNewPassword());		
+		//	systemService.updatePasswordById(memberAccount.getUser().getId(), memberAccount.getUser().getLoginName(), memberAccount.getUser().getNewPassword());
 			//设置账户对应的user表主键
 			memberAccount.setUser(memberAccount.getUser());	
 			memberAccountService.save(memberAccount);
@@ -160,4 +175,12 @@ public class MemberAccountController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/member/memberAccount/?repage";
 	}
 
+	
+	@RequiresPermissions("member:memberAccount:edit")
+	@RequestMapping(value = "rebate")
+	public String rebate(MemberAccount memberAccount, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<MemberAccount> page = memberAccountService.findPage(new Page<MemberAccount>(request, response), memberAccount); 
+		model.addAttribute("page", page);
+		return "modules/member/memberRebateInfo";
+	}
 }

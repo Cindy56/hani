@@ -2,15 +2,17 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
+
 <script type="text/javascript">
 $(function(){
-/* 	if("${memberAccount.id}" == ""){
-		alert("注册");
+/*  	if("${memberAccount.id}" == ""){
+		//注册
+		
 		
 	}else{
 		alert("修改");
-	}  */
-	
+	} 
+	 */
 })
 
 
@@ -58,10 +60,10 @@ $(function(){
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/member/memberAccount/">会员管理列表</a></li>
-		<li class="active"><a href="${ctx}/member/memberAccount/form?id=${memberAccount.id}">会员管理<shiro:hasPermission name="member:memberAccount:edit">${not empty memberAccount.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="member:memberAccount:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
+ 	<ul class="nav nav-tabs">
+		<li class="active"><a href="${ctx}/member/memberAccount/form?id=${memberAccount.id}">会员基础信息<shiro:hasPermission name="member:memberAccount:edit">${not empty memberAccount.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="member:memberAccount:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/member/memberAccount/rebate">返点信息</a></li>
+	</ul><br/> 
 	<form:form id="inputForm" modelAttribute="memberAccount" action="${ctx}/member/memberAccount/save?${memberAccount.user.id}" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	
@@ -71,10 +73,14 @@ $(function(){
 			<div class="controls">
 				<input id="oldLoginName" name="oldLoginName" type="hidden" value="${memberAccount.user.loginName}">
 				<form:input path="user.loginName" htmlEscape="false" maxlength="50" class="required userName" placeholder="请输入登录名" id="loginName"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<span class="help-inline"><font color="red">*</font> </span> 
 			</div>
 		</div>
-		<div class="control-group">
+		
+		
+		<c:if test="${empty memberAccount.id}">
+		
+				<div class="control-group">
 			<label class="control-label">密码:</label>
 			<div class="controls">
 				<input id="newPassword" name="user.newPassword" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''}" placeholder="请输入密码"/>
@@ -88,7 +94,20 @@ $(function(){
 				<input id="confirmNewPassword" name="user.newPassword" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword" placeholder="请输入确认密码"/>
 				<c:if test="${empty user.id}"><span class="help-inline"><font color="red">*</font> </span></c:if>
 			</div>
-		</div>				
+		</div>	
+				<div class="control-group">
+			<label class="control-label">安全密码：</label>
+			<div class="controls">
+				<form:input path="secPassword" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入安全密码"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		
+		</c:if>
+	
+			
+
+			
 	
 		<!-- 会员信息 -->			
 		<div class="control-group">
@@ -98,13 +117,7 @@ $(function(){
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">安全密码：</label>
-			<div class="controls">
-				<form:input path="secPassword" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入安全密码"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+
 		
 		
 		

@@ -2,9 +2,14 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
+
 	<title>会员管理管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+	
+
+	
+	
 		$(document).ready(function() {
 			
 		});
@@ -17,10 +22,15 @@
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
+<%-- 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/member/memberAccount/">会员管理列表</a></li>
 		<shiro:hasPermission name="member:memberAccount:edit"><li><a href="${ctx}/member/memberAccount/form">会员管理添加</a></li></shiro:hasPermission>
-	</ul>
+	</ul> --%>
+	
+		<ul class="nav nav-tabs">
+		<li class="active"><a href="${ctx}/member/memberAccount/form">会员基础信息</a></li>
+		<li ><a href="${ctx}/member/memberAccount/rebate">返点信息</a></li>
+	</ul><br/> 
 	<form:form id="searchForm" modelAttribute="memberAccount" action="${ctx}/member/memberAccount/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -42,24 +52,29 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>用户名</th>
 				<th>上级代理账号id</th>
 				<th>机构id，盘口id</th>
 				<th>会员类型</th>
-				<th>安全密码</th>
 				<th>qq号码</th>
 				<th>手机号码</th>
+				<th>注册时间</th>
 				<th>余额</th>
 				<th>冻结余额</th>
 				<th>冻结,正常</th>
+				
 				<shiro:hasPermission name="member:memberAccount:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="memberAccount">
 			<tr>
-				<td><a href="${ctx}/member/memberAccount/form?id=${memberAccount.id}">
+				<td>
+					${memberAccount.user.loginName}
+				</td>
+				<td>
 					${memberAccount.parentAgentId}
-				</a></td>
+				</td>
 				<td>
 					${memberAccount.orgId.id}
 				</td>
@@ -67,14 +82,15 @@
 					${fns:getDictLabel(memberAccount.accountType, 'member_type', '')}
 				</td>
 				<td>
-					${memberAccount.secPassword}
-				</td>
-				<td>
 					${memberAccount.qqNo}
 				</td>
 				<td>
 					${memberAccount.mobileNo}
 				</td>
+				<td>
+					<fmt:formatDate value="${memberAccount.createDate}" pattern="yyyy-MM-dd HH:mm:ss" />
+				</td>
+				
 				<td>
 					${memberAccount.blance}
 				</td>

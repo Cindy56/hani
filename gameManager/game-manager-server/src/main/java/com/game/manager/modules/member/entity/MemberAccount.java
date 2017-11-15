@@ -76,7 +76,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.accountType = accountType;
 	}
 	
-	@Length(min=0, max=50, message="安全密码长度必须介于 0 和 50 之间")
+	
 	public String getSecPassword() {
 		return secPassword;
 	}
