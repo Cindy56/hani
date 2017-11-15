@@ -25,7 +25,7 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>用户id：</label>
+			<li><label>用户ID：</label>
 				<form:input path="user.id" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>开户行代码：</label>
@@ -77,6 +77,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>会员ID</th>
 				<th>会员类型</th>
 				<th>qq号码</th>
 				<th>手机号码</th>
@@ -94,6 +95,9 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="memberAccountCard">
 			<tr>
+				<td>
+					${memberAccountCard.user.id}
+				</td>
 				<td>
 					${fns:getDictLabel(memberAccountCard.accountType, "account_type", "")}
 				</td>
