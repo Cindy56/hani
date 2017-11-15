@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.hall.modules.member.dao.PersonalDataDao">
+    
+	<sql id="memberAccountColumns">
+		a.id AS "id",
+		a.parent_agent_id AS "parentAgentId",
+		a.user_id AS "user.id",
+		b.login_name AS "user.loginName",
+		a.org_id AS "orgId.id",
+		a.account_type AS "accountType",
+		a.sec_password AS "secPassword",
+		a.qq_no AS "qqNo",
+		a.mobile_no AS "mobileNo",
+		a.blance AS "blanceNo",
+		a.blance_frozen AS "blanceFrozen",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+    
+	<select id="get" resultType="MemberAccount">
+		SELECT 
+			<include refid="memberAccountColumns"/>
+		FROM member_account a, sys_user b
+		WHERE a.id = #{id}
+		and b.id = a.user_id
+	</select>
+	
+	<select id="findList" resultType="MemberAccount">
+		SELECT 
+			<include refid="memberAccountColumns"/>
+		FROM member_account a, sys_user b
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			and b.id = a.user_id
+			<if test="accountType != null and accountType != ''">
+				AND a.account_type = #{accountType}
+			</if>
+			
+			<if test="qqNo != null and qqNo != ''">
+				AND a.qq_no = #{qqNo}
+			</if>
+			<if test="mobileNo != null and mobileNo != ''">
+				AND a.mobile_no = #{mobileNo}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultMap="aResult">
+		SELECT 
+			<include refid="memberAccountColumns"/>
+		FROM member_account a, sys_user b
+		<where>
+			<!-- a.del_flag = #{DEL_FLAG_NORMAL} -->
+			and b.id = a.user_id
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<resultMap id="aResult"
+		type="com.game.hall.modules.member.entity.MemberAccount">
+		<id property="id" column="id" />
+		<result property="parentAgentId" column="parentAgentId" />
+		<result property="accountType" column="accountType" />
+		<result property="secPassword" column="secPassword" />
+		<result property="qqNo" column="qqNo" />
+		<result property="mobileNo" column="mobileNo" />
+		<result property="blanceNo" column="blanceNo" />
+	</resultMap>
+	
+	<insert id="insert">
+		INSERT INTO member_account(
+			id,
+			parent_agent_id,
+			user_id,
+			org_id,
+			account_type,
+			sec_password,
+			qq_no,
+			mobile_no,
+			blance,
+			blance_frozen,
+			status,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{parentAgentId, },
+			#{user.id},
+			#{orgId.id},
+			#{accountType},
+			#{secPassword},
+			#{qqNo},
+			#{mobileNo},
+			#{blance},
+			#{blanceFrozen},
+			#{status},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE member_account SET 	
+			parent_agent_id = #{parentAgentId},
+		<!-- 	user_id = #{user.id},
+			org_id = #{orgId.id}, -->
+			account_type = #{accountType},
+			sec_password = #{secPassword},
+			qq_no = #{qqNo},
+			mobile_no = #{mobileNo},
+			blance = #{blanceNo},
+			blance_frozen = #{blanceFrozen},
+			status = #{status},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE member_account SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
