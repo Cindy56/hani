@@ -38,7 +38,6 @@ import com.game.manager.modules.lottery.entity.LotteryTypeTime;
 import com.game.manager.modules.lottery.schedule.TimeTaskService;
 import com.game.manager.modules.sys.entity.Dict;
 import com.game.manager.modules.lottery.dao.LotteryTimeNumDao;
-import com.game.manager.modules.lottery.dto.ResponseLotteryNumDto;
 import com.game.manager.modules.lottery.dto.TimeTask;
 
 /**

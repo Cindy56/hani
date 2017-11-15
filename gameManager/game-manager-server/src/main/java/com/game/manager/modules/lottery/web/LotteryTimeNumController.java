@@ -23,7 +23,6 @@ import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
 import com.game.manager.common.web.BaseController;
 import com.game.manager.common.utils.StringUtils;
-import com.game.manager.modules.lottery.dto.ResponseLotteryNumDto;
 import com.game.manager.modules.lottery.dto.TimeTask;
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
 import com.game.manager.modules.lottery.service.LotteryTimeNumService;
