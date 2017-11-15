@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.game.draw.model.OpenLottery;
 import com.game.draw.model.Star2;
@@ -20,7 +21,7 @@ import com.game.draw.util.Constant;
 
 public class SSC {
 
-	private static final Logger LOG = Logger.getLogger(SSC.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SSC.class);
 
 	public Object reflectMethod(int[] winNo, int[][] betNos, String lotteryCode, String lotteryName) {
 		Class clazz = SSC.class;
@@ -29,10 +30,10 @@ public class SSC {
 			obj = clazz.newInstance();
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
-			LOG.error("", e);
+			LOG.error(e.getMessage());
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
-			LOG.error("", e);
+			LOG.error(e.getMessage());
 		}
 
 		Method method = null;
@@ -43,19 +44,19 @@ public class SSC {
 
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
-			LOG.error("", e);
+			LOG.error(e.getMessage());
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
-			LOG.error("", e);
+			LOG.error(e.getMessage());
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
-			LOG.error("", e);
+			LOG.error(e.getMessage());
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
-			LOG.error("", e);
+			LOG.error(e.getMessage());
 		} catch (InvocationTargetException e) {
 			// TODO Auto-generated catch block
-			LOG.error("", e);
+			LOG.error(e.getMessage());
 		}
 
 		return null;
@@ -556,7 +557,7 @@ public class SSC {
 			lsStar5I.append(betNos[i][3]);
 			lsStar5I.append(betNos[i][4]);
 
-			LOG.debug(lsStar5I);
+			LOG.debug("", lsStar5I);
 
 			if (betNos[i][0] == winNo[0] && betNos[i][1] == winNo[1] && betNos[i][2] == winNo[2]
 					&& betNos[i][3] == winNo[3] && betNos[i][4] == winNo[4])// win
@@ -595,7 +596,7 @@ public class SSC {
 			lsStar5I.append(lsStar5.get(i).star5[3]);
 			lsStar5I.append(lsStar5.get(i).star5[4]);
 
-			LOG.debug(lsStar5I);
+			LOG.debug("", lsStar5I);
 
 			if (lsStar5.get(i).star5[0] == winNo[0] && lsStar5.get(i).star5[1] == winNo[1]
 					&& lsStar5.get(i).star5[2] == winNo[2] && lsStar5.get(i).star5[3] == winNo[3]
@@ -664,7 +665,7 @@ public class SSC {
 			lsStar5I.append(betNos[i][2]);
 			lsStar5I.append(betNos[i][3]);
 
-			LOG.debug(lsStar5I);
+			LOG.debug("", lsStar5I);
 
 			if (betNos[i][0] == winNo[1] && betNos[i][1] == winNo[2] && betNos[i][2] == winNo[3]
 					&& betNos[i][3] == winNo[4])// win
@@ -702,7 +703,7 @@ public class SSC {
 			lsStar5I.append(lsStar4.get(i).star4[2]);
 			lsStar5I.append(lsStar4.get(i).star4[3]);
 
-			LOG.debug(lsStar5I);
+			LOG.debug("", lsStar5I);
 
 			if (lsStar4.get(i).star4[0] == winNo[1] && lsStar4.get(i).star4[1] == winNo[2]
 					&& lsStar4.get(i).star4[2] == winNo[3] && lsStar4.get(i).star4[3] == winNo[4])// win
@@ -1264,7 +1265,7 @@ public class SSC {
 		// separate
 		for (int i = 0; i < betNos[0].length; i++) {
 			int betNo = betNos[0][i];
-			ol.betNum += Constant.S3_Group_Sum[betNo-1][1];
+			ol.betNum += Constant.S3_Group_Sum[betNo - 1][1];
 		}
 
 		int winSum = Common.SumOfArray(winNo);
@@ -1490,13 +1491,12 @@ public class SSC {
 		return ol;
 
 	}
-	
-	
 
 	/**
 	 * 2星直选和值
 	 * 
-	 * @param winNo 0-18
+	 * @param winNo
+	 *            0-18
 	 * @param betNos
 	 *            { 1,2,3,5,10... }投注和值数
 	 * @return
@@ -1523,7 +1523,8 @@ public class SSC {
 	/**
 	 * 2星组选和值
 	 * 
-	 * @param winNo 1-17
+	 * @param winNo
+	 *            1-17
 	 * @param betNos
 	 *            { 1,2,3,5,10... }投注和值数
 	 * @return
@@ -1535,7 +1536,7 @@ public class SSC {
 		// separate
 		for (int i = 0; i < betNos[0].length; i++) {
 			int betNo = betNos[0][i];
-			ol.betNum += Constant.S2_Group_Sum[betNo-1][1];
+			ol.betNum += Constant.S2_Group_Sum[betNo - 1][1];
 		}
 
 		int winSum = Common.SumOfArray(winNo);
@@ -1546,7 +1547,6 @@ public class SSC {
 
 		return ol;
 	}
-
 
 	/*
 	 * ***************************************************************************
