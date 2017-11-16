@@ -69,8 +69,8 @@
 			<include refid="memberAccountColumns"/>
 		FROM member_account a, sys_user b
 		<where>
-			<!-- a.del_flag = #{DEL_FLAG_NORMAL} -->
-			and b.id = a.user_id
+			<!-- a.del_flag = #{DEL_FLAG_NORMAL} and -->
+			b.id = a.user_id
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -85,12 +85,12 @@
 	<resultMap id="aResult"
 		type="com.game.hall.modules.member.entity.MemberAccount">
 		<id property="id" column="id" />
-		<result property="parentAgentId" column="parentAgentId" />
+	<!-- 	<result property="parentAgentId" column="parentAgentId" />
 		<result property="accountType" column="accountType" />
 		<result property="secPassword" column="secPassword" />
 		<result property="qqNo" column="qqNo" />
 		<result property="mobileNo" column="mobileNo" />
-		<result property="blanceNo" column="blanceNo" />
+		<result property="blanceNo" column="blanceNo" /> -->
 	</resultMap>
 	
 	<insert id="insert">

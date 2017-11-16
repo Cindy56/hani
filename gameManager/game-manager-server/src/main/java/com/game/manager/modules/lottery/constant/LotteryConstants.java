@@ -9,7 +9,7 @@ public interface LotteryConstants {
     /**
      * 保存成功
      */
-    String SAVE_SUCCESS = "保存彩种基本信息成功";
+	String SAVE_SUCCESS = "保存彩种基本信息成功";
 
     /**
      * 删除成功

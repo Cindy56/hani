@@ -38,6 +38,12 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 	public String getParentAgentId() {
 		return parentAgentId;
 	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
 	public void setParentAgentId(String parentAgentId) {
 		this.parentAgentId = parentAgentId;
 	}
@@ -71,19 +77,8 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 	}
 	private String blanceFrozen;		// 冻结金额
 	private String status;		// 状态
-	public String getMobile() {
-		return mobileNo;
-	}
-	public void setMobile(String mobile) {
-		this.mobileNo = mobile;
-	}
 
-	public String getMobileNo() {
-		return mobileNo;
-	}
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
+
 
 	public String getBlanceFrozen() {
 		return blanceFrozen;

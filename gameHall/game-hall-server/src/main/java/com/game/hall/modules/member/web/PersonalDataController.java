@@ -58,6 +58,7 @@ public class PersonalDataController {
 		System.out.println("============"+memberAccountList);
 		return memberAccountList;
 	}
+	
 
 
 }
