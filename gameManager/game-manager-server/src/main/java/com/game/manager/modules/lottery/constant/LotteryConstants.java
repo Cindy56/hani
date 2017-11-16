@@ -37,6 +37,11 @@ public interface LotteryConstants {
     String LENGTH_1_500 = "长度必须介于 1 和 500 之间";
 
     /**
+     * 长度1-10校验提示信息
+     */
+    String LENGTH_1_10 = "长度必须介于 1 和 10 之间";
+
+    /**
      * 长度1-50校验提示信息
      */
     String LENGTH_1_50 = "长度必须介于 1 和 50 之间";

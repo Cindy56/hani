@@ -27,6 +27,11 @@ public interface RegexConstants {
     String NUM_OR_FLOAT_1_50 = "\\d?\\.?\\d{0,50}";
 
     /**
+     * 长度为1-10的小数字符串
+     */
+    String NUM_OR_FLOAT_1_10 = "\\d?\\.?\\d{0,10}";
+
+    /**
      * 长度为1-6的小数字符串
      */
     String NUM_OR_FLOAT_1_6 = "\\d?\\.?\\d{0,6}";

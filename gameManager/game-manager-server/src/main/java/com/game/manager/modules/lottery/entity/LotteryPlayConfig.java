@@ -3,33 +3,24 @@
  */
 package com.game.manager.modules.lottery.entity;
 
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Length;
 
 import com.alibaba.fastjson.JSON;
 import com.game.manager.common.persistence.DataEntity;
-import com.game.manager.modules.lottery.constant.LotteryConstants;
-import com.game.manager.modules.lottery.constant.RegexConstants;
 
 /**
- * 彩票玩法管理Entity
+ * 彩种基本信息管理Entity
  * @author Terry
- * @version 2017-11-10
+ * @version 2017-11-15
  */
 public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 彩票代码
+     * 彩票代码 父类
      */
-    private String lotteryCode;
-
-    /**
-     * 彩票名称
-     */
-    private String lotteryName;
+    private LotteryType lotteryCode;
 
     /**
      * 玩法代码
@@ -54,12 +45,22 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
     /**
      * 返水级别
      */
-    private String commissionRate;
+    private String commissionRateMax;
 
     /**
-     * 单人单期投注倍数限制
+     * 最低返水级别
+     */
+    private String commissionRateMin;
+
+    /**
+     * 单人单期投注倍数限制 
      */
     private String betRateLimit;
+
+    /**
+     * 是否启用
+     */
+    private String isEnable;
 
     /**
      * 玩法说明
@@ -67,7 +68,7 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
     private String explain;
 
     /**
-     * 玩法实例
+     * 玩法示例
      */
     private String example;
 
@@ -79,16 +80,19 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         super(id);
     }
 
-    @Pattern(regexp = RegexConstants.LETTER_AND_NUMBER_1_50, message = "彩种代码" + LotteryConstants.NUM_OR_LETTER_1_50)
-    public String getLotteryCode() {
-        return lotteryCode;
-    }
-
-    public void setLotteryCode(String lotteryCode) {
+    public LotteryPlayConfig(LotteryType lotteryCode) {
         this.lotteryCode = lotteryCode;
     }
 
-    @Pattern(regexp = RegexConstants.LETTER_AND_NUMBER_1_50, message = "玩法代码" + LotteryConstants.NUM_OR_LETTER_1_50)
+    public LotteryType getLotteryCode() {
+        return lotteryCode;
+    }
+
+    public void setLotteryCode(LotteryType lotteryCode) {
+        this.lotteryCode = lotteryCode;
+    }
+
+    @Length(min = 1, max = 50, message = "玩法代码长度必须介于 1 和 50 之间")
     public String getPlayCode() {
         return playCode;
     }
@@ -97,7 +101,7 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         this.playCode = playCode;
     }
 
-    @Length(min = 1, max = 50, message = "玩法名称" + LotteryConstants.LENGTH_1_50)
+    @Length(min = 1, max = 50, message = "玩法名称长度必须介于 1 和 50 之间")
     public String getName() {
         return name;
     }
@@ -106,7 +110,7 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         this.name = name;
     }
 
-    @Length(min = 1, max = 6, message = "玩法模式" + LotteryConstants.LENGTH_1_6)
+    @Length(min = 1, max = 1, message = "玩法模式长度必须介于 1 和 1 之间")
     public String getPlayType() {
         return playType;
     }
@@ -115,7 +119,7 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         this.playType = playType;
     }
 
-    @Pattern(regexp = RegexConstants.NUM_OR_FLOAT_1_50, message = "中奖概率" + LotteryConstants.LENGTH_1_50)
+    @Length(min = 0, max = 10, message = "中奖概率长度必须介于 0 和 10 之间")
     public String getWinningProbability() {
         return winningProbability;
     }
@@ -124,16 +128,23 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         this.winningProbability = winningProbability;
     }
 
-    @Pattern(regexp = RegexConstants.NUM_OR_FLOAT_1_6, message = "平台抽水" + LotteryConstants.NUM_OR_FLOAT_1_6)
-    public String getCommissionRate() {
-        return commissionRate;
+    public String getCommissionRateMax() {
+        return commissionRateMax;
     }
 
-    public void setCommissionRate(String commissionRate) {
-        this.commissionRate = commissionRate;
+    public void setCommissionRateMax(String commissionRateMax) {
+        this.commissionRateMax = commissionRateMax;
     }
 
-    @Pattern(regexp = RegexConstants.NUM_1_4, message = "单人单期投注倍数" + LotteryConstants.NUM_1_4)
+    public String getCommissionRateMin() {
+        return commissionRateMin;
+    }
+
+    public void setCommissionRateMin(String commissionRateMin) {
+        this.commissionRateMin = commissionRateMin;
+    }
+
+    @Length(min = 0, max = 6, message = "单人单期投注倍数限制长度必须介于 0 和 6 之间")
     public String getBetRateLimit() {
         return betRateLimit;
     }
@@ -142,7 +153,16 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         this.betRateLimit = betRateLimit;
     }
 
-    @Length(min = 0, max = 500, message = "玩法说明" + LotteryConstants.LENGTH_1_500)
+    @Length(min = 0, max = 1, message = "是否启用长度必须介于 0 和 1 之间")
+    public String getIsEnable() {
+        return isEnable;
+    }
+
+    public void setIsEnable(String isEnable) {
+        this.isEnable = isEnable;
+    }
+
+    @Length(min = 0, max = 5000, message = "玩法说明长度必须介于 0 和 5000 之间")
     public String getExplain() {
         return explain;
     }
@@ -151,21 +171,13 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         this.explain = explain;
     }
 
-    @Length(min = 0, max = 500, message = "玩法实例" + LotteryConstants.LENGTH_1_500)
+    @Length(min = 0, max = 5000, message = "玩法实例长度必须介于 0 和 5000 之间")
     public String getExample() {
         return example;
     }
 
     public void setExample(String example) {
         this.example = example;
-    }
-
-    public String getLotteryName() {
-        return lotteryName;
-    }
-
-    public void setLotteryName(String lotteryName) {
-        this.lotteryName = lotteryName;
     }
 
     @Override

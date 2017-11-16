@@ -41,7 +41,7 @@ public class LotteryPlayConfigController extends BaseController {
     private LotteryPlayConfigService lotteryPlayConfigService;
 
     /**
-     * 彩种基本信息管理service
+     * 彩种基本信息管理service对象
      */
     @Autowired
     private LotteryTypeService lotteryTypeService;

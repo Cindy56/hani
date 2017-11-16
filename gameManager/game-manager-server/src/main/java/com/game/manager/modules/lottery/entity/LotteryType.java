@@ -3,34 +3,22 @@
  */
 package com.game.manager.modules.lottery.entity;
 
-import javax.validation.constraints.Pattern;
+import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
 import com.alibaba.fastjson.JSON;
 import com.game.manager.common.persistence.DataEntity;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.modules.lottery.constant.LotteryConstants;
-import com.game.manager.modules.lottery.constant.RegexConstants;
+import com.google.common.collect.Lists;
 
 /**
  * 彩种基本信息管理Entity
  * @author Terry
- * @version 2017-11-07
+ * @version 2017-11-15
  */
 public class LotteryType extends DataEntity<LotteryType> {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 彩种代码
-     */
-    private String code;
-
-    /**
-     * 彩种名称
-     */
-    private String name;
 
     /**
      * 彩种类型
@@ -38,39 +26,34 @@ public class LotteryType extends DataEntity<LotteryType> {
     private String parentCode;
 
     /**
+     * 彩种代码
+     */
+    private String code;
+
+    /**
+     * 公司ID
+     */
+    private String companyId;
+
+    /**
+     * 彩种名称
+     */
+    private String name;
+
+    /**
      * 是否自动开奖
      */
     private String isAuto;
 
     /**
-     * 是否有效
+     * 是否启用
      */
     private String isEnable;
 
     /**
-     * 每日开售时间
-     */
-    private String startDate;
-
-    /**
-     * 每日停售时间
-     */
-    private String endDate;
-
-    /**
-     * 每日期数
+     * 每日开奖期数
      */
     private String times;
-
-    /**
-     * 开奖周期
-     */
-    private String periodTotalTime;
-
-    /**
-     * 封单时间
-     */
-    private String periodHaltTime;
 
     /**
      * 每期投注最高金额
@@ -78,14 +61,14 @@ public class LotteryType extends DataEntity<LotteryType> {
     private String amountMaxBet;
 
     /**
-     * 当前期号
+     * 子表列表
      */
-    private String currentIssueNo;
+    private List<LotteryPlayConfig> lotteryPlayConfigList = Lists.newArrayList();
 
     /**
-     * 下期期号
+     * 子表列表
      */
-    private String nextIssueNo;
+    private List<LotteryTypeTime> lotteryTypeTimeList = Lists.newArrayList();
 
     public LotteryType() {
         super();
@@ -95,16 +78,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         super(id);
     }
 
-    @Pattern(regexp = RegexConstants.LETTER_AND_NUMBER_1_50, message = "彩种代码" + LotteryConstants.NUM_OR_LETTER_1_50)
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    @Pattern(regexp = RegexConstants.LETTER_AND_NUMBER_1_50, message = "彩种类型" + LotteryConstants.NUM_OR_LETTER_1_50)
+    @Length(min = 1, max = 50, message = "彩种类型长度必须介于 1 和 50 之间")
     public String getParentCode() {
         return parentCode;
     }
@@ -113,8 +87,25 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.parentCode = parentCode;
     }
 
-    @Length(min = RegexConstants.LENGTH_1, max = RegexConstants.LENGTH_50, message = "彩种名称"
-            + LotteryConstants.LENGTH_1_50)
+    @Length(min = 1, max = 50, message = "彩种代码长度必须介于 1 和 50 之间")
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Length(min = 1, max = 50, message = "公司ID长度必须介于 1 和 50 之间")
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    @Length(min = 1, max = 50, message = "彩种名称长度必须介于 1 和 50 之间")
     public String getName() {
         return name;
     }
@@ -123,8 +114,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.name = name;
     }
 
-    @Length(min = RegexConstants.LENGTH_1, max = RegexConstants.LENGTH_1, message = "是否自动开奖"
-            + LotteryConstants.LENGTH_1)
+    @Length(min = 1, max = 1, message = "是否自动开奖长度必须介于 1 和 1 之间")
     public String getIsAuto() {
         return isAuto;
     }
@@ -133,7 +123,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.isAuto = isAuto;
     }
 
-    @Length(min = RegexConstants.LENGTH_1, max = RegexConstants.LENGTH_1, message = "是否启用" + LotteryConstants.LENGTH_1)
+    @Length(min = 1, max = 1, message = "是否启用长度必须介于 1 和 1 之间")
     public String getIsEnable() {
         return isEnable;
     }
@@ -142,25 +132,7 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.isEnable = isEnable;
     }
 
-    @Pattern(regexp = RegexConstants.TIME_HH_MM, message = "每日开售时间" + LotteryConstants.TIME_HH_MM)
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    @Pattern(regexp = RegexConstants.TIME_HH_MM, message = "每日停售时间" + LotteryConstants.TIME_HH_MM)
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    @Pattern(regexp = RegexConstants.NUM_1_6, message = "每日期数" + LotteryConstants.NUM_1_6)
+    @Length(min = 1, max = 6, message = "每日开奖期数长度必须介于 1 和 6 之间")
     public String getTimes() {
         return times;
     }
@@ -169,53 +141,28 @@ public class LotteryType extends DataEntity<LotteryType> {
         this.times = times;
     }
 
-    @Pattern(regexp = RegexConstants.NUM_1_255, message = "开奖周期" + LotteryConstants.NUM_1_255)
-    public String getPeriodTotalTime() {
-        return periodTotalTime;
-    }
-
-    public void setPeriodTotalTime(String periodTotalTime) {
-        this.periodTotalTime = periodTotalTime;
-    }
-
-    @Pattern(regexp = RegexConstants.NUM_1_255, message = "封单时间" + LotteryConstants.NUM_1_255)
-    public String getPeriodHaltTime() {
-        return periodHaltTime;
-    }
-
-    public void setPeriodHaltTime(String periodHaltTime) {
-        this.periodHaltTime = periodHaltTime;
-    }
-
     public String getAmountMaxBet() {
         return amountMaxBet;
     }
 
     public void setAmountMaxBet(String amountMaxBet) {
-        if (StringUtils.isBlank(amountMaxBet)) {
-            amountMaxBet = "0";
-        }
         this.amountMaxBet = amountMaxBet;
     }
 
-    @Length(min = RegexConstants.LENGTH_0, max = RegexConstants.LENGTH_50, message = "当前期号"
-            + LotteryConstants.LENGTH_1_50)
-    public String getCurrentIssueNo() {
-        return currentIssueNo;
+    public List<LotteryPlayConfig> getLotteryPlayConfigList() {
+        return lotteryPlayConfigList;
     }
 
-    public void setCurrentIssueNo(String currentIssueNo) {
-        this.currentIssueNo = currentIssueNo;
+    public void setLotteryPlayConfigList(List<LotteryPlayConfig> lotteryPlayConfigList) {
+        this.lotteryPlayConfigList = lotteryPlayConfigList;
     }
 
-    @Length(min = RegexConstants.LENGTH_0, max = RegexConstants.LENGTH_50, message = "下期期号"
-            + LotteryConstants.LENGTH_1_50)
-    public String getNextIssueNo() {
-        return nextIssueNo;
+    public List<LotteryTypeTime> getLotteryTypeTimeList() {
+        return lotteryTypeTimeList;
     }
 
-    public void setNextIssueNo(String nextIssueNo) {
-        this.nextIssueNo = nextIssueNo;
+    public void setLotteryTypeTimeList(List<LotteryTypeTime> lotteryTypeTimeList) {
+        this.lotteryTypeTimeList = lotteryTypeTimeList;
     }
 
     @Override

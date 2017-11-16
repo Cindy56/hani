@@ -22,16 +22,15 @@
         <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
         <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
         <ul class="ul-form">
-            <li><label>彩种类型：</label>
+            <li><label>彩票代码：</label>
                 <form:select path="lotteryCode" class="input-medium">
                     <form:option value="" label="-- 请选择 --"/>
                     <form:options items="${lotteryTypeList}" itemLabel="name" itemValue="code" htmlEscape="false"/>
                 </form:select>
             </li>
             <li><label>玩法名称：</label>
-                <form:input path="name" htmlEscape="false" maxlength="500" class="input-medium"/>
+                <form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
             </li>
-            <li class="btns"><button id="clearSearch" type="reset" class="btn reset">清空搜索</button></li>
             <li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
             <li class="clearfix"></li>
         </ul>
@@ -44,8 +43,10 @@
                 <th>彩种名称</th>
                 <th>玩法模式</th>
                 <th>中奖概率</th>
-                <th>平台抽水</th>
+                <th>返水级别</th>
+                <th>最低返水级别</th>
                 <th>单人单期投注倍数限制</th>
+                <th>是否启用</th>
                 <th>玩法说明</th>
                 <th>玩法实例</th>
                 <shiro:hasPermission name="lottery:lotteryPlayConfig:edit"><th>操作</th></shiro:hasPermission>
@@ -58,7 +59,7 @@
                     ${lotteryPlayConfig.name}
                 </a></td>
                 <td>
-                    ${lotteryPlayConfig.lotteryName}
+                    ${lotteryPlayConfig.lotteryCode.name}
                 </td>
                 <td>
                     ${fns:getDictLabel(lotteryPlayConfig.playType, 'play_type', '')}
@@ -67,10 +68,16 @@
                     ${lotteryPlayConfig.winningProbability}
                 </td>
                 <td style="text-align: right;">
-                    ${lotteryPlayConfig.commissionRate}
+                    ${lotteryPlayConfig.commissionRateMax}
+                </td>
+                <td style="text-align: right;">
+                    ${lotteryPlayConfig.commissionRateMin}
                 </td>
                 <td style="text-align: right;">
                     ${lotteryPlayConfig.betRateLimit}
+                </td>
+                <td>
+                    ${fns:getDictLabel(lotteryPlayConfig.isEnable, 'yes_no', '')}
                 </td>
                 <td>
                     ${lotteryPlayConfig.explain}

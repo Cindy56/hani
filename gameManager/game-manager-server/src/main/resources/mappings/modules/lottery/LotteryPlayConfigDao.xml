@@ -5,14 +5,16 @@
     <!-- 查询字段 -->
     <sql id="lotteryPlayConfigColumns">
         a.id AS "id",
-        a.lottery_code AS "lotteryCode",
-        b.name AS "lotteryName",
+        a.lottery_code AS "lotteryCode.code",
+        b.name AS "lotteryCode.name",
         a.play_code AS "playCode",
         a.name AS "name",
         a.play_type AS "playType",
         a.winning_probability AS "winningProbability",
-        a.commission_rate AS "commissionRate",
+        a.commission_rate_max AS "commissionRateMax",
+        a.commission_rate_min AS "commissionRateMin",
         a.bet_rate_limit AS "betRateLimit",
+        a.is_enable AS "isEnable",
         a.explain AS "explain",
         a.example AS "example",
         a.create_date AS "createDate",
@@ -24,7 +26,6 @@
     
     <!-- 查询表关联引用 -->
     <sql id="lotteryPlayConfigJoins">
-        LEFT JOIN lottery_type b ON a.lottery_code = b.code AND a.del_flag = b.del_flag
     </sql>
     
     <!-- 根据记录ID查询单条数据 -->
@@ -49,16 +50,15 @@
     <select id="findList" resultType="LotteryPlayConfig">
         SELECT 
             <include refid="lotteryPlayConfigColumns"/>
-        FROM lottery_play_config a
-        <include refid="lotteryPlayConfigJoins"/>
+        FROM lottery_play_config a, lottery_type b
         <where>
+            a.lottery_code = b.`code` AND
             a.del_flag = #{DEL_FLAG_NORMAL}
-            <if test="name != null and name != ''">
-                AND a.name LIKE 
-                    <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+            <if test="lotteryCode != null and lotteryCode.code != null and lotteryCode.code != ''">
+                AND a.lottery_code = #{lotteryCode.code}
             </if>
-            <if test="lotteryCode != null and lotteryCode != ''">
-                AND a.lottery_code = #{lotteryCode}
+            <if test="name != null and name != ''">
+                AND a.name LIKE concat('%',#{name},'%')
             </if>
         </where>
         <choose>
@@ -66,7 +66,7 @@
                 ORDER BY ${page.orderBy}
             </when>
             <otherwise>
-                ORDER BY a.update_date DESC
+                ORDER BY a.create_date ASC
             </otherwise>
         </choose>
     </select>
@@ -85,7 +85,7 @@
                 ORDER BY ${page.orderBy}
             </when>
             <otherwise>
-                ORDER BY a.update_date DESC
+                ORDER BY a.create_date ASC
             </otherwise>
         </choose>
     </select>
@@ -99,8 +99,10 @@
             `name`,
             `play_type`,
             `winning_probability`,
-            `commission_rate`,
+            `commission_rate_max`,
+            `commission_rate_min`,
             `bet_rate_limit`,
+            `is_enable`,
             `explain`,
             `example`,
             `create_date`,
@@ -110,13 +112,15 @@
             `del_flag`
         ) VALUES (
             #{id},
-            #{lotteryCode},
+            #{lotteryCode.code},
             #{playCode},
             #{name},
             #{playType},
             #{winningProbability},
-            #{commissionRate},
+            #{commissionRateMax},
+            #{commissionRateMin},
             #{betRateLimit},
+            #{isEnable},
             #{explain},
             #{example},
             #{createDate},
@@ -130,24 +134,33 @@
     <!-- 更新已存在数据 -->
     <update id="update">
         UPDATE lottery_play_config SET     
-            lottery_code = #{lotteryCode},
+            lottery_code = #{lotteryCode.code},
             play_code = #{playCode},
             name = #{name},
             play_type = #{playType},
             winning_probability = #{winningProbability},
-            commission_rate = #{commissionRate},
+            commission_rate_max = #{commissionRateMax},
+            commission_rate_min = #{commissionRateMin},
             bet_rate_limit = #{betRateLimit},
+            is_enable = #{isEnable},
             explain = #{explain},
             example = #{example},
             update_date = #{updateDate},
             update_by = #{updateBy.id}
         WHERE id = #{id}
     </update>
-    
+
     <!-- 删除数据记录（更新记录的删除标识为1） -->
     <update id="delete">
         UPDATE lottery_play_config SET 
             del_flag = #{DEL_FLAG_DELETE}
-        WHERE id = #{id}
+        <choose>
+            <when test="id !=null and id != ''">
+                WHERE id = #{id}
+            </when>
+            <otherwise>
+                WHERE lottery_code = #{lotteryCode.code}
+            </otherwise>
+        </choose>
     </update>
 </mapper>

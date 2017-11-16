@@ -35,9 +35,9 @@
 
         <%-- 彩种代码 --%>
         <div class="control-group">
-            <label class="control-label">彩种类型：</label>
+            <label class="control-label">彩种代码：</label>
             <div class="controls">
-                <form:select id="lotteryCode" path="lotteryCode" class="input-xlarge required">
+                <form:select id="lotteryCode" path="lotteryCode.code" class="input-xlarge required">
                     <form:option value="" label="-- 请选择 --"/>
                     <form:options items="${lotteryTypeList}" itemLabel="name" itemValue="code" htmlEscape="false"/>
                 </form:select>
@@ -82,32 +82,49 @@
         <div class="control-group">
             <label class="control-label">中奖概率：</label>
             <div class="controls">
-                <form:input path="winningProbability" htmlEscape="false" maxlength="50" class="input-xlarge required" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-50的小数形式中奖概率..."/>
+                <form:input path="winningProbability" htmlEscape="false" maxlength="10" class="input-xlarge required" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-10的小数形式中奖概率..."/>
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
 
-        <%-- 平台抽水 --%>
+        <%-- 返水级别 --%>
         <div class="control-group">
-            <label class="control-label">平台抽水：</label>
+            <label class="control-label">返水级别：</label>
             <div class="controls">
-                <form:input path="commissionRate" htmlEscape="false" maxlength="6" class="input-xlarge" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-6的小数形式平台抽水..."/>
+                <form:input path="commissionRateMax" htmlEscape="false" maxlength="6" class="input-xlarge" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-6的小数形式返水级别..."/>
             </div>
         </div>
 
-        <%-- 单人单注投注限制 --%>
+        <%-- 最低返水级别 --%>
+        <div class="control-group">
+            <label class="control-label">最低返水级别：</label>
+            <div class="controls">
+                <form:input path="commissionRateMin" htmlEscape="false" maxlength="6" class="input-xlarge" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-6的小数形式最低返水级别..."/>
+            </div>
+        </div>
+
+        <%-- 担任单注投注倍数限制 --%>
         <div class="control-group">
             <label class="control-label">单人单期投注倍数限制：</label>
             <div class="controls">
-                <form:input id="betRateLimit" path="betRateLimit" htmlEscape="false" maxlength="4" class="input-xlarge required" onchange="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="请输入1-4位数字的投注倍数限制..."/>
+                <form:input path="betRateLimit" htmlEscape="false" maxlength="6" class="input-xlarge" placeholder="请输入单人单期投注倍数限制..."/>
             </div>
         </div>
-        
+
+        <%-- 是否启用 --%>
+        <div class="control-group">
+            <label class="control-label">是否启用：</label>
+            <div class="controls">
+                <form:radiobutton path="isEnable" label="是" value="1" htmlEscape="false" class="required" checked="true"/>
+                <form:radiobutton path="isEnable" label="否" value="0" htmlEscape="false" class="required"/>
+            </div>
+        </div>
+
         <%-- 玩法说明 --%>
         <div class="control-group">
             <label class="control-label">玩法说明：</label>
             <div class="controls">
-                <form:textarea path="explain" htmlEscape="false" rows="4" maxlength="500" class="input-xxlarge" placeholder="请输入字数500以内的玩法说明..."/>
+                <form:textarea path="explain" htmlEscape="false" rows="4" maxlength="5000" class="input-xxlarge" placeholder="请输入字数5000以内的玩法说明..."/>
             </div>
         </div>
 
@@ -115,9 +132,11 @@
         <div class="control-group">
             <label class="control-label">玩法示例：</label>
             <div class="controls">
-                <form:textarea path="example" htmlEscape="false" rows="4" maxlength="500" class="input-xxlarge" placeholder="请输入字数500以内的玩法示例..."/>
+                <form:textarea path="example" htmlEscape="false" rows="4" maxlength="5000" class="input-xxlarge" placeholder="请输入字数5000以内的玩法示例..."/>
             </div>
         </div>
+
+        <%-- 保存提交或退出 --%>
         <div class="form-actions">
             <shiro:hasPermission name="lottery:lotteryPlayConfig:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
