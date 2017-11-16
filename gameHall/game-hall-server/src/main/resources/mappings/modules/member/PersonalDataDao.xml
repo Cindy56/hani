@@ -85,12 +85,6 @@
 	<resultMap id="aResult"
 		type="com.game.hall.modules.member.entity.MemberAccount">
 		<id property="id" column="id" />
-	<!-- 	<result property="parentAgentId" column="parentAgentId" />
-		<result property="accountType" column="accountType" />
-		<result property="secPassword" column="secPassword" />
-		<result property="qqNo" column="qqNo" />
-		<result property="mobileNo" column="mobileNo" />
-		<result property="blanceNo" column="blanceNo" /> -->
 	</resultMap>
 	
 	<insert id="insert">
