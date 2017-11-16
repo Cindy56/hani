@@ -10,9 +10,6 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.game.hall.modules.bet.dao.LotteryOpenTodayDao;
-import com.game.hall.modules.bet.entity.LotteryTimeNum;
 import com.game.hall.modules.member.dao.PersonalDataDao;
 import com.game.hall.modules.member.entity.MemberAccount;
 

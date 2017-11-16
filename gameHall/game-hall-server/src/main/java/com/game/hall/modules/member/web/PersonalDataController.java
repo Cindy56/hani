@@ -12,9 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.game.hall.modules.bet.entity.LotteryTimeNum;
-import com.game.hall.modules.bet.service.LotteryOpenTodayService;
 import com.game.hall.modules.member.entity.MemberAccount;
 import com.game.hall.modules.member.service.PersonalDataService;
 

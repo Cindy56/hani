@@ -10,7 +10,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.game.hall.common.persistence.annotation.MyBatisDao;
-import com.game.hall.modules.bet.entity.LotteryTimeNum;
 import com.game.hall.modules.member.entity.MemberAccount;
 
 /**
