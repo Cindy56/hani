@@ -150,4 +150,13 @@
             del_flag = #{DEL_FLAG_DELETE}
         WHERE id = #{id}
     </update>
+    
+    
+     <!-- 根据数据记录ID获取单条数据 -->
+    <select id="queryLotteryType" resultType="LotteryType">
+        SELECT 
+            <include refid="lotteryTypeColumns"/>
+        FROM lottery_type a
+        WHERE a.del_flag = 0 and a.code = #{lotteryCode} 
+    </select>
 </mapper>
