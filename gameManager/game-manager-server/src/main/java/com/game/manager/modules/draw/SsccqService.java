@@ -39,32 +39,32 @@ public enum SsccqService implements LotteryCalculateService{
 	/** xxxxxx */
 	/** xxxxxx */
 	
-	/** 时时彩前3直选 */
-	SSC_QIAN3_ZHIXUAN("SSC_QIAN3_ZHIXUAN", "时时彩前3直选 ") {},
-	
-	/** 时时彩前3组选6 */
-	SSC_QIAN3_ZUXUAN6("SSC_QIAN3_ZUXUAN6", "时时彩前3组选6") {},
-	
-	/** 时时彩前3组选3 */
-	SSC_QIAN3_ZUXUAN3("SSC_QIAN3_ZUXUAN3", "时时彩前3组选3") {},
-	
-	/** 时时彩中3直选 */
-	SSC_ZHONG3_ZHIXUAN("SSC_ZHONG3_ZHIXUAN", "时时彩中3直选 ") {},
-	
-	/** 时时彩中3组选6 */
-	SSC_ZHONG3_ZUXUAN6("SSC_ZHONG3_ZUXUAN6", "时时彩中3组选6") {},
-	
-	/** 时时彩中3组选3 */
-	SSC_ZHONG3_ZUXUAN3("SSC_ZHONG3_ZUXUAN3", "时时彩中3组选3") {},
-	
-	/** 时时彩后3直选 */
-	SSC_HOU3_ZHIXUAN("SSC_HOU3_ZHIXUAN", "时时彩后3直选") {},
-	
-	/**  时时彩后3组6 */
-	SSC_HOU3_ZUXUAN6("SSC_HOU3_ZUXUAN6", "时时彩后3组6") {},
-	
-	/**  时时彩后3组3 */
-	SSC_HOU3_ZUXUAN3("SSC_HOU3_ZUXUAN3", "时时彩后3组3") {}	
+//	/** 时时彩前3直选 */
+//	SSC_QIAN3_ZHIXUAN("SSC_QIAN3_ZHIXUAN", "时时彩前3直选 ") {},
+//	
+//	/** 时时彩前3组选6 */
+//	SSC_QIAN3_ZUXUAN6("SSC_QIAN3_ZUXUAN6", "时时彩前3组选6") {},
+//	
+//	/** 时时彩前3组选3 */
+//	SSC_QIAN3_ZUXUAN3("SSC_QIAN3_ZUXUAN3", "时时彩前3组选3") {},
+//	
+//	/** 时时彩中3直选 */
+//	SSC_ZHONG3_ZHIXUAN("SSC_ZHONG3_ZHIXUAN", "时时彩中3直选 ") {},
+//	
+//	/** 时时彩中3组选6 */
+//	SSC_ZHONG3_ZUXUAN6("SSC_ZHONG3_ZUXUAN6", "时时彩中3组选6") {},
+//	
+//	/** 时时彩中3组选3 */
+//	SSC_ZHONG3_ZUXUAN3("SSC_ZHONG3_ZUXUAN3", "时时彩中3组选3") {},
+//	
+//	/** 时时彩后3直选 */
+//	SSC_HOU3_ZHIXUAN("SSC_HOU3_ZHIXUAN", "时时彩后3直选") {},
+//	
+//	/**  时时彩后3组6 */
+//	SSC_HOU3_ZUXUAN6("SSC_HOU3_ZUXUAN6", "时时彩后3组6") {},
+//	
+//	/**  时时彩后3组3 */
+//	SSC_HOU3_ZUXUAN3("SSC_HOU3_ZUXUAN3", "时时彩后3组3") {}	
 	;
 	
 	/**  玩法代码 */

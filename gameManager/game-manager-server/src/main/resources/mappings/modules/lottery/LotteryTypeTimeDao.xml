@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.manager.modules.lottery.dao.LotteryTypeTimeDao">
+
+    <!-- 查询字段 -->
+    <sql id="lotteryTypeTimeColumns">
+        a.id AS "id",
+        a.lottery_type_id AS "lotteryTypeId.id",
+        a.lottery_code AS "lotteryCode",
+        a.start_time AS "startTime",
+        a.end_time AS "endTime",
+        a.period_total_time AS "periodTotalTime",
+        a.period_halt_time AS "periodHaltTime",
+        a.create_date AS "createDate",
+        a.create_by AS "createBy.id",
+        a.update_date AS "updateDate",
+        a.update_by AS "updateBy.id",
+        a.del_flag AS "delFlag"
+    </sql>
+
+    <!-- 表关联 -->
+    <sql id="lotteryTypeTimeJoins">
+        LEFT JOIN lottery_type b ON b.id = a.lottery_type_id
+    </sql>
+
+    <!-- 通过记录ID获取单条数据 -->
+    <select id="get" resultType="LotteryTypeTime">
+        SELECT 
+            <include refid="lotteryTypeTimeColumns"/>
+        FROM lottery_type_time a
+        <include refid="lotteryTypeTimeJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <!-- 分页查询数据 -->
+    <select id="findList" resultType="LotteryTypeTime">
+        SELECT 
+            <include refid="lotteryTypeTimeColumns"/>
+        FROM lottery_type_time a
+        <include refid="lotteryTypeTimeJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="lotteryTypeId != null and lotteryTypeId.id != null and lotteryTypeId.id != ''">
+                AND a.lottery_type_id = #{lotteryTypeId.id}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.create_date ASC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 查询所有数据 -->
+    <select id="findAllList" resultType="LotteryTypeTime">
+        SELECT 
+            <include refid="lotteryTypeTimeColumns"/>
+        FROM lottery_type_time a
+        <include refid="lotteryTypeTimeJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+        </where>        
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.create_date ASC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 插入单条数据 -->
+    <insert id="insert">
+        INSERT INTO lottery_type_time(
+            `id`,
+            `lottery_type_id`,
+            `lottery_code`,
+            `start_time`,
+            `end_time`,
+            `period_total_time`,
+            `period_halt_time`,
+            `create_date`,
+            `create_by`,
+            `update_date`,
+            `update_by`,
+            `del_flag`
+        ) VALUES (
+            #{id},
+            #{lotteryTypeId.id},
+            #{lotteryTypeId.code},
+            #{startTime},
+            #{endTime},
+            #{periodTotalTime},
+            #{periodHaltTime},
+            #{createDate},
+            #{createBy.id},
+            #{updateDate},
+            #{updateBy.id},
+            #{delFlag}
+        )
+    </insert>
+
+    <!-- 更新一条数据 -->
+    <update id="update">
+        UPDATE lottery_type_time SET     
+            lottery_type_id = #{lotteryTypeId.id},
+            lottery_code = #{lotteryCode},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            period_total_time = #{periodTotalTime},
+            period_halt_time = #{periodHaltTime},
+            update_date = #{updateDate},
+            update_by = #{updateBy.id}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除一条数据（更新删除标记为1） -->
+    <update id="delete">
+        UPDATE lottery_type_time SET 
+            del_flag = #{DEL_FLAG_DELETE}
+        <choose>
+            <when test="id !=null and id != ''">
+                WHERE id = #{id}
+            </when>
+            <otherwise>
+                WHERE lottery_type_id = #{lotteryTypeId.id}
+            </otherwise>
+        </choose>
+    </update>
+</mapper>
