@@ -5,6 +5,7 @@ package com.game.manager.modules.lottery.entity;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.alibaba.fastjson.JSON;
 import com.game.manager.common.persistence.DataEntity;
 
 /**
@@ -15,12 +16,36 @@ import com.game.manager.common.persistence.DataEntity;
 public class LotteryTypeTime extends DataEntity<LotteryTypeTime> {
 
     private static final long serialVersionUID = 1L;
-    private LotteryType lotteryTypeId; // 彩票主键id 父类
-    private String lotteryCode; // 彩票代码
-    private String startTime; // 开始时间
-    private String endTime; // 截止时间
-    private String periodTotalTime; // 开奖周期时间
-    private String periodHaltTime; // 每期封单时间
+
+    /**
+     * 彩票主键id 父类
+     */
+    private LotteryType lotteryTypeId;
+
+    /**
+     * 彩票代码
+     */
+    private String lotteryCode;
+
+    /**
+     * 开始时间
+     */
+    private String startTime;
+
+    /**
+     * 截止时间
+     */
+    private String endTime;
+
+    /**
+     * 开奖周期时间
+     */
+    private String periodTotalTime;
+
+    /**
+     * 每期封单时间
+     */
+    private String periodHaltTime;
 
     public LotteryTypeTime() {
         super();
@@ -87,4 +112,8 @@ public class LotteryTypeTime extends DataEntity<LotteryTypeTime> {
         this.periodHaltTime = periodHaltTime;
     }
 
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
+    }
 }
