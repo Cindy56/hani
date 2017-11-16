@@ -63,11 +63,11 @@
 	<!-- 依赖项定义 -->
 	<dependencies>
 
-<!--  		<dependency>
+		<dependency>
 			<groupId>com.game</groupId>
 			<artifactId>game-manager-client</artifactId>
 			<version>0.0.1</version>
-		</dependency>  -->
+		</dependency>
 
 		<dependency>
 			<groupId>com.caucho</groupId>
