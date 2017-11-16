@@ -63,11 +63,6 @@ public class LotteryType extends DataEntity<LotteryType> {
     /**
      * 子表列表
      */
-    private List<LotteryPlayConfig> lotteryPlayConfigList = Lists.newArrayList();
-
-    /**
-     * 子表列表
-     */
     private List<LotteryTypeTime> lotteryTypeTimeList = Lists.newArrayList();
 
     public LotteryType() {
@@ -147,14 +142,6 @@ public class LotteryType extends DataEntity<LotteryType> {
 
     public void setAmountMaxBet(String amountMaxBet) {
         this.amountMaxBet = amountMaxBet;
-    }
-
-    public List<LotteryPlayConfig> getLotteryPlayConfigList() {
-        return lotteryPlayConfigList;
-    }
-
-    public void setLotteryPlayConfigList(List<LotteryPlayConfig> lotteryPlayConfigList) {
-        this.lotteryPlayConfigList = lotteryPlayConfigList;
     }
 
     public List<LotteryTypeTime> getLotteryTypeTimeList() {

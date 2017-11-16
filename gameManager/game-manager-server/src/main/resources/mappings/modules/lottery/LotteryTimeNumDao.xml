@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.manager.modules.lottery.dao.LotteryTimeNumDao">
+    
+	<sql id="lotteryTimeNumColumns">
+		a.id AS "id",
+		a.lottery_code AS "lotteryCode",
+		a.lottery_issue_no AS "lotteryIssueNo",
+		a.bet_start_date AS "betStartDate",
+		a.bet_end_date AS "betEndDate",
+		a.bet_halt_date AS "betHaltDate",
+		a.open_num AS "openNum",
+		a.open_date AS "openDate",
+		a.open_trend AS "openTrend",
+		a.status AS "status",
+		a.next_issue_no AS "nextIssueNo",
+		a.next_halt_date AS "nextHaltDate",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="lotteryTimeNumJoins">
+	</sql>
+    
+	<select id="get" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		<include refid="lotteryTimeNumJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		<include refid="lotteryTimeNumJoins"/>
+		where
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		 <if test="lotteryIssueNo != null and lotteryIssueNo != ''">
+               AND a.lottery_issue_no LIKE concat('%', #{lotteryIssueNo}, '%')
+           </if>
+            <if test="lotteryCode != null and lotteryCode != ''">
+               AND a.lottery_code = #{lotteryCode}
+           </if>
+           ORDER BY a.bet_start_date 
+	</select>
+	
+	<select id="findAllList" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		<include refid="lotteryTimeNumJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO lottery_time_num(
+			id,
+			lottery_code,
+			lottery_issue_no,
+			bet_start_date,
+			bet_end_date,
+			bet_halt_date,
+			open_num,
+			open_date,
+			open_trend,
+			status,
+			next_issue_no,
+			next_halt_date,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{lotteryCode},
+			#{lotteryIssueNo},
+			#{betStartDate},
+			#{betEndDate},
+			#{betHaltDate},
+			#{openNum},
+			#{openDate},
+			#{openTrend},
+			#{status},
+			#{nextIssueNo},
+			#{nextHaltDate},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE lottery_time_num SET 	
+			lottery_code = #{lotteryCode},
+			lottery_issue_no = #{lotteryIssueNo},
+			bet_start_date = #{betStartDate},
+			bet_end_date = #{betEndDate},
+			bet_halt_date = #{betHaltDate},
+			open_num = #{openNum},
+			open_date = #{openDate},
+			open_trend = #{openTrend},
+			status = #{status},
+			next_issue_no = #{nextIssueNo},
+			next_halt_date = #{nextHaltDate},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE lottery_time_num SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<insert id="batchTimeNum" parameterType="java.util.List">
+	    insert into lottery_time_num (
+	    	id,
+			lottery_code,
+			lottery_issue_no,
+			bet_start_date,
+			bet_end_date,
+			bet_halt_date,
+			status,
+			next_issue_no,
+			next_halt_date,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+			)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator="," >
+	    (
+	       	#{item.id},
+			#{item.lotteryCode},
+			#{item.lotteryIssueNo},
+			#{item.betStartDate},
+			#{item.betEndDate},
+			#{item.betHaltDate},
+			#{item.status},
+			#{item.nextIssueNo},
+			#{item.nextHaltDate},
+			#{item.createDate},
+			#{item.createBy.id},
+			#{item.updateDate},
+			#{item.updateBy.id},
+			#{item.delFlag}
+			)
+	    </foreach>
+	    
+	</insert>
+	
+	<update id="updateLotteryNum">
+		UPDATE lottery_time_num SET 
+			open_num = #{lotteryNum},
+			status = #{status},
+			open_date = #{openDate},
+			update_date = now()
+		WHERE lottery_code = #{lotteryCode} and lottery_issue_no = #{lotteryIssueNo}  
+	</update>
+	
+	<select id="queryCurrentIssueNo" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		where a.del_flag = '0' and
+		a.lottery_code = #{lotteryCode} and 
+		<![CDATA[ 
+			a.bet_start_date <=  #{date} and a.bet_end_date > #{date} 
+		 ]]>
+	</select>
+	
+	<select id="queryHisLotteryTimeNum" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		where a.del_flag = '0'   and
+		a.lottery_code = #{lotteryCode} 
+		<![CDATA[ and a.bet_halt_date <= #{haltDate} ]]>
+		order by a.bet_halt_date desc limit 0,#{row}
+	</select>
+</mapper>
