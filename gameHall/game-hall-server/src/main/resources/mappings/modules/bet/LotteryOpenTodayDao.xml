@@ -12,9 +12,9 @@
 		a.bet_end_date AS "betEndDate",
 		a.bet_halt_date AS
 		"betHaltDate",
-		a.draw_num AS "drawNum",
+<!-- 		a.draw_num AS "drawNum",
 		a.draw_num_detail AS
-		"drawNumDetail",
+		"drawNumDetail", -->
 		a.status AS "status",
 		a.create_date AS "createDate",
 		a.create_by AS "createBy.id",
