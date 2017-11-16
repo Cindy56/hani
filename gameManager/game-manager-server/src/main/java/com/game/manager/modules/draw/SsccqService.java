@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import org.apache.commons.lang3.StringUtils;
 
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
+import com.game.manager.modules.order.entity.LotteryOrder;
 
 
 public enum SsccqService implements LotteryCalculateService{

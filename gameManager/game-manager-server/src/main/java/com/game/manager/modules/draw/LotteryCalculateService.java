@@ -3,6 +3,7 @@ package com.game.manager.modules.draw;
 import java.math.BigDecimal;
 
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
+import com.game.manager.modules.order.entity.LotteryOrder;
 
 
 //拉奖

@@ -44,17 +44,10 @@ public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType>
     private LotteryTypeTimeDao lotteryTypeTimeDao;
 
     /**
-     * 彩种管理DAO
-     */
-    @Autowired
-    private LotteryTypeDao lotteryTypeDao;
-
-    /**
      * 根据记录ID获取单条数据
      */
     public LotteryType get(String id) {
         LotteryType lotteryType = super.get(id);
-        lotteryType.setLotteryPlayConfigList(lotteryPlayConfigDao.findList(new LotteryPlayConfig(lotteryType)));
         lotteryType.setLotteryTypeTimeList(lotteryTypeTimeDao.findList(new LotteryTypeTime(lotteryType)));
         return lotteryType;
     }
