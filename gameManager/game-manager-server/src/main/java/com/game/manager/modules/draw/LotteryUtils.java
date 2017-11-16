@@ -7,18 +7,27 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class LotteryUtils {
-	public static void main(String[] args) {
-//		LotteryUtils.arrangementSelect(new String[] {"1","2","3","4","5","6","7","8","9","10","11"}, 5);
-//		LotteryUtils.combinationSelect(new String[] {"0","1","2","3","4","5","6","7","8","9"}, 3);
-//		LotteryUtils.zhixuan3();
+    /**
+     * 将数组int[]{1, 2, 3}格式化成 字符串123 
+     * @param a
+     * @return
+     */
+    public static String formatNumber(int[] a) {
+        if (a == null)
+            return "null";
+        int iMax = a.length - 1;
+        if (iMax == -1)
+            return "";
 
-		
-		LotteryUtils.ssc3XinPailie();
-//		LotteryUtils.zuxuanAll();
-//		int[] haoma = new int[] {9,0,5}; 
-//		Arrays.sort(haoma);
-//		System.out.println(haoma);
-	}
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; ; i++) {
+            b.append(a[i]);
+            if (i == iMax) {
+            	 return b.toString();
+            }
+            b.append(",");
+        }
+    }
 	
 	private static Set<int[]> ssc3XinPailieDadi() {
 		int[] bai = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};//百位
@@ -44,7 +53,7 @@ public class LotteryUtils {
         Set<String> result = new TreeSet<>();
         Set<int[]> dadi = ssc3XinPailieDadi();
         for (int[] haoma : dadi) {
-        	result.add(Arrays.toString(haoma));
+        	result.add(formatNumber(haoma));
 		}
         return result;
 	}
@@ -58,7 +67,7 @@ public class LotteryUtils {
         Set<int[]> dadi = ssc3XinPailieDadi();
         for (int[] haoma : dadi) {
         	Arrays.sort(haoma);
-        	result.add(Arrays.toString(haoma));
+        	result.add(formatNumber(haoma));
 		}
         return result;
 	}	
