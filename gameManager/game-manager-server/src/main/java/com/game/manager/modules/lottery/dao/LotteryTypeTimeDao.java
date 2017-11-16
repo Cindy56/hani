@@ -5,21 +5,14 @@ package com.game.manager.modules.lottery.dao;
 
 import com.game.manager.common.persistence.CrudDao;
 import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.lottery.entity.LotteryType;
+import com.game.manager.modules.lottery.entity.LotteryTypeTime;
 
 /**
  * 彩种基本信息管理DAO接口
  * @author Terry
- * @version 2017-11-07
+ * @version 2017-11-15
  */
 @MyBatisDao
-public interface LotteryTypeDao extends CrudDao<LotteryType> {
-
-    /**
-     * 通过彩种代码获取单条数据
-     * @param code 彩种代码
-     * @return
-     * @author Terry
-     */
-    LotteryType getByCode(String code);
+public interface LotteryTypeTimeDao extends CrudDao<LotteryTypeTime> {
+	
 }

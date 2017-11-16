@@ -37,7 +37,6 @@
             <li><label>彩种名称：</label>
                 <form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
             </li>
-            <li class="btns"><button id="clearSearch" type="reset" class="btn reset">清空搜索</button></li>
             <li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="搜索"/></li>
             <li class="clearfix"></li>
         </ul>
@@ -50,14 +49,12 @@
             <tr>
                 <th>彩种名称</th>
                 <th>彩种类型</th>
+                <th>所属公司</th>
                 <th>是否自动开奖</th>
                 <th>是否启用</th>
-                <th>每日开售时间(HH:mm)</th>
-                <th>每日停售时间(HH:mm)</th>
-                <th>每日期数(期)</th>
-                <th>开奖周期(分钟/期)</th>
-                <th>封单时间(秒钟)</th>
-                <th>每期投注最高金额(元)</th>
+                <th>开奖周期</th>
+                <th>每日开奖期数</th>
+                <th>每期投注最高金额</th>
                 <shiro:hasPermission name="lottery:lotteryType:edit"><th>操作</th></shiro:hasPermission>
             </tr>
         </thead>
@@ -71,27 +68,21 @@
                     ${fns:getDictLabelForList('lottery_category', lotteryType.parentCode, '')}
                 </td>
                 <td>
-                    ${fns:getDictLabelForList('yes_no', lotteryType.isAuto, '')}
+                    ${lotteryType.companyId}
                 </td>
                 <td>
-                    ${fns:getDictLabelForList('yes_no', lotteryType.isEnable, '')}
+                    ${fns:getDictLabel(lotteryType.isAuto, 'yes_no', '')}
                 </td>
                 <td>
-                    ${lotteryType.startDate}
+                    ${fns:getDictLabel(lotteryType.isEnable, 'yes_no', '')}
                 </td>
                 <td>
-                    ${lotteryType.endDate}
+                    ${fns:getDictLabel(lotteryType.isEnable, 'yes_no', '')}
                 </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryType.times}
                 </td>
-                <td>
-                    ${lotteryType.periodTotalTime}
-                </td>
-                <td>
-                    ${lotteryType.periodHaltTime}
-                </td>
-                <td>
+                <td style="text-align: right;">
                     ${lotteryType.amountMaxBet}
                 </td>
                 <shiro:hasPermission name="lottery:lotteryType:edit"><td>
@@ -103,13 +94,5 @@
         </tbody>
     </table>
     <div class="pagination">${page}</div>
-    <script type="text/javascript">
-        /**
-         * 清空搜索事件
-         */
-        $("#clearSearch").click(function() {
-            $("span.select2-chosen").text("-- 请选择 --");
-        });
-    </script>
 </body>
 </html>
