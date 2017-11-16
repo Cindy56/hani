@@ -1,18 +1,57 @@
 package com.game.manager.modules.draw;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class LotteryUtils {
+	public static void main(String[] args) {
+		System.out.println(LotteryUtils.ssc3XinZuxuan());
+	}
+	
+	/**
+	 * 时时彩直选 检查是否中奖
+	 * @param openNum 开奖号码，格式为逗号分割“4,5,6”。
+	 * @param betNum 投注号码，复试为逗号分割“234,567,678”，单式没有分隔符“456”
+	 * @return
+	 */
+	public static boolean checkWinSscZhi(String openNum, String betNum) {
+		String[] open = openNum.split(",");
+		String[] bet =  betNum.contains(",") ? betNum.split(",") : betNum.split("");
+		for (int i = 0; i < open.length; i++) {
+			if(!StringUtils.contains(bet[i], open[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+	/**
+	 * 检查时时彩组选6是否中奖，支持多星
+	 * @param openNum 开奖号码，格式为逗号分割“4,5,6”。
+	 * @param betNum 投注号码，没有分隔符“2345678”，
+	 * @return
+	 */
+	public static boolean checkWinSscZu6(String openNum, String betNum) {
+		String[] open = openNum.split(",");
+		for (int i = 0; i < open.length; i++) {
+			if(!StringUtils.contains(betNum, open[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/** 检查时时彩组选3是否中奖， 支持多星 */
+	
+	
     /**
-     * 将数组int[]{1, 2, 3}格式化成 字符串123 
+     * 将数组String[]{1, 2, 3}格式化成 字符串123 
      * @param a
      * @return
      */
-    public static String formatNumber(int[] a) {
+    public static String formatNumber(String[] a) {
         if (a == null)
             return "null";
         int iMax = a.length - 1;
@@ -25,20 +64,24 @@ public class LotteryUtils {
             if (i == iMax) {
             	 return b.toString();
             }
-            b.append(",");
+//            b.append(",");
         }
     }
 	
-	private static Set<int[]> ssc3XinPailieDadi() {
-		int[] bai = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};//百位
-		int[] shi = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};//十位
-		int[] ge = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};//个位
-        
-		Set<int[]> result = new TreeSet<>();
+	/**
+	 * 格式如下:
+	 * String[] bai = new String[]{"0","1","2","3","4","5","6","7","8","9"};//百位
+	 * String[] shi = new String[]{"0","1","2","3","4","5","6","7","8","9"};//十位
+	 * String[] ge = new String[]{"0","1","2","3","4","5","6","7","8","9"};//个位 
+	 */
+	public static Set<String> ssc3XinPailie(String[] bai, String[] shi, String[] ge) {
+		Set<String> result = new TreeSet<>();
         for (int i = 0; i < bai.length; i++) {
         	for (int j = 0; j < shi.length; j++) {
         		for (int k = 0; k < ge.length; k++) {
-        			result.add(new int[] {bai[i], shi[j], ge[k]});
+        			StringBuilder temp = new StringBuilder();
+        			temp.append(bai[i]).append(shi[j]).append(ge[k]);
+        			result.add(temp.toString());
         		}
     		}
 		}
@@ -46,28 +89,31 @@ public class LotteryUtils {
 	}
 	
 	/**
-	 * 3星直选大底排列
+	 * 3星直选大底全排列
 	 * @return
 	 */
 	public static Set<String> ssc3XinPailie() {
-        Set<String> result = new TreeSet<>();
-        Set<int[]> dadi = ssc3XinPailieDadi();
-        for (int[] haoma : dadi) {
-        	result.add(formatNumber(haoma));
-		}
-        return result;
+		String[] bai = new String[]{"0","1","2","3","4","5","6","7","8","9"};//百位
+		String[] shi = new String[]{"0","1","2","3","4","5","6","7","8","9"};//十位
+		String[] ge = new String[]{"0","1","2","3","4","5","6","7","8","9"};//个位      
+        return ssc3XinPailie(bai, shi, ge);
 	}
 	
 	
 	/**
-	 *  3星组选大底组合
+	 *  3星所有的组选大底
 	 */
-	public static Set<String> ssc3XinZuxuanAll() {
-        Set<String> result = new TreeSet<>();
-        Set<int[]> dadi = ssc3XinPailieDadi();
-        for (int[] haoma : dadi) {
-        	Arrays.sort(haoma);
-        	result.add(formatNumber(haoma));
+	public static Set<String> ssc3XinZuxuan() {
+		String[] bai = new String[]{"0","1","2","3","4","5","6","7","8","9"};//百位
+		String[] shi = new String[]{"0","1","2","3","4","5","6","7","8","9"};//十位
+		String[] ge = new String[]{"0","1","2","3","4","5","6","7","8","9"};//个位      
+		
+		Set<String> result = new TreeSet<>();
+		Set<String> dadi = ssc3XinPailie(bai, shi, ge);
+        for (String haoma : dadi) {
+        	String[] xxx = haoma.split("");
+        	Arrays.sort(xxx);
+        	result.add(formatNumber(xxx));
 		}
         return result;
 	}	
@@ -75,12 +121,13 @@ public class LotteryUtils {
 	 * 时时彩3星组选3:3个号码里有相同的2个号码
 	 */
 	public static void ssc3XinZuxuan3() {
-		
+		//TODO:XXXXX
 	}	
 	/**
 	 * 时时彩组选6：3个号码里没有相同的2个号码
 	 */
 	public static void ssc3XinZuxuan6() {
+		//TODO:XXXXX		
 	}	
 	
 	/**
@@ -91,18 +138,9 @@ public class LotteryUtils {
 	 * 排列2
 	 * @return
 	 */
-	public static List<String> pailie2() {
-		String[] shi = new String[]{"0","1","2","3","4","5","6","7","8","9"};//十位
-		String[] ge = new String[]{"0","1","2","3","4","5","6","7","8","9"};//个位
-		
-		List<String> resul = new ArrayList<String>();
-		for (int j = 0; j < shi.length; j++) {
-			for (int k = 0; k < ge.length; k++) {
-				StringBuilder xxxx = new StringBuilder();
-				resul.add(xxxx.append(shi[j]).append(ge[k]).toString());
-			}
-		}
-		return resul;
+	public static Set<String> ssc2XinPailie() {
+		//TODO:xxxxx
+		return null;
 	}
 //===============================================================排列组合公式
 	
