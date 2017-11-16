@@ -15,6 +15,8 @@ import com.game.manager.modules.lottery.entity.LotteryType;
 @MyBatisDao
 public interface LotteryTypeDao extends CrudDao<LotteryType> {
 
+    public LotteryType queryLotteryType(String lotteryCode);
+
     /**
      * 通过彩种代码获取单条数据
      * @param code 彩种代码

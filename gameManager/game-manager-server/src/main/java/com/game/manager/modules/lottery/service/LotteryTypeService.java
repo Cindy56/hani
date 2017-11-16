@@ -116,5 +116,4 @@ public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType>
         lotteryPlayConfigDao.delete(new LotteryPlayConfig(lotteryType));
         lotteryTypeTimeDao.delete(new LotteryTypeTime(lotteryType));
     }
-
 }
