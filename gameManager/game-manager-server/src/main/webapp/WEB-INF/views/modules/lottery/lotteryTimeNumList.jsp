@@ -20,6 +20,7 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/lottery/lotteryTimeNum/">开奖时刻列表</a></li>
 		<shiro:hasPermission name="lottery:lotteryTimeNum:edit"><li><a href="${ctx}/lottery/lotteryTimeNum/form">开奖时刻添加</a></li></shiro:hasPermission>
+		<li ><a href="${ctx}/lottery/lotteryTimeNum/batchView">批量修改时刻</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="lotteryTimeNum" action="${ctx}/lottery/lotteryTimeNum/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
