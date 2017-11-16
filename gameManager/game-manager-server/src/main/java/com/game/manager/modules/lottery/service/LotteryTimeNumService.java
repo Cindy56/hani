@@ -6,20 +6,15 @@ package com.game.manager.modules.lottery.service;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.quartz.SchedulerException;
@@ -33,12 +28,13 @@ import com.game.manager.common.persistence.Page;
 import com.game.manager.common.service.CrudService;
 import com.game.manager.common.utils.DateUtils;
 import com.game.manager.common.utils.StringUtils;
+import com.game.manager.modules.lottery.dao.LotteryTimeNumDao;
+import com.game.manager.modules.lottery.dto.TimeTask;
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
+import com.game.manager.modules.lottery.entity.LotteryType;
 import com.game.manager.modules.lottery.entity.LotteryTypeTime;
 import com.game.manager.modules.lottery.schedule.TimeTaskService;
 import com.game.manager.modules.sys.entity.Dict;
-import com.game.manager.modules.lottery.dao.LotteryTimeNumDao;
-import com.game.manager.modules.lottery.dto.TimeTask;
 
 /**
  * 开奖时刻和开奖结果Service
@@ -57,8 +53,10 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 	@Autowired
     private LotteryTimeNumDao lotteryTimeNumDao;
 	
-	@Autowired
-    private LotteryTypeTimeService lotteryTypeTimeService;
+//	@Autowired
+//    private LotteryTypeTimeService lotteryTypeTimeService;
+//    @Autowired
+//    private LotteryTypeService lotteryTypeService;
 	
 	
 	public LotteryTimeNum get(String id) {
@@ -98,7 +96,11 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 	@Transactional(readOnly = false)
     public  void  generatePlanTime (TimeTask timeTask) throws SchedulerException {
 		//TODO:返回一个数组
-		List<LotteryTypeTime> lotteryTypeTimeList = lotteryTypeTimeService.queryLotteryTypeTime(timeTask.getLotteryCode());
+		LotteryType lotteryType = lotteryTypeService.getByCode(timeTask.getLotteryCode());
+		if(null == lotteryType) {
+			return;
+		}
+		List<LotteryTypeTime> lotteryTypeTimeList = lotteryType.getLotteryTypeTimeList();
     	if(CollectionUtils.isEmpty(lotteryTypeTimeList)) {
     		return;
     	}
