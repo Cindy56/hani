@@ -3,6 +3,8 @@
  */
 package com.api;
 
+import java.util.List;
+
 import com.entity.BetData;
 import com.entity.ResultData;
 
@@ -22,7 +24,7 @@ public interface BetServiceApi {
 	 * @param betData
 	 * @return
 	 */
-	public ResultData addBet(BetData betData);
+	public ResultData addBet(List<BetData> betData);
 
 	/**
 	 * 历史开奖
