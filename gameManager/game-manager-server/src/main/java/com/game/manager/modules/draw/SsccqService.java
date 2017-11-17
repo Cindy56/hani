@@ -14,12 +14,6 @@ public enum SsccqService implements LotteryCalculateService {
     /** 单星直选 */
     SSC_DAN1_ZHIXUAN("SSC_DAN1_ZHIXUAN", "单星直选") {
 
-        /**
-         * 开奖时刻管理Service
-         */
-        @Autowired
-        private LotteryTimeNumService lotteryTimeNumService;
-
         @Override
         public void trend(LotteryTimeNum lotteryTimeNum) {
             // TODO Auto-generated method stub
@@ -27,26 +21,8 @@ public enum SsccqService implements LotteryCalculateService {
 
         @Override
         public boolean checkOrder(LotteryOrder lotteryOrder) {
-            // 如果传入参数为null，返回false，校验失败
-            if (null == lotteryOrder) {
-                return false;
-            }
-            // 期号检查,投注期号与当前期号作对比，如果不一致，返回false，校验失败
-            LotteryTimeNum lotteryTimeNum = lotteryTimeNumService.findCurrentIssueNo(lotteryOrder.getLotteryCode());
-            if (null == lotteryTimeNum) {
-                return false;
-            }
-            String currentIssueNo = lotteryTimeNum.getLotteryIssueNo();
-            if (!lotteryOrder.getBetIssueNo().equals(currentIssueNo)) {
-                return false;
-            }
-            // 投注有效性检查，当前时间是否在当前有效投注时间段内，如果不在，返回false，校验失败
-            Long currentDate = System.currentTimeMillis();
-            Long startDate = lotteryTimeNum.getBetStartDate().getTime();
-            Long endDate = lotteryTimeNum.getBetEndDate().getTime();
-            if (currentDate <= startDate || currentDate >= endDate) {
-                return false;
-            }
+            // 对注单进行基础校验
+            baseCheck(lotteryOrder);
             // 数据格式校验，投注内容必须是数字或减号以英文逗号隔开的字符串，且至少包含一个数字
             String betNumber = lotteryOrder.getBetDetail();
             String formatRegex = "((\\d+|-){1},{1}){4}(\\d+|-){1}";
@@ -54,87 +30,49 @@ public enum SsccqService implements LotteryCalculateService {
             if (betNumber.matches(formatRegex) && betNumber.matches(containRegex)) {
                 return false;
             }
-
-            // TODO 返水范围校验 等待freeman提供接口
-
-            // 投注金额校验，如果传入的不是一个有效的金额数据，返回false，校验失败
-            String betAmount = lotteryOrder.getBetAmount();
-            if (StringUtils.isBlank(betAmount)) {
-                return false;
-            }
-            else {
-                try {
-                    return new BigDecimal(betAmount).compareTo(new BigDecimal("0")) > 0;
-                }
-                catch (Exception e) {
-                    return false;
-                }
-            }
+            return true;
         }
 
         @Override
         public boolean checkWin(LotteryOrder lotteryOrder) {
-            // 如果传入参数为null，返回false，未中奖
-            if (null == lotteryOrder) {
-                return false;
-            }
-
-            // TODO 获取当前期数开奖号码，等待jerry提供接口
-            String openNum = "3,5,6,9,4";
-
-            // 用户投注号码
-            String betNumber = lotteryOrder.getBetDetail();
-            // 返回判断结果
-            return LotteryUtils.checkWinSscZhi(openNum, betNumber);
+            return sscZhiXuanCheckWid(lotteryOrder);
         }
 
         @Override
         public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder) {
-            return new BigDecimal(0);
+            return sscZhiXuanCalculate(lotteryOrder);
         }
-    },
-    /** xxxxxx */
-    /** xxxxxx */
-    /** xxxxxx */
-    /** xxxxxx */
-    /** xxxxxx */
-    /** xxxxxx */
-    /** xxxxxx */
 
-    // /** 时时彩前3直选 */
+    },
+    /** 时时彩前3直选 */
     SSC_QIAN3_ZHIXUAN("SSC_QIAN3_ZHIXUAN", "时时彩前3直选 ") {
 
         @Override
         public void trend(LotteryTimeNum lotteryTimeNum) {
             // TODO Auto-generated method stub
-
         }
 
         @Override
         public boolean checkOrder(LotteryOrder lotteryOrder) {
-            // TODO Auto-generated method stub
-
-            // LotteryUtils.ssc3XinPailie.contains("4,5,6");
-            return false;
+            // 对注单进行基础校验
+            baseCheck(lotteryOrder);
+            // 数据格式校验，投注内容必须是数字或减号以英文逗号隔开的字符串，且至少包含一个数字
+            String betNumber = lotteryOrder.getBetDetail();
+            String formatRegex = "(\\d+,{1}){3}-,-";
+            if (betNumber.matches(formatRegex)) {
+                return false;
+            }
+            return true;
         }
 
         @Override
         public boolean checkWin(LotteryOrder lotteryOrder) {
-            // 获取中奖号码
-            // 生成护院投注的排列
-            // 然后判断中奖号码有没有在投注的排列中
-            return false;
+            return sscZhiXuanCheckWid(lotteryOrder);
         }
 
         @Override
         public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder) {
-            // TODO Auto-generated method stub
-            if (checkWin(lotteryOrder)) {
-                // BigDecimal
-                // return lotteryOrder.getBetRate() * 奖金组
-                return null;
-            }
-            return null;
+            return sscZhiXuanCalculate(lotteryOrder);
         }
 
     },
@@ -168,6 +106,11 @@ public enum SsccqService implements LotteryCalculateService {
     private String playCode;
     /**  玩法名称 */
     private String playName;
+    /**
+     * 开奖时刻管理Service
+     */
+    @Autowired
+    private static LotteryTimeNumService lotteryTimeNumService;
 
     private SsccqService(String playCode, String playName) {
         this.playCode = playCode;
@@ -190,11 +133,113 @@ public enum SsccqService implements LotteryCalculateService {
         this.playName = playName;
     }
 
-    /*
-     * public static void main(String[] args) { EnumSet<SsccqService> ssccq =
-     * EnumSet.allOf(SsccqService.class); for (SsccqService playcode : ssccq) { //
-     * System.out.println(playcode); if
-     * ("SSC_DAN1_ZHIXUAN".equalsIgnoreCase(playcode.getPlayCode())) {
-     * System.out.println(playcode.checkWin()); break; } } }
+    /**
+     * 根据不同的玩法模式，返回对应的计算数值，默认为元（1）
+     * @param lotteryOrder 包含玩法模式数据的实体对象
+     * @return 返回对应奖金计算参数
+     * @author Terry
      */
+    private static BigDecimal getParamByType(LotteryOrder lotteryOrder) {
+        BigDecimal param = null;
+        switch (lotteryOrder.getPlayModeMoney())
+        {
+            case "0":
+                param = new BigDecimal("1");
+                break;
+            case "1":
+                param = new BigDecimal("0.1");
+                break;
+            case "2":
+                param = new BigDecimal("0.01");
+                break;
+            default:
+                param = new BigDecimal("1");
+                break;
+        }
+        return param;
+    }
+
+    /**
+     * 注单基础校验，校验期号、有效性、金额合法性
+     * @param lotteryOrder 注单信息
+     * @return 基本校验不通过返回false，通过返回true
+     * @author Terry
+     */
+    private static boolean baseCheck(LotteryOrder lotteryOrder) {
+        // 如果传入参数为null，返回false，校验失败
+        if (null == lotteryOrder) {
+            return false;
+        }
+        // 期号检查,投注期号与当前期号作对比，如果不一致，返回false，校验失败
+        LotteryTimeNum lotteryTimeNum = lotteryTimeNumService.findCurrentIssueNo(lotteryOrder.getLotteryCode());
+        if (null == lotteryTimeNum) {
+            return false;
+        }
+        String currentIssueNo = lotteryTimeNum.getLotteryIssueNo();
+        if (!lotteryOrder.getBetIssueNo().equals(currentIssueNo)) {
+            return false;
+        }
+        // 投注有效性检查，当前时间是否在当前有效投注时间段内，如果不在，返回false，校验失败
+        Long currentDate = System.currentTimeMillis();
+        Long startDate = lotteryTimeNum.getBetStartDate().getTime();
+        Long endDate = lotteryTimeNum.getBetEndDate().getTime();
+        if (currentDate <= startDate || currentDate >= endDate) {
+            return false;
+        }
+
+        // TODO 返水范围校验 等待freeman提供接口
+
+        // 投注金额校验，如果传入的不是一个有效的金额数据，返回false，校验失败
+        String betAmount = lotteryOrder.getBetAmount();
+        if (StringUtils.isBlank(betAmount)) {
+            return false;
+        }
+        else {
+            try {
+                return new BigDecimal(betAmount).compareTo(new BigDecimal("0")) > 0;
+            }
+            catch (Exception e) {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * 时时彩直选是否中奖判断
+     * @param lotteryOrder 投注订单数据实体对象
+     * @return 中奖返回true
+     * @author Terry
+     */
+    private static boolean sscZhiXuanCheckWid(LotteryOrder lotteryOrder) {
+        // 如果传入参数为null，返回false，未中奖
+        if (null == lotteryOrder) {
+            return false;
+        }
+
+        // TODO 获取当前期数开奖号码，等待jerry提供接口
+        String openNum = "3,5,6,9,4";
+
+        // 返回判断结果
+        return LotteryUtils.checkWinSscZhi(openNum, lotteryOrder.getBetDetail());
+    }
+
+    /**
+     * 时时彩单式投注奖金计算
+     * @param lotteryOrder
+     * @return 返回注单的中奖金额，如果没有中奖，返回金额为0
+     * @author Terry
+     */
+    private static BigDecimal sscZhiXuanCalculate(LotteryOrder lotteryOrder) {
+        // 如果没有中奖，直接返回金额为0
+        if (!sscZhiXuanCheckWid(lotteryOrder)) {
+            BigDecimal zero = new BigDecimal(0);
+            return zero;
+        }
+        // 投注奖金组、投注倍数、投注模式
+        BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoneyType());
+        BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
+        BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
+        // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值
+        return playModeMoney.multiply(betRate).multiply(playModeMoneyType);
+    }
 }
