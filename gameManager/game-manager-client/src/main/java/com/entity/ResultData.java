@@ -2,6 +2,21 @@ package com.entity;
 
 public class ResultData {
 
+	static public ResultData ResultDataOK()
+	{
+		ResultData rd = new ResultData();
+		rd.errorCode = 0;
+		rd.message = "OK";
+		return rd;
+	}
+	
+	static public ResultData ResultDataFail()
+	{
+		ResultData rd = new ResultData();
+		rd.errorCode = 1;
+		rd.message = "Fail";
+		return rd;
+	}
 	/**
 	 * @return the errorCode
 	 */
