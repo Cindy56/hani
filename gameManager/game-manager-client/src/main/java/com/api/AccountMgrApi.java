@@ -25,5 +25,7 @@ public interface AccountMgrApi {
 	public ResultData addBet(BetData betData);
 
 	public ResultData openToday();
+	
+	public ResultData personalData(String id);
 
 }
