@@ -4,6 +4,7 @@
     
 	<sql id="lotteryOrderColumns">
 		a.id AS "id",
+		a.order_num AS "orderNum",
 		a.user_id AS "user.id",
 		a.lottery_code AS "lotteryCode",
 		a.bet_issue_no AS "betIssueNo",
@@ -25,11 +26,11 @@
 		a.update_date AS "updateDate",
 		a.update_by AS "updateBy.id",
 		a.del_flag AS "delFlag",
-		u2.name AS "user.name"
+		u3.name AS "user.name"
 	</sql>
 	
 	<sql id="lotteryOrderJoins">
-		LEFT JOIN sys_user u2 ON u2.id = a.user_id
+		LEFT JOIN sys_user u3 ON u3.id = a.user_id
 	</sql>
     
 	<select id="get" resultType="LotteryOrder">
@@ -49,6 +50,9 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="id != null and id != ''">
 				AND a.id = #{id}
+			</if>
+			<if test="orderNum != null and orderNum != ''">
+				AND a.order_num = #{orderNum}
 			</if>
 			<if test="user != null and user.id != null and user.id != ''">
 				AND a.user_id = #{user.id}
@@ -107,9 +111,6 @@
 			<if test="updateDate != null and updateDate != ''">
 				AND a.update_date = #{updateDate}
 			</if>
-			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
-				AND a.update_by = #{updateBy.id}
-			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -142,6 +143,7 @@
 	<insert id="insert">
 		INSERT INTO lottery_order(
 			id,
+			order_num,
 			user_id,
 			lottery_code,
 			bet_issue_no,
@@ -165,6 +167,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{orderNum},
 			#{user.id},
 			#{lotteryCode},
 			#{betIssueNo},
@@ -191,6 +194,7 @@
 	
 	<update id="update">
 		UPDATE lottery_order SET 	
+			order_num = #{orderNum},
 			user_id = #{user.id},
 			lottery_code = #{lotteryCode},
 			bet_issue_no = #{betIssueNo},

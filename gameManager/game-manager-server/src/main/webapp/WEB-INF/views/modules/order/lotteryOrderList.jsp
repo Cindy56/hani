@@ -28,6 +28,9 @@
 			<li><label>id：</label>
 				<form:input path="id" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
+			<li><label>订单编号：</label>
+				<form:input path="orderNum" htmlEscape="false" maxlength="50" class="input-medium"/>
+			</li>
 			<li><label>user_id：</label>
 				<sys:treeselect id="user" name="user.id" value="${lotteryOrder.user.id}" labelName="user.name" labelValue="${lotteryOrder.user.name}"
 					title="用户" url="/sys/office/treeData?type=3" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/>
@@ -90,9 +93,6 @@
 					value="<fmt:formatDate value="${lotteryOrder.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</li>
-			<li><label>update_by：</label>
-				<form:input path="updateBy.id" htmlEscape="false" maxlength="50" class="input-medium"/>
-			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -102,6 +102,7 @@
 		<thead>
 			<tr>
 				<th>id</th>
+				<th>订单编号</th>
 				<th>user_id</th>
 				<th>lottery_code</th>
 				<th>投注期号</th>
@@ -121,7 +122,6 @@
 				<th>create_date</th>
 				<th>create_by</th>
 				<th>update_date</th>
-				<th>update_by</th>
 				<shiro:hasPermission name="order:lotteryOrder:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -131,6 +131,9 @@
 				<td><a href="${ctx}/order/lotteryOrder/form?id=${lotteryOrder.id}">
 					${lotteryOrder.id}
 				</a></td>
+				<td>
+					${lotteryOrder.orderNum}
+				</td>
 				<td>
 					${lotteryOrder.user.name}
 				</td>
@@ -187,9 +190,6 @@
 				</td>
 				<td>
 					<fmt:formatDate value="${lotteryOrder.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${lotteryOrder.updateBy.id}
 				</td>
 				<shiro:hasPermission name="order:lotteryOrder:edit"><td>
     				<a href="${ctx}/order/lotteryOrder/form?id=${lotteryOrder.id}">修改</a>

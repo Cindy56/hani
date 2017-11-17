@@ -3,12 +3,12 @@
  */
 package com.game.manager.modules.order.entity;
 
+import org.hibernate.validator.constraints.Length;
 import com.game.manager.modules.sys.entity.User;
 
 import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
 
 import com.game.manager.common.persistence.DataEntity;
 
@@ -20,6 +20,7 @@ import com.game.manager.common.persistence.DataEntity;
 public class LotteryOrder extends DataEntity<LotteryOrder> {
 	
 	private static final long serialVersionUID = 1L;
+	private String orderNum;		// 订单编号
 	private User user;		// user_id
 	private String lotteryCode;		// lottery_code
 	private String betIssueNo;		// 投注期号
@@ -45,6 +46,15 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 		super(id);
 	}
 
+	@Length(min=0, max=50, message="订单编号长度必须介于 0 和 50 之间")
+	public String getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
+	}
+	
 	@NotNull(message="user_id不能为空")
 	public User getUser() {
 		return user;
