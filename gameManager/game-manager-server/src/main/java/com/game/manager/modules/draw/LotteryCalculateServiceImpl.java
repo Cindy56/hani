@@ -2,6 +2,8 @@ package com.game.manager.modules.draw;
 
 import java.math.BigDecimal;
 
+import org.springframework.stereotype.Service;
+
 import com.game.manager.common.utils.SpringContextHolder;
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
 import com.game.manager.modules.order.entity.LotteryOrder;
@@ -23,6 +25,8 @@ import com.game.manager.modules.order.entity.LotteryOrder;
  * @author Administrator
  *
  */
+
+@Service
 public class LotteryCalculateServiceImpl implements LotteryCalculateService {
 
 	@Override
