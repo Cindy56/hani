@@ -59,7 +59,11 @@ public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType>
      * @author Terry
      */
     public LotteryType getByCode(String code) {
-        return lotteryTypeDao.getByCode(code);
+    	 LotteryType lotteryType = lotteryTypeDao.getByCode(code);
+    	 if(null != lotteryType) {
+    		 lotteryType.setLotteryTypeTimeList(lotteryTypeTimeDao.findList(new LotteryTypeTime(lotteryType)));
+    	 }
+        return lotteryType;
     }
 
     /**
