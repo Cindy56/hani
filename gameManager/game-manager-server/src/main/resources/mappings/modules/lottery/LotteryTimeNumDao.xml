@@ -200,4 +200,39 @@
 		<![CDATA[ and a.bet_halt_date <= #{haltDate} ]]>
 		order by a.bet_halt_date desc limit 0,#{row}
 	</select>
+	
+    <update id="batchUpdateHaltDate" >
+            update lottery_time_num set
+                   bet_halt_date = #{betHaltDate},
+                   next_halt_date = #{nextHaltDate}
+       	 where id = #{id} 
+    </update>
+	
+	<select id="queryByIdList" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		where a.id in
+		 <foreach item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+          order by a.bet_start_date 
+	</select>
+	
+	
+	<select id="queryByLotteryIssueNo" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		where a.lottery_issue_no =  #{lotteryIssueNo}  
+	</select>
+	
+	<select id="queryByLotteryCodeIssueNo" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		where a.lottery_code = #{lotteryCode} and a.lottery_issue_no =  #{lotteryIssueNo}  
+	</select>
+	
+	
 </mapper>

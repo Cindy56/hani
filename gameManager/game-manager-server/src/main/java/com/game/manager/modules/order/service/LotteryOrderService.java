@@ -16,7 +16,7 @@ import com.game.manager.modules.order.dao.LotteryOrderDao;
 /**
  * 订单明细Service
  * @author antonio
- * @version 2017-11-16
+ * @version 2017-11-17
  */
 @Service
 @Transactional(readOnly = true)

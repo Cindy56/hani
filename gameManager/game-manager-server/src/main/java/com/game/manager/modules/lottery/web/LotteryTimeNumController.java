@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -58,7 +59,19 @@ public class LotteryTimeNumController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/lottery/lotteryTimeNumList";
 	}
+	
+	@RequestMapping(value ="batchView")
+	public String batchView(LotteryTimeNum lotteryTimeNum, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<LotteryTimeNum> page = null;
+		if(StringUtils.isNoneBlank(lotteryTimeNum.getLotteryCode())) {
+			page = lotteryTimeNumService.findPage(new Page<LotteryTimeNum>(request, response), lotteryTimeNum); 
+		}
+		model.addAttribute("page", page);
+		return "modules/lottery/lotteryBatchTimeNumList";
+	}
 
+
+	
 	@RequiresPermissions("lottery:lotteryTimeNum:view")
 	@RequestMapping(value = "form")
 	public String form(LotteryTimeNum lotteryTimeNum, Model model) {
@@ -92,8 +105,13 @@ public class LotteryTimeNumController extends BaseController {
 	
 	@RequestMapping(value = "findLotteryTimeNum")
 	@ResponseBody
-	public List<LotteryTimeNum> findLotteryTimeNum(TimeTask timeTaskDTO) {
-		return lotteryTimeNumService.findLotteryTimeNum(timeTaskDTO.getLotteryCode(),5);
+	public List<LotteryTimeNum> findLotteryTimeNum(String lotteryCode,Integer rows) {
+		return lotteryTimeNumService.findLotteryTimeNum(lotteryCode,rows);
 	}
-	
+
+	@RequestMapping(value = "batchUpdateHalt", method = RequestMethod.POST)
+	@ResponseBody
+	public String batchUpdateHalt(@RequestParam(value = "ids[]",required=false) String[] ids, @RequestParam(value = "betHaltDate") Integer betHaltDate) {
+		return lotteryTimeNumService.batchUpdateHalt(ids,betHaltDate);
+	}
 }
