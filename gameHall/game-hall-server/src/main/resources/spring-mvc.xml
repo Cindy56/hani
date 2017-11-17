@@ -136,6 +136,6 @@
 		<property name="maxUploadSize" value="${web.maxUploadSize}" />
 	</bean>
 
-	<import resource="remoting-client.xml" />
+
 
 </beans>

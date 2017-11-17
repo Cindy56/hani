@@ -85,12 +85,6 @@
 	<resultMap id="aResult"
 		type="com.game.hall.modules.member.entity.MemberAccount">
 		<id property="id" column="id" />
-	<!-- 	<result property="parentAgentId" column="parentAgentId" />
-		<result property="accountType" column="accountType" />
-		<result property="secPassword" column="secPassword" />
-		<result property="qqNo" column="qqNo" />
-		<result property="mobileNo" column="mobileNo" />
-		<result property="blanceNo" column="blanceNo" /> -->
 	</resultMap>
 	
 	<insert id="insert">
@@ -153,5 +147,12 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="modifySec">
+		UPDATE member_account_card SET 	
+			sec_password = #{secPassword}
+		WHERE id = #{id}
+	</update> 
+	
 	
 </mapper>

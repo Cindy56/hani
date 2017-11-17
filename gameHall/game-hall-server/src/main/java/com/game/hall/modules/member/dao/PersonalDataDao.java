@@ -28,4 +28,7 @@ public interface PersonalDataDao {
 	
 	//修改用户信息
 	public int update(MemberAccount memberAccount);
+	
+	//更新安全码
+	public int modifySec(String id,String newPassWord);
 }

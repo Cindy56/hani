@@ -63,6 +63,12 @@
 	<!-- 依赖项定义 -->
 	<dependencies>
 
+<dependency>
+			<groupId>com.game</groupId>
+			<artifactId>game-manager-client</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.caucho</groupId>
 			<artifactId>hessian</artifactId>
