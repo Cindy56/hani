@@ -25,7 +25,7 @@ import com.game.manager.modules.order.service.LotteryOrderService;
 /**
  * 订单明细Controller
  * @author antonio
- * @version 2017-11-16
+ * @version 2017-11-17
  */
 @Controller
 @RequestMapping(value = "${adminPath}/order/lotteryOrder")

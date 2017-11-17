@@ -62,6 +62,54 @@
 			<if test="betType != null and betType != ''">
 				AND a.bet_type = #{betType}
 			</if>
+			<if test="betDetail != null and betDetail != ''">
+				AND a.bet_detail = #{betDetail}
+			</if>
+			<if test="betAmount != null and betAmount != ''">
+				AND a.bet_amount = #{betAmount}
+			</if>
+			<if test="betRate != null and betRate != ''">
+				AND a.bet_rate = #{betRate}
+			</if>
+			<if test="playModeMoney != null and playModeMoney != ''">
+				AND a.play_mode_money = #{playModeMoney}
+			</if>
+			<if test="playModeCommissionRate != null and playModeCommissionRate != ''">
+				AND a.play_mode_commission_rate = #{playModeCommissionRate}
+			</if>
+			<if test="playModeMoneyType != null and playModeMoneyType != ''">
+				AND a.play_mode_money_type = #{playModeMoneyType}
+			</if>
+			<if test="orderSource != null and orderSource != ''">
+				AND a.order_source = #{orderSource}
+			</if>
+			<if test="orderType != null and orderType != ''">
+				AND a.order_type = #{orderType}
+			</if>
+			<if test="schemaId != null and schemaId != ''">
+				AND a.schema_id = #{schemaId}
+			</if>
+			<if test="winAmount != null and winAmount != ''">
+				AND a.win_amount = #{winAmount}
+			</if>
+			<if test="withdrawAmount != null and withdrawAmount != ''">
+				AND a.withdraw_amount = #{withdrawAmount}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				AND a.update_by = #{updateBy.id}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
