@@ -22,6 +22,9 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 	private static final long serialVersionUID = 1L;
 	private String orderNum;		// 订单编号
 	private User user;		// user_id
+	private String userName;		// 用户名称
+	private String accountId;		// 账号id
+	private String orgId;
 	private String lotteryCode;		// lottery_code
 	private String betIssueNo;		// 投注期号
 	private String betType;		// 投注类型：比如重庆时时彩后三直选，不同的类型对应到不同的算奖模式
@@ -44,6 +47,30 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 
 	public LotteryOrder(String id){
 		super(id);
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
+	}
+
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
 	}
 
 	@Length(min=0, max=50, message="订单编号长度必须介于 0 和 50 之间")

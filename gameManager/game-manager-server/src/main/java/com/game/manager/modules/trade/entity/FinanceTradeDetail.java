@@ -6,6 +6,8 @@ package com.game.manager.modules.trade.entity;
 import com.game.manager.modules.sys.entity.User;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.game.manager.common.persistence.DataEntity;
@@ -21,13 +23,17 @@ public class FinanceTradeDetail extends DataEntity<FinanceTradeDetail> {
 	private User user;		// 用户id
 	private String userName;		// 用户名称
 	private String accountId;		// 账号id
+	private String orgId;
 	private String busiNo;		// 业务编号，一个编号对应多条明细：如果类型为投注，就为注单编号，一个注单在派奖后，生成奖金、本人返水，多个上级返水如果是充值，就是充值单编号如果是提现，就为提现记录编号
 	private String tradeType;		// 账变交易类型：&lt;li&gt;投注扣款&lt;/li&gt;&lt;li&gt;追号扣款&lt;/li&gt;&lt;li&gt;合买扣款&lt;/li&gt;&lt;li&gt;投注撤单&lt;/li&gt;&lt;li&gt;奖金派送&lt;/li&gt;&lt;li&gt;投注返点&lt;/li&gt;&lt;li&gt;活动礼金&lt;/li&gt;&lt;li&gt;追号停止&lt;/li&gt;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;
-	private String amount;		// 账变金额
-	private String accountBlanceBefore;		// 账变前金额
-	private String accountBlanceAfter;		// 账变后金额
+	private BigDecimal amount;		// 账变金额
+	private BigDecimal accountBlanceBefore;		// 账变前金额
+	private BigDecimal accountBlanceAfter;		// 账变后金额
 	private Date beginCreateDate;		// 开始 create_date
 	private Date endCreateDate;		// 结束 create_date
+	
+	
+	
 	
 	public FinanceTradeDetail() {
 		super();
@@ -82,27 +88,27 @@ public class FinanceTradeDetail extends DataEntity<FinanceTradeDetail> {
 		this.tradeType = tradeType;
 	}
 	
-	public String getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(String amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 	
-	public String getAccountBlanceBefore() {
+	public BigDecimal getAccountBlanceBefore() {
 		return accountBlanceBefore;
 	}
 
-	public void setAccountBlanceBefore(String accountBlanceBefore) {
+	public void setAccountBlanceBefore(BigDecimal accountBlanceBefore) {
 		this.accountBlanceBefore = accountBlanceBefore;
 	}
 	
-	public String getAccountBlanceAfter() {
+	public BigDecimal getAccountBlanceAfter() {
 		return accountBlanceAfter;
 	}
 
-	public void setAccountBlanceAfter(String accountBlanceAfter) {
+	public void setAccountBlanceAfter(BigDecimal accountBlanceAfter) {
 		this.accountBlanceAfter = accountBlanceAfter;
 	}
 	
