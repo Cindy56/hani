@@ -33,8 +33,12 @@ import com.game.manager.modules.lottery.service.LotteryTimeNumService;
 public class LotteryNumJob implements Job {
 	private static final Logger  logger = LoggerFactory.getLogger(LotteryNumJob.class);
 	
-	/*@Autowired
-    private LotteryTimeNumService lotteryTimeNumService;*/
+	@Autowired
+    private LotteryTimeNumService lotteryTimeNumService;
+	@Autowired
+	private LotteryNumDrawService lotteryNumDrawService ;
+	@Autowired
+	private LotteryBonusService lotteryBonusService ;
 	
 	/* *
 	 * 获取当前任务的key,比如:SSC_CQ:21071118085
@@ -58,14 +62,6 @@ public class LotteryNumJob implements Job {
         String issueNo = dataMap.getString("lotteryIssueNo");
 		logger.debug("current job[{}], executing at[{}], lotteryCode[{}], issueNo[{}]", 
 				new Object[] {jobKey, new Date(), lotteryCode, issueNo});
-		
-		//从拉奖通道获取开奖提供方
-		LotteryNumDrawService lotteryNumDrawService = SpringContextHolder.getBean("openCaiDrawService");
-		//保存拉奖号码
-		LotteryTimeNumService lotteryTimeNumService = SpringContextHolder.getBean("lotteryTimeNumService");
-		
-		//派奖服务
-		LotteryBonusService lotteryBonusService = SpringContextHolder.getBean("lotteryBonusService");
 		try {
 			//调用服务，获取开奖数据
 			OpenCaiResult openCaiResult = lotteryNumDrawService.drawLotteryNum(lotteryCode, issueNo);

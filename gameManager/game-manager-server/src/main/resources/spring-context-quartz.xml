@@ -17,10 +17,9 @@
 		</property>
 		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
 		<!--也可以在quartz.properties中配置 -->
+		<property name="jobFactory" ref="gameJobFactory"></property>
 		<property name="quartzProperties">
 			<props>
-				<prop name="jobFactory" ref="gameJobFactory"></prop>
-				
 				<prop key="org.quartz.scheduler.instanceName">gameScheduler</prop>
 				<prop key="org.quartz.scheduler.instanceId">AUTO</prop>
 				<!-- 线程池配置 -->
