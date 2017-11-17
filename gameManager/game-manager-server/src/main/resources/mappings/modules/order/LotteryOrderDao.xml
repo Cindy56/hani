@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.manager.modules.order.dao.LotteryOrderDao">
+    
+	<sql id="lotteryOrderColumns">
+		a.id AS "id",
+		a.order_num AS "orderNum",
+		a.user_id AS "user.id",
+		a.lottery_code AS "lotteryCode",
+		a.bet_issue_no AS "betIssueNo",
+		a.bet_type AS "betType",
+		a.bet_detail AS "betDetail",
+		a.bet_amount AS "betAmount",
+		a.bet_rate AS "betRate",
+		a.play_mode_money AS "playModeMoney",
+		a.play_mode_commission_rate AS "playModeCommissionRate",
+		a.play_mode_money_type AS "playModeMoneyType",
+		a.order_source AS "orderSource",
+		a.order_type AS "orderType",
+		a.schema_id AS "schemaId",
+		a.win_amount AS "winAmount",
+		a.withdraw_amount AS "withdrawAmount",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag",
+		u3.name AS "user.name"
+	</sql>
+	
+	<sql id="lotteryOrderJoins">
+		LEFT JOIN sys_user u3 ON u3.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="LotteryOrder">
+		SELECT 
+			<include refid="lotteryOrderColumns"/>
+		FROM lottery_order a
+		<include refid="lotteryOrderJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="LotteryOrder">
+		SELECT 
+			<include refid="lotteryOrderColumns"/>
+		FROM lottery_order a
+		<include refid="lotteryOrderJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="orderNum != null and orderNum != ''">
+				AND a.order_num = #{orderNum}
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+			<if test="lotteryCode != null and lotteryCode != ''">
+				AND a.lottery_code = #{lotteryCode}
+			</if>
+			<if test="betIssueNo != null and betIssueNo != ''">
+				AND a.bet_issue_no = #{betIssueNo}
+			</if>
+			<if test="betType != null and betType != ''">
+				AND a.bet_type = #{betType}
+			</if>
+			<if test="betDetail != null and betDetail != ''">
+				AND a.bet_detail = #{betDetail}
+			</if>
+			<if test="betAmount != null and betAmount != ''">
+				AND a.bet_amount = #{betAmount}
+			</if>
+			<if test="betRate != null and betRate != ''">
+				AND a.bet_rate = #{betRate}
+			</if>
+			<if test="playModeMoney != null and playModeMoney != ''">
+				AND a.play_mode_money = #{playModeMoney}
+			</if>
+			<if test="playModeCommissionRate != null and playModeCommissionRate != ''">
+				AND a.play_mode_commission_rate = #{playModeCommissionRate}
+			</if>
+			<if test="playModeMoneyType != null and playModeMoneyType != ''">
+				AND a.play_mode_money_type = #{playModeMoneyType}
+			</if>
+			<if test="orderSource != null and orderSource != ''">
+				AND a.order_source = #{orderSource}
+			</if>
+			<if test="orderType != null and orderType != ''">
+				AND a.order_type = #{orderType}
+			</if>
+			<if test="schemaId != null and schemaId != ''">
+				AND a.schema_id = #{schemaId}
+			</if>
+			<if test="winAmount != null and winAmount != ''">
+				AND a.win_amount = #{winAmount}
+			</if>
+			<if test="withdrawAmount != null and withdrawAmount != ''">
+				AND a.withdraw_amount = #{withdrawAmount}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="LotteryOrder">
+		SELECT 
+			<include refid="lotteryOrderColumns"/>
+		FROM lottery_order a
+		<include refid="lotteryOrderJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO lottery_order(
+			id,
+			order_num,
+			user_id,
+			lottery_code,
+			bet_issue_no,
+			bet_type,
+			bet_detail,
+			bet_amount,
+			bet_rate,
+			play_mode_money,
+			play_mode_commission_rate,
+			play_mode_money_type,
+			order_source,
+			order_type,
+			schema_id,
+			win_amount,
+			withdraw_amount,
+			status,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{orderNum},
+			#{user.id},
+			#{lotteryCode},
+			#{betIssueNo},
+			#{betType},
+			#{betDetail},
+			#{betAmount},
+			#{betRate},
+			#{playModeMoney},
+			#{playModeCommissionRate},
+			#{playModeMoneyType},
+			#{orderSource},
+			#{orderType},
+			#{schemaId},
+			#{winAmount},
+			#{withdrawAmount},
+			#{status},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE lottery_order SET 	
+			order_num = #{orderNum},
+			user_id = #{user.id},
+			lottery_code = #{lotteryCode},
+			bet_issue_no = #{betIssueNo},
+			bet_type = #{betType},
+			bet_detail = #{betDetail},
+			bet_amount = #{betAmount},
+			bet_rate = #{betRate},
+			play_mode_money = #{playModeMoney},
+			play_mode_commission_rate = #{playModeCommissionRate},
+			play_mode_money_type = #{playModeMoneyType},
+			order_source = #{orderSource},
+			order_type = #{orderType},
+			schema_id = #{schemaId},
+			win_amount = #{winAmount},
+			withdraw_amount = #{withdrawAmount},
+			status = #{status},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE lottery_order SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
