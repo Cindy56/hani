@@ -20,6 +20,8 @@
         a.del_flag AS "delFlag"
     </sql>
     
+  
+    
     <!-- 表关联 -->
     <sql id="lotteryTypeJoins">
     </sql>

@@ -36,7 +36,6 @@ public class OpenCaiDrawService implements  LotteryNumDrawService{
 			if(StringUtils.isEmpty(response.getBody())) {
 				throw new LotteryNumDrawException();
 			}
-			System.out.println("================================="+response.getBody());
 			OpenCaiResp resp =	JSON.parseObject(response.getBody(),OpenCaiResp.class);
 			for (OpenCaiResult lotteryNum : resp.getData()) {
 				if(issueNo.equals(lotteryNum.getExpect())) {

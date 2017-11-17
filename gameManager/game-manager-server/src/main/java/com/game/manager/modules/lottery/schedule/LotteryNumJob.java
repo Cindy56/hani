@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.game.manager.common.utils.SpringContextHolder;
 import com.game.manager.common.utils.StringUtils;
+import com.game.manager.modules.draw.LotteryBonusService;
 import com.game.manager.modules.lottery.dto.OpenCaiResp;
 import com.game.manager.modules.lottery.dto.OpenCaiResult;
 import com.game.manager.modules.lottery.exception.LotteryNumDrawException;
@@ -62,6 +63,9 @@ public class LotteryNumJob implements Job {
 		LotteryNumDrawService lotteryNumDrawService = SpringContextHolder.getBean("openCaiDrawService");
 		//保存拉奖号码
 		LotteryTimeNumService lotteryTimeNumService = SpringContextHolder.getBean("lotteryTimeNumService");
+		
+		//派奖服务
+		LotteryBonusService lotteryBonusService = SpringContextHolder.getBean("lotteryBonusService");
 		try {
 			//调用服务，获取开奖数据
 			OpenCaiResult openCaiResult = lotteryNumDrawService.drawLotteryNum(lotteryCode, issueNo);
@@ -77,6 +81,8 @@ public class LotteryNumJob implements Job {
 			//结束当前job:删除定时任务时   先暂停任务，然后再删除  
 	        context.getScheduler().pauseJob(jobKey);  
 	        context.getScheduler().deleteJob(jobKey); 
+	        //派奖
+	        lotteryBonusService.calculateOrderBonusFromDB(lotteryCode,issueNo);
 		} catch (LotteryNumDrawException e) {
 			//TODO:更换其他通道,  或者继续运行拉奖服务
 			e.printStackTrace();
