@@ -19,7 +19,9 @@
 		<!--也可以在quartz.properties中配置 -->
 		<property name="quartzProperties">
 			<props>
-				<prop key="org.quartz.scheduler.instanceName">CRMscheduler</prop>
+				<prop name="jobFactory" ref="gameJobFactory"></prop>
+				
+				<prop key="org.quartz.scheduler.instanceName">gameScheduler</prop>
 				<prop key="org.quartz.scheduler.instanceId">AUTO</prop>
 				<!-- 线程池配置 -->
 				<prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
@@ -39,11 +41,13 @@
 		</property>
 
 		<!--可选，QuartzScheduler启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 -->
-		<property name="overwriteExistingJobs" value="true" />
+		<property name="overwriteExistingJobs" value="false" />
 
 		<!--设置自动启动 -->
 		<property name="autoStartup" value="true" />
 
 	</bean>
+	
+	<bean id="gameJobFactory" class="com.game.manager.modules.lottery.schedule.GameJobFactory"></bean>	
 
 </beans>  

@@ -9,7 +9,7 @@ import com.game.manager.modules.order.entity.LotteryOrder;
 
 /**
  * 订单明细DAO接口
- * @author antonio
+ * @author vinton
  * @version 2017-11-17
  */
 @MyBatisDao

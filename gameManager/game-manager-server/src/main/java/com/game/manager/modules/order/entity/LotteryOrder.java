@@ -4,6 +4,8 @@
 package com.game.manager.modules.order.entity;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+
 import com.game.manager.modules.sys.entity.User;
 
 import java.math.BigDecimal;
@@ -14,7 +16,7 @@ import com.game.manager.common.persistence.DataEntity;
 
 /**
  * 订单明细Entity
- * @author antonio
+ * @author vinton
  * @version 2017-11-17
  */
 public class LotteryOrder extends DataEntity<LotteryOrder> {
@@ -22,11 +24,10 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 	private static final long serialVersionUID = 1L;
 	private String orderNum;		// 订单编号
 	private User user;		// user_id
-	private String userName;		// 用户名称
-	private String accountId;		// 账号id
-	private String orgId;
+	private String orgId;		// 机构id
 	private String lotteryCode;		// lottery_code
 	private String betIssueNo;		// 投注期号
+	private String accountId;		// 账户id
 	private String betType;		// 投注类型：比如重庆时时彩后三直选，不同的类型对应到不同的算奖模式
 	private String betDetail;		// 投注内容
 	private BigDecimal betAmount;		// 投注金额，单位为元
@@ -49,30 +50,6 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 		super(id);
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
-	}
-
-	public String getOrgId() {
-		return orgId;
-	}
-
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
-
 	@Length(min=0, max=50, message="订单编号长度必须介于 0 和 50 之间")
 	public String getOrderNum() {
 		return orderNum;
@@ -82,6 +59,7 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 		this.orderNum = orderNum;
 	}
 	
+	
 	@NotNull(message="user_id不能为空")
 	public User getUser() {
 		return user;
@@ -89,6 +67,15 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	@Length(min=1, max=50, message="机构id长度必须介于 1 和 50 之间")
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
 	}
 	
 	@Length(min=1, max=50, message="lottery_code长度必须介于 1 和 50 之间")
@@ -107,6 +94,15 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 
 	public void setBetIssueNo(String betIssueNo) {
 		this.betIssueNo = betIssueNo;
+	}
+	
+	@Length(min=1, max=50, message="账户id长度必须介于 1 和 50 之间")
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 	
 	@Length(min=1, max=50, message="投注类型：比如重庆时时彩后三直选，不同的类型对应到不同的算奖模式长度必须介于 1 和 50 之间")
@@ -135,7 +131,7 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 		this.betAmount = betAmount;
 	}
 	
-	@Length(min=1, max=6, message="投注倍数长度必须介于 1 和 6 之间")
+	@Range(min=1, max=10000)
 	public Integer getBetRate() {
 		return betRate;
 	}

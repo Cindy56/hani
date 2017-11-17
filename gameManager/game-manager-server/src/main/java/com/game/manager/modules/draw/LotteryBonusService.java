@@ -86,7 +86,7 @@ public class LotteryBonusService {
 		//生成中奖账变流水,入库
 		FinanceTradeDetail  trade = new FinanceTradeDetail();
 		trade.setUser(lotteryOrder.getUser());
-		trade.setUserName(lotteryOrder.getUserName());
+//		trade.setUserName(lotteryOrder.getUserName());
 		trade.setAccountId(lotteryOrder.getAccountId());
 		trade.setBusiNo(lotteryOrder.getOrderNum());
 		trade.setTradeType("1");
