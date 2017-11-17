@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.api.BetServiceApi;
 import com.entity.Error;
 import com.entity.ResultData;
+import com.game.hall.common.utils.SpringContextHolder;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
-import com.game.manager.common.utils.SpringContextHolder;
 import com.game.manager.modules.order.entity.LotteryOrder;
 
 /**
@@ -27,9 +27,9 @@ import com.game.manager.modules.order.entity.LotteryOrder;
 @Transactional(readOnly = true)
 @Service
 public class LotteryAddBetService implements BetServiceApi {
-	@Autowired // @Qualifier("myServiceClient") //
+	// @Autowired // @Qualifier("myServiceClient") //
 	// @Resource(name = "myServiceClient")
-	private BetServiceApi myServiceClient;
+	// private BetServiceApi myServiceClient;
 
 	@Autowired
 	private LotteryOrderDao myOrder;
@@ -63,7 +63,7 @@ public class LotteryAddBetService implements BetServiceApi {
 		// System.out.println(helloService.test1());
 
 		System.out.println("myServiceClient.test1()");
-		System.out.println(myServiceClient.test1());
+	//	System.out.println(myServiceClient.test1());
 
 		return null;
 	}
@@ -127,7 +127,7 @@ public class LotteryAddBetService implements BetServiceApi {
 			myOrder.insert(betData);
 
 			// 会员账户扣款
-			myAccountCharge.AccountChargeAmount(betData.getId(), betData.getBetAmount());
+			// myAccountCharge.AccountChargeAmount(betData.getId(), betData.getBetAmount());
 		}
 		return null;
 	}

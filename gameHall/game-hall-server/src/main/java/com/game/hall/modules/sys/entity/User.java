@@ -27,11 +27,6 @@ import com.google.common.collect.Lists;
 public class User extends DataEntity<User> {
 
 	private static final long serialVersionUID = 1L;
-	private String id;
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	private Office company;	// 归属公司
 	private Office office;	// 归属部门
 	private String loginName;// 登录名

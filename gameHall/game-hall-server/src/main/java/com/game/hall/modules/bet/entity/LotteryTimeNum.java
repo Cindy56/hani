@@ -5,7 +5,7 @@ package com.game.hall.modules.bet.entity;
 
 import java.util.Date;
 
-import com.game.manager.common.persistence.DataEntity;
+import com.game.hall.common.persistence.DataEntity;
 
 /**
  * test1Entity
