@@ -19,7 +19,7 @@ public class LotteryTimeNum extends DataEntity<LotteryTimeNum> {
 
 	private String id;
 	private String lotteryCode; // 彩票代码
-	private String lotteryIssueNo; // 开奖期号
+	private String lotteryIssueNo; // 开奖期号 
 	private Date betStartDate; // 投注开始时间：只是用来记录由于存在封单时间，封单开始，用户就可以投注下一期，所以真实投注时间大于这个如果追号，也相当于提前投注
 	private Date betEndDate; // 投注截止时间，用于系统计算，如果当前时间晚于（截止时间-封单时间），就拒绝投注
 	private Date betHaltDate; // 封单时间，单位为秒

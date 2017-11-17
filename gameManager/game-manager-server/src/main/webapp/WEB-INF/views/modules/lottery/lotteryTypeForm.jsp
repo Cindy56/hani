@@ -16,49 +16,12 @@
                     $("#messageBox").text("输入有误，请在修改后再次提交。");
                     if (element.is(":checkbox") || element.is(":radio") || element.parent().is(".input-append")){
                         error.appendTo(element.parent().parent());
-                        if (!$("#companyIdName").val()) {
-                            $("#companyIdName").parent().append($("<label id='companyErrId' for='code' class='error'>必填信息</label>"));
-                        } else {
-                            $("#companyErrId").parent().remove();
-                        }
                     } else {
                         error.insertAfter(element);
                     }
                 }
             });
         });
-        function addRow(list, idx, tpl, row){
-            debugger;
-            $(list).append(Mustache.render(tpl, {
-                idx: idx, delBtn: true, row: row
-            }));
-            $(list+idx).find("select").each(function(){
-                $(this).val($(this).attr("data-value"));
-            });
-            $(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-                var ss = $(this).attr("data-value").split(',');
-                for (var i=0; i<ss.length; i++){
-                    if($(this).val() == ss[i]){
-                        $(this).attr("checked","checked");
-                    }
-                }
-            });
-        }
-        function delRow(obj, prefix){
-            var id = $(prefix+"_id");
-            var delFlag = $(prefix+"_delFlag");
-            if (id.val() == ""){
-                $(obj).parent().parent().remove();
-            }else if(delFlag.val() == "0"){
-                delFlag.val("1");
-                $(obj).html("&divide;").attr("title", "撤销删除");
-                $(obj).parent().parent().addClass("error");
-            }else if(delFlag.val() == "1"){
-                delFlag.val("0");
-                $(obj).html("&times;").attr("title", "删除");
-                $(obj).parent().parent().removeClass("error");
-            }
-        }
     </script>
 </head>
 <body>
@@ -69,7 +32,7 @@
     <form:form id="inputForm" modelAttribute="lotteryType" action="${ctx}/lottery/lotteryType/save" method="post" class="form-horizontal">
         <form:hidden path="id"/>
         <sys:message content="${message}"/>
-
+        
         <%-- 彩种类型 --%>
         <div class="control-group">
             <label class="control-label">彩种类型：</label>
@@ -81,38 +44,25 @@
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
-
+        
         <%-- 彩种代码 --%>
         <div class="control-group">
             <label class="control-label">彩种代码：</label>
             <div class="controls">
-                <form:select id="code" path="code" class="input-xlarge required">
-                    <form:option value="" label="-- 请选择 --"/>
-                    <form:options items="${}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>
-                <span class="help-inline"><font color="red">*</font></span>
+                <form:input path="code" htmlEscape="false" maxlength="50" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'')" class="input-xlarge required" placeholder="请输入1-50位字母或数字的彩种代码..."/>
+                <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
-
-        <%-- 所属公司 --%>
-        <div class="control-group">
-            <label class="control-label">所属公司：</label>
-            <div class="controls">
-                <sys:treeselect id="companyId" name="companyId" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"
-                    title="所属公司" url="/sys/office/treeData?type=1" cssClass="required"/>
-                <span class="help-inline"><font color="red">*</font></span>
-            </div>
-        </div>
-
+        
         <%-- 彩种名称 --%>
         <div class="control-group">
             <label class="control-label">彩种名称：</label>
             <div class="controls">
-                <form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+                <form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入长度为1-50的彩种名称..."/>
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
-
+        
         <%-- 是否自动开奖 --%>
         <div class="control-group">
             <label class="control-label">是否自动开奖：</label>
@@ -121,8 +71,8 @@
                 <form:radiobutton path="isAuto" label="否" value="0" htmlEscape="false" class="required"/>
             </div>
         </div>
-
-        <%-- 是否启用 --%>
+        
+        <%-- 是否有效 --%>
         <div class="control-group">
             <label class="control-label">是否启用：</label>
             <div class="controls">
@@ -130,118 +80,82 @@
                 <form:radiobutton path="isEnable" label="否" value="0" htmlEscape="false" class="required"/>
             </div>
         </div>
-
-        <%-- 每日开奖期数 --%>
+        
+        <%-- 每日开售时间 --%>
         <div class="control-group">
-            <label class="control-label">每日开奖期数：</label>
+            <label class="control-label">每日开售时间：</label>
             <div class="controls">
-                <form:input path="times" htmlEscape="false" maxlength="6" class="input-xlarge required"/>
-                <span class="help-inline"><font color="red">*</font></span>
+                <form:input path="startDate" htmlEscape="false" maxlength="5" class="input-xlarge" onclick="WdatePicker({dateFmt:'HH:mm'})" onkeyup="this.value=this.value.replace('：', ':').replace(/[^0-9]:/g,'')" placeholder="点击选择或手动输入，格式为 HH:mm..."/>
             </div>
         </div>
-
+        
+        <%-- 每日停售时间 --%>
+        <div class="control-group">
+            <label class="control-label">每日停售时间：</label>
+            <div class="controls">
+                <form:input path="endDate" htmlEscape="false" maxlength="5" class="input-xlarge" onclick="WdatePicker({dateFmt:'HH:mm'})" onkeyup="this.value=this.value.replace('：', ':').replace(/[^0-9:]/g,'')" placeholder="点击选择或手动输入，格式为 HH:mm..."/>
+            </div>
+        </div>
+        
+        <%-- 每日期数 --%>
+        <div class="control-group">
+            <label class="control-label">每日期数：</label>
+            <div class="controls">
+                <form:input type="number" path="times" htmlEscape="false" maxlength="6" class="input-xlarge required"placeholder="请输入长度为1-6的每日期数..."/>
+                <span class="help-inline">期 <font color="red">*</font> </span>
+            </div>
+        </div>
+        
+        <%-- 开奖周期 --%>
+        <div class="control-group">
+            <label class="control-label">开奖周期：</label>
+            <div class="controls">
+                <form:input type="number" path="periodTotalTime" htmlEscape="false" maxlength="255" class="input-xlarge required" placeholder="请输入 1-255位数字的开奖周期..."/>
+                <span class="help-inline">分钟/期<font color="red">*</font> </span>
+            </div>
+        </div>
+        
+        <%-- 封单时间 --%>
+        <div class="control-group">
+            <label class="control-label">封单时间：</label>
+            <div class="controls">
+                <form:input type="number" path="periodHaltTime" htmlEscape="false" maxlength="255" class="input-xlarge required" placeholder="请输入  1-255位数字的封单时间..."/>
+                <span class="help-inline">秒钟 <font color="red">*</font> </span>
+            </div>
+        </div>
+        
         <%-- 每期投注最高金额 --%>
         <div class="control-group">
             <label class="control-label">每期投注最高金额：</label>
             <div class="controls">
-                <form:input path="amountMaxBet" htmlEscape="false" class="input-xlarge "/>
+                <form:input type="number" path="amountMaxBet" htmlEscape="false" class="input-xlarge" placeholder="请输入最高投注金额，不输默认为0..."/>
+                <span class="help-inline"> 元</span>
             </div>
         </div>
-
-        <%-- 开奖方案 --%>
+        
+        <%-- 当前期号 --%>
         <div class="control-group">
-            <label class="control-label">开奖方案：</label>
+            <label class="control-label">当前期号：</label>
             <div class="controls">
-                    <table id="contentTable" style="max-width: 50%;" class="table table-striped table-bordered table-condensed">
-                        <thead>
-                            <tr>
-                                <th class="hide"></th>
-                                <th>彩票代码</th>
-                                <th>开始时间</th>
-                                <th>截止时间</th>
-                                <th>开奖周期时间</th>
-                                <th>每期封单时间</th>
-                                <shiro:hasPermission name="lottery:lotteryType:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
-                            </tr>
-                        </thead>
-                        <tbody id="lotteryTypeTimeList">
-                        </tbody>
-                        <shiro:hasPermission name="lottery:lotteryType:edit"><tfoot>
-                            <tr><td colspan="7"><a href="javascript:" onclick="addRow('#lotteryTypeTimeList', lotteryTypeTimeRowIdx, lotteryTypeTimeTpl);lotteryTypeTimeRowIdx = lotteryTypeTimeRowIdx + 1;" class="btn">新增方案</a></td></tr>
-                        </tfoot></shiro:hasPermission>
-                    </table>
-
-                    <script type="text/template" id="lotteryTypeTimeTpl">//<!--
-                        <tr id="lotteryTypeTimeList{{idx}}">
-                            <td class="hide">
-                                <input id="lotteryTypeTimeList{{idx}}_id" name="lotteryTypeTimeList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-                                <input id="lotteryTypeTimeList{{idx}}_delFlag" name="lotteryTypeTimeList[{{idx}}].delFlag" type="hidden" value="0"/>
-                            </td>
-                            <td>
-                                <input id="lotteryTypeTimeList{{idx}}_lotteryCode" name="lotteryTypeTimeList[{{idx}}].lotteryCode" type="text" value="{{row.lotteryCode}}" maxlength="50" class="input-small required"/>
-                            </td>
-                            <td>
-                                <input id="lotteryTypeTimeList{{idx}}_startTime" name="lotteryTypeTimeList[{{idx}}].startTime" type="text" value="{{row.startTime}}" maxlength="10" onclick="WdatePicker({dateFmt:'HH:mm'})" class="input-small required"/>
-                            </td>
-                            <td>
-                                <input id="lotteryTypeTimeList{{idx}}_endTime" name="lotteryTypeTimeList[{{idx}}].endTime" type="text" value="{{row.endTime}}" maxlength="10" onclick="WdatePicker({dateFmt:'HH:mm'})" class="input-small required"/>
-                            </td>
-                            <td>
-                                <input id="lotteryTypeTimeList{{idx}}_periodTotalTime" name="lotteryTypeTimeList[{{idx}}].periodTotalTime" type="number" min="0" value="{{row.periodTotalTime}}" maxlength="6" class="input-small required"/>
-                            </td>
-                            <td>
-                                <input id="lotteryTypeTimeList{{idx}}_periodHaltTime" name="lotteryTypeTimeList[{{idx}}].periodHaltTime" type="number" min="0" value="{{row.periodHaltTime}}" maxlength="6" class="input-small required"/>
-                            </td>
-                            <shiro:hasPermission name="lottery:lotteryType:edit"><td class="text-center" width="10">
-                                {{#delBtn}}<span class="close" onclick="delRow(this, '#lotteryTypeTimeList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
-                            </td></shiro:hasPermission>
-                        </tr>//-->
-                    </script>
-
-                    <script type="text/javascript">
-                        var lotteryTypeTimeRowIdx = 0, lotteryTypeTimeTpl = $("#lotteryTypeTimeTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-                        $(document).ready(function() {
-                            var data = ${fns:toJson(lotteryType.lotteryTypeTimeList)};
-                            for (var i=0; i<data.length; i++){
-                                debugger;
-                                addRow('#lotteryTypeTimeList', lotteryTypeTimeRowIdx, lotteryTypeTimeTpl, data[i]);
-                                lotteryTypeTimeRowIdx = lotteryTypeTimeRowIdx + 1;
-                            }
-                        });
-                    </script>
-                </div>
+                <form:input path="currentIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge" placeholder="请输入当前开奖期号..."/>
             </div>
-
-        <%-- 保存或返回 --%>
+        </div>
+        
+        <%-- 下期期号 --%>
+        <div class="control-group">
+            <label class="control-label">下期期号：</label>
+            <div class="controls">
+                <form:input path="nextIssueNo" htmlEscape="false" maxlength="50" class="input-xlarge" placeholder="请输入下期开奖期号..."/>
+            </div>
+        </div>
+        
+        <%-- 操作按钮 --%>
         <div class="form-actions">
-            <shiro:hasPermission name="lottery:lotteryType:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+            <shiro:hasPermission name="lottery:lotteryType:edit">
+                <input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+            </shiro:hasPermission>
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
         </div>
     </form:form>
-    <script type="text/javascript">
-        $("#parentCode").change(function() {
-            $.ajax({
-                type: "post",
-                async: false,
-                url: ctx+"/lottery/lotteryType/findPlayCode",
-                dataType: "json",
-                data: "lotterytype="+this.value,
-                success: function(data) {
-                    // 如果相应数据不为空则继续解析
-                    if (data) {
-                        var playCode = data.lotteryPlayCode;
-                        if (playCode) {
-                            // 先清空上一个分类的关联数据
-                            var tmpStr = "<option>-- 请选择 --</option>";
-                            for (var i = 0;i < playCode.length; i++) {
-                                tmpStr += "<option value='" + playCode[i].value + "'>" + playCode[i].label + "</option>";
-                            }
-                            $("#code").html(tmpStr);
-                        }
-                    }
-                }
-            });
-        });
-    </script>
 </body>
 </html>
