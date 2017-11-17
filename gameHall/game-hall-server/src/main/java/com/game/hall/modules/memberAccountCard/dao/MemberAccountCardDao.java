@@ -3,6 +3,8 @@ package com.game.hall.modules.memberAccountCard.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.game.hall.common.persistence.annotation.MyBatisDao;
 import com.game.hall.modules.memberAccountCard.entity.MemberAccountCard;
 
@@ -15,6 +17,8 @@ public interface MemberAccountCardDao {
 	public int insert(MemberAccountCard memberAccountCard);
 	//查询安全码
 	public String getSec(String id);
-
+ 
+	//更新安全码
+	public int modifySec(@Param("id")String id,@Param("newPassWord")String newPassWord);
 	
 }

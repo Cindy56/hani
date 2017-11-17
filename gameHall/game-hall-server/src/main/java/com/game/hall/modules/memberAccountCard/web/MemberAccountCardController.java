@@ -112,7 +112,8 @@ public class MemberAccountCardController  {
 			//验证该用户输入的安全码是否正确
 		   if(verSecPassWord(id,secPassWord)) {
 			//验证通过  更新安全密码
-			   
+			 //修改密码
+	    	 memberAccountCardService.modifySec(id, newPassWord);
 			  return "安全码更新成功";
 		   }else {
 		    //验证不通过

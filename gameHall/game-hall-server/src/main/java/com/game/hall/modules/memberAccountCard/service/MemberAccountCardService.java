@@ -31,5 +31,9 @@ public class MemberAccountCardService {
 	public String getSec(String id) {
 		return memberAccountCardDao.getSec(id);		
 	}
+	
+	public int modifySec(String id, String newPassWord) {
+		return memberAccountCardDao.modifySec(id,newPassWord);
+	}
 
 }

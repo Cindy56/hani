@@ -154,5 +154,41 @@
 		WHERE id = #{id}
 	</update> 
 	
+		<insert id="insertCard">
+		INSERT INTO member_account_card(
+			id,
+			user_id,
+			account_id,
+			bank_code,
+			bank_card_no,
+			bank_card_holder,
+			bank_branch_province,
+			bank_branch_city,
+			bank_branch_name,
+			status,
+			
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{user.id},
+			#{accountId},
+			#{bankCode},
+			#{bankCardNo},
+			#{bankCardHolder},
+			#{bankBranchProvince},
+			#{bankBranchCity},
+			#{bankBranchName},
+			#{status},
+		 
+			#{createBy},
+			now(),
+			#{updateBy},
+			#{delFlag}
+		)
+	</insert>
+	
 	
 </mapper>

@@ -16,7 +16,7 @@ import com.game.hall.common.persistence.DataEntity;
  */
 
 // extends DataEntity<LotteryTimeNum>
-public class MemberAccount extends DataEntity<MemberAccount> {
+public class MemberAccount  {
 
 	private static final long serialVersionUID = 1L;
 	private String parentAgentId;		// 上级代理账号id
@@ -86,21 +86,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 	public void setBlanceFrozen(String blanceFrozen) {
 		this.blanceFrozen = blanceFrozen;
 	}
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-	/**
-	 * @return the lotteryCode
-	 */
+
 
 	public String getStatus() {
 		return status;

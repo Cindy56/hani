@@ -32,16 +32,17 @@ public class PersonalDataController {
 
 	@Autowired
 	private PersonalDataService personalDataService;
+	@Autowired
 	private MemberAccountCardService memberAccountCardService;
 	//查找某个用户个人信息
-	@ResponseBody
-	@RequestMapping(value = "/personalData", method = RequestMethod.GET)
+/*	@ResponseBody
+	@RequestMapping(value = "/personalData", method = RequestMethod.GET)*/
 /*	public MemberAccount personalData(String id) {
 		MemberAccount memberAccount = personalDataService.get(id);
 		return memberAccount;
 	}*/
 	
-	public ResultData personalData(String id) {
+/*	public ResultData personalData(String id) {
 
 		// BetData betData;
 		ResultData rd = personalDataService.get(id);
@@ -49,7 +50,7 @@ public class PersonalDataController {
 		return null;
 	}
 	
-/*	//修改用户信息
+	//修改用户信息
 	@ResponseBody
 	@RequestMapping(value = "/modifyPersonalData", method = RequestMethod.GET)
 	public String modifyPersonalData(MemberAccount memberAccount) {
@@ -60,7 +61,7 @@ public class PersonalDataController {
 		int updateInfo = personalDataService.update(memberAccount);
 		return "修改成功"+ updateInfo+"条记录";
 		
-	}*/
+	}
 	
 	
 	//查找所有用户个人信息
@@ -136,14 +137,16 @@ public class PersonalDataController {
 		//根据id查询该用户的安全密码
 	      String str = 	memberAccountCardService.getSec("7d6a3f913c3f4882b9a6f2ec8a348bda");
 
-/*	    	 if(PassWordUtils.validatePassword("123", str)) {
+	    	 if(PassWordUtils.validatePassword("123", str)) {
 	    		 System.out.println("11");
 	    	 }
-*/
+
 
 	      
 	      
 	//	System.out.println(PassWordUtils.validatePassword("123", "cd78e9ac1a77553a7bec20d9e58715fb7c5b9108ee141b061c5da9b0"));
 	}
+*/
+	
 
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.entity.MemberAccountCard;
 import com.game.hall.common.persistence.annotation.MyBatisDao;
 import com.game.hall.modules.member.entity.MemberAccount;
 
@@ -31,4 +32,10 @@ public interface PersonalDataDao {
 	
 	//更新安全码
 	public int modifySec(String id,String newPassWord);
+	
+	//增加银行卡绑定
+	public int insertCard(MemberAccountCard memberAccountCard);
+	
+	//增加账户
+	public int insert(com.entity.MemberAccount memberAccount);
 }
