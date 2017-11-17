@@ -148,4 +148,11 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="modifySec">
+		UPDATE member_account_card SET 	
+			sec_password = #{secPassword}
+		WHERE id = #{id}
+	</update> 
+	
+	
 </mapper>

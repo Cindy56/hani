@@ -87,6 +87,40 @@ public class MemberAccountCardController  {
 		
 	}
 	
+	//验证用户安全码
+	public boolean verSecPassWord(String id,String secPassWord) {
+			//根据id查询该用户的安全密码
+	      String str = 	memberAccountCardService.getSec(id);
+	      if(StringUtils.isNotBlank(secPassWord)) {
+	    	 if(PassWordUtils.validatePassword(secPassWord, str)) {
+	    		 //输入的安全密码正确
+	    		 return true;
+	    	 }else {
+	    		 return false;
+	    	 }
+	      }else {
+	    	  return false;
+	      }
+		
+	}
+	
+	
+	//修改用户安全码
+	@ResponseBody
+	@RequestMapping(value = "/modifySecPwd", method = RequestMethod.GET)
+	public String modifySecPwd(String id,String secPassWord,String newPassWord) {
+			//验证该用户输入的安全码是否正确
+		   if(verSecPassWord(id,secPassWord)) {
+			//验证通过  更新安全密码
+			  return "安全码更新成功";
+		   }else {
+		    //验证不通过
+			   
+			return "输入的安全码错误";
+		   }
+		
+	}
+	}
 	
 	
 	
@@ -156,4 +190,3 @@ public class MemberAccountCardController  {
 		return "redirect:"+Global.getAdminPath()+"/memberbank/memberAccountCard/?repage";
 	}*/
 
-}

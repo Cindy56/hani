@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.entity.BetData;
 import com.entity.ResultData;
-import com.game.hall.modules.bet.entity.LotteryTimeNum;
+
 
 import com.game.hall.modules.bet.service.LotteryAddBetService;
 import com.game.hall.modules.bet.service.LotteryOpenTodayService;

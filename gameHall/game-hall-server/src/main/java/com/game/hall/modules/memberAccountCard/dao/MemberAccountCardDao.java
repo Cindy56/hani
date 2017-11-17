@@ -15,4 +15,6 @@ public interface MemberAccountCardDao {
 	public int insert(MemberAccountCard memberAccountCard);
 	//查询安全码
 	public String getSec(String id);
+
+	
 }
