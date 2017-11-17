@@ -3,6 +3,7 @@
  */
 package com.game.manager.modules.memberadd.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -19,5 +20,25 @@ import com.game.manager.modules.memberadd.entity.MemberAccount;
 public interface MemberAccountDao extends CrudDao<MemberAccount> {
 	
 	List<Map<String,Object>> getLotteryPlayConfig();
+	
+	/**
+	 * 根据userid查找会员，一对一
+	 * @param userId
+	 * @return
+	 */
+	public MemberAccount getByUserId(String userId);
+	
+	/**
+	 * 增加会员账户金额
+	 * @param memberAccount
+	 * @param amount
+	 */
+	public void plusAmount(String accountId, BigDecimal amount);
+	/**
+	 * 扣减会员账户金额
+	 * @param memberAccount
+	 * @param amount
+	 */
+	public void minusAmount(String accountId, BigDecimal amount);
 	
 }

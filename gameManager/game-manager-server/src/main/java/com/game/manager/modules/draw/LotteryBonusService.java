@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.game.manager.modules.memberadd.service.MemberAccountService;
 import com.game.manager.modules.order.entity.LotteryOrder;
 import com.game.manager.modules.order.service.LotteryOrderService;
+import com.game.manager.modules.sys.service.SystemService;
 import com.game.manager.modules.trade.entity.FinanceTradeDetail;
 import com.game.manager.modules.trade.service.FinanceTradeDetailService;
 
@@ -20,6 +22,10 @@ import com.game.manager.modules.trade.service.FinanceTradeDetailService;
  */
 @Service
 public class LotteryBonusService {
+//	@Autowired
+//	private SystemService systemService;
+	@Autowired
+	private MemberAccountService memberAccountService;
 	@Autowired
 	private LotteryCalculateService lotteryCalculateServiceImpl;
 	@Autowired
@@ -65,28 +71,30 @@ public class LotteryBonusService {
 	 * @param lotteryOrder
 	 * @return
 	 */
-	private boolean calculateOrderBonus(LotteryOrder lotteryOrder) {
+	private void calculateOrderBonus(LotteryOrder lotteryOrder) {
 //		//计算注单中奖金额
-//		BigDecimal bonus = this.lotteryCalculateServiceImpl.calculateOrderBonus(lotteryOrder);
-//		lotteryOrder.setWinAmount(bonus);
-//		//更新注单中奖状态和中奖金额
-//		this.lotteryOrderService.save(lotteryOrder);
-//		
-//		//获取账户，更新账户余额:调用账户服务直接更新余额
-////		this.accountService.plusAmount(bonus);
-//		
-//		//生成中奖账变流水,入库
-//		FinanceTradeDetail  trade = new FinanceTradeDetail();
-//		trade.setUser(lotteryOrder.getUser());
-//		trade.setUserName(userName);
-//		trade.setAccountId(accountId);
-//		trade.setBusiNo(lotteryOrder.getOrderNum());
-//		trade.setTradeType(tradeType);
-//		trade.setAmount(bonus);
+		BigDecimal bonus = this.lotteryCalculateServiceImpl.calculateOrderBonus(lotteryOrder);
+		lotteryOrder.setWinAmount(bonus);
+		//更新注单中奖状态和中奖金额
+		this.lotteryOrderService.save(lotteryOrder);
+		
+		//获取账户，更新账户余额:调用账户服务直接更新余额
+		this.memberAccountService.plusAmount(lotteryOrder.getAccountId(), bonus);
+		
+//		User user = systemService.getUser(lotteryOrder.getUser().getId());
+//		memberAccountService.get(entity)
+		//生成中奖账变流水,入库
+		FinanceTradeDetail  trade = new FinanceTradeDetail();
+		trade.setUser(lotteryOrder.getUser());
+		trade.setUserName(lotteryOrder.getUserName());
+		trade.setAccountId(lotteryOrder.getAccountId());
+		trade.setBusiNo(lotteryOrder.getOrderNum());
+		trade.setTradeType("1");
+		trade.setAmount(bonus);
 //		trade.setAccountBlanceBefore(accountBlanceBefore);
 //		trade.setAccountBlanceAfter(accountBlanceAfter);
-//		this.financeTradeDetailService.save(financeTradeDetail);
+		this.financeTradeDetailService.save(trade);
 
-		return true;
+		return;
 	}
 }

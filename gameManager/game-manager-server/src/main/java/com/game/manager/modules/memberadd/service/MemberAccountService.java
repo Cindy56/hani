@@ -3,6 +3,7 @@
  */
 package com.game.manager.modules.memberadd.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,9 @@ public class MemberAccountService extends CrudService<MemberAccountDao, MemberAc
 	public MemberAccount get(String id) {
 		return super.get(id);
 	}
+	public MemberAccount getByUserId(String userId) {
+		return this.memberAccountDao.getByUserId(userId);
+	}
 	
 	public List<MemberAccount> findList(MemberAccount memberAccount) {
 		return super.findList(memberAccount);
@@ -51,6 +55,24 @@ public class MemberAccountService extends CrudService<MemberAccountDao, MemberAc
 	
 	public List<Map<String, Object>> getLotteryPlayConfig(){
 		return memberAccountDao.getLotteryPlayConfig();
+	}
+	
+	/**
+	 * 增加会员账户金额
+	 * @param memberAccount
+	 * @param amount
+	 */
+	public void plusAmount(String accountId, BigDecimal amount) {
+		 this.memberAccountDao.plusAmount(accountId, amount);
+	}
+	
+	/**
+	 * 扣减会员账户金额
+	 * @param memberAccount
+	 * @param amount
+	 */
+	public void minusAmount(String accountId, BigDecimal amount) {
+		this.memberAccountDao.minusAmount(accountId, amount);
 	}
 	
 }
