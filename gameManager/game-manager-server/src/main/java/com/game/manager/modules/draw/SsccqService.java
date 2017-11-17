@@ -2,7 +2,6 @@ package com.game.manager.modules.draw;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
@@ -190,18 +189,11 @@ public enum SsccqService implements LotteryCalculateService {
         // TODO 返水范围校验 等待freeman提供接口
 
         // 投注金额校验，如果传入的不是一个有效的金额数据，返回false，校验失败
-        String betAmount = lotteryOrder.getBetAmount();
-        if (StringUtils.isBlank(betAmount)) {
+        BigDecimal betAmount = lotteryOrder.getBetAmount();
+        if (null == betAmount) {
             return false;
         }
-        else {
-            try {
-                return new BigDecimal(betAmount).compareTo(new BigDecimal("0")) > 0;
-            }
-            catch (Exception e) {
-                return false;
-            }
-        }
+        return betAmount.compareTo(new BigDecimal("0")) > 0;
     }
 
     /**
