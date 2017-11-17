@@ -39,7 +39,7 @@ public interface LotteryCalculateService {
 	 * true:中奖 | false:未中奖
 	 * @return
 	 */
-	boolean checkWin();
+	boolean checkWin(LotteryOrder lotteryOrder);
 	/**
 	 * 计算注单中奖金额
 	 * @param lotteryOrder
