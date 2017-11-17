@@ -35,6 +35,14 @@ public class FinanceTradeDetail extends DataEntity<FinanceTradeDetail> {
 	
 	
 	
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+
 	public FinanceTradeDetail() {
 		super();
 	}

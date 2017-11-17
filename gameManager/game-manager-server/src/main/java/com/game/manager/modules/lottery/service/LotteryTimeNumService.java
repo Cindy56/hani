@@ -15,6 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.quartz.SchedulerException;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
 import com.game.manager.common.persistence.Page;
 import com.game.manager.common.service.CrudService;
 import com.game.manager.common.utils.DateUtils;
@@ -91,6 +94,8 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 	public void updateLotteryNum(String lotteryNum,String lotteryCode,String lotteryIssueNo,String status,String openDate) {
 		lotteryTimeNumDao.updateLotteryNum(lotteryNum, lotteryCode, lotteryIssueNo,status,openDate);
 	}
+	
+	
 	
 	
 	@Transactional(readOnly = false)
@@ -237,6 +242,38 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 		return hisList;
 	}
 	
+	@Transactional(readOnly = false)
+	public String batchUpdateHalt(String[] ids,Integer betHaltDate) {
+		if(ids == null || betHaltDate == null) {
+			return "更新失败";
+		}
+		List<LotteryTimeNum>  list = lotteryTimeNumDao.queryByIdList(ids);
+		if(CollectionUtils.isEmpty(list) ){
+			return "更新失败";
+		}
+		list.stream().forEach(c->{
+			LocalDateTime localDateTime =DateUtils.UDateToLocalDateTime(c.getBetEndDate());
+			c.setBetHaltDate(DateUtils.LocalDateTimeToUdate(localDateTime.minusSeconds(betHaltDate)));
+		});
+		LotteryTimeNum lotteryTimeNum = null;
+		if(list.size() > 1) {
+			 lotteryTimeNum = lotteryTimeNumDao.queryByLotteryIssueNo(list.get(0).getNextIssueNo());
+		}
+		Map<String,Date> map =list.stream().collect(Collectors.toMap(LotteryTimeNum::getNextIssueNo, LotteryTimeNum::getBetHaltDate));
+		if(null != lotteryTimeNum) {
+			map.put(lotteryTimeNum.getNextIssueNo(), lotteryTimeNum.getBetHaltDate());
+		}
+		list.stream().forEach(c->{
+			if(null != map.get(c.getLotteryIssueNo())) {
+				c.setNextHaltDate(map.get(c.getLotteryIssueNo()));
+				lotteryTimeNumDao.batchUpdateHaltDate(c);
+			}
+		});
+		for (LotteryTimeNum c :list) {
+			lotteryTimeNumDao.batchUpdateHaltDate(c);
+		}
+		return "更新成功";
+	}
 	
 	
 	

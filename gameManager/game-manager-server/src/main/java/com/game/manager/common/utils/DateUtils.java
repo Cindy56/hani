@@ -4,6 +4,10 @@
 package com.game.manager.common.utils;
 
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -168,6 +172,34 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		long beforeTime = before.getTime();
 		long afterTime = after.getTime();
 		return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
+	}
+	/**
+	 * java.util.Date --> java.time.LocalDateTime
+	 * @param date
+	 * @return
+	 */
+	public static LocalDateTime  UDateToLocalDateTime(Date date) {
+	    Instant instant = date.toInstant();
+	    ZoneId zone = ZoneId.systemDefault();
+	    return LocalDateTime.ofInstant(instant, zone);
+	}
+	/**
+	 *  java.util.Date --> java.time.LocalDate
+	 */
+	public static LocalDate  UDateToLocalDate(Date date) {
+		    ZoneId zone = ZoneId.systemDefault();
+		    LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(), zone);
+		    return localDateTime.toLocalDate();
+	}
+	
+	/**
+	 * java.time.LocalDateTime --> java.util.Date
+	 */
+	
+	public static Date  LocalDateTimeToUdate(LocalDateTime localDateTime) {
+	    ZoneId zone = ZoneId.systemDefault();
+	    Instant instant = localDateTime.atZone(zone).toInstant();
+	    return Date.from(instant);
 	}
 	
 	/**

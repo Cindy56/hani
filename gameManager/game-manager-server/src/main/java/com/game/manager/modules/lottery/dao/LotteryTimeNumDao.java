@@ -49,4 +49,35 @@ public interface LotteryTimeNumDao extends CrudDao<LotteryTimeNum> {
 	public List<LotteryTimeNum> queryHisLotteryTimeNum(@Param("lotteryCode") String lotteryCode,@Param("row") int row,@Param("haltDate") Date haltDate);
 	
 	
+	/**
+	 * 暂时一条
+	 * 批量修改封单时间
+	 * @param list 批量更新对象
+	 */
+	public void batchUpdateHaltDate(LotteryTimeNum lotteryTimeNums);
+	
+	/**
+	 * 根据主键ID  查询明细 
+	 * @param ids 多个主键
+	 */
+	public List<LotteryTimeNum> queryByIdList(@Param("ids") String[] ids);
+	
+	/**
+	 *  根据期号查询 查询时刻明细 
+	 * @param lotteryIssueNo 期号
+	 * @return
+	 */
+	public LotteryTimeNum queryByLotteryIssueNo(@Param("lotteryIssueNo") String lotteryIssueNo);
+	
+	
+	/**
+	 *  根据彩种期号查询 查询时刻明细 
+	 *   * @param lotteryCode 彩种
+	 * @param lotteryIssueNo 期号
+	 * @return
+	 */
+	public LotteryTimeNum queryByLotteryCodeIssueNo(@Param("lotteryCode") String lotteryCode,@Param("lotteryIssueNo") String lotteryIssueNo);
+	
+	
+	
 }
