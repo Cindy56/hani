@@ -10,8 +10,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.entity.MemberAccountCard;
-import com.game.hall.common.persistence.annotation.MyBatisDao;
+
 import com.game.hall.modules.member.entity.MemberAccount;
+import com.game.manager.common.persistence.annotation.MyBatisDao;
 
 /**
  * @author antonio
@@ -38,4 +39,10 @@ public interface PersonalDataDao {
 	
 	//增加账户
 	public int insert(com.entity.MemberAccount memberAccount);
+	
+	//删除银行卡
+	public int deleteAccountCard(String bankCardNo);
+	
+	//查询该用户所有银行卡信息
+	public List<MemberAccountCard> getAllAccountCard(String id);
 }

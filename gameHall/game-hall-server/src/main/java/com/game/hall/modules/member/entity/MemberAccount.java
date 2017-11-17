@@ -5,7 +5,7 @@ package com.game.hall.modules.member.entity;
 
 import java.util.Date;
 
-import com.game.hall.common.persistence.DataEntity;
+
 
 
 /**

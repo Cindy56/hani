@@ -13,13 +13,16 @@ import org.springframework.stereotype.Service;
 
 import com.api.AccountMgrApi;
 import com.entity.BetData;
+import com.entity.MemberAccount;
 import com.entity.MemberAccountCard;
 import com.entity.ResultData;
-import com.game.hall.common.utils.StringUtils;
+
 import com.game.hall.modules.member.dao.PersonalDataDao;
-import com.game.hall.modules.member.entity.MemberAccount;
+
 import com.game.hall.modules.memberAccountCard.service.MemberAccountCardService;
 import com.game.hall.utils.PassWordUtils;
+import com.game.manager.common.utils.StringUtils;
+
 
 /**
  * @author antonio
@@ -81,6 +84,7 @@ public class PersonalDataService implements AccountMgrApi{
 			return "输入的安全码错误";
 		   }
 		
+	
 	}
 
 
@@ -90,11 +94,31 @@ public class PersonalDataService implements AccountMgrApi{
 	 * 增加账户
 	 */
 	@Override
-	public int saveMemberAccount(com.entity.MemberAccount memberAccount) {
+	public int saveMemberAccount(MemberAccount memberAccount) {
 			return personalDataDao.insert(memberAccount);
 	}
 	
 
+	/**
+	 * 
+	 * 删除银行卡
+	 */
+    public int deleteAccountCard(String bankCardNo) {
+    	return personalDataDao.deleteAccountCard(bankCardNo);
+    }
 
+
+
+
+    /**
+     * 
+     * 根据user_id查询此账户所有银行卡信息
+     */
+	@Override
+	public List<MemberAccountCard> accountCardInfo(String id) {
+		return personalDataDao.getAllAccountCard(id);
+	}
+    
+    
 
 }

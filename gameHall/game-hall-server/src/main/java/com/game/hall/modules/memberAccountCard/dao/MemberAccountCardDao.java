@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.game.hall.common.persistence.annotation.MyBatisDao;
-import com.game.hall.modules.memberAccountCard.entity.MemberAccountCard;
+import com.entity.MemberAccountCard;
+import com.game.manager.common.persistence.annotation.MyBatisDao;
+
 
 
 @MyBatisDao

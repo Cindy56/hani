@@ -1,21 +1,8 @@
 package com.game.hall.utils;
 
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.identity.Group;
-import org.apache.shiro.session.Session;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.game.hall.common.security.Digests;
-import com.game.hall.common.utils.Encodes;
+import com.game.manager.common.security.Digests;
+import com.game.manager.common.utils.Encodes;
 
 
 public class PassWordUtils  {
@@ -24,9 +11,7 @@ public class PassWordUtils  {
 	public static final int HASH_INTERATIONS = 1024;
 	public static final int SALT_SIZE = 8;
 	
-	public static void main(String[] args) {
-		System.out.println(validatePassword("123","cd78e9ac1a77553a7bec20d9e58715fb7c5b9108ee141b061c5da9b0"));
-	}
+
 	/**
 	 * 生成安全的密码，生成随机的16位salt并经过1024次 sha-1 hash
 	 */

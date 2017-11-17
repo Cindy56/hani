@@ -63,7 +63,7 @@
 	<!-- 依赖项定义 -->
 	<dependencies>
 
-<dependency>
+		<dependency>
 			<groupId>com.game</groupId>
 			<artifactId>game-manager-client</artifactId>
 			<version>0.0.1</version>
@@ -577,6 +577,20 @@
 			<artifactId>javax.servlet</artifactId> </exclusion> <exclusion> <groupId>org.eclipse.jetty.orbit</groupId> 
 			<artifactId>org.apache.taglibs.standard.glassfish</artifactId> </exclusion> 
 			</exclusions> </dependency> -->
+
+
+
+		<dependency>
+			<groupId>com.game</groupId>
+			<artifactId>game-manager-client</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.game</groupId>
+			<artifactId>game-manager-server</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 
 	</dependencies>
 

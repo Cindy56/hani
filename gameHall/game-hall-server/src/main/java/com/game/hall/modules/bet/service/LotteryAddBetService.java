@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.api.BetServiceApi;
 import com.entity.BetData;
 import com.entity.ResultData;
-import com.game.hall.common.utils.SpringContextHolder;
+
 
 /**
  * @author antonio

@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.drew.lang.StringUtil;
-import com.game.hall.common.utils.StringUtils;
-import com.game.hall.modules.memberAccountCard.entity.MemberAccountCard;
+import com.entity.MemberAccountCard;
 import com.game.hall.modules.memberAccountCard.service.MemberAccountCardService;
 import com.game.hall.modules.sys.entity.User;
 import com.game.hall.utils.PassWordUtils;
+import com.game.manager.common.utils.StringUtils;
 
 
 
@@ -39,7 +38,7 @@ public class MemberAccountCardController  {
 	@ResponseBody
 	@RequestMapping(value = "/accountCardInfo", method = RequestMethod.GET)
 	public List<MemberAccountCard> accountCardInfo(String id) {
-		List<MemberAccountCard> memberAccountCard = memberAccountCardService.get(id);	
+		List<MemberAccountCard> memberAccountCard = memberAccountCardService.get(id);
 		return memberAccountCard;
 	}
 	
@@ -59,8 +58,8 @@ public class MemberAccountCardController  {
 		memberAccountCard.setBankBranchCity("武汉");
 		memberAccountCard.setQqNo("346204131");
 		memberAccountCard.setBeginCreateDate(new Date());
-		memberAccountCard.setUpdateBy("cmh");
-		memberAccountCard.setCreateBy("cmh");
+/*		memberAccountCard.setUpdateBy("cmh");
+		memberAccountCard.setCreateBy("cmh");*/
 		memberAccountCard.setDelFlag("1");
 /*		memberAccountCard.setEndCreateDate(new Date());*/
 		return "成功插入"+String.valueOf(memberAccountCardService.addAccountCard(memberAccountCard))+"条记录";
@@ -113,7 +112,7 @@ public class MemberAccountCardController  {
 		   if(verSecPassWord(id,secPassWord)) {
 			//验证通过  更新安全密码
 			 //修改密码
-	    	 memberAccountCardService.modifySec(id, newPassWord);
+	    	 memberAccountCardService.modifySec(id, PassWordUtils.entryptPassword(newPassWord));
 			  return "安全码更新成功";
 		   }else {
 		    //验证不通过

@@ -22,7 +22,7 @@
 		a.del_flag AS "delFlag"
 	</sql>
     
-	<select id="get" resultType="MemberAccount">
+	<select id="get" resultType="com.game.hall.modules.member.entity.MemberAccount">
 		SELECT 
 			<include refid="memberAccountColumns"/>
 		FROM member_account a, sys_user b
@@ -30,7 +30,33 @@
 		and b.id = a.user_id
 	</select>
 	
-	<select id="findList" resultType="MemberAccount">
+	
+	<select id="getAllAccountCard" resultType="com.game.hall.modules.memberAccountCard.entity.MemberAccountCard">
+		SELECT 
+		a.id AS "id",
+		a.user_id AS "user.id",
+		a.account_id AS "accountId",
+		a.bank_code AS "bankCode",
+		a.bank_card_no AS "bankCardNo",
+		a.bank_card_holder AS "bankCardHolder",
+		a.bank_branch_province AS "bankBranchProvince",
+		a.bank_branch_city AS "bankBranchCity",
+		a.bank_branch_name AS "bankBranchName",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag",
+		b.account_type as "accountType",
+		b.qq_no as "qqNo",
+		b.mobile_no as "mobileNo"
+		FROM member_account_card a,member_account b
+		WHERE a.user_id = #{id}
+		and a.user_id=b.user_id
+	</select>
+	
+	<select id="findList" resultType="com.game.hall.modules.member.entity.MemberAccount">
 		SELECT 
 			<include refid="memberAccountColumns"/>
 		FROM member_account a, sys_user b
@@ -146,6 +172,13 @@
 		UPDATE member_account SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
+	</update>
+	
+	
+	<update id="deleteAccountCard">
+		UPDATE member_account_card SET 
+			del_flag = "1"
+		WHERE bank_card_no = #{bankCardNo}
 	</update>
 	
 	<update id="modifySec">
