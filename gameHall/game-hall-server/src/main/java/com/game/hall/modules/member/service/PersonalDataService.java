@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.AccountMgrApi;
-import com.entity.BetData;
+import com.entity.LotteryOrder;
 import com.entity.ResultData;
 import com.game.hall.modules.member.dao.PersonalDataDao;
 import com.game.hall.modules.member.entity.MemberAccount;
@@ -56,7 +56,7 @@ public class PersonalDataService implements AccountMgrApi{
 	}
 
 	@Override
-	public ResultData addBet(BetData betData) {
+	public ResultData addBet(LotteryOrder betData) {
 		// TODO Auto-generated method stub
 		return null;
 	}

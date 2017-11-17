@@ -3,19 +3,7 @@
  */
 package com.game.hall.modules.bet.service;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import com.api.BetServiceApi;
-import com.entity.ResultData;
-import com.game.hall.common.utils.SpringContextHolder;
 
 
 /**

@@ -2,8 +2,6 @@ package com.game.hall.modules.bet.entity;
 
 import java.math.BigDecimal;
 
-import com.game.hall.common.persistence.DataEntity;
-
 public class BetData {
 
 	/**

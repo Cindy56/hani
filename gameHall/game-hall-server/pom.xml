@@ -63,9 +63,24 @@
 	<!-- 依赖项定义 -->
 	<dependencies>
 
-<dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>2.5</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
 			<groupId>com.game</groupId>
 			<artifactId>game-manager-client</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.game</groupId>
+			<artifactId>game-manager-server</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.entity.BetData;
+import com.entity.LotteryOrder;
 import com.entity.ResultData;
 import com.game.hall.common.utils.StringUtils;
 import com.game.hall.modules.member.entity.MemberAccount;
