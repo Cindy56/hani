@@ -29,6 +29,7 @@
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/lottery/lotteryTimeNum/">开奖时刻列表</a></li>
 		<li class="active"><a href="${ctx}/lottery/lotteryTimeNum/form?id=${lotteryTimeNum.id}">开奖时刻<shiro:hasPermission name="lottery:lotteryTimeNum:edit">${not empty lotteryTimeNum.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="lottery:lotteryTimeNum:edit">查看</shiro:lacksPermission></a></li>
+		<li ><a href="${ctx}/lottery/lotteryTimeNum/batchView">批量修改时刻</a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="lotteryTimeNum" action="${ctx}/lottery/lotteryTimeNum/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
