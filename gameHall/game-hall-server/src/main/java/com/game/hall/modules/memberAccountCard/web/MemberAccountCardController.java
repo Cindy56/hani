@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.entity.MemberAccountCard;
 import com.game.hall.modules.memberAccountCard.service.MemberAccountCardService;
-import com.game.hall.modules.sys.entity.User;
 import com.game.hall.utils.PassWordUtils;
 import com.game.manager.common.utils.StringUtils;
+import com.game.manager.modules.sys.entity.User;
 
 
 

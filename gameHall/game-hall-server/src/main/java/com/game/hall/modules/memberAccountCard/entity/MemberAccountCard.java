@@ -4,7 +4,7 @@ package com.game.hall.modules.memberAccountCard.entity;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-import com.game.hall.modules.sys.entity.User;
+import com.game.manager.modules.sys.entity.User;
 
 import java.util.Date;
 
