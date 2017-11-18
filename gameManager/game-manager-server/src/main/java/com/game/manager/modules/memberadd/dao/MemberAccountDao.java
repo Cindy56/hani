@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.game.manager.common.persistence.CrudDao;
 import com.game.manager.common.persistence.annotation.MyBatisDao;
 import com.game.manager.modules.memberadd.entity.MemberAccount;
@@ -40,5 +42,13 @@ public interface MemberAccountDao extends CrudDao<MemberAccount> {
 	 * @param amount
 	 */
 	public void minusAmount(String accountId, BigDecimal amount);
+	
+	/**
+	 * 根据 多个 会员ID 查询 会员信息
+	 * @param Ids id集合
+	 * @return 会员信息
+	 */
+	public List<MemberAccount> findMemberIds(@Param("ids") List<String> ids);
+	
 	
 }
