@@ -119,4 +119,24 @@
 		<property name="maxUploadSize" value="${web.maxUploadSize}" />  
 	</bean>
 	
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+	    <property name="messageConverters">
+	        <list>
+	<!--         
+	            <bean id="marshallingHttpMessageConverter"
+	                  class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+	                <property name="marshaller" ref="jaxbMarshaller" />
+	                <property name="unmarshaller" ref="jaxbMarshaller" />
+	            </bean>   
+	            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+	            <bean class="org.springframework.http.converter.FormHttpMessageConverter" />
+	            <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+	            <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+	            <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+	            <bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+	 -->            
+	            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+	        </list>
+	    </property>
+	</bean>		
 </beans>

@@ -27,7 +27,10 @@ import com.game.manager.modules.lottery.entity.LotteryTypeTime;
 @Service
 @Transactional(readOnly = true)
 public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType> {
-
+	
+	@Autowired
+    private LotteryTypeDao lotteryTypeDao;
+	
     /**
      * 彩种玩法DAO
      */
@@ -41,17 +44,10 @@ public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType>
     private LotteryTypeTimeDao lotteryTypeTimeDao;
 
     /**
-     * 彩种管理DAO
-     */
-    @Autowired
-    private LotteryTypeDao lotteryTypeDao;
-
-    /**
      * 根据记录ID获取单条数据
      */
     public LotteryType get(String id) {
         LotteryType lotteryType = super.get(id);
-        lotteryType.setLotteryPlayConfigList(lotteryPlayConfigDao.findList(new LotteryPlayConfig(lotteryType)));
         lotteryType.setLotteryTypeTimeList(lotteryTypeTimeDao.findList(new LotteryTypeTime(lotteryType)));
         return lotteryType;
     }
@@ -63,7 +59,11 @@ public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType>
      * @author Terry
      */
     public LotteryType getByCode(String code) {
-        return lotteryTypeDao.getByCode(code);
+    	 LotteryType lotteryType = lotteryTypeDao.getByCode(code);
+    	 if(null != lotteryType) {
+    		 lotteryType.setLotteryTypeTimeList(lotteryTypeTimeDao.findList(new LotteryTypeTime(lotteryType)));
+    	 }
+        return lotteryType;
     }
 
     /**
@@ -116,5 +116,17 @@ public class LotteryTypeService extends CrudService<LotteryTypeDao, LotteryType>
         lotteryPlayConfigDao.delete(new LotteryPlayConfig(lotteryType));
         lotteryTypeTimeDao.delete(new LotteryTypeTime(lotteryType));
     }
+
+    
+    /**
+     * 根据彩种code查询彩种信息
+     */
+   
+    public LotteryType queryLotteryType(String lotteryCode) {
+        return lotteryTypeDao.queryLotteryType(lotteryCode);
+    }
+ 
+  
+    
 
 }
