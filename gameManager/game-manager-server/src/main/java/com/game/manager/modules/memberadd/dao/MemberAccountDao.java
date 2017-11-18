@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.game.manager.common.persistence.CrudDao;
 import com.game.manager.common.persistence.annotation.MyBatisDao;
 import com.game.manager.modules.memberadd.entity.MemberAccount;
@@ -33,12 +35,12 @@ public interface MemberAccountDao extends CrudDao<MemberAccount> {
 	 * @param memberAccount
 	 * @param amount
 	 */
-	public void plusAmount(String accountId, BigDecimal amount);
+	public void plusAmount(@Param("accountId")String accountId, @Param("amount")BigDecimal amount);
 	/**
 	 * 扣减会员账户金额
 	 * @param memberAccount
 	 * @param amount
 	 */
-	public void minusAmount(String accountId, BigDecimal amount);
+	public void minusAmount(@Param("accountId")String accountId, @Param("amount")BigDecimal amount);
 	
 }

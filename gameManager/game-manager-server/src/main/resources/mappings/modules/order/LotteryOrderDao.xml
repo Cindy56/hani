@@ -171,7 +171,7 @@
 	<update id="update">
 		UPDATE lottery_order SET 	
 			order_no = #{orderNo},
-			user_name = #{userName},
+			user_name = #{user.name},
 			user_id = #{user.id},
 			org_id = #{orgId},
 			lottery_code = #{lotteryCode},

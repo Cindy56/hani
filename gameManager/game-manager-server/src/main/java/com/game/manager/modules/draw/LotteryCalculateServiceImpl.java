@@ -50,7 +50,7 @@ public class LotteryCalculateServiceImpl implements LotteryCalculateService {
 	@Override
 	public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder) {
 		String orderLotteryCode = lotteryOrder.getLotteryCode();//彩种
-		String orderPlayCode = lotteryOrder.getOrderType();//玩法
+		String orderPlayCode = lotteryOrder.getBetType();//玩法
 //		LotteryCalculateService lotteryService = SpringContextHolder.getBean(orderLotteryCode + "Service");//get bean
 		
 		return SsccqService.valueOf(orderPlayCode).calculateOrderBonus(lotteryOrder);
