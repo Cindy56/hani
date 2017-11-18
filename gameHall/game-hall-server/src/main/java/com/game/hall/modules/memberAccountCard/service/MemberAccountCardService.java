@@ -27,9 +27,9 @@ public class MemberAccountCardService {
 		return memberAccountCardDao.insert(memberAccountCard);
 	}
 	
-	//查询安全码
+/*	//查询安全码
 	public String getSec(String id) {
 		return memberAccountCardDao.getSec(id);		
-	}
+	}*/
 
 }

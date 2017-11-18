@@ -22,12 +22,31 @@
 		a.del_flag AS "delFlag"
 	</sql>
     
-	<select id="get" resultType="MemberAccount">
+	<select id="get" resultType="java.util.Map">
 		SELECT 
-			<include refid="memberAccountColumns"/>
-		FROM member_account a, sys_user b
-		WHERE a.id = #{id}
-		and b.id = a.user_id
+		a.id AS "id",
+		a.user_id AS "user.id",
+		a.account_id AS "accountId",
+		a.bank_code AS "bankCode",
+		a.bank_card_no AS "bankCardNo",
+		a.bank_card_holder AS "bankCardHolder",
+		a.bank_branch_province AS "bankBranchProvince",
+		a.bank_branch_city AS "bankBranchCity",
+		a.bank_branch_name AS "bankBranchName",
+		a. STATUS AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag",
+		b.account_type AS "accountType",
+		b.qq_no AS "qqNo",
+		b.mobile_no AS "mobileNo"
+		FROM
+		member_account_card a,
+		member_account b
+		WHERE b.user_id = #{id}
+		AND a.user_id = b.user_id
 	</select>
 	
 	<select id="findList" resultType="MemberAccount">
@@ -63,6 +82,44 @@
 			</otherwise>
 		</choose>
 	</select>
+	
+	
+<select id="findAllCart" resultType="com.game.hall.modules.memberAccountCard.entity.MemberAccountCard">
+		SELECT 
+		a.id AS "id",
+		a.user_id AS "user.id",
+		a.account_id AS "accountId",
+		a.bank_code AS "bankCode",
+		a.bank_card_no AS "bankCardNo",
+		a.bank_card_holder AS "bankCardHolder",
+		a.bank_branch_province AS "bankBranchProvince",
+		a.bank_branch_city AS "bankBranchCity",
+		a.bank_branch_name AS "bankBranchName",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag",
+		b.account_type as "accountType",
+		b.qq_no as "qqNo",
+		b.mobile_no as "mobileNo"
+		FROM member_account_card a,member_account b
+
+		<where>
+			a.del_flag = "0"
+			and a.user_id=b.user_id
+		</where>	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select> 
+	
 	
 	<select id="findAllList" resultMap="aResult">
 		SELECT 
@@ -142,17 +199,77 @@
 		WHERE id = #{id}
 	</update>
 	
+	
+	
+<update id="updateMemberAccount">
+		UPDATE member_account SET 	
+			parent_agent_id = #{parentAgentId},
+		<!-- 	user_id = #{user.id},
+			org_id = #{orgId.id}, -->
+			account_type = #{accountType},
+			sec_password = #{secPassword},
+			qq_no = #{qqNo},
+			mobile_no = #{mobileNo},
+			blance = #{blanceNo},
+			blance_frozen = #{blanceFrozen},
+			status = #{status},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	
+	
 	<update id="delete">
 		UPDATE member_account SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
 	
-	<update id="modifySec">
-		UPDATE member_account_card SET 	
-			sec_password = #{secPassword}
-		WHERE id = #{id}
+	<update id="modifySec"  >
+		UPDATE member_account SET 	
+			sec_password = #{newPassWord}
+		WHERE user_id = #{id}
 	</update> 
 	
+	<select id="getSec" resultType="java.lang.String">
+		SELECT sec_password from member_account b
+		where b.user_id = #{id}
+	</select>
 	
+		<insert id="insertCard">
+		INSERT INTO member_account_card(
+			id,
+			user_id,
+			account_id,
+			bank_code,
+			bank_card_no,
+			bank_card_holder,
+			bank_branch_province,
+			bank_branch_city,
+			bank_branch_name,
+			status,
+			
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{user.id},
+			#{accountId},
+			#{bankCode},
+			#{bankCardNo},
+			#{bankCardHolder},
+			#{bankBranchProvince},
+			#{bankBranchCity},
+			#{bankBranchName},
+			#{status},
+		 
+			#{createBy},
+			now(),
+			#{updateBy},
+			#{delFlag}
+		)
+	</insert>
 </mapper>
