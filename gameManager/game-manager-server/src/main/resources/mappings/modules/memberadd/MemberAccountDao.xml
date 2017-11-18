@@ -162,16 +162,16 @@
 	</select>
 	
 	<update id="plusAmount">
-		UPDATE member_account 
-		SET blance = blance + amount 				
-		WHERE id = #{accountId}
+		UPDATE member_account tt
+		SET tt.blance = tt.blance + #{amount} 				
+		WHERE tt.id = #{accountId}
 	</update>
 	
 	<update id="minusAmount">
-		UPDATE member_account 
-		SET blance = blance - amount 				
-		WHERE id = #{accountId}
-		and blance - amount >= 0
+		UPDATE member_account tt
+		SET tt.blance = tt.blance - #{amount} 				
+		WHERE tt.id = #{accountId}
+		and tt.blance - #{amount} >= 0
 	</update>	
 
 </mapper>

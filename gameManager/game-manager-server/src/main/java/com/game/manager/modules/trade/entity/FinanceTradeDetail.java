@@ -18,14 +18,13 @@ import com.game.manager.common.persistence.DataEntity;
  * @version 2017-11-09
  */
 public class FinanceTradeDetail extends DataEntity<FinanceTradeDetail> {
-	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -8951881613820090205L;
 	private User user;		// 用户id
 	private String userName;		// 用户名称
 	private String accountId;		// 账号id
 	private String orgId;
 	private String busiNo;		// 业务编号，一个编号对应多条明细：如果类型为投注，就为注单编号，一个注单在派奖后，生成奖金、本人返水，多个上级返水如果是充值，就是充值单编号如果是提现，就为提现记录编号
-	private String tradeType;		// 账变交易类型：&lt;li&gt;投注扣款&lt;/li&gt;&lt;li&gt;追号扣款&lt;/li&gt;&lt;li&gt;合买扣款&lt;/li&gt;&lt;li&gt;投注撤单&lt;/li&gt;&lt;li&gt;奖金派送&lt;/li&gt;&lt;li&gt;投注返点&lt;/li&gt;&lt;li&gt;活动礼金&lt;/li&gt;&lt;li&gt;追号停止&lt;/li&gt;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;
+	private String tradeType;		// 账变交易类型：
 	private BigDecimal amount;		// 账变金额
 	private BigDecimal accountBlanceBefore;		// 账变前金额
 	private BigDecimal accountBlanceAfter;		// 账变后金额

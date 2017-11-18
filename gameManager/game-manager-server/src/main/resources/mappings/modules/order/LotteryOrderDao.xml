@@ -4,7 +4,7 @@
     
 	<sql id="lotteryOrderColumns">
 		a.id AS "id",
-		a.order_num AS "orderNum",
+		a.order_no AS "orderNo",
 		a.user_name AS "user.name",
 		a.user_id AS "user.id",
 		a.org_id AS "orgId",
@@ -51,8 +51,8 @@
 		<include refid="lotteryOrderJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="orderNum != null and orderNum != ''">
-				AND a.order_num = #{orderNum}
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
 			</if>
 			<if test="user != null and user.id != null and user.id != ''">
 				AND a.user_id = #{user.id}
@@ -113,7 +113,7 @@
 	<insert id="insert">
 		INSERT INTO lottery_order(
 			id,
-			order_num,
+			order_no,
 			user_name,
 			user_id,
 			org_id,
@@ -140,7 +140,7 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{orderNum},
+			#{orderNo},
 			#{user.name},
 			#{user.id},
 			#{orgId},
@@ -170,8 +170,8 @@
 	
 	<update id="update">
 		UPDATE lottery_order SET 	
-			order_num = #{orderNum},
-			user_name = #{userName},
+			order_no = #{orderNo},
+			user_name = #{user.name},
 			user_id = #{user.id},
 			org_id = #{orgId},
 			lottery_code = #{lotteryCode},

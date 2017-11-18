@@ -62,6 +62,7 @@ public class MemberAccountService extends CrudService<MemberAccountDao, MemberAc
 	 * @param memberAccount
 	 * @param amount
 	 */
+	@Transactional(readOnly = false)
 	public void plusAmount(String accountId, BigDecimal amount) {
 		 this.memberAccountDao.plusAmount(accountId, amount);
 	}
@@ -71,6 +72,7 @@ public class MemberAccountService extends CrudService<MemberAccountDao, MemberAc
 	 * @param memberAccount
 	 * @param amount
 	 */
+	@Transactional(readOnly = false)
 	public void minusAmount(String accountId, BigDecimal amount) {
 		this.memberAccountDao.minusAmount(accountId, amount);
 	}

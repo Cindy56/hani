@@ -19,6 +19,7 @@ import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
 import com.game.manager.common.utils.StringUtils;
 import com.game.manager.common.web.BaseController;
+import com.game.manager.modules.draw.LotteryBonusService;
 import com.game.manager.modules.order.entity.LotteryOrder;
 import com.game.manager.modules.order.service.LotteryOrderService;
 import com.game.manager.modules.sys.utils.UserUtils;
@@ -34,6 +35,8 @@ public class LotteryOrderController extends BaseController {
 
 	@Autowired
 	private LotteryOrderService lotteryOrderService;
+	@Autowired
+	private LotteryBonusService lotteryBonusService;
 	
 	@ModelAttribute
 	public LotteryOrder get(@RequestParam(required=false) String id) {
@@ -45,6 +48,23 @@ public class LotteryOrderController extends BaseController {
 			entity = new LotteryOrder();
 		}
 		return entity;
+	}
+	
+	/**
+	 * 测试流程，参数：彩种（lotteryCode） + 期号（betIssueNo）
+	 * @param lotteryOrder
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("order:lotteryOrder:view")
+	@RequestMapping(value = {"testLiucheng"})
+	public String testLiucheng(LotteryOrder lotteryOrder, HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		this.lotteryBonusService.calculateOrderBonusFromDB(lotteryOrder.getLotteryCode(), lotteryOrder.getBetIssueNo());
+		
+		return "xxxxxxx";
 	}
 	
 	@RequiresPermissions("order:lotteryOrder:view")
