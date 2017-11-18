@@ -23,13 +23,13 @@ public enum SsccqService implements LotteryCalculateService{
 		}
 		
 		@Override
-		public boolean checkWin() {
-			String betNumber = "1";
-			return StringUtils.contains("0123456789", betNumber);
-		}
-		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder) {
 			return new BigDecimal(0);
+		}
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder) {
+			// TODO Auto-generated method stub
+			return false;
 		}
 	},
 	/** xxxxxx */
@@ -89,16 +89,27 @@ public enum SsccqService implements LotteryCalculateService{
 		this.playName = playName;
 	}
 	
-
-	public static void main(String[] args) {
-		EnumSet<SsccqService> ssccq = EnumSet.allOf(SsccqService.class);
-        for (SsccqService playcode : ssccq) {
-//            System.out.println(playcode);
-        	if("SSC_DAN1_ZHIXUAN".equalsIgnoreCase(playcode.getPlayCode())) {
-        		System.out.println(playcode.checkWin());
-        		break;
-        	}
-        }
+	
+	//===========================================================================default implement
+	@Override
+	public void trend(LotteryTimeNum lotteryTimeNum) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public boolean checkOrder(LotteryOrder lotteryOrder) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean checkWin(LotteryOrder lotteryOrder) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder) {
+		// TODO Auto-generated method stub
+		return new BigDecimal(0);
 	}
 	
 }
