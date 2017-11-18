@@ -3,7 +3,6 @@
  */
 package com.game.hall.modules.bet.service;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.game.hall.modules.bet.dao.LotteryOpenTodayDao;
 import com.game.hall.modules.bet.entity.LotteryTimeNum;
+import com.game.hall.modules.bet.entity.ResultData;
+import com.hessianapi.MoneyMgrApi;
 
 /**
  * @author antonio
@@ -20,16 +21,22 @@ import com.game.hall.modules.bet.entity.LotteryTimeNum;
  */
 @Service
 public class LotteryOpenTodayService {
+	@Autowired // (name = "myServiceClient")
+	private MoneyMgrApi heApi;
 
 	@Autowired
 	private LotteryOpenTodayDao lotOpenToday;
 
-	public List<LotteryTimeNum> OpenToday() {
-		return lotOpenToday.OpenToday();
+	public void bet() {
+		heApi.test1();
+	}
+
+	public ResultData OpenToday() {
+		return heApi.openToday();
 	}
 
 	public List<LotteryTimeNum> Cur(Date dt) {
-		return lotOpenToday.CurrentIssue(dt);
+		return lotOpenToday.currentIssue(dt);
 	}
 
 }

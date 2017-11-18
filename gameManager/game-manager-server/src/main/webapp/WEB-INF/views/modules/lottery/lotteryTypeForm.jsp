@@ -28,7 +28,6 @@
             });
         });
         function addRow(list, idx, tpl, row){
-            debugger;
             $(list).append(Mustache.render(tpl, {
                 idx: idx, delBtn: true, row: row
             }));
@@ -88,7 +87,7 @@
             <div class="controls">
                 <form:select id="code" path="code" class="input-xlarge required">
                     <form:option value="" label="-- 请选择 --"/>
-                    <form:options items="${}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList(lotteryType.parentCode)}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
                 <span class="help-inline"><font color="red">*</font></span>
             </div>
@@ -98,7 +97,7 @@
         <div class="control-group">
             <label class="control-label">所属公司：</label>
             <div class="controls">
-                <sys:treeselect id="companyId" name="companyId" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"
+                <sys:treeselect id="companyId" name="companyId" value="${lotteryType.companyId}" labelName="${lotteryType.currentUser.company.name}" labelValue="${lotteryType.currentUser.company.name}"
                     title="所属公司" url="/sys/office/treeData?type=1" cssClass="required"/>
                 <span class="help-inline"><font color="red">*</font></span>
             </div>
@@ -203,7 +202,6 @@
                         $(document).ready(function() {
                             var data = ${fns:toJson(lotteryType.lotteryTypeTimeList)};
                             for (var i=0; i<data.length; i++){
-                                debugger;
                                 addRow('#lotteryTypeTimeList', lotteryTypeTimeRowIdx, lotteryTypeTimeTpl, data[i]);
                                 lotteryTypeTimeRowIdx = lotteryTypeTimeRowIdx + 1;
                             }
@@ -231,11 +229,11 @@
                     if (data) {
                         var playCode = data.lotteryPlayCode;
                         if (playCode) {
-                            // 先清空上一个分类的关联数据
-                            var tmpStr = "<option>-- 请选择 --</option>";
+                            var tmpStr = "<option checked='checked'>-- 请选择 --</option>";
                             for (var i = 0;i < playCode.length; i++) {
                                 tmpStr += "<option value='" + playCode[i].value + "'>" + playCode[i].label + "</option>";
                             }
+                            // 新数据直接覆盖
                             $("#code").html(tmpStr);
                         }
                     }
