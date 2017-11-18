@@ -77,6 +77,7 @@
 		INSERT INTO member_account(
 		id,
 		parent_agent_id,
+		parent_agent_ids,
 		user_id,
 		org_id,
 		account_type,
@@ -94,6 +95,7 @@
 		) VALUES (
 		#{id},
 		#{parentAgentId},
+		#{parentAgentIds},
 		#{user.id},
 		#{orgId},
 		#{accountType},
