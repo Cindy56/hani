@@ -9,8 +9,8 @@ import com.game.manager.modules.order.entity.LotteryOrder;
 
 /**
  * 订单明细DAO接口
- * @author antonio
- * @version 2017-11-16
+ * @author vinton
+ * @version 2017-11-17
  */
 @MyBatisDao
 public interface LotteryOrderDao extends CrudDao<LotteryOrder> {

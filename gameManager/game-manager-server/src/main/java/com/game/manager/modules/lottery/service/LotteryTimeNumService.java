@@ -95,6 +95,9 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 		lotteryTimeNumDao.updateLotteryNum(lotteryNum, lotteryCode, lotteryIssueNo,status,openDate);
 	}
 	
+	
+	
+	
 	@Transactional(readOnly = false)
     public  void  generatePlanTime (TimeTask timeTask) throws SchedulerException {
 		//TODO:返回一个数组
@@ -222,6 +225,23 @@ public class LotteryTimeNumService extends CrudService<LotteryTimeNumDao, Lotter
 		}
 		return lotteryTimeNum;
 	}
+	/**
+	 * 根据彩种和期号 查询 
+	 * @param lotteryCode 彩种code
+	 * @return 
+	 */
+	public LotteryTimeNum findByLotteryCodeIssueNo(String lotteryCode,String lotteryIssueNo) {
+		if(StringUtils.isBlank(lotteryCode) || StringUtils.isBlank(lotteryIssueNo) ) {
+			return null;
+		}
+		LotteryTimeNum lotteryTimeNum = lotteryTimeNumDao.queryByLotteryCodeIssueNo(lotteryCode, lotteryIssueNo);
+		if(null == lotteryTimeNum) {
+			return null;
+		}
+		return lotteryTimeNum;
+	}
+	
+	
 	/**
 	 * 获取历史期号
 	 * @param lotteryCode 彩种code

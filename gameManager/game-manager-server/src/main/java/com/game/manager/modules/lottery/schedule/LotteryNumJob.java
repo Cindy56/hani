@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.game.manager.common.utils.SpringContextHolder;
 import com.game.manager.common.utils.StringUtils;
+import com.game.manager.modules.draw.LotteryBonusService;
 import com.game.manager.modules.lottery.dto.OpenCaiResp;
 import com.game.manager.modules.lottery.dto.OpenCaiResult;
 import com.game.manager.modules.lottery.exception.LotteryNumDrawException;
@@ -32,8 +33,12 @@ import com.game.manager.modules.lottery.service.LotteryTimeNumService;
 public class LotteryNumJob implements Job {
 	private static final Logger  logger = LoggerFactory.getLogger(LotteryNumJob.class);
 	
-	/*@Autowired
-    private LotteryTimeNumService lotteryTimeNumService;*/
+	@Autowired
+    private LotteryTimeNumService lotteryTimeNumService;
+	@Autowired
+	private LotteryNumDrawService lotteryNumDrawService ;
+	@Autowired
+	private LotteryBonusService lotteryBonusService ;
 	
 	/* *
 	 * 获取当前任务的key,比如:SSC_CQ:21071118085
@@ -57,11 +62,6 @@ public class LotteryNumJob implements Job {
         String issueNo = dataMap.getString("lotteryIssueNo");
 		logger.debug("current job[{}], executing at[{}], lotteryCode[{}], issueNo[{}]", 
 				new Object[] {jobKey, new Date(), lotteryCode, issueNo});
-		
-		//从拉奖通道获取开奖提供方
-		LotteryNumDrawService lotteryNumDrawService = SpringContextHolder.getBean("openCaiDrawService");
-		//保存拉奖号码
-		LotteryTimeNumService lotteryTimeNumService = SpringContextHolder.getBean("lotteryTimeNumService");
 		try {
 			//调用服务，获取开奖数据
 			OpenCaiResult openCaiResult = lotteryNumDrawService.drawLotteryNum(lotteryCode, issueNo);
@@ -77,6 +77,8 @@ public class LotteryNumJob implements Job {
 			//结束当前job:删除定时任务时   先暂停任务，然后再删除  
 	        context.getScheduler().pauseJob(jobKey);  
 	        context.getScheduler().deleteJob(jobKey); 
+	        //派奖
+	        lotteryBonusService.calculateOrderBonusFromDB(lotteryCode,issueNo);
 		} catch (LotteryNumDrawException e) {
 			//TODO:更换其他通道,  或者继续运行拉奖服务
 			e.printStackTrace();

@@ -15,7 +15,7 @@ import com.game.manager.modules.order.dao.LotteryOrderDao;
 
 /**
  * 订单明细Service
- * @author antonio
+ * @author vinton
  * @version 2017-11-17
  */
 @Service

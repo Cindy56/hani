@@ -17,14 +17,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
-import com.game.manager.common.web.BaseController;
 import com.game.manager.common.utils.StringUtils;
+import com.game.manager.common.web.BaseController;
 import com.game.manager.modules.order.entity.LotteryOrder;
 import com.game.manager.modules.order.service.LotteryOrderService;
+import com.game.manager.modules.sys.utils.UserUtils;
 
 /**
  * 订单明细Controller
- * @author antonio
+ * @author vinton
  * @version 2017-11-17
  */
 @Controller
@@ -67,6 +68,10 @@ public class LotteryOrderController extends BaseController {
 		if (!beanValidator(model, lotteryOrder)){
 			return form(lotteryOrder, model);
 		}
+		lotteryOrder.setUser(UserUtils.getUser());//just4testing
+		lotteryOrder.setOrgId("2");//just4testing
+		lotteryOrder.setAccountId("2");//just4testing
+		
 		lotteryOrderService.save(lotteryOrder);
 		addMessage(redirectAttributes, "保存订单明细成功");
 		return "redirect:"+Global.getAdminPath()+"/order/lotteryOrder/?repage";

@@ -5,9 +5,12 @@
 	<sql id="lotteryOrderColumns">
 		a.id AS "id",
 		a.order_num AS "orderNum",
+		a.user_name AS "user.name",
 		a.user_id AS "user.id",
+		a.org_id AS "orgId",
 		a.lottery_code AS "lotteryCode",
 		a.bet_issue_no AS "betIssueNo",
+		a.account_id AS "accountId",
 		a.bet_type AS "betType",
 		a.bet_detail AS "betDetail",
 		a.bet_amount AS "betAmount",
@@ -25,12 +28,12 @@
 		a.create_by AS "createBy.id",
 		a.update_date AS "updateDate",
 		a.update_by AS "updateBy.id",
-		a.del_flag AS "delFlag",
-		u3.name AS "user.name"
+		a.del_flag AS "delFlag"
+<!-- 		u4.name AS "user.name" -->
 	</sql>
 	
 	<sql id="lotteryOrderJoins">
-		LEFT JOIN sys_user u3 ON u3.id = a.user_id
+		<!-- LEFT JOIN sys_user u4 ON u4.id = a.user_id -->
 	</sql>
     
 	<select id="get" resultType="LotteryOrder">
@@ -48,9 +51,6 @@
 		<include refid="lotteryOrderJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="id != null and id != ''">
-				AND a.id = #{id}
-			</if>
 			<if test="orderNum != null and orderNum != ''">
 				AND a.order_num = #{orderNum}
 			</if>
@@ -66,21 +66,6 @@
 			<if test="betType != null and betType != ''">
 				AND a.bet_type = #{betType}
 			</if>
-			<if test="betDetail != null and betDetail != ''">
-				AND a.bet_detail = #{betDetail}
-			</if>
-			<if test="betAmount != null and betAmount != ''">
-				AND a.bet_amount = #{betAmount}
-			</if>
-			<if test="betRate != null and betRate != ''">
-				AND a.bet_rate = #{betRate}
-			</if>
-			<if test="playModeMoney != null and playModeMoney != ''">
-				AND a.play_mode_money = #{playModeMoney}
-			</if>
-			<if test="playModeCommissionRate != null and playModeCommissionRate != ''">
-				AND a.play_mode_commission_rate = #{playModeCommissionRate}
-			</if>
 			<if test="playModeMoneyType != null and playModeMoneyType != ''">
 				AND a.play_mode_money_type = #{playModeMoneyType}
 			</if>
@@ -90,26 +75,11 @@
 			<if test="orderType != null and orderType != ''">
 				AND a.order_type = #{orderType}
 			</if>
-			<if test="schemaId != null and schemaId != ''">
-				AND a.schema_id = #{schemaId}
-			</if>
-			<if test="winAmount != null and winAmount != ''">
-				AND a.win_amount = #{winAmount}
-			</if>
-			<if test="withdrawAmount != null and withdrawAmount != ''">
-				AND a.withdraw_amount = #{withdrawAmount}
-			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>
 			<if test="createDate != null and createDate != ''">
 				AND a.create_date = #{createDate}
-			</if>
-			<if test="createBy != null and createBy.id != null and createBy.id != ''">
-				AND a.create_by = #{createBy.id}
-			</if>
-			<if test="updateDate != null and updateDate != ''">
-				AND a.update_date = #{updateDate}
 			</if>
 		</where>
 		<choose>
@@ -144,9 +114,12 @@
 		INSERT INTO lottery_order(
 			id,
 			order_num,
+			user_name,
 			user_id,
+			org_id,
 			lottery_code,
 			bet_issue_no,
+			account_id,
 			bet_type,
 			bet_detail,
 			bet_amount,
@@ -168,9 +141,12 @@
 		) VALUES (
 			#{id},
 			#{orderNum},
+			#{user.name},
 			#{user.id},
+			#{orgId},
 			#{lotteryCode},
 			#{betIssueNo},
+			#{accountId},
 			#{betType},
 			#{betDetail},
 			#{betAmount},
@@ -195,9 +171,12 @@
 	<update id="update">
 		UPDATE lottery_order SET 	
 			order_num = #{orderNum},
+			user_name = #{userName},
 			user_id = #{user.id},
+			org_id = #{orgId},
 			lottery_code = #{lotteryCode},
 			bet_issue_no = #{betIssueNo},
+			account_id = #{accountId},
 			bet_type = #{betType},
 			bet_detail = #{betDetail},
 			bet_amount = #{betAmount},
