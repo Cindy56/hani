@@ -77,4 +77,15 @@ public class MemberAccountService extends CrudService<MemberAccountDao, MemberAc
 		this.memberAccountDao.minusAmount(accountId, amount);
 	}
 	
+
+	/**
+	 * 根据 多个 会员ID 查询 会员信息
+	 * @param memberAccount
+	 * @param amount
+	 */
+	public List<MemberAccount>  findMemberIds(List<String> ids) {
+		return memberAccountDao.findMemberIds(ids);
+	}
+	
+	
 }
