@@ -4,8 +4,11 @@
 package com.game.hall.modules.bet.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,8 @@ import com.entity.ResultData;
 import com.game.hall.common.utils.SpringContextHolder;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.hall.modules.sys.entity.Office;
+import com.game.hall.modules.sys.entity.User;
 import com.game.manager.modules.order.entity.LotteryOrder;
 
 /**
@@ -27,6 +32,9 @@ import com.game.manager.modules.order.entity.LotteryOrder;
 @Transactional(readOnly = true)
 @Service
 public class LotteryAddBetService implements BetServiceApi {
+
+	private static final Logger LOG = LoggerFactory.getLogger(LotteryAddBetService.class);
+
 	// @Autowired // @Qualifier("myServiceClient") //
 	// @Resource(name = "myServiceClient")
 	// private BetServiceApi myServiceClient;
@@ -63,18 +71,84 @@ public class LotteryAddBetService implements BetServiceApi {
 		// System.out.println(helloService.test1());
 
 		System.out.println("myServiceClient.test1()");
-	//	System.out.println(myServiceClient.test1());
+		// System.out.println(myServiceClient.test1());
 
 		return null;
+	}
+
+	public static LotteryOrder getOrder() {
+		LotteryOrder bet1 = new LotteryOrder();
+		bet1.preInsert();
+		User user = new User();
+		user.setId("00user");
+		user.setName("00username");
+
+		bet1.setAccountId("034f37416db44fa4a8ab05d98da6fa7d");
+
+		Office company = new Office();
+		company.setCode("code");
+		user.setCompany(company);
+		bet1.setUser(user);
+		String lotteryCode = "CQSSC";
+		bet1.setLotteryCode(lotteryCode);
+		BigDecimal betAmount = new BigDecimal(1);
+		bet1.setBetAmount(betAmount);
+		String betIssueNo = "20171117";
+		bet1.setBetIssueNo(betIssueNo);
+		String betType = "";
+		bet1.setBetType(betType);
+		User currentUser = null;
+		bet1.setCurrentUser(currentUser);
+
+		String orderSource = "0";
+		bet1.setOrderSource(orderSource);
+		String orderType = "2";
+		bet1.setOrderType(orderType);
+		String playModeCommissionRate = "0";
+		bet1.setPlayModeCommissionRate(playModeCommissionRate);
+		String playModeMoney = "1960";
+		bet1.setPlayModeMoney(playModeMoney);
+		String playModeMoneyType = "0";
+		bet1.setPlayModeMoneyType(playModeMoneyType);
+
+		bet1.setOrderNum("10000001");
+
+		bet1.setBetDetail("detail");
+		bet1.setBetRate(1);
+		bet1.setStatus("0");
+
+		Date createDate = new Date();
+		bet1.setCreateDate(createDate);
+		bet1.setCreateBy(user);
+		bet1.setUpdateBy(user);
+
+		return bet1;
 	}
 
 	@Transactional(readOnly = false)
 	@Override
 	public ResultData addBet(List<LotteryOrder> lsBetData) { // TODO
 
+		System.out.println("service_addbet here");
+		
+	//	LotteryOrder order = getOrder();
+		// 生成订单
+	//	myOrder.insert(order);
+
+		// 会员账户扣款
+	//	String thisAccountId = order.getAccountId();
+	//	BigDecimal amount = order.getBetAmount();
+	//	myAccountCharge.AccountChargeAmount(thisAccountId, amount );
+
+		// -------------------------------------
 		// myServiceClient.addBet(betData);
 
 		ResultData rd = ResultData.ResultDataOK();
+
+		if (lsBetData == null) {
+			LOG.debug("投注信息为空");
+			return rd;
+		}
 
 		for (int i = 0; i < lsBetData.size(); i++) { // 前置校验 LotteryOrder betData =
 			LotteryOrder betData = lsBetData.get(i);
@@ -101,7 +175,8 @@ public class LotteryAddBetService implements BetServiceApi {
 				return rd;
 			}
 
-			if (betData.getOrderNum().isEmpty()) {
+			// 订单编号应该在此处生成
+			if (betData.getOrderNum() != null && betData.getOrderNum().isEmpty()) {
 				rd.setErrorCode(Error.errCodeBettingNumber);
 				rd.setMessage(Error.errBettingNumber);
 				return rd;
@@ -117,19 +192,36 @@ public class LotteryAddBetService implements BetServiceApi {
 				return rd;
 			}
 
-			if (betData.getBetDetail().isEmpty()) {
+			if (betData.getBetDetail() != null && betData.getBetDetail().isEmpty()) {
 				rd.setErrorCode(Error.errCodeBettingNumber);
 				rd.setMessage(Error.errBettingNumber);
 				return rd;
 			}
 
+			/*
+			 * LotteryOrder bet1 = new LotteryOrder(); User user = new User();
+			 * bet1.setUser(user); String lotteryCode = "CQSSC";
+			 * bet1.setLotteryCode(lotteryCode); BigDecimal betAmount = new BigDecimal(100);
+			 * bet1.setBetAmount(betAmount); String betIssueNo = "20171117";
+			 * bet1.setBetIssueNo(betIssueNo); String betType = "";
+			 * bet1.setBetType(betType); User currentUser = null;
+			 * bet1.setCurrentUser(currentUser); String id = ""; bet1.setId(id); String
+			 * orderSource = "0"; bet1.setOrderSource(orderSource); String orderType = "1";
+			 * bet1.setOrderType(orderType); String playModeCommissionRate = "0";
+			 * bet1.setPlayModeCommissionRate(playModeCommissionRate); String playModeMoney
+			 * = "1960"; bet1.setPlayModeMoney(playModeMoney); String playModeMoneyType =
+			 * "0"; bet1.setPlayModeMoneyType(playModeMoneyType);
+			 */
+
 			// 生成订单
 			myOrder.insert(betData);
 
 			// 会员账户扣款
-			// myAccountCharge.AccountChargeAmount(betData.getId(), betData.getBetAmount());
+			String thisAccountId = betData.getId();
+			myAccountCharge.AccountChargeAmount(thisAccountId, betData.getBetAmount());
 		}
-		return null;
+		
+		return rd;
 	}
 
 	@Override

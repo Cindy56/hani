@@ -116,8 +116,8 @@
 	<update id="AccountChargeAmount">
 		UPDATE member_account SET
 		blance =
-		blance-#{blance},
-		WHERE user_id = #{userid}
+		blance-#{blance}
+		WHERE id = #{accountId}
 	</update>
 
 	<update id="update">

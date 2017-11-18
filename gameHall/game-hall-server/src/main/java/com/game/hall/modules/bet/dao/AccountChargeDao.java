@@ -5,6 +5,8 @@ package com.game.hall.modules.bet.dao;
 
 import java.math.BigDecimal;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.game.hall.common.persistence.CrudDao;
 import com.game.hall.common.persistence.annotation.MyBatisDao;
 import com.game.manager.modules.order.entity.LotteryOrder;
@@ -14,7 +16,7 @@ import com.game.manager.modules.order.entity.LotteryOrder;
  *
  */
 @MyBatisDao
-public interface AccountChargeDao extends CrudDao<LotteryOrder> {
+public interface AccountChargeDao extends CrudDao<AccountChargeDao> {
 
 	/**
 	 * 余额扣除
@@ -22,6 +24,6 @@ public interface AccountChargeDao extends CrudDao<LotteryOrder> {
 	 * @param id
 	 * @param blance
 	 */
-	public void AccountChargeAmount(String id, BigDecimal blance);
+	public void AccountChargeAmount(@Param("accountId")String id, @Param("blance")BigDecimal blance);
 
 }

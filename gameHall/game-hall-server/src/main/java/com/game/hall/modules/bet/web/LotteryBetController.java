@@ -38,10 +38,23 @@ public class LotteryBetController {
 	@RequestMapping(value = "/addbet", method = RequestMethod.GET)
 	public ResultData addBet(List<LotteryOrder> betData) {
 
+		//List<LotteryOrder> betData = null;
+		System.out.println("1");
+		
+		
+		try {
 		// 前置校验
 		boolean ret = false;
 		ResultData rd = ResultData.ResultDataOK();
 
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		System.out.println("2");
+		
 		// BetData betData;
 		return lotteryAddBetService.addBet(betData);
 		// System.out.println();

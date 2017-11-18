@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.game.hall.modules.bet.dao.LotteryAddOrderDao">
+<mapper namespace="com.game.hall.modules.bet.dao.LotteryOrderDao">
 
 
 	<sql id="lotteryOrderColumns">
 		a.id AS "id",
-		a.order_num AS "orderNum",
+		a.order_no AS "orderNum",
 		a.user_id AS
 		"user.id",
 		a.lottery_code AS "lotteryCode",
@@ -41,7 +41,7 @@
 		LEFT JOIN sys_user u3 ON u3.id = a.user_id
 	</sql>
 
-	<select id="get" resultType="LotteryOrder">
+	<select id="get" resultType="com.game.manager.modules.order.entity.LotteryOrder">
 		SELECT
 		<include refid="lotteryOrderColumns" />
 		FROM lottery_order a
@@ -49,7 +49,7 @@
 		WHERE a.id = #{id}
 	</select>
 
-	<select id="findList" resultType="LotteryOrder">
+	<select id="findList" resultType="com.game.manager.modules.order.entity.LotteryOrder">
 		SELECT
 		<include refid="lotteryOrderColumns" />
 		FROM lottery_order a
@@ -60,7 +60,7 @@
 				AND a.id = #{id}
 			</if>
 			<if test="orderNum != null and orderNum != ''">
-				AND a.order_num = #{orderNum}
+				AND a.order_no = #{orderNum}
 			</if>
 			<if test="user != null and user.id != null and user.id != ''">
 				AND a.user_id = #{user.id}
@@ -131,7 +131,7 @@
 		</choose>
 	</select>
 
-	<select id="findAllList" resultType="LotteryOrder">
+	<select id="findAllList" resultType="com.game.manager.modules.order.entity.LotteryOrder">
 		SELECT
 		<include refid="lotteryOrderColumns" />
 		FROM lottery_order a
@@ -152,8 +152,11 @@
 	<insert id="insert">
 		INSERT INTO lottery_order(
 		id,
-		order_num,
+		order_no,
 		user_id,
+		user_name,
+		org_id,
+		account_id,				
 		lottery_code,
 		bet_issue_no,
 		bet_type,
@@ -178,6 +181,9 @@
 		#{id},
 		#{orderNum},
 		#{user.id},
+		#{user.name},
+		#{user.company.code},
+		#{accountId},		
 		#{lotteryCode},
 		#{betIssueNo},
 		#{betType},
@@ -203,7 +209,7 @@
 
 	<update id="update">
 		UPDATE lottery_order SET
-		order_num = #{orderNum},
+		order_no = #{orderNum},
 		user_id = #{user.id},
 		lottery_code = #{lotteryCode},
 		bet_issue_no = #{betIssueNo},
