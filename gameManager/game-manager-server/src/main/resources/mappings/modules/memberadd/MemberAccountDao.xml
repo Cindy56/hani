@@ -5,6 +5,7 @@
 	<sql id="memberAccountColumns">
 		a.id AS "id",
 		a.parent_agent_id AS "parentAgentId",
+		a.parent_agent_ids AS "parentAgentIds",                    
 		a.user_id AS "user.id",
 		a.org_id AS "orgId",
 		a.account_type AS
