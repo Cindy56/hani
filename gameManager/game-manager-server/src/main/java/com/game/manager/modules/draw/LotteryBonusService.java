@@ -96,6 +96,7 @@ public class LotteryBonusService {
 			trade.setAmount(bonus);
 //			trade.setAccountBlanceBefore(accountBlanceBefore);
 //			trade.setAccountBlanceAfter(accountBlanceAfter);
+			trade.getUser().setId("sys");
 			this.financeTradeDetailService.save(trade);
 		}
 		return;

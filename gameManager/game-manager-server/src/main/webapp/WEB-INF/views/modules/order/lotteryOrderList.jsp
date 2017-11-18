@@ -122,7 +122,7 @@
 					${lotteryOrder.betType}
 				</td>
 				<td>
-					${lotteryOrder.betDetail}
+					………………
 				</td>
 				<td>
 					${lotteryOrder.betAmount}

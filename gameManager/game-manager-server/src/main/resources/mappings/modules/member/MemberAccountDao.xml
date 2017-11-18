@@ -143,4 +143,17 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="plusAmount">
+		UPDATE member_account tt
+		SET tt.blance = tt.blance + #{amount}
+		WHERE tt.id = #{accountId}
+	</update>
+
+	<update id="minusAmount">
+		UPDATE member_account tt
+		SET tt.blance = tt.blance - #{amount}
+		WHERE tt.id = #{accountId}
+		and tt.blance - #{amount} >= 0
+	</update>	
+	
 </mapper>
