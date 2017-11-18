@@ -157,14 +157,15 @@
 		and tt.blance - #{amount} >= 0
 	</update>	
 	
-	<select id="findMemberIds" resultType="MemberAccount">
+	<select id="findMemberId" resultType="MemberAccount">
 		SELECT
 		<include refid="memberAccountColumns" />
 		FROM member_account a where 
-		a.id in
-		<foreach collection="ids" item="item" open="(" close=")" separator=",">  
-            #{item}  
-        </foreach>  
+		a.id = #{id}
+		UNION ALL 
+		select <include refid="memberAccountColumns" />
+		 from member_account cc
+		where (select q.parent_agent_ids from member_account q where q.id = #{id} ) REGEXP cc.id 
 	</select>
 	
 </mapper>

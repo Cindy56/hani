@@ -22,18 +22,14 @@ public class LotteryCommissionService {
 	
 	
 	public void calculateCommission(LotteryOrder lotteryOrder) {
-		MemberAccount memberAccount = memberAccountService.get(lotteryOrder.getAccountId());
-		if(null == memberAccount) {
+		if(null == lotteryOrder) {
 			return;
 		}
 		//查询该订单所有上级代理账户
-		List<String> ids = Arrays.asList(memberAccount.getParentAgentIds().split(","));
-		List<MemberAccount> memberList = memberAccountService.findMemberIds(ids);
+		List<MemberAccount> memberList = memberAccountService.findMemberId(lotteryOrder.getAccountId());
 		//计算返点
 		memberList.stream().forEach(c->{
 			
 		});
-		
-		
 	}
 }
