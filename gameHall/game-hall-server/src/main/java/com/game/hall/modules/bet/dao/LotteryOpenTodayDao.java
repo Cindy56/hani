@@ -3,7 +3,6 @@
  */
 package com.game.hall.modules.bet.dao;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +19,8 @@ import com.game.hall.modules.bet.entity.LotteryTimeNum;
 @MyBatisDao
 public interface LotteryOpenTodayDao {
 
-	public List<LotteryTimeNum> OpenToday(/* Map<String, Object> params */);
+	public List<LotteryTimeNum> openToday(/* Map<String, Object> params */);
 
-	public List<LotteryTimeNum> CurrentIssue(@Param("dt") Date dt);
+	public List<LotteryTimeNum> currentIssue(@Param("dt") Date dt);
 
 }
