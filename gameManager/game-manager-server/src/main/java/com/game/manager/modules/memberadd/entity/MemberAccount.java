@@ -17,6 +17,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 	
 	private static final long serialVersionUID = 1L;
 	private String parentAgentId;		// 上级代理账号
+	private String parentAgentIds;		// 所有上级代理ID
 	private User user;		// 用户id
 	private String orgId;		// 机构、盘口id
 	private String accountType;		// 会员类型
@@ -33,6 +34,14 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 
 	public MemberAccount(String id){
 		super(id);
+	}
+
+	public String getParentAgentIds() {
+		return parentAgentIds;
+	}
+
+	public void setParentAgentIds(String parentAgentIds) {
+		this.parentAgentIds = parentAgentIds;
 	}
 
 	@Length(min=0, max=50, message="上级代理账号长度必须介于 0 和 50 之间")
