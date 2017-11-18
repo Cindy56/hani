@@ -208,11 +208,11 @@ public enum SsccqService implements LotteryCalculateService {
             return false;
         }
 
-        // TODO 获取当前期数开奖号码，等待jerry提供接口
-        String openNum = "3,5,6,9,4";
+        // 获取开奖号码
+        LotteryTimeNum lotteryTimeNum = lotteryTimeNumService.findByLotteryCodeIssueNo(lotteryOrder.getLotteryCode(), lotteryOrder.getBetIssueNo());
 
         // 返回判断结果
-        return LotteryUtils.checkWinSscZhi(openNum, lotteryOrder.getBetDetail());
+        return LotteryUtils.checkWinSscZhi(lotteryTimeNum.getOpenNum(), lotteryOrder.getBetDetail());
     }
 
     /**
