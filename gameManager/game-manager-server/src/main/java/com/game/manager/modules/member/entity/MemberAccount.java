@@ -19,6 +19,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 	
 	private static final long serialVersionUID = 1L;
 	private String parentAgentId;		// 上级代理账号id
+	private String parentAgentIds;		// 所有上级代理账号id  逗号分割
 	private User user;		// 用户表主键id
 	private Office orgId;		// 机构id，盘口id
 	private String accountType;		// 会员类型：
@@ -37,6 +38,14 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 	
 	public MemberAccount() {
 		super();
+	}
+
+	public String getParentAgentIds() {
+		return parentAgentIds;
+	}
+
+	public void setParentAgentIds(String parentAgentIds) {
+		this.parentAgentIds = parentAgentIds;
 	}
 
 	public MemberAccount(String id){
