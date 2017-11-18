@@ -3,11 +3,13 @@
  */
 package com.game.manager.modules.member.web;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,23 +20,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
-import com.game.manager.common.web.BaseController;
 import com.game.manager.common.utils.StringUtils;
+import com.game.manager.common.web.BaseController;
 import com.game.manager.modules.member.entity.MemberAccount;
 import com.game.manager.modules.member.service.MemberAccountService;
-import com.game.manager.modules.sys.entity.Office;
 import com.game.manager.modules.sys.entity.User;
 import com.game.manager.modules.sys.service.SystemService;
 import com.game.manager.modules.sys.utils.UserUtils;
 
 /**
- * 会员管理Controller
- * @author David
- * @version 2017-11-08
+ * 会员开户Controller
+ * @author freeman
+ * @version 2017-11-17
  */
 @Controller
 @RequestMapping(value = "${adminPath}/member/memberAccount")
 public class MemberAccountController extends BaseController {
+
 
 	@Autowired
 	private MemberAccountService memberAccountService;
@@ -183,4 +185,5 @@ public class MemberAccountController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/member/memberRebateInfo";
 	}
+
 }

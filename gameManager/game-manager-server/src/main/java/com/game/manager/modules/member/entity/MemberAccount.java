@@ -4,15 +4,16 @@
 package com.game.manager.modules.member.entity;
 
 import org.hibernate.validator.constraints.Length;
-import com.game.manager.modules.sys.entity.User;
+
 import com.game.manager.modules.sys.entity.Office;
+import com.game.manager.modules.sys.entity.User;
 
 import com.game.manager.common.persistence.DataEntity;
 
 /**
- * 会员管理Entity
- * @author David
- * @version 2017-11-09
+ * 会员开户Entity
+ * @author freeman
+ * @version 2017-11-17
  */
 public class MemberAccount extends DataEntity<MemberAccount> {
 	

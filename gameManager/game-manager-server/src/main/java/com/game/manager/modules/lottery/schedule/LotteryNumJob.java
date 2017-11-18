@@ -77,8 +77,21 @@ public class LotteryNumJob implements Job {
 			//结束当前job:删除定时任务时   先暂停任务，然后再删除  
 	        context.getScheduler().pauseJob(jobKey);  
 	        context.getScheduler().deleteJob(jobKey); 
-	        //派奖
-	        lotteryBonusService.calculateOrderBonusFromDB(lotteryCode,issueNo);
+	        
+	        new Thread() {
+	        	@Override
+	        	public void run() {
+	        		try {
+						Thread.sleep(3000);
+						 //派奖
+				        lotteryBonusService.calculateOrderBonusFromDB(lotteryCode,issueNo);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+	        	}
+	        }.run();
+	        
+	       
 		} catch (LotteryNumDrawException e) {
 			//TODO:更换其他通道,  或者继续运行拉奖服务
 			e.printStackTrace();

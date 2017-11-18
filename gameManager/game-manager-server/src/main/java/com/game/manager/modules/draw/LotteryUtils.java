@@ -1,20 +1,28 @@
 package com.game.manager.modules.draw;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import freemarker.core.CollectionAndSequence;
 
 public class LotteryUtils {
 	public static void main(String[] args) {
-		System.out.println(LotteryUtils.ssc3XinZuxuan());
+//		System.out.println(LotteryUtils.ssc3XinZuxuan());
+		
 	}
 	
 	/**
 	 * 时时彩直选 检查是否中奖
 	 * @param openNum 开奖号码，格式为逗号分割“4,5,6”。
-	 * @param betNum 投注号码，复试为逗号分割“234,567,678”，单式没有分隔符“456”
+	 * @param betNum 投注号码，复试为逗号分割“234,567,678”，单式没有分隔符“456 789 258”
 	 * @return
 	 */
 	public static boolean checkWinSscZhi(String openNum, String betNum) {
@@ -26,6 +34,28 @@ public class LotteryUtils {
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * 时时彩直选 检查是否中奖
+	 * @param openNum 开奖号码，格式为逗号分割“4,5,6”。
+	 * @param betNum 投注号码，支持两种格式，用逗号分割 或者 用空格分割：单式没有分隔符“456 789 258”
+	 * @return
+	 */
+	public static boolean checkWinSscZhiDan(String openNum, String betNum) {
+		String[] betNumList = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
+		if (0 == betNumList.length) {
+			return false;
+		}
+		
+		openNum = openNum.replace(",", "");
+		for (String haoma : betNumList) {
+			if(openNum.equals(haoma)) {
+				return true;
+			}
+			
+		}
+		return false;
 	}
 	/**
 	 * 检查时时彩组选6是否中奖，支持多星
