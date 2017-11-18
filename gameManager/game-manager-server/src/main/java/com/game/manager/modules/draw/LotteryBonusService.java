@@ -88,7 +88,7 @@ public class LotteryBonusService {
 		trade.setUser(lotteryOrder.getUser());
 //		trade.setUserName(lotteryOrder.getUserName());
 		trade.setAccountId(lotteryOrder.getAccountId());
-		trade.setBusiNo(lotteryOrder.getOrderNum());
+		trade.setBusiNo(lotteryOrder.getOrderNo());
 		trade.setTradeType("1");
 		trade.setAmount(bonus);
 //		trade.setAccountBlanceBefore(accountBlanceBefore);

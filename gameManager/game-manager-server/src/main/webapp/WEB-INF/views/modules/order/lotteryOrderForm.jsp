@@ -36,7 +36,7 @@
 		<div class="control-group">
 			<label class="control-label">订单编号：</label>
 			<div class="controls">
-				<form:input path="orderNum" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+				<form:input path="orderNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">

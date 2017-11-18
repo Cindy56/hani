@@ -22,7 +22,7 @@ import com.game.manager.common.persistence.DataEntity;
 public class LotteryOrder extends DataEntity<LotteryOrder> {
 	
 	private static final long serialVersionUID = 1L;
-	private String orderNum;		// 订单编号
+	private String orderNo;		// 订单编号
 	private User user;		// user_id
 	private String orgId;		// 机构id
 	private String lotteryCode;		// lottery_code
@@ -51,12 +51,12 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 	}
 
 	@Length(min=0, max=50, message="订单编号长度必须介于 0 和 50 之间")
-	public String getOrderNum() {
-		return orderNum;
+	public String getOrderNo() {
+		return orderNo;
 	}
 
-	public void setOrderNum(String orderNum) {
-		this.orderNum = orderNum;
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 	
