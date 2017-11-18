@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.game.manager.modules.memberbank.service;
+package com.game.manager.modules.member.service;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.game.manager.common.persistence.Page;
 import com.game.manager.common.service.CrudService;
-import com.game.manager.modules.memberbank.entity.MemberAccountCard;
-import com.game.manager.modules.memberbank.dao.MemberAccountCardDao;
+import com.game.manager.modules.member.dao.MemberAccountCardDao;
+import com.game.manager.modules.member.entity.MemberAccountCard;
 
 /**
  * 会员银行卡管理Service

@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.game.manager.modules.memberbank.entity;
+package com.game.manager.modules.member.entity;
 
 import com.game.manager.modules.sys.entity.User;
 import javax.validation.constraints.NotNull;

@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.game.manager.modules.memberbank.web;
+package com.game.manager.modules.member.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,10 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.game.manager.common.config.Global;
 import com.game.manager.common.persistence.Page;
-import com.game.manager.common.web.BaseController;
 import com.game.manager.common.utils.StringUtils;
-import com.game.manager.modules.memberbank.entity.MemberAccountCard;
-import com.game.manager.modules.memberbank.service.MemberAccountCardService;
+import com.game.manager.common.web.BaseController;
+import com.game.manager.modules.member.entity.MemberAccountCard;
+import com.game.manager.modules.member.service.MemberAccountCardService;
 
 /**
  * 会员银行卡管理Controller
