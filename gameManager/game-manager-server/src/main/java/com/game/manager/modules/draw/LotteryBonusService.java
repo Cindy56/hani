@@ -26,7 +26,7 @@ public class LotteryBonusService {
 	@Autowired
 	private MemberAccountService memberAccountService;
 	@Autowired
-	private LotteryCalculateService lotteryCalculateServiceImpl;
+	private LotteryCalculateService lotteryCalculateService;
 	@Autowired
 	private LotteryOrderService lotteryOrderService;
 	@Autowired
@@ -66,14 +66,14 @@ public class LotteryBonusService {
 	}
 	
 	/**
-	 * 派奖服务
+	 * 派奖服务：
+	 * 计算注单中奖金额->更新注单中奖状态和中奖金额->更新账户余->生成中奖账变流水,入库
 	 * @param lotteryOrder
 	 * @return
 	 */
 	private void calculateOrderBonus(LotteryOrder lotteryOrder) {
 //		//计算注单中奖金额
-		BigDecimal bonus = this.lotteryCalculateServiceImpl.calculateOrderBonus(lotteryOrder);
-		String xxxx = "xxx";
+		BigDecimal bonus = this.lotteryCalculateService.calculateOrderBonus(lotteryOrder);
 		lotteryOrder.setWinAmount(bonus);
 		lotteryOrder.setStatus(bonus.intValue() > 0 ? "1" : "2");//注单状态：		0等待开奖		1已中奖		2未中奖		3已撤单
 		//更新注单中奖状态和中奖金额
@@ -83,8 +83,6 @@ public class LotteryBonusService {
 			//获取账户，更新账户余额:调用账户服务直接更新余额
 			this.memberAccountService.plusAmount(lotteryOrder.getAccountId(), bonus);
 			
-//			User user = systemService.getUser(lotteryOrder.getUser().getId());
-//			memberAccountService.get(entity)
 			//生成中奖账变流水,入库
 			FinanceTradeDetail  trade = new FinanceTradeDetail();
 			trade.setUser(lotteryOrder.getUser());
@@ -96,7 +94,7 @@ public class LotteryBonusService {
 			trade.setAmount(bonus);
 //			trade.setAccountBlanceBefore(accountBlanceBefore);
 //			trade.setAccountBlanceAfter(accountBlanceAfter);
-			trade.getUser().setId("sys");
+			trade.getUser().setId("robot");
 			this.financeTradeDetailService.save(trade);
 		}
 		return;
