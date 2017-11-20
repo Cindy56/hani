@@ -127,7 +127,8 @@ public enum SscService implements LotteryService {
             if (null == lotteryOrder || null == openLotteryTimeNum) {
                 return false;
             }
-            return LotteryUtils.checkWinSsc3XinZuXuan(openLotteryTimeNum.getOpenNum(), lotteryOrder.getBetDetail());
+            String openNum = openLotteryTimeNum.getOpenNum();
+            return LotteryUtils.checkWinSsc3XinZuXuan(openNum.substring(0, 5), lotteryOrder.getBetDetail());
         }
 
         @Override

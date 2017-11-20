@@ -160,17 +160,14 @@ public class LotteryUtils {
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
         }
-        // 获取开奖号码，生成获奖投注号码
-        Set<String> dadi = ssc3XinZuxuan3(openNum);
+        // 格式化开奖号码
+        openNum = formatNumber(openNum.split(","));
         // 生成用户投注号码
         Set<String> betSet = ssc3XinZuxuan3(betNum);
         // 迭代匹配，只要有一个用户投注号码是获奖投注，返回true
-        for (String bet : betSet) {
-            if (dadi.contains(bet)) {
-                return true;
-            }
+        if (betSet.contains(openNum)) {
+            return true;
         }
-        // 没有一个位包含对应的开奖号码，返回false
         return false;
     }
 
