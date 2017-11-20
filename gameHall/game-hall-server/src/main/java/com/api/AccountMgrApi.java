@@ -20,7 +20,7 @@ import com.game.manager.modules.order.entity.LotteryOrder;
 public interface AccountMgrApi {
 	
 	//查找所有会员用户列表
-	public List<MemberAccountCard> findAllCart();
+	public List<Map<String,Object>> findAllCart();
 	
 	//查找某个用户信息
 	public List<Map<String,Object>> get(String name);
@@ -37,4 +37,5 @@ public interface AccountMgrApi {
 	//增加账户
 	public int insert(MemberAccount memberAccount);
 	
+
 }

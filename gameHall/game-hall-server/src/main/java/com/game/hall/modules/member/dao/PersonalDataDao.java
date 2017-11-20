@@ -23,7 +23,7 @@ import com.game.hall.modules.memberAccountCard.entity.MemberAccountCard;
 public interface PersonalDataDao {
 	
 	//查看所有银行卡信息
-	public List<MemberAccountCard> findAllCart();
+	public List<Map<String,Object>> findAllCart();
 	
 	//查找某个用户银行卡信息
 	public List<Map<String,Object>> get(String id);
@@ -42,4 +42,16 @@ public interface PersonalDataDao {
 	
 	//增加账户
 	public int insert(MemberAccount memberAccount);
+
+	//删除银行卡信息
+	public int delCard(String bankCardNo);
+	
+	//根据账户user_id查询用户信息
+	public Map<String, Object> memberAccount(String userId);
+
+	//根据账户user_id更改账户信息
+	public int modifyMemberAccount(Map<String, String> map);
+	
+	//根据账户user_id更改sys_user用户信息
+	public int modifyUser(Map<String, String> map);
 }
