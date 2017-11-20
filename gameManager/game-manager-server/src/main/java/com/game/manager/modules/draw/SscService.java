@@ -2,25 +2,29 @@ package com.game.manager.modules.draw;
 
 import java.math.BigDecimal;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.game.manager.common.utils.SpringContextHolder;
 import com.game.manager.modules.lottery.entity.LotteryTimeNum;
 import com.game.manager.modules.lottery.service.LotteryTimeNumService;
 import com.game.manager.modules.order.entity.LotteryOrder;
 
-public enum SsccqService implements LotteryCalculateService {
+/**
+ * 时时彩玩法
+ * 将通用的重构出来，在子枚举类里通过supper调用
+ * @author Administrator
+ *
+ */
+public enum SscService implements LotteryService {
 
     /** 单星直选 */
     SSC_DAN1_ZHIXUAN("SSC_DAN1_ZHIXUAN", "单星直选") {
 
         @Override
-        public void trend(LotteryTimeNum lotteryTimeNum) {
+        public void trend(LotteryTimeNum openLotteryTimeNum) {
             // TODO Auto-generated method stub
         }
 
         @Override
-        public boolean checkOrder(LotteryOrder lotteryOrder) {
+        public boolean checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
             // 对注单进行基础校验
             baseCheck(lotteryOrder);
             // 数据格式校验，投注内容必须是数字或减号以英文逗号隔开的字符串，且至少包含一个数字
@@ -34,12 +38,12 @@ public enum SsccqService implements LotteryCalculateService {
         }
 
         @Override
-        public boolean checkWin(LotteryOrder lotteryOrder) {
+        public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
             return super.sscZhiXuanCheckWid(lotteryOrder);
         }
 
         @Override
-        public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder) {
+        public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
             return super.sscZhiXuanCalculate(lotteryOrder);
         }
 
@@ -48,12 +52,12 @@ public enum SsccqService implements LotteryCalculateService {
     SSC_QIAN3_ZHIXUAN("SSC_QIAN3_ZHIXUAN", "时时彩前3直选 ") {
 
         @Override
-        public void trend(LotteryTimeNum lotteryTimeNum) {
+        public void trend(LotteryTimeNum openLotteryTimeNum) {
             // TODO Auto-generated method stub
         }
 
         @Override
-        public boolean checkOrder(LotteryOrder lotteryOrder) {
+        public boolean checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
             // 对注单进行基础校验
             baseCheck(lotteryOrder);
             // 数据格式校验，投注内容必须是数字或减号以英文逗号隔开的字符串，且至少包含一个数字
@@ -66,12 +70,12 @@ public enum SsccqService implements LotteryCalculateService {
         }
 
         @Override
-        public boolean checkWin(LotteryOrder lotteryOrder) {
+        public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
         	return super.sscZhiXuanCheckWid(lotteryOrder);
         }
 
         @Override
-        public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder) {
+        public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
             return super.sscZhiXuanCalculate(lotteryOrder);
         }
 
@@ -106,13 +110,8 @@ public enum SsccqService implements LotteryCalculateService {
     private String playCode;
     /**  玩法名称 */
     private String playName;
-    /**
-     * 开奖时刻管理Service
-     */
-    @Autowired
-    private LotteryTimeNumService lotteryTimeNumService;
 
-    private SsccqService(String playCode, String playName) {
+    private SscService(String playCode, String playName) {
         this.playCode = playCode;
         this.playName = playName;
     }
