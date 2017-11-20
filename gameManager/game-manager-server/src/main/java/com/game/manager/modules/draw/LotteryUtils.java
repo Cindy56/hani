@@ -1,17 +1,10 @@
 package com.game.manager.modules.draw;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import freemarker.core.CollectionAndSequence;
 
 public class LotteryUtils {
 	public static void main(String[] args) {
@@ -57,6 +50,7 @@ public class LotteryUtils {
 		}
 		return false;
 	}
+
 	/**
 	 * 检查时时彩组选6是否中奖，支持多星
 	 * @param openNum 开奖号码，格式为逗号分割“4,5,6”。
@@ -72,7 +66,60 @@ public class LotteryUtils {
 		}
 		return true;
 	}
-	
+
+    /**
+     * 计算时时彩注单注数
+     * @return 返回注单实际投注注数
+     */
+    public static int sscZhiXuanZhuShu(String betDetail) {
+        // 参数非法直接返回0注
+        if (StringUtils.isBlank(betDetail)) {
+            return 0;
+        }
+        String[] betNumList = betDetail.contains(",") ? betDetail.trim().split(",") : betDetail.trim().split(" ");
+        if (0 == betNumList.length) {
+            return 0;
+        }
+        // 不为空的位置长度相乘
+        int count = 1;
+        for (String string : betNumList) {
+            // 空位跳过
+            if ("-".equals(string)) {
+                continue;
+            }
+            count *= string.length();
+        }
+        return count;
+    }
+
+    /**
+     * 时时彩一星复试投注 判断是否中奖
+     * @param openNum 开奖号码
+     * @param betNum 投注号码
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSscDanFu(String openNum, String betNum) {
+        // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] betNumList = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
+        if (5 != betNumList.length) {
+            return false;
+        }
+        // 每个位的号码分别判断是否包含对应的开奖号码
+        String[] openNums = openNum.trim().split(",");
+        for (int i = 0; i < openNums.length; i++) {
+            // 只要有一个包含就判断为中奖
+            if (StringUtils.contains(betNumList[i], openNums[i])) {
+                return true;
+            }
+        }
+        // 没有一个位包含对应的开奖号码，返回false
+        return false;
+    }
+
 	/** 检查时时彩组选3是否中奖， 支持多星 */
 	
 	
