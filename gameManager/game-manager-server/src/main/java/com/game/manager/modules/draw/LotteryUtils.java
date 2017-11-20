@@ -68,7 +68,7 @@ public class LotteryUtils {
 	}
 
     /**
-     * 计算时时彩注单注数
+     * 时时彩直选 计算投注注数
      * @return 返回注单实际投注注数
      */
     public static int sscZhiXuanZhuShu(String betDetail) {
@@ -120,9 +120,60 @@ public class LotteryUtils {
         return false;
     }
 
-	/** 检查时时彩组选3是否中奖， 支持多星 */
-	
-	
+    /**
+     * 时时彩一星复试投注 判断是否中奖
+     * @param openNum 开奖号码
+     * @param betNum 投注号码
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSscZuSan(String openNum, String betNum) {
+        // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] betNumList = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
+        if (5 != betNumList.length) {
+            return false;
+        }
+        // 每个位的号码分别判断是否包含对应的开奖号码
+        String[] openNums = openNum.trim().split(",");
+        for (int i = 0; i < openNums.length; i++) {
+            // 只要有一个包含就判断为中奖
+            if (StringUtils.contains(betNumList[i], openNums[i])) {
+                return true;
+            }
+        }
+        // 没有一个位包含对应的开奖号码，返回false
+        return false;
+    }
+
+    /**
+     * 时时彩3星组选 判断是否中奖
+     * @param openNum 开奖号码
+     * @param betNum 投注号码
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSsc3XinZuXuan(String openNum, String betNum) {
+        // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        // 获取开奖号码，生成获奖投注号码
+        Set<String> dadi = ssc3XinZuxuan3(openNum);
+        // 生成用户投注号码
+        Set<String> betSet = ssc3XinZuxuan3(betNum);
+        // 迭代匹配，只要有一个用户投注号码是获奖投注，返回true
+        for (String bet : betSet) {
+            if (dadi.contains(bet)) {
+                return true;
+            }
+        }
+        // 没有一个位包含对应的开奖号码，返回false
+        return false;
+    }
+
     /**
      * 将数组String[]{1, 2, 3}格式化成 字符串123 
      * @param a
@@ -194,13 +245,49 @@ public class LotteryUtils {
 		}
         return result;
 	}	
-	/**
-	 * 时时彩3星组选3:3个号码里有相同的2个号码
-	 */
-	public static void ssc3XinZuxuan3() {
-		//TODO:XXXXX
-	}	
-	/**
+
+    /**
+     * 时时彩3星组选3:3个号码里有相同的2个号码
+     * @return 三星组三大底
+     */
+    public static Set<String> ssc3XinZuxuan3() {
+        return ssc3XinZuxuan3("0123456789");
+    }
+
+    /**
+     * 时时彩3星组选3:3个号码里有相同的2个号码（指定基数数组）
+     * @return 三星组三大底
+     */
+    public static Set<String> ssc3XinZuxuan3(String baseStr) {
+        Set<String> result = new TreeSet<>();
+        if (StringUtils.isBlank(baseStr)) {
+            return result;
+        }
+        String[] baseArr = baseStr.trim().split("");
+        for (int i = 0; i < baseArr.length; i++) {
+            for (int j = 0; j < baseArr.length; j++) {
+                // 避免出现豹子
+                if (i == j) {
+                    continue;
+                }
+                // 头中相同
+                StringBuilder temp = new StringBuilder();
+                temp.append(baseArr[i]).append(baseArr[i]).append(baseArr[j]);
+                result.add(temp.toString());
+                temp = new StringBuilder();
+                // 头尾相同
+                temp.append(baseArr[i]).append(baseArr[j]).append(baseArr[i]);
+                result.add(temp.toString());
+                // 中尾相同;
+                temp = new StringBuilder();
+                temp.append(baseArr[j]).append(baseArr[i]).append(baseArr[i]);
+                result.add(temp.toString());
+            }
+        }
+        return result;
+    }
+
+    /**
 	 * 时时彩组选6：3个号码里没有相同的2个号码
 	 */
 	public static void ssc3XinZuxuan6() {
