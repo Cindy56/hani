@@ -3,6 +3,8 @@
  */
 package com.game.manager.modules.lottery.entity;
 
+import java.util.Map;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.alibaba.fastjson.JSON;
@@ -71,6 +73,11 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
      * 玩法示例
      */
     private String example;
+    
+    /**
+     * 返回信息
+     */
+    private Map map;
 
     public LotteryPlayConfig() {
         super();
@@ -92,7 +99,15 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         this.lotteryCode = lotteryCode;
     }
 
-    @Length(min = 1, max = 50, message = "玩法代码长度必须介于 1 和 50 之间")
+    public Map getMap() {
+		return map;
+	}
+
+	public void setMap(Map map) {
+		this.map = map;
+	}
+
+	@Length(min = 1, max = 50, message = "玩法代码长度必须介于 1 和 50 之间")
     public String getPlayCode() {
         return playCode;
     }
