@@ -55,7 +55,7 @@ public class MemberAccountCardController extends BaseController {
 	public String list(MemberAccountCard memberAccountCard, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<MemberAccountCard> page = memberAccountCardService.findPage(new Page<MemberAccountCard>(request, response), memberAccountCard); 
 		model.addAttribute("page", page);
-		return "modules/memberbank/memberAccountCardList";
+		return "modules/member/memberAccountCardList";
 	}
 
 	/*@RequiresPermissions("memberbank:memberAccountCard:view")

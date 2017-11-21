@@ -28,6 +28,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.game.manager.common.config.Global;
+import com.game.manager.common.mapper.JsonMapper;
 import com.game.manager.common.utils.StringUtils;
 import com.game.manager.common.web.BaseController;
 import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
@@ -37,6 +38,7 @@ import com.game.manager.modules.member.entity.MemberPlayConfig;
 import com.game.manager.modules.member.service.MemberAccountService;
 import com.game.manager.modules.member.service.MemberPlayConfigService;
 import com.game.manager.modules.sys.entity.Office;
+import com.game.manager.modules.sys.entity.Role;
 import com.game.manager.modules.sys.entity.User;
 import com.game.manager.modules.sys.service.SystemService;
 import com.game.manager.modules.sys.utils.UserUtils;
@@ -267,24 +269,31 @@ public class MemberAccountAddController extends BaseController {
 			return form(memberAccount, model);
 		}
 		user.setPassword(SystemService.entryptPassword(user.getPassword()));
-		user.setNo("");
-		user.setName(user.getLoginName());
-		user.setEmail("");
-		user.setPhone("");
-		user.setMobile(memberAccount.getMobileNo());
-		user.setUserType("3");
-		user.setRemarks("");
 		
-		user.setRoleList(seesionUser.getRoleList());
-		// 是否允许登陆	
-		user.setLoginFlag(seesionUser.getLoginFlag());
+		user.setMobile(memberAccount.getMobileNo());
+		//用户类型为普通用户
+		user.setUserType("3");
 		//删除标志
 		user.setDelFlag("0");
+		
+		//用户角色根据会员类型取值
+		//会员类型2代理3玩家
+		String accountType=memberAccount.getAccountType();
+		if("2".equals(accountType)) {
+			//查询代理角色
+			Role agency=systemService.getRoleByEnname("agency");
+			user.getRoleList().add(agency);
+		}else {
+			//查询玩家角色
+			Role gameplayer=systemService.getRoleByEnname("gameplayer");
+			user.getRoleList().add(gameplayer);
+		}
 		
 		//保存会员信息
 		systemService.saveUser(user);
 		
-		memberAccount.setParentAgentId("223456432132146546");
+		memberAccount.setParentAgentId(seesionUser.getId());
+		memberAccount.setParentAgentIds(seesionUser.getId()+","+user.getId());
 		memberAccount.setOrgId(new Office());
 		memberAccount.setBlance("0");
 		memberAccount.setBlanceFrozen("0");
@@ -293,47 +302,21 @@ public class MemberAccountAddController extends BaseController {
 		memberAccount.setUser(user);
 		memberAccount.setSecPassword(SystemService.entryptPassword(memberAccount.getSecPassword()));
 		
-		memberAccount.setParentAgentIds(memberAccount.getParentAgentIds() + "," +memberAccount.getId());
 		//保存会员信息
 		memberAccountService.save(memberAccount);
 		
 		//保存用户的返点信息
 		List<LotteryPlayConfig> playConfigList=memberAccountOpenDto.getPlayList();
 		
-		JSONArray jsonArr = new JSONArray();
-		for (LotteryPlayConfig playConfig : playConfigList) {
-			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("isNewRecord",playConfig.getIsNewRecord());
-			jsonObj.put("playCode",playConfig.getPlayCode());
-			jsonObj.put("name",playConfig.getName());
-			jsonObj.put("playType",playConfig.getPlayType());
-			jsonObj.put("winningProbability",playConfig.getWinningProbability());
-			jsonObj.put("commissionRateMax",playConfig.getCommissionRateMax());
-			jsonObj.put("commissionRateMin",playConfig.getCommissionRateMin());
-			jsonObj.put("betRateLimit",playConfig.getBetRateLimit());
-			jsonObj.put("isEnable",playConfig.getIsEnable());
-			
-			JSONObject jsonLotteryObj = new JSONObject();
-			jsonLotteryObj.put("isNewRecord", playConfig.getLotteryCode().getIsNewRecord());
-			jsonLotteryObj.put("code", playConfig.getLotteryCode().getCode());
-			jsonLotteryObj.put("name", playConfig.getLotteryCode().getName());
-			
-			jsonObj.put("lotteryCode",jsonLotteryObj);
-			jsonArr.add(jsonObj);
-		}
-		
-		String playConfig=jsonArr.toJSONString();
-		
 		MemberPlayConfig memberPlayConfig=new MemberPlayConfig();
 		memberPlayConfig.setUser(user);
 		memberPlayConfig.setAccountId(memberAccount.getId());
-		memberPlayConfig.setPlayConfig(playConfig);
+		memberPlayConfig.setPlayConfig(JsonMapper.toJsonString(playConfigList));
 		memberPlayConfig.setUserName(user.getName());
 		
 		memberPlayConfigService.save(memberPlayConfig);
 		
 		addMessage(redirectAttributes, "保存会员信息成功");
-		//return "redirect:"+Global.getAdminPath()+"/member/memberAccount/?repage";
 		return "redirect:"+Global.getAdminPath()+"/memberadd/memberAccount/";
 	}
 	
