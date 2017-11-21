@@ -10,6 +10,7 @@
 			$("#inputForm").validate({
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
+					//sub();
 					form.submit();
 				},
 				errorContainer: "#messageBox",
@@ -30,6 +31,11 @@
         	return false;
         }
 		
+		function sub(){
+			var a=$("#inputForm").serialize();
+			console.log(a);
+		}
+		
 	</script>
 </head>
 <body>
@@ -38,15 +44,15 @@
 		<li class="active"><a href="${ctx}/memberadd/memberAccount/">会员开户添加</a></li>
 	</ul>
 	<sys:message content="${message}"/>
-	<form:form id="inputForm" modelAttribute="memberAccount" action="${ctx}/memberadd/memberAccount/save?${memberAccount.user.id}" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
+	<form:form id="inputForm" modelAttribute="memberAccountOpenDto" action="${ctx}/memberadd/memberAccount/save?${memberOpenAccount.user.id}" method="post" class="form-horizontal">
+		<%-- <form:hidden path="account.id"/> --%>
 		<sys:message content="${message}"/>	
 		<!-- 用户信息start -->	
 		<div class="control-group">
 			<label class="control-label">登录名:</label>
 			<div class="controls">
-				<input id="oldLoginName" name="user.loginName" type="hidden" value="">
-				<form:input path="user.loginName" htmlEscape="false" maxlength="50" class="required userName" placeholder="请输入登录名" id="loginName"/>
+				<!-- <input id="oldLoginName" name="user.loginName" type="hidden" value=""> -->
+					<form:input path="user.loginName" htmlEscape="false" maxlength="50" class="required userName" placeholder="请输入登录名" id="loginName"/>
 				<span class="help-inline"><font color="red">*</font> </span> 
 			</div>
 		</div>
@@ -67,7 +73,7 @@
 		<div class="control-group">
 			<label class="control-label">安全密码：</label>
 			<div class="controls">
-				<form:input path="secPassword" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入安全密码"/>
+					<form:input path="account.secPassword" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入安全密码"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -77,7 +83,7 @@
 		<div class="control-group">
 			<label class="control-label">会员类型：</label>
 			<div class="controls">
-				<form:radiobuttons path="accountType" items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+					 <form:radiobuttons path="account.accountType" items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -153,19 +159,19 @@
 		<div class="control-group">
 			<label class="control-label">qq号码：</label>
 			<div class="controls">
-				<form:input path="qqNo" htmlEscape="false" maxlength="50" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入QQ号码"/>
+				<form:input path="account.qqNo" htmlEscape="false" maxlength="50" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入QQ号码"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">手机号码：</label>
 			<div class="controls">
-				<form:input path="mobileNo" htmlEscape="false" maxlength="50"  onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入手机号码"/>
+				<form:input path="account.mobileNo" htmlEscape="false" maxlength="50"  onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入手机号码"/>
 			</div>
 		</div>
 		<div class="control-group" id="typeRadiobuttons">
 			<label class="control-label">状态：</label>
 			<div class="controls">
-				<form:radiobuttons path="status" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<form:radiobuttons path="account.status" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -178,25 +184,30 @@
 				</li>
 			</ul>
 			<div style="margin-left: 20px">
-				<c:forEach items="${repeatMap}" var="repeatMap">
+				<c:set var="index" value="0" />
+				<c:forEach items="${repeatMap}" var="repeatMap" >
 					<!-- 彩种名称 -->
 					<a href="javascript:void(0);" onclick="$(this).next('div').toggle();"><div style="">${repeatMap.key}:</div></a>
-					<!-- <table class="table table-striped table-bordered table-condensed" style="display: none">
-						<tr> -->
 						<div style="display: block;margin-left: 20px">
-							<c:forEach items="${repeatMap.value}" var="repeatList">
-								<!-- <th> -->
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${repeatList.lotteryName}:
-									<select name="${awardList.playCode}">
-										<c:forEach items="${repeatList.awardList}" var="awardList">
-											<option  name="${awardList.playCode}" value="${awardList.commissionRate}">${awardList.awardMoney}(${awardList.commissionRate}%)</option>
+							<c:forEach items="${repeatMap.value}" var="LotteryPlayConfig">
+									<input type="hidden" name="playList[${index}].lotteryCode.isNewRecord" value="${LotteryPlayConfig.lotteryCode.isNewRecord}"/>
+									<input type="hidden" name="playList[${index}].lotteryCode.name" value="${repeatMap.key}"/>
+									<input type="hidden" name="playList[${index}].lotteryCode.code" value="${LotteryPlayConfig.lotteryCode.code}"/>
+									<input type="hidden" name="playList[${index}].isNewRecord" value="${LotteryPlayConfig.isNewRecord}"/>
+									<input type="hidden" name="playList[${index}].playCode" value="${LotteryPlayConfig.playCode}"/>
+									<input type="hidden" name="playList[${index}].name" value="${LotteryPlayConfig.name}"/>
+									<input type="hidden" name="playList[${index}].playType" value="${LotteryPlayConfig.playType}"/>
+									<input type="hidden" name="playList[${index}].winningProbability" value="${LotteryPlayConfig.winningProbability}"/>
+									<input type="hidden" name="playList[${index}].betRateLimit" value="${LotteryPlayConfig.betRateLimit}"/>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${LotteryPlayConfig.name}:
+									<select name="playList[${index}].commissionRateMax">
+										<c:forEach items="${LotteryPlayConfig.map.awardList}" var="awardList">
+											<option  name="${LotteryPlayConfig.playCode}" value="${awardList.commissionRate}">${awardList.awardMoney}(${awardList.commissionRate}%)</option>
 										</c:forEach>
-									</select>
-								<!-- </th> -->
+									</select> 
+									<c:set var="index" value="${index+1}" />  
 							</c:forEach>
 						</div>
-						<!-- </tr> -->
-					<!-- </table> -->
 					<br>
 				</c:forEach>
 			</div>

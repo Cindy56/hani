@@ -195,8 +195,5 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         this.example = example;
     }
 
-    @Override
-    public String toString() {
-        return JSON.toJSONString(this);
-    }
+    
 }

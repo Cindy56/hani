@@ -17,17 +17,25 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.game.manager.common.config.Global;
 import com.game.manager.common.utils.StringUtils;
 import com.game.manager.common.web.BaseController;
+import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
 import com.game.manager.modules.member.entity.MemberAccount;
+import com.game.manager.modules.member.entity.MemberAccountOpenDto;
+import com.game.manager.modules.member.entity.MemberPlayConfig;
 import com.game.manager.modules.member.service.MemberAccountService;
+import com.game.manager.modules.member.service.MemberPlayConfigService;
 import com.game.manager.modules.sys.entity.Office;
 import com.game.manager.modules.sys.entity.User;
 import com.game.manager.modules.sys.service.SystemService;
@@ -46,32 +54,126 @@ public class MemberAccountAddController extends BaseController {
 	private MemberAccountService memberAccountService;
 	
 	@Autowired
+	private MemberPlayConfigService memberPlayConfigService;
+	
+	@Autowired
 	private SystemService systemService;
 	
 	@ModelAttribute
-	public MemberAccount get(@RequestParam(required=false) String id) {
-		MemberAccount entity = null;
+	public MemberAccountOpenDto get(@RequestParam(required=false) String id) {
+		MemberAccountOpenDto formObj = new MemberAccountOpenDto();
+		MemberAccount account = null;
 		if (StringUtils.isNotBlank(id)){
-			entity = memberAccountService.get(id);
+			account = memberAccountService.get(id);
 		}
-		if (entity == null){
-			entity = new MemberAccount();
+		if (account == null){
+			account = new MemberAccount();
 		}
-		return entity;
+		
+		formObj.setAccount(account);
+		formObj.setUser(null);
+		formObj.setPlayList(null);
+		
+		return formObj;
 	}
 	
+	/**
+	 * 返回用户可选返点信息
+	 * @param memberAccountOpenDto
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequiresPermissions("memberadd:memberAccount:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(MemberAccount memberAccount, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String list(MemberAccountOpenDto memberAccountOpenDto, HttpServletRequest request, HttpServletResponse response, Model model) {
 //		Page<MemberAccount> page = memberAccountService.findPage(new Page<MemberAccount>(request, response), memberAccount); 
 //		model.addAttribute("page", page);
+		
+		//
+		//获取当前用户信息 从seesion取出
+		User seesionUser = UserUtils.getUser();
+		//当前登录用户id
+		String seesionUserId=seesionUser.getId();
+		//查询当前登录用户的玩法配置
+		MemberPlayConfig memberPlayConfig=memberPlayConfigService.getMemberPlayConfigByUserId(seesionUserId);
+		//找出所有彩种
+		Map<String, List<LotteryPlayConfig>> repeatMap=new HashMap<>();
+		
+		if(null!=memberPlayConfig&&StringUtils.isNotBlank(memberPlayConfig.getPlayConfig())) {
+			
+			String playConfig=memberPlayConfig.getPlayConfig();
+			//包含当前登录用户的玩法配置
+//			String jsonPlayConfig=JSON.toJSONString(playConfig);
+			//JSONObject jsonPlayConfig = JSONObject.parseObject(playConfig);
+			//JsonMapper jsonMapper=JsonMapper.getInstance();
+			//List<LotteryPlayConfig> playConfigList=jsonMapper.fromJson(playConfig, jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
+			List<LotteryPlayConfig> playConfigList=JSON.parseArray(playConfig, LotteryPlayConfig.class);
+			for (LotteryPlayConfig lottery : playConfigList) {
+				if(repeatMap.containsKey(lottery.getLotteryCode().getName())) {
+					List repList = repeatMap.get(lottery.getLotteryCode().getName());
+					repList.add(lottery);
+				}else {
+					List<LotteryPlayConfig> list1 = new ArrayList<>();
+					list1.add(lottery);
+					repeatMap.put(lottery.getLotteryCode().getName(), list1);
+				}
+			}
+			Set<Entry<String, List<LotteryPlayConfig>>> setEntry = repeatMap.entrySet();
+			for (Entry<String, List<LotteryPlayConfig>> entry : setEntry) {
+				List<LotteryPlayConfig> repeatList=entry.getValue();
+				
+				for (LotteryPlayConfig lottery : repeatList) {
+					//循环每种玩法
+//					List<Map> playList=new ArrayList<Map>();
+//					Map<String, Object> resetMap=new HashMap<String, Object>();
+				/*	map.get("lotteryCode");//彩票代码
+					String parentName=map.get("parentName").toString();//彩票名称
+					map.get("playCode");//玩法代码
+					map.get("lotteryName");//玩法名称
+					map.get("playType");//玩法模式:0 直选返点	1 不定位返点 2 所有返点 3 趣味型返点 	
+	*/				BigDecimal winningProbability=new BigDecimal(lottery.getWinningProbability());//中奖几率
+					BigDecimal commissionRateMax=new BigDecimal(lottery.getCommissionRateMax());//最大返水
+					BigDecimal commissionRateMin=new BigDecimal(lottery.getCommissionRateMin());//最小返水
+					
+					//int cha=commissionRateMax.subtract(commissionRateMin).multiply(new BigDecimal(10)).intValue();
+					
+					List<Map> groupList=new ArrayList<Map>();//每种玩法的list
+					
+//					Map<String, Object> groupMap=new HashMap<String, Object>();
+					while (commissionRateMax.compareTo(commissionRateMin)>=0) {
+						//循环算出玩法的奖金与返点
+						BigDecimal awardMoney=new BigDecimal(2).divide(winningProbability,3).multiply(new BigDecimal(1).subtract(commissionRateMin.divide(new BigDecimal(100))));
+						System.out.println(awardMoney);
+						Map<String, Object> awardMap=new HashMap<String, Object>();
+						awardMap.put("awardMoney", awardMoney);//奖金
+						awardMap.put("commissionRate", commissionRateMin);//返点百分比
+						groupList.add(awardMap);//把每种返点添加到groupList中
+						commissionRateMin=commissionRateMin.add(new BigDecimal("0.1"));
+					}
+					if(null!=lottery.getMap()) {
+						lottery.getMap().put("awardList", groupList);
+					}else {
+						lottery.setMap(new HashMap());
+						lottery.getMap().put("awardList", groupList);
+					}
+					
+				}
+			}
+		}
+		////////////
+		
+		
 		//查询返点信息
-		List<Map<String, Object>> list=memberAccountService.getLotteryPlayConfig();
+//		List<Map<String, Object>> list=memberAccountService.getLotteryPlayConfig();
+		
+//		String repeaList=JSON.toJSONString(list);
 		
 //		List<Map> resetList=new ArrayList<Map>();//放所有彩种
 		
 		//找出所有彩种
-		Map<String, List<Map<String, Object>>> repeatMap=new HashMap<>();
+		/*Map<String, List<Map<String, Object>>> repeatMap=new HashMap<>();
 		for (Map map : list) {
 			if(repeatMap.containsKey(map.get("parentName"))) {
 				List repList = repeatMap.get(map.get("parentName"));
@@ -126,8 +228,9 @@ public class MemberAccountAddController extends BaseController {
 //				resetMap.put("lotteryCode", map.get("lotteryCode"));
 //				resetList.add(resetMap);//将彩种添加到resetList中
 			}
-		}
+		}*/
 		//奖金组=2÷单注中奖概率×（1-平台利润）
+//		memberAccountOpenDto.setPlayList(playList);
 		model.addAttribute("repeatMap",repeatMap);
 		return "modules/member/memberAccountBack";
 	}
@@ -139,15 +242,24 @@ public class MemberAccountAddController extends BaseController {
 		return "modules/member/memberAccountForm";
 	}
 
+	/**
+	 * 保存用户开户信息
+	 * @param memberAccount
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequiresPermissions("memberadd:memberAccount:edit")
 	@RequestMapping(value = "save")
-	public String save(MemberAccount memberAccount, Model model, RedirectAttributes redirectAttributes) {
+	@Transactional(readOnly=false)
+	public String save(MemberAccountOpenDto memberAccountOpenDto, Model model, RedirectAttributes redirectAttributes) {//,MemberAccount memberAccount
+		MemberAccount memberAccount=memberAccountOpenDto.getAccount();
 		if (!beanValidator(model, memberAccount)){
 			return form(memberAccount, model);
 		}
 		//获取当前用户信息 从seesion取出
 		User seesionUser = UserUtils.getUser();
-		User user=memberAccount.getUser();
+		User user=memberAccountOpenDto.getUser();
 		//新开户用户设置和开户者同一个公司
 		user.setCompany(seesionUser.getCompany());
 		//新开户用户设置和开户者同一个机构
@@ -156,25 +268,6 @@ public class MemberAccountAddController extends BaseController {
 		if (!beanValidator(model, user)){
 			return form(memberAccount, model);
 		}
-		/*id, 
-		companyId, 
-		office_id, 
-		login_name, 
-		password, 
-		no, 
-		name, 
-		email, 
-		phone, 
-		mobile, 
-		user_type, 
-		create_by, 
-		create_date, 
-		update_by, 
-		update_date, 
-		remarks, 
-		login_flag, 
-		photo, 
-		del_flag*/
 		
 		user.setCompany(seesionUser.getCompany());
 		user.setOffice(seesionUser.getOffice());
@@ -206,10 +299,56 @@ public class MemberAccountAddController extends BaseController {
 		memberAccount.setBlance("0");
 		memberAccount.setBlanceFrozen("0");
 		memberAccount.setStatus("0");
+		memberAccount.setOrgId(user.getOffice());
+		memberAccount.setUser(user);
 		
 		memberAccount.setParentAgentIds(memberAccount.getParentAgentIds() + "," +memberAccount.getId());
 		
 		memberAccountService.save(memberAccount);
+		
+		//保存用户的返点信息
+		List<LotteryPlayConfig> playConfigList=memberAccountOpenDto.getPlayList();
+		/*for (LotteryPlayConfig lotteryPlayConfig : playConfigList) {
+			lotteryPlayConfig.setCurrentUser(null);
+			lotteryPlayConfig.getLotteryCode().setCurrentUser(null);
+			lotteryPlayConfig.getLotteryCode().setPage(null);
+			lotteryPlayConfig.setPage(null);
+		}*/
+		JSONArray jsonArr = new JSONArray();
+		for (LotteryPlayConfig playConfig : playConfigList) {
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("isNewRecord",playConfig.getIsNewRecord());
+			jsonObj.put("playCode",playConfig.getPlayCode());
+			jsonObj.put("name",playConfig.getName());
+			jsonObj.put("playType",playConfig.getPlayType());
+			jsonObj.put("winningProbability",playConfig.getWinningProbability());
+			jsonObj.put("commissionRateMax",playConfig.getCommissionRateMax());
+			jsonObj.put("betRateLimit",playConfig.getBetRateLimit());
+			jsonObj.put("isEnable",playConfig.getIsEnable());
+			
+			JSONObject jsonLotteryObj = new JSONObject();
+			jsonLotteryObj.put("isNewRecord", playConfig.getLotteryCode().getIsNewRecord());
+			jsonLotteryObj.put("code", playConfig.getLotteryCode().getCode());
+			jsonLotteryObj.put("name", playConfig.getLotteryCode().getName());
+			
+			jsonObj.put("lotteryCode",jsonLotteryObj);
+			jsonArr.add(jsonObj);
+		}
+		
+		String playConfig=jsonArr.toJSONString();
+		
+		MemberPlayConfig memberPlayConfig=new MemberPlayConfig();
+		memberPlayConfig.setPlayConfig(playConfig);
+		memberPlayConfig.setUser(user);
+		memberPlayConfig.setAccountId(memberAccount.getId());
+		memberPlayConfig.setPlayConfig(playConfig);
+		memberPlayConfig.setUserName(user.getName());
+		
+		
+		memberPlayConfigService.save(memberPlayConfig);
+		
+		//String playConfig=JSON.toJSONString(playConfigList);
+		
 		addMessage(redirectAttributes, "保存会员信息成功");
 		return "redirect:"+Global.getAdminPath()+"/member/memberAccount/?repage";
 	}
