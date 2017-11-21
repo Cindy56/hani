@@ -91,7 +91,6 @@ public class MemberAccountAddController extends BaseController {
 //		Page<MemberAccount> page = memberAccountService.findPage(new Page<MemberAccount>(request, response), memberAccount); 
 //		model.addAttribute("page", page);
 		
-		//
 		//获取当前用户信息 从seesion取出
 		User seesionUser = UserUtils.getUser();
 		//当前登录用户id
@@ -105,10 +104,6 @@ public class MemberAccountAddController extends BaseController {
 			
 			String playConfig=memberPlayConfig.getPlayConfig();
 			//包含当前登录用户的玩法配置
-//			String jsonPlayConfig=JSON.toJSONString(playConfig);
-			//JSONObject jsonPlayConfig = JSONObject.parseObject(playConfig);
-			//JsonMapper jsonMapper=JsonMapper.getInstance();
-			//List<LotteryPlayConfig> playConfigList=jsonMapper.fromJson(playConfig, jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
 			List<LotteryPlayConfig> playConfigList=JSON.parseArray(playConfig, LotteryPlayConfig.class);
 			for (LotteryPlayConfig lottery : playConfigList) {
 				if(repeatMap.containsKey(lottery.getLotteryCode().getName())) {
@@ -126,30 +121,26 @@ public class MemberAccountAddController extends BaseController {
 				
 				for (LotteryPlayConfig lottery : repeatList) {
 					//循环每种玩法
-//					List<Map> playList=new ArrayList<Map>();
-//					Map<String, Object> resetMap=new HashMap<String, Object>();
-				/*	map.get("lotteryCode");//彩票代码
-					String parentName=map.get("parentName").toString();//彩票名称
-					map.get("playCode");//玩法代码
-					map.get("lotteryName");//玩法名称
-					map.get("playType");//玩法模式:0 直选返点	1 不定位返点 2 所有返点 3 趣味型返点 	
-	*/				BigDecimal winningProbability=new BigDecimal(lottery.getWinningProbability());//中奖几率
-					BigDecimal commissionRateMax=new BigDecimal(lottery.getCommissionRateMax());//最大返水
-					BigDecimal commissionRateMin=new BigDecimal(lottery.getCommissionRateMin());//最小返水
+					//中奖几率
+					BigDecimal winningProbability=new BigDecimal(lottery.getWinningProbability());
+					//最大返水
+					BigDecimal commissionRateMax=new BigDecimal(lottery.getCommissionRateMax());
+					//最小返水
+					BigDecimal commissionRateMin=new BigDecimal(lottery.getCommissionRateMin());
+					//每种玩法的list
+					List<Map> groupList=new ArrayList<Map>();
 					
-					//int cha=commissionRateMax.subtract(commissionRateMin).multiply(new BigDecimal(10)).intValue();
-					
-					List<Map> groupList=new ArrayList<Map>();//每种玩法的list
-					
-//					Map<String, Object> groupMap=new HashMap<String, Object>();
 					while (commissionRateMax.compareTo(commissionRateMin)>=0) {
 						//循环算出玩法的奖金与返点
 						BigDecimal awardMoney=new BigDecimal(2).divide(winningProbability,3).multiply(new BigDecimal(1).subtract(commissionRateMin.divide(new BigDecimal(100))));
 						System.out.println(awardMoney);
 						Map<String, Object> awardMap=new HashMap<String, Object>();
-						awardMap.put("awardMoney", awardMoney);//奖金
-						awardMap.put("commissionRate", commissionRateMin);//返点百分比
-						groupList.add(awardMap);//把每种返点添加到groupList中
+						//奖金
+						awardMap.put("awardMoney", awardMoney);
+						//返点百分比
+						awardMap.put("commissionRate", commissionRateMin);
+						//把每种返点添加到groupList中
+						groupList.add(awardMap);
 						commissionRateMin=commissionRateMin.add(new BigDecimal("0.1"));
 					}
 					if(null!=lottery.getMap()) {
@@ -257,9 +248,16 @@ public class MemberAccountAddController extends BaseController {
 		if (!beanValidator(model, memberAccount)){
 			return form(memberAccount, model);
 		}
+		
 		//获取当前用户信息 从seesion取出
 		User seesionUser = UserUtils.getUser();
 		User user=memberAccountOpenDto.getUser();
+		//数据库查找登录名称是否存在
+		String userLoginName=user.getLoginName();
+		if(null!=systemService.getUserByLoginName(userLoginName)) {
+			addMessage(redirectAttributes, "登录名称已存在！");
+			return "redirect:"+Global.getAdminPath()+"/memberadd/memberAccount/";
+		}
 		//新开户用户设置和开户者同一个公司
 		user.setCompany(seesionUser.getCompany());
 		//新开户用户设置和开户者同一个机构
@@ -268,10 +266,6 @@ public class MemberAccountAddController extends BaseController {
 		if (!beanValidator(model, user)){
 			return form(memberAccount, model);
 		}
-		
-		user.setCompany(seesionUser.getCompany());
-		user.setOffice(seesionUser.getOffice());
-		//user.setLoginName(user.getName());
 		user.setPassword(SystemService.entryptPassword(user.getPassword()));
 		user.setNo("");
 		user.setName(user.getLoginName());
@@ -281,15 +275,11 @@ public class MemberAccountAddController extends BaseController {
 		user.setUserType("3");
 		user.setRemarks("");
 		
-		/*List<Role> li=user.getRoleList();
-		li.add(new Role());
-		
-		user.setRoleList(li);*/
-		
 		user.setRoleList(seesionUser.getRoleList());
-		
-		user.setLoginFlag(seesionUser.getLoginFlag());// 是否允许登陆	
-		user.setDelFlag("0");//删除标志
+		// 是否允许登陆	
+		user.setLoginFlag(seesionUser.getLoginFlag());
+		//删除标志
+		user.setDelFlag("0");
 		
 		//保存会员信息
 		systemService.saveUser(user);
@@ -301,19 +291,15 @@ public class MemberAccountAddController extends BaseController {
 		memberAccount.setStatus("0");
 		memberAccount.setOrgId(user.getOffice());
 		memberAccount.setUser(user);
+		memberAccount.setSecPassword(SystemService.entryptPassword(memberAccount.getSecPassword()));
 		
 		memberAccount.setParentAgentIds(memberAccount.getParentAgentIds() + "," +memberAccount.getId());
-		
+		//保存会员信息
 		memberAccountService.save(memberAccount);
 		
 		//保存用户的返点信息
 		List<LotteryPlayConfig> playConfigList=memberAccountOpenDto.getPlayList();
-		/*for (LotteryPlayConfig lotteryPlayConfig : playConfigList) {
-			lotteryPlayConfig.setCurrentUser(null);
-			lotteryPlayConfig.getLotteryCode().setCurrentUser(null);
-			lotteryPlayConfig.getLotteryCode().setPage(null);
-			lotteryPlayConfig.setPage(null);
-		}*/
+		
 		JSONArray jsonArr = new JSONArray();
 		for (LotteryPlayConfig playConfig : playConfigList) {
 			JSONObject jsonObj = new JSONObject();
@@ -323,6 +309,7 @@ public class MemberAccountAddController extends BaseController {
 			jsonObj.put("playType",playConfig.getPlayType());
 			jsonObj.put("winningProbability",playConfig.getWinningProbability());
 			jsonObj.put("commissionRateMax",playConfig.getCommissionRateMax());
+			jsonObj.put("commissionRateMin",playConfig.getCommissionRateMin());
 			jsonObj.put("betRateLimit",playConfig.getBetRateLimit());
 			jsonObj.put("isEnable",playConfig.getIsEnable());
 			
@@ -338,19 +325,16 @@ public class MemberAccountAddController extends BaseController {
 		String playConfig=jsonArr.toJSONString();
 		
 		MemberPlayConfig memberPlayConfig=new MemberPlayConfig();
-		memberPlayConfig.setPlayConfig(playConfig);
 		memberPlayConfig.setUser(user);
 		memberPlayConfig.setAccountId(memberAccount.getId());
 		memberPlayConfig.setPlayConfig(playConfig);
 		memberPlayConfig.setUserName(user.getName());
 		
-		
 		memberPlayConfigService.save(memberPlayConfig);
 		
-		//String playConfig=JSON.toJSONString(playConfigList);
-		
 		addMessage(redirectAttributes, "保存会员信息成功");
-		return "redirect:"+Global.getAdminPath()+"/member/memberAccount/?repage";
+		//return "redirect:"+Global.getAdminPath()+"/member/memberAccount/?repage";
+		return "redirect:"+Global.getAdminPath()+"/memberadd/memberAccount/";
 	}
 	
 	@RequiresPermissions("memberadd:memberAccount:edit")

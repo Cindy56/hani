@@ -199,6 +199,7 @@
 									<input type="hidden" name="playList[${index}].playType" value="${LotteryPlayConfig.playType}"/>
 									<input type="hidden" name="playList[${index}].winningProbability" value="${LotteryPlayConfig.winningProbability}"/>
 									<input type="hidden" name="playList[${index}].betRateLimit" value="${LotteryPlayConfig.betRateLimit}"/>
+									<input type="hidden" name="playList[${index}].commissionRateMin" value="${LotteryPlayConfig.commissionRateMin}"/>
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${LotteryPlayConfig.name}:
 									<select name="playList[${index}].commissionRateMax">
 										<c:forEach items="${LotteryPlayConfig.map.awardList}" var="awardList">
