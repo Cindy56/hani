@@ -75,7 +75,7 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
     private String example;
     
     /**
-     * 返回信息
+     * 返点信息
      */
     private Map map;
 
