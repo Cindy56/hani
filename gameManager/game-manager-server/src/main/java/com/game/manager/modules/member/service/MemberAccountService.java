@@ -82,8 +82,8 @@ public class MemberAccountService extends CrudService<MemberAccountDao, MemberAc
 	 * @param memberAccount
 	 * @param amount
 	 */
-	public List<MemberAccount>  findMemberIds(List<String> ids) {
-		return memberAccountDao.findMemberIds(ids);
+	public List<MemberAccount>  findMemberId(String  id) {
+		return memberAccountDao.findMemberId(id);
 	}
 	
 }
