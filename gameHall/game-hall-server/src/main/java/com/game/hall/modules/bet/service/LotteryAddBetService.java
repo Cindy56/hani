@@ -19,6 +19,7 @@ import com.entity.ResultData;
 import com.game.hall.common.utils.SpringContextHolder;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.hall.modules.bet.dao.LotteryPlayConfigDao;
 import com.game.hall.modules.sys.entity.Office;
 import com.game.hall.modules.sys.entity.User;
 import com.game.manager.modules.order.entity.LotteryOrder;
@@ -44,6 +45,12 @@ public class LotteryAddBetService implements BetServiceApi {
 
 	@Autowired
 	AccountChargeDao myAccountCharge;
+	
+	@Autowired
+	LotteryPlayConfigDao myPlayConfig;
+	
+	@Autowired
+	LotteryOpenTodayService myOpenToday;
 
 	// public ResultData bet(BetData betData) {
 	//
@@ -227,25 +234,27 @@ public class LotteryAddBetService implements BetServiceApi {
 	@Override
 	public ResultData openToday(String lotteryName, Integer num) {
 		// TODO Auto-generated method stub
-		return null;
+		return myOpenToday.openToday( lotteryName,  num);
 	}
 
 	@Override
 	public ResultData curOpen(String lotteryName) {
 		// TODO Auto-generated method stub
-		return null;
+		return myOpenToday.openCur(lotteryName);
+	}
+
+
+
+
+	public ResultData getPlayConfig(String lotteryName) {
+		// TODO Auto-generated method stub
+		return myOpenToday.getPlayConfig(lotteryName);
 	}
 
 	@Override
-	public ResultData lotteryPlayConfig(String lotteryName) {
+	public ResultData getOrders( String userId, String lotteryName, int num) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ResultData lotteryPlayConfig(String lotteryName, String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return myOpenToday.getOrders( userId, lotteryName, num);
 	}
 
 }

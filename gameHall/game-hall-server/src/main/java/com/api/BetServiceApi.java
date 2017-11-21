@@ -51,15 +51,20 @@ public interface BetServiceApi {
 	 * @param lotteryName
 	 * @return
 	 */
-	public ResultData lotteryPlayConfig(String lotteryName);
+	public ResultData getPlayConfig(String lotteryName);
 
+	
 	/**
 	 * 我的方案
 	 * 
 	 * @param lotteryName
+	 * @param num 
 	 * @param userId
 	 * @return
 	 */
-	public ResultData lotteryPlayConfig(String lotteryName, String userId);
+	public ResultData getOrders(String userId, String lotteryName, int num);
 
+	
+	
+	
 }

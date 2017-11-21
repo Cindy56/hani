@@ -21,7 +21,7 @@ import com.game.hall.modules.sys.entity.User;
  * @version 2017-11-17
  */
 public class LotteryOrder extends DataEntity<LotteryOrder> {
-	
+
 	private static final long serialVersionUID = 1L;
 	private String orderNum;		// 订单编号
 	private User user;		// user_id
@@ -48,7 +48,7 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 	}
 
 	public LotteryOrder(String id){
-		super(id);
+	//	super(id);
 	}
 
 	@Length(min=0, max=50, message="订单编号长度必须介于 0 和 50 之间")

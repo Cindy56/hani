@@ -19,8 +19,8 @@ import com.game.hall.modules.bet.entity.LotteryTimeNum;
 @MyBatisDao
 public interface LotteryOpenTodayDao {
 
-	public List<LotteryTimeNum> openToday(/* Map<String, Object> params */);
+	public List<LotteryTimeNum> openToday(@Param("name")String lotteryName, @Param("num")Integer num/* Map<String, Object> params */);
 
-	public List<LotteryTimeNum> currentIssue(@Param("dt") Date dt);
+	public List<LotteryTimeNum> currentIssue(String lotteryName, @Param("dt") Date dt);
 
 }

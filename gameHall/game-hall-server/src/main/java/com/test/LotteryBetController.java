@@ -4,7 +4,6 @@ import static org.mockito.Mockito.verify;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -20,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.entity.ResultData;
+import com.game.hall.common.mapper.JsonMapper;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
 import com.game.hall.modules.sys.entity.Office;
 import com.game.hall.modules.sys.entity.User;
@@ -37,7 +37,7 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 
 	@Mock
 	private com.game.hall.modules.bet.service.LotteryAddBetService myAddBetService;
-	
+
 	@Mock
 	private LotteryOrderDao myOrder;
 
@@ -49,10 +49,8 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 		MockitoAnnotations.initMocks(this);
 		this.mockMvc = MockMvcBuilders.standaloneSetup(myBetController).build();
 	}
-	
 
-	public static LotteryOrder getOrder()
-	{
+	public static LotteryOrder getOrder() {
 
 		/*
 		 * bet_issue_no varchar(50) NOT NULL投注期号
@@ -86,17 +84,21 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 		 */
 
 		LotteryOrder bet1 = new LotteryOrder();
+		//AddBetFormInput bet1 = new AddBetFormInput();
 		bet1.preInsert();
 		User user = new User();
-		user.setId("00user");
-		user.setName("00username");
-		
-		bet1.setAccountId("034f37416db44fa4a8ab05d98da6fa7d");
-		
+		user.setId("00user");// 用户ID
+		user.setName("00username");// 用户名
 		Office company = new Office();
-		company.setCode("code");
-		user.setCompany(company );
-		bet1.setUser(user);
+		company.setCode("code");// 组织编号
+		user.setCompany(company);
+		
+//		bet1.setUserId("userId");
+//		bet1.setUserName("userName");
+		bet1.setOrgId("orgId");
+		
+
+		bet1.setAccountId("034f37416db44fa4a8ab05d98da6fa7d");
 		String lotteryCode = "SSC_CQ";
 		bet1.setLotteryCode(lotteryCode);
 		BigDecimal betAmount = new BigDecimal(100);
@@ -105,9 +107,9 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 		bet1.setBetIssueNo(betIssueNo);
 		String betType = "";
 		bet1.setBetType(betType);
-		User currentUser = null;
-		bet1.setCurrentUser(currentUser);
-		
+//		User currentUser = null;
+//		bet1.setCurrentUser(currentUser);
+
 		String orderSource = "0";
 		bet1.setOrderSource(orderSource);
 		String orderType = "2";
@@ -118,74 +120,81 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 		bet1.setPlayModeMoney(playModeMoney);
 		String playModeMoneyType = "0";
 		bet1.setPlayModeMoneyType(playModeMoneyType);
-		
+
 		bet1.setOrderNum("10000001");
-		
-				
 		bet1.setBetDetail("detail");
 		bet1.setBetRate(1);
 		bet1.setStatus("0");
-		
-		Date createDate = new Date();
-		bet1.setCreateDate(createDate);
-		bet1.setCreateBy(user);
-		bet1.setUpdateBy(user);
-		
+		// Date createDate = new Date();
+		// bet1.setCreateDate(createDate);
+		// bet1.setCreateBy(user);
+		// bet1.setUpdateBy(user);
+
 		return bet1;
 	}
-
 
 	@Test
 	public void testLotteryBetControllerMethodaddBet() {
 
-//		try {
-//			mockMvc.perform(get("/bet/bet/addbet").content("{\"title\":\"test blog entry\"}")
-//					.contentType(MediaType.APPLICATION_JSON))
-//			.andExpect(status().isOk()) // 返回的状态是200
-//					.andDo(print()) // 打印出请求和相应的内容
-//					.andReturn().getResponse().getContentAsString(); // 将相应的数据转换为字符串
-//
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		// try {
+		// mockMvc.perform(get("/bet/bet/addbet").content("{\"title\":\"test blog
+		// entry\"}")
+		// .contentType(MediaType.APPLICATION_JSON))
+		// .andExpect(status().isOk()) // 返回的状态是200
+		// .andDo(print()) // 打印出请求和相应的内容
+		// .andReturn().getResponse().getContentAsString(); // 将相应的数据转换为字符串
+		//
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
-		List<LotteryOrder> betData = new ArrayList<LotteryOrder>();
+		List<LotteryOrder> lsbet = new ArrayList<LotteryOrder>();
 
+		LotteryOrder bet1 = getOrder();
 
+	//	List<AddBetFormInput> lsbet = new  ArrayList<AddBetFormInput>();
+//		lsbet.add(bet1);
+		
+		lsbet.add(bet1);
+		
+		//String jsonStrng = JSON.toJSONString(betData);
+		
+		String jsonstr = JsonMapper.toJsonString(lsbet);
+		
+		System.out.println(jsonstr);
 
-		LotteryOrder bet1 =  getOrder();
 		LotteryOrder bet2 = new LotteryOrder();
 
-		betData.add(bet1);
+		lsbet.add(bet2);
 		// betData.add(bet2);
 
-		//测试，输入预想的输入in 
-		List<LotteryOrder> in =  betData;
-		
+		// 测试，输入预想的输入in
+		List<LotteryOrder> in = lsbet;
+
 		ResultData rd1 = myBetController.addBet(in);
 
-		//验证，输出到目标object的出参out，是不是我们想要的
-		
-		List<LotteryOrder> out =  new ArrayList<LotteryOrder>();
+		// 验证，输出到目标object的出参out，是不是我们想要的
+
+		List<LotteryOrder> out = new ArrayList<LotteryOrder>();
 		LotteryOrder out2 = new LotteryOrder();
 		out.add(out2);
 		out.add(out2);
-		
+
 		ResultData rd2 = verify(myAddBetService).addBet(out);
-		
-		
+
 		LotteryOrder entity = null;
 		verify(myOrder).insert(entity);
-		
+
 	}
 
 	@Test
 	public void testLotteryAddBetServiceMethodaddBet() {
 
-		List<LotteryOrder> betData = new ArrayList<LotteryOrder>();
+		List<LotteryOrder> lsbet = new ArrayList<LotteryOrder>();
 
-		LotteryOrder bet1 =  getOrder();
+		
+		LotteryOrder bet1 = null;// getOrder();
 
 		/*
 		 * bet_issue_no varchar(50) NOT NULL投注期号
@@ -218,23 +227,25 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 		 * statuschar(1) NOT NULL注单状态： 0等待开奖 1已中奖 2未中奖 3已撤单
 		 */
 
-
 		LotteryOrder bet2 = new LotteryOrder();
 
-		betData.add(bet1);
+		lsbet.add(bet1);
 		// betData.add(bet2);
 
 		// myAddBetService.addBet(betData);
 
-		//myAddBetService = new com.game.hall.modules.bet.service.LotteryAddBetService();
+		// myAddBetService = new
+		// com.game.hall.modules.bet.service.LotteryAddBetService();
+
 		
-		myBetController.addBet(betData);
 		
-		verify(myAddBetService).addBet(betData);
-		verify(myAddBetService).addBet(betData);
-		verify(myAddBetService).addBet(betData);
-		verify(myAddBetService).addBet(betData);
-		verify(myAddBetService).addBet(betData);
+		myBetController.addBet(lsbet);
+
+		verify(myAddBetService).addBet(lsbet);
+		verify(myAddBetService).addBet(lsbet);
+		verify(myAddBetService).addBet(lsbet);
+		verify(myAddBetService).addBet(lsbet);
+		verify(myAddBetService).addBet(lsbet);
 	}
 
 }

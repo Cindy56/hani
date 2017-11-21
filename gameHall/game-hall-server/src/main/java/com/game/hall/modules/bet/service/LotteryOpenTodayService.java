@@ -3,36 +3,95 @@
  */
 package com.game.hall.modules.bet.service;
 
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.BetServiceApi;
+import com.entity.ResultData;
+import com.game.hall.modules.bet.dao.AccountChargeDao;
+import com.game.hall.modules.bet.dao.LotteryOpenTodayDao;
+import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.hall.modules.bet.dao.LotteryPlayConfigDao;
+import com.game.hall.modules.bet.entity.LotteryPlayConfig;
+import com.game.hall.modules.bet.entity.LotteryTimeNum;
+import com.game.manager.modules.order.entity.LotteryOrder;
 
 /**
+ * 今日开奖
  * @author antonio
  *
  */
 @Service
 public class LotteryOpenTodayService {
-//	@Autowired @Qualifier("myServiceClient")
-//	// (name = "myServiceClient")
-//	private BetServiceApi myServiceClient;
-//	
-//	private BetServiceApi getBetServiceApi() {
-//		return (BetServiceApi) SpringContextHolder.getBean("myServiceClient");
-//	}
-//
-//	@Autowired
-//	private LotteryOpenTodayDao lotOpenToday;
-//
-//	public void bet() {
-//		getBetServiceApi().test1();
-//	}
-//
-//	public ResultData OpenToday() {
-//		return getBetServiceApi().openToday("SSC", 5);
-//	}
-//
-//	public List<LotteryTimeNum> Cur(Date dt) {
-//		return lotOpenToday.currentIssue(dt);
-//	}
+	// @Autowired
+	private BetServiceApi myServiceClient;
+
+	@Autowired
+	private LotteryOrderDao myOrder;
+
+	@Autowired
+	AccountChargeDao myAccountCharge;
+
+	@Autowired
+	LotteryPlayConfigDao myPlayConfig;
+
+	@Autowired
+	private LotteryOpenTodayDao lotOpenToday;
+	// private BetServiceApi getBetServiceApi() {
+	// return (BetServiceApi) SpringContextHolder.getBean("myServiceClient");
+	// }
+	//
+
+	public ResultData openToday(String lotteryName, Integer num) {
+
+		if (myServiceClient != null)
+			return myServiceClient.openToday(lotteryName, num);
+
+		List<LotteryTimeNum> lsLots = lotOpenToday.openToday(lotteryName, num);
+
+		ResultData rd = ResultData.ResultDataOK();
+
+		rd.setData(lsLots);
+		return rd;
+
+	}
+
+	public ResultData openCur(String lotteryName) {
+		if (myServiceClient != null)
+			return myServiceClient.curOpen(lotteryName);
+
+		Date dt = new Date();
+		List<LotteryTimeNum> lsLot = lotOpenToday.currentIssue(lotteryName, dt);
+		ResultData rd = ResultData.ResultDataOK();
+
+		rd.setData(lsLot);
+		return rd;
+	}
+
+	public ResultData getPlayConfig(String lotteryName) {
+		if (myServiceClient != null)
+			return myServiceClient.curOpen(lotteryName);
+
+		List<LotteryPlayConfig> lsLot = myPlayConfig.findAllConfigByName(lotteryName);
+		ResultData rd = ResultData.ResultDataOK();
+
+		rd.setData(lsLot);
+		return rd;
+	}
+
+	public ResultData getOrders( String userID, String lotteryName, int num) {
+		if (myServiceClient != null)
+			return myServiceClient.curOpen(lotteryName);
+
+		Date dt = new Date();
+		List<LotteryOrder> lsLot = myOrder.findListById(userID, lotteryName, num);
+		ResultData rd = ResultData.ResultDataOK();
+
+		rd.setData(lsLot);
+		return rd;
+	}
 
 }
