@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.hall.modules.order.dao.LotteryOrderManDao">
+    <select id="allLotteryOrder" resultType="java.util.Map">
+SELECT
+	b.order_no,
+	b.order_type,
+	b.bet_amount,
+	b.bet_rate,
+	b.status,
+	a.id,
+	a.login_name
+FROM
+	lottery_order b,
+	sys_user a
+WHERE
+	a.id = #{id}
+AND
+	a.id = b.user_id
+
+
+    </select>
+	
+
+    <select id="rechargeRecord" resultType="com.game.hall.modules.order.entity.RechargeRecord">
+SELECT
+	a.serial_number,
+	a.user_id,
+	a.apply_time,
+	a.apply_amount,
+	a.arrival_amount,
+	a.recharge_mode,
+	a.status
+FROM
+	recharge_record a
+WHERE
+	a.user_id = #{userId}
+    </select>
+
+
+
+
+
+   <select id="drawingRecord" resultType="com.game.hall.modules.order.entity.DrawingRecord">
+SELECT
+	a.transaction_number as transactionNumber,
+	a.user_id as "user.id",	
+	drawing_blance, 
+	drawing_time as "drawingTime",
+ 	a.account_id as "memberAccountCard.accountId",
+ 	a.bank_card_no as "memberAccountCard.bankCardNo",
+	a.status 
+FROM
+	drawing_record a
+WHERE
+	a.user_id = #{userId}
+    </select> 
+
+</mapper>
