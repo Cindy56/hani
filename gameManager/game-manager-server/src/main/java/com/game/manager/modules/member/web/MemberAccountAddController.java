@@ -4,6 +4,8 @@
 package com.game.manager.modules.member.web;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.game.manager.common.config.Global;
 import com.game.manager.common.mapper.JsonMapper;
 import com.game.manager.common.utils.StringUtils;
@@ -135,10 +135,13 @@ public class MemberAccountAddController extends BaseController {
 					while (commissionRateMax.compareTo(commissionRateMin)>=0) {
 						//循环算出玩法的奖金与返点
 						BigDecimal awardMoney=new BigDecimal(2).divide(winningProbability,3).multiply(new BigDecimal(1).subtract(commissionRateMin.divide(new BigDecimal(100))));
-						System.out.println(awardMoney);
+						DecimalFormat dfFormat = new DecimalFormat("0.000"); 
+						String Money=dfFormat.format(awardMoney);
+						
 						Map<String, Object> awardMap=new HashMap<String, Object>();
 						//奖金
-						awardMap.put("awardMoney", awardMoney);
+						//awardMap.put("awardMoney", awardMoney);
+						awardMap.put("awardMoney", Money);
 						//返点百分比
 						awardMap.put("commissionRate", commissionRateMin);
 						//把每种返点添加到groupList中

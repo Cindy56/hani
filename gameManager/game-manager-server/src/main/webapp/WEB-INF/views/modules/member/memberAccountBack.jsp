@@ -79,7 +79,7 @@
 			<div class="control-group">
 				<label class="control-label">工号:</label>
 				<div class="controls">
-						<form:input path="user.no" htmlEscape="false" maxlength="50" class="required" placeholder="请输入工号" id="no"/>
+						<form:input path="user.no" htmlEscape="false" maxlength="10" minlength="3" class="required" placeholder="请输入工号" id="no"/>
 					<span class="help-inline"><font color="red">*</font> </span> 
 				</div>
 			</div>
@@ -87,7 +87,7 @@
 			<div class="control-group">
 				<label class="control-label">姓名:</label>
 				<div class="controls">
-					<form:input path="user.name" htmlEscape="false" maxlength="50" class="required" placeholder="请输姓名"/>
+					<form:input path="user.name" htmlEscape="false" maxlength="5" minlength="2" class="required" placeholder="请输姓名"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
@@ -96,21 +96,21 @@
 				<label class="control-label">登录名:</label>
 				<div class="controls">
 					<!-- <input id="oldLoginName" name="user.loginName" type="hidden" value=""> -->
-						<form:input path="user.loginName" htmlEscape="false" maxlength="50" class="required userName" placeholder="请输入登录名" id="loginName"/>
+						<form:input path="user.loginName" htmlEscape="false" maxlength="10" minlength="2" class="required userName" placeholder="请输入登录名" id="loginName"/>
 					<span class="help-inline"><font color="red">*</font> </span> 
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">密码:</label>
 				<div class="controls">
-					<input id="newPassword" name="user.password" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''}" placeholder="请输入密码"/>
+					<input id="newPassword" name="user.password" type="password" value="" maxlength="50" minlength="6" class="${empty user.id?'required':''}" placeholder="请输入密码"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">确认密码:</label>
 				<div class="controls">
-					<input id="confirmNewPassword" name="user.password2" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword" class="required" placeholder="请输入确认密码"/>
+					<input id="confirmNewPassword" name="user.password2" type="password" value="" maxlength="50" minlength="6" equalTo="#newPassword" class="required" placeholder="请输入确认密码"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>	
