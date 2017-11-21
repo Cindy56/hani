@@ -145,12 +145,12 @@ public class MemberAccountAddController extends BaseController {
 						groupList.add(awardMap);
 						commissionRateMin=commissionRateMin.add(new BigDecimal("0.1"));
 					}
-					if(null!=lottery.getMap()) {
+					/*if(null!=lottery.getMap()) {
 						lottery.getMap().put("awardList", groupList);
 					}else {
 						lottery.setMap(new HashMap());
 						lottery.getMap().put("awardList", groupList);
-					}
+					}*/
 					
 				}
 			}

@@ -55,4 +55,11 @@ public class MemberPlayConfigService extends CrudService<MemberPlayConfigDao, Me
 		return memberPlayConfigDao.getMemberPlayConfigByUserId(userId);
 	}
 	
+	/**
+	 *  根据会员ID 查询 所有 会员玩法配置
+	 */
+	public List<MemberPlayConfig> queryByAccountIdList(List<String> ids) {
+		return memberPlayConfigDao.queryByAccountIdList(ids);
+	}
+	
 }
