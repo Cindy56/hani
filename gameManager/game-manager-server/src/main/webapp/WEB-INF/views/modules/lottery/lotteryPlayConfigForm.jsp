@@ -87,17 +87,17 @@
             </div>
         </div>
 
-        <%-- 返水级别 --%>
+        <%-- 最高抽水 --%>
         <div class="control-group">
-            <label class="control-label">返水级别：</label>
+            <label class="control-label">最高抽水：</label>
             <div class="controls">
                 <form:input path="commissionRateMax" htmlEscape="false" maxlength="6" class="input-xlarge" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-6的小数形式返水级别..."/>
             </div>
         </div>
 
-        <%-- 最低返水级别 --%>
+        <%-- 最低抽水 --%>
         <div class="control-group">
-            <label class="control-label">最低返水级别：</label>
+            <label class="control-label">最低抽水：</label>
             <div class="controls">
                 <form:input path="commissionRateMin" htmlEscape="false" maxlength="6" class="input-xlarge" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-6的小数形式最低返水级别..."/>
             </div>

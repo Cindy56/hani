@@ -44,10 +44,10 @@ public interface MemberAccountDao extends CrudDao<MemberAccount> {
 	public void minusAmount(@Param("accountId")String accountId, @Param("amount")BigDecimal amount);
 	
 	/**
-	* 根据 多个 会员ID 查询 会员信息
+	* 根据 会员ID 查询  所有上级会员信息（包括当前会员ID）
 	* @param Ids id集合
 	* @return 会员信息
-	*/
-	public List<MemberAccount> findMemberIds(@Param("ids") List<String> ids);
+	*/ 
+	public List<MemberAccount> findMemberId(@Param("id") String id);
 	
 }
