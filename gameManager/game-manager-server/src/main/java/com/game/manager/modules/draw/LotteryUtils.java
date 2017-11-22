@@ -1,6 +1,7 @@
 package com.game.manager.modules.draw;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -356,7 +357,11 @@ public class LotteryUtils {
         List<String> openNumsList = Arrays.asList(openNums);
         
         //投注号码 ----string 转 Integer 
-        List<Integer> convertBetNumList = betNumList.stream().map(Integer::valueOf).collect(Collectors.toList());
+        List<Integer> convertBetNumList = betNumList.stream().map(Integer::valueOf).distinct().collect(Collectors.toList());
+        //如果出现对子直接返回
+        if(convertBetNumList.size() < 3) {
+        	return false;
+        }
         //排序 升序
         convertBetNumList.sort((a,b) ->a.compareTo(b));
         // 拼成字符串
@@ -403,10 +408,7 @@ public class LotteryUtils {
 	
 	
 	public static void main(String[] args) {
-		LotteryOrder lotteryOrder = new LotteryOrder();
-		lotteryOrder.setBetRate(20);
-		lotteryOrder.setPlayModeMoneyType("1");
-		System.out.println(ssc3XinBetCount(lotteryOrder));
+			System.out.println(ssc3XinZuxuan6("1,2,3","3,2,1"));		
 	}
 	/**
 	 * 时时彩组选豹子

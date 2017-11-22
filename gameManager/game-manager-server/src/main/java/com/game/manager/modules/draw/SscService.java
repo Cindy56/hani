@@ -370,6 +370,52 @@ public enum SscService implements LotteryService {
 		}
     	
     },
+    SSC_QIAN3_HUNHEZUXUN("SSC_QIAN3_HUNHEZUXUN", "时时彩前3混合组选") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			
+		}
+		@Override
+		public boolean checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			//对注单进行基础校验
+			if(!checkOrder(lotteryOrder,betLotteryTimeNum)) {
+				return false;
+			}
+			//正则验证投注号码,必须是0-9的数字以逗号分隔
+			String  regex = "[0-9]{1},[0-9]{1},[0-9]{1}";
+			if(!lotteryOrder.getBetDetail().matches(regex)) {
+				 return false;
+			}
+			//校验订单金额
+		    return super.checkAmount(lotteryOrder,LotteryUtils.ssc3XinBetCount(lotteryOrder));
+		}
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (null == lotteryOrder || null == openLotteryTimeNum) {
+                return false;
+            }
+			if(LotteryUtils.checkWinSsc3XinZuXuan(openLotteryTimeNum.getOpenNum().substring(0, 5), lotteryOrder.getBetDetail()) ||
+					LotteryUtils.ssc3XinZuxuan6(openLotteryTimeNum.getOpenNum().trim().substring(0,5),lotteryOrder.getBetDetail())) {
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			// 如果没有中奖，直接返回金额为0
+            if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+                return BigDecimal.ZERO;
+            }
+            // 投注奖金组、投注倍数、投注模式
+            BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
+            BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
+            BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
+            // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值
+            return playModeMoney.multiply(betRate).multiply(playModeMoneyType);
+		}
+    },
     //
     // /** 时时彩前3组选3 */
     // SSC_QIAN3_ZUXUAN3("SSC_QIAN3_ZUXUAN3", "时时彩前3组选3") {},
