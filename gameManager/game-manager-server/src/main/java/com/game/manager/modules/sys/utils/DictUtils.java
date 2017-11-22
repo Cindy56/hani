@@ -8,11 +8,11 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.game.manager.common.mapper.JsonMapper;
-import com.game.manager.common.utils.CacheUtils;
-import com.game.manager.common.utils.SpringContextHolder;
+import com.game.common.mapper.JsonMapper;
+import com.game.common.utils.CacheUtils;
+import com.game.common.utils.SpringContextHolder;
 import com.game.manager.modules.sys.dao.DictDao;
-import com.game.manager.modules.sys.entity.Dict;
+import com.game.modules.sys.entity.Dict;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

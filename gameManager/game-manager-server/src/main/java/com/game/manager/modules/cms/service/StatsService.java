@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.service.BaseService;
-import com.game.manager.common.utils.DateUtils;
+import com.game.common.service.BaseService;
+import com.game.common.utils.DateUtils;
 import com.game.manager.modules.cms.dao.ArticleDao;
-import com.game.manager.modules.cms.entity.Category;
-import com.game.manager.modules.cms.entity.Site;
-import com.game.manager.modules.sys.entity.Office;
+import com.game.manager.modules.cms.utils.CmsUtils;
+import com.game.modules.cms.entity.Category;
+import com.game.modules.cms.entity.Site;
+import com.game.modules.sys.entity.Office;
 
 /**
  * 统计Service
@@ -34,7 +35,7 @@ public class StatsService extends BaseService {
 		Category category = new Category();
 		
 		Site site = new Site();
-		site.setId(Site.getCurrentSiteId());
+		site.setId(CmsUtils.getCurrentSiteId());
 		category.setSite(site);
 		
 		Date beginDate = DateUtils.parseDate(paramMap.get("beginDate"));

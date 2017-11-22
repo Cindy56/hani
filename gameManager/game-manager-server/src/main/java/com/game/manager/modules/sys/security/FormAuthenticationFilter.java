@@ -14,7 +14,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 
-import com.game.manager.common.utils.StringUtils;
+import com.game.common.utils.StringUtils;
 
 /**
  * 表单验证（包含验证码）过滤类

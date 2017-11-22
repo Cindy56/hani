@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.game.manager.modules.member.service.MemberAccountService;
-import com.game.manager.modules.order.entity.LotteryOrder;
+import com.game.modules.order.entity.LotteryOrder;
 import com.game.manager.modules.order.service.LotteryOrderService;
-import com.game.manager.modules.trade.entity.FinanceTradeDetail;
+import com.game.modules.trade.entity.FinanceTradeDetail;
 import com.game.manager.modules.trade.service.FinanceTradeDetailService;
 
 /**

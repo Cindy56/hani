@@ -13,7 +13,7 @@ package ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModule
 import ${i};
 </#list>
 
-import com.game.manager.common.persistence.TreeEntity;
+import com.game.common.persistence.TreeEntity;
 
 /**
  * ${functionName}Entity

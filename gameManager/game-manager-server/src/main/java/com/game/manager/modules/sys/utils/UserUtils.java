@@ -11,19 +11,19 @@ import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
-import com.game.manager.common.service.BaseService;
-import com.game.manager.common.utils.CacheUtils;
-import com.game.manager.common.utils.SpringContextHolder;
+import com.game.common.service.BaseService;
+import com.game.common.utils.CacheUtils;
+import com.game.common.utils.SpringContextHolder;
 import com.game.manager.modules.sys.dao.AreaDao;
 import com.game.manager.modules.sys.dao.MenuDao;
 import com.game.manager.modules.sys.dao.OfficeDao;
 import com.game.manager.modules.sys.dao.RoleDao;
 import com.game.manager.modules.sys.dao.UserDao;
-import com.game.manager.modules.sys.entity.Area;
-import com.game.manager.modules.sys.entity.Menu;
-import com.game.manager.modules.sys.entity.Office;
-import com.game.manager.modules.sys.entity.Role;
-import com.game.manager.modules.sys.entity.User;
+import com.game.modules.sys.entity.Area;
+import com.game.modules.sys.entity.Menu;
+import com.game.modules.sys.entity.Office;
+import com.game.modules.sys.entity.Role;
+import com.game.modules.sys.entity.User;
 import com.game.manager.modules.sys.security.SystemAuthorizingRealm.Principal;
 
 /**

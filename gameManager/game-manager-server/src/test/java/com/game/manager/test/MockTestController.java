@@ -7,13 +7,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import com.game.manager.common.test.BaseMvcJunitTest;
+import com.game.common.test.BaseMvcJunitTest;
 
 
 public class MockTestController extends BaseMvcJunitTest {
 	   @Test
 	   public void getAllCategoryTest() throws Exception {
-		   String responseString = mockMvc.perform(
+/*		   String responseString = mockMvc.perform(
 				   get("/user/showUser1")
 	               .contentType(MediaType.APPLICATION_FORM_URLENCODED)//数据的格式
 	               .param("id","1")
@@ -21,6 +21,6 @@ public class MockTestController extends BaseMvcJunitTest {
 		   		.andDo(print())         //打印出请求和相应的内容
 		   		.andReturn().getResponse().getContentAsString();   //将相应的数据转换为字符串
 		   
-		   System.out.println("-----返回的json = " + responseString);
+		   System.out.println("-----返回的json = " + responseString);*/
 	   }
 }

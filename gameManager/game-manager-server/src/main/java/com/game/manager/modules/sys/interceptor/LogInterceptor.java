@@ -12,8 +12,8 @@ import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.game.manager.common.service.BaseService;
-import com.game.manager.common.utils.DateUtils;
+import com.game.common.service.BaseService;
+import com.game.common.utils.DateUtils;
 import com.game.manager.modules.sys.utils.LogUtils;
 
 /**

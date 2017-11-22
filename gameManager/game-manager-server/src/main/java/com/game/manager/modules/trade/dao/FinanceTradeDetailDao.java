@@ -5,9 +5,9 @@ package com.game.manager.modules.trade.dao;
 
 import java.util.List;
 
-import com.game.manager.common.persistence.CrudDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.trade.entity.FinanceTradeDetail;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.trade.entity.FinanceTradeDetail;
 
 /**
  * 账变流水DAO接口

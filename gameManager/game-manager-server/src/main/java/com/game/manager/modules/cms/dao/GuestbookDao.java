@@ -3,9 +3,9 @@
  */
 package com.game.manager.modules.cms.dao;
 
-import com.game.manager.common.persistence.CrudDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.cms.entity.Guestbook;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.cms.entity.Guestbook;
 
 /**
  * 留言DAO接口

@@ -4,7 +4,6 @@
 package com.game.manager.modules.member.web;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,22 +25,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.alibaba.fastjson.JSON;
-import com.game.manager.common.config.Global;
-import com.game.manager.common.mapper.JsonMapper;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
-import com.game.manager.modules.member.entity.MemberAccount;
-import com.game.manager.modules.member.entity.MemberAccountOpenDto;
-import com.game.manager.modules.member.entity.MemberPlayConfig;
+import com.game.common.config.Global;
+import com.game.common.mapper.JsonMapper;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
 import com.game.manager.modules.member.service.MemberAccountService;
 import com.game.manager.modules.member.service.MemberPlayConfigService;
-import com.game.manager.modules.sys.entity.Office;
-import com.game.manager.modules.sys.entity.Role;
-import com.game.manager.modules.sys.entity.User;
 import com.game.manager.modules.sys.service.SystemService;
 import com.game.manager.modules.sys.utils.UserUtils;
+import com.game.modules.lottery.entity.LotteryPlayConfig;
+import com.game.modules.member.entity.MemberAccount;
+import com.game.modules.member.entity.MemberAccountOpenDto;
+import com.game.modules.member.entity.MemberPlayConfig;
+import com.game.modules.sys.entity.Office;
+import com.game.modules.sys.entity.Role;
+import com.game.modules.sys.entity.User;
 
 /**
  * 会员开户Controller
@@ -111,7 +109,8 @@ public class MemberAccountAddController extends BaseController {
 			
 			String playConfig=memberPlayConfig.getPlayConfig();
 			//包含当前登录用户的玩法配置
-			List<LotteryPlayConfig> playConfigList=JSON.parseArray(playConfig, LotteryPlayConfig.class);
+			JsonMapper jsonMapper = JsonMapper.getInstance();
+			List<LotteryPlayConfig> playConfigList  =  jsonMapper.fromJson(playConfig, jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
 			for (LotteryPlayConfig lottery : playConfigList) {
 				if(repeatMap.containsKey(lottery.getLotteryCode().getName())) {
 					List repList = repeatMap.get(lottery.getLotteryCode().getName());

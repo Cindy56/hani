@@ -10,11 +10,11 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.game.manager.common.persistence.DataEntity;
-import com.game.manager.common.supcan.annotation.treelist.SupTreeList;
-import com.game.manager.common.supcan.annotation.treelist.cols.SupCol;
-import com.game.manager.common.supcan.annotation.treelist.cols.SupGroup;
-import com.game.manager.modules.sys.entity.Office;
+import com.game.common.persistence.DataEntity;
+import com.game.common.supcan.annotation.treelist.SupTreeList;
+import com.game.common.supcan.annotation.treelist.cols.SupCol;
+import com.game.common.supcan.annotation.treelist.cols.SupGroup;
+import com.game.modules.sys.entity.Office;
 
 /**
  * 测试Entity

@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.manager.common.mapper.JsonMapper;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.cms.entity.Article;
-import com.game.manager.modules.cms.entity.Category;
-import com.game.manager.modules.cms.entity.Site;
+import com.game.common.mapper.JsonMapper;
+import com.game.common.persistence.Page;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
+import com.game.modules.cms.entity.Article;
+import com.game.modules.cms.entity.Category;
+import com.game.modules.cms.entity.Site;
 import com.game.manager.modules.cms.service.ArticleDataService;
 import com.game.manager.modules.cms.service.ArticleService;
 import com.game.manager.modules.cms.service.CategoryService;
@@ -84,7 +84,7 @@ public class ArticleController extends BaseController {
 	public String form(Article article, Model model) {
 		// 如果当前传参有子节点，则选择取消传参选择
 		if (article.getCategory()!=null && StringUtils.isNotBlank(article.getCategory().getId())){
-			List<Category> list = categoryService.findByParentId(article.getCategory().getId(), Site.getCurrentSiteId());
+			List<Category> list = categoryService.findByParentId(article.getCategory().getId(), CmsUtils.getCurrentSiteId());
 			if (list.size() > 0){
 				article.setCategory(null);
 			}else{
@@ -148,7 +148,7 @@ public class ArticleController extends BaseController {
 	}
 
     private List<String> getTplContent() {
-   		List<String> tplList = fileTplService.getNameListByPrefix(siteService.get(Site.getCurrentSiteId()).getSolutionPath());
+   		List<String> tplList = fileTplService.getNameListByPrefix(siteService.get(CmsUtils.getCurrentSiteId()).getSolutionPath());
    		tplList = TplUtils.tplTrim(tplList, Article.DEFAULT_TEMPLATE, "");
    		return tplList;
    	}

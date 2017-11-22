@@ -9,15 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
-import com.game.manager.common.utils.StringUtils;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
+import com.game.common.utils.StringUtils;
 import com.game.manager.modules.lottery.dao.LotteryPlayConfigDao;
 import com.game.manager.modules.lottery.dao.LotteryTypeDao;
 import com.game.manager.modules.lottery.dao.LotteryTypeTimeDao;
-import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
-import com.game.manager.modules.lottery.entity.LotteryType;
-import com.game.manager.modules.lottery.entity.LotteryTypeTime;
+import com.game.modules.lottery.entity.LotteryPlayConfig;
+import com.game.modules.lottery.entity.LotteryType;
+import com.game.modules.lottery.entity.LotteryTypeTime;
 
 /**
  * 彩种基本信息管理Service

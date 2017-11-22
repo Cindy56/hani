@@ -19,15 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.manager.common.config.Global;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.cms.entity.Article;
-import com.game.manager.modules.cms.entity.Category;
-import com.game.manager.modules.cms.entity.Site;
+import com.game.common.config.Global;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
+import com.game.modules.cms.entity.Article;
+import com.game.modules.cms.entity.Category;
+import com.game.modules.cms.entity.Site;
 import com.game.manager.modules.cms.service.CategoryService;
 import com.game.manager.modules.cms.service.FileTplService;
 import com.game.manager.modules.cms.service.SiteService;
+import com.game.manager.modules.cms.utils.CmsUtils;
 import com.game.manager.modules.cms.utils.TplUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -157,7 +158,7 @@ public class CategoryController extends BaseController {
 	}
 
     private List<String> getTplContent(String prefix) {
-   		List<String> tplList = fileTplService.getNameListByPrefix(siteService.get(Site.getCurrentSiteId()).getSolutionPath());
+   		List<String> tplList = fileTplService.getNameListByPrefix(siteService.get(CmsUtils.getCurrentSiteId()).getSolutionPath());
    		tplList = TplUtils.tplTrim(tplList, prefix, "");
    		return tplList;
    	}

@@ -9,9 +9,9 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.game.manager.common.persistence.CrudDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.member.entity.MemberAccount;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.member.entity.MemberAccount;
 
 /**
  * 会员开户DAO接口

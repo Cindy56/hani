@@ -1,7 +1,7 @@
 package com.game.manager.modules.lottery.schedule;
 
-import com.game.manager.modules.lottery.dto.OpenCaiResult;
-import com.game.manager.modules.lottery.exception.LotteryNumDrawException;
+import com.game.modules.lottery.dto.OpenCaiResult;
+import com.game.modules.lottery.exception.LotteryNumDrawException;
 
 /**
  * 拉奖服务接口，后续通道实现该接口

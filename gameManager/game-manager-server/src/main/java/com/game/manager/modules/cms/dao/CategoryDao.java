@@ -6,9 +6,9 @@ package com.game.manager.modules.cms.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.game.manager.common.persistence.TreeDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.cms.entity.Category;
+import com.game.common.persistence.TreeDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.cms.entity.Category;
 
 /**
  * 栏目DAO接口

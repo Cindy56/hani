@@ -11,15 +11,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.config.Global;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.TreeService;
+import com.game.common.config.Global;
+import com.game.common.persistence.Page;
+import com.game.common.service.TreeService;
 import com.game.manager.modules.cms.dao.CategoryDao;
-import com.game.manager.modules.cms.entity.Category;
-import com.game.manager.modules.cms.entity.Site;
+import com.game.modules.cms.entity.Category;
+import com.game.modules.cms.entity.Site;
 import com.game.manager.modules.cms.utils.CmsUtils;
-import com.game.manager.modules.sys.entity.Office;
-import com.game.manager.modules.sys.entity.User;
+import com.game.modules.sys.entity.Office;
+import com.game.modules.sys.entity.User;
 import com.game.manager.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -80,7 +80,7 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 			List<Category> categoryList = Lists.newArrayList(); 
 			for (Category e : list){
 				if (Category.isRoot(e.getId()) || (e.getSite()!=null && e.getSite().getId() !=null 
-						&& e.getSite().getId().equals(Site.getCurrentSiteId()))){
+						&& e.getSite().getId().equals(CmsUtils.getCurrentSiteId()))){
 					if (StringUtils.isNotEmpty(module)){
 						if (module.equals(e.getModule()) || "".equals(e.getModule())){
 							categoryList.add(e);
@@ -131,7 +131,7 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 	
 	@Transactional(readOnly = false)
 	public void save(Category category) {
-		category.setSite(new Site(Site.getCurrentSiteId()));
+		category.setSite(new Site(CmsUtils.getCurrentSiteId()));
 		if (StringUtils.isNotBlank(category.getViewConfig())){
             category.setViewConfig(StringEscapeUtils.unescapeHtml4(category.getViewConfig()));
         }

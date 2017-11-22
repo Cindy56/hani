@@ -13,17 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.config.Global;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
-import com.game.manager.common.utils.CacheUtils;
-import com.game.manager.common.utils.StringUtils;
+import com.game.common.config.Global;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
+import com.game.common.utils.CacheUtils;
+import com.game.common.utils.StringUtils;
 import com.game.manager.modules.cms.dao.ArticleDao;
 import com.game.manager.modules.cms.dao.ArticleDataDao;
 import com.game.manager.modules.cms.dao.CategoryDao;
-import com.game.manager.modules.cms.entity.Article;
-import com.game.manager.modules.cms.entity.ArticleData;
-import com.game.manager.modules.cms.entity.Category;
+import com.game.modules.cms.entity.Article;
+import com.game.modules.cms.entity.ArticleData;
+import com.game.modules.cms.entity.Category;
 import com.game.manager.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
 

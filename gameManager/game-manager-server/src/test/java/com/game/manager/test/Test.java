@@ -3,16 +3,19 @@ package com.game.manager.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
-import com.game.manager.common.mapper.JsonMapper;
-import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
-import com.game.manager.modules.lottery.entity.LotteryType;
+//import com.alibaba.fastjson.JSON;
+import com.game.common.mapper.JsonMapper;
+import com.game.modules.lottery.entity.LotteryPlayConfig;
+import com.game.modules.lottery.entity.LotteryType;
+import com.game.modules.sys.entity.User;
 
 public class Test {
 	
 	public static void main(String[] args) {
 //演示玩法json和java bean的互转
 		List<LotteryPlayConfig> configList = new ArrayList<LotteryPlayConfig>();
+		
+		User xxxx = new User();
 		
 		LotteryPlayConfig test1 = new LotteryPlayConfig();
 		LotteryType type1 = new LotteryType();
@@ -27,6 +30,7 @@ public class Test {
 		test1.setCommissionRateMin("1.1");
 		test1.setBetRateLimit("10000");
 		test1.setIsEnable("1");
+		test1.setCurrentUser(xxxx);
 		configList.add(test1);
 		
 		LotteryPlayConfig test2 = new LotteryPlayConfig();
@@ -42,6 +46,7 @@ public class Test {
 		test2.setCommissionRateMin("0.9");
 		test2.setBetRateLimit("10000");
 		test2.setIsEnable("1");
+		test2.setCurrentUser(xxxx);
 		configList.add(test2);
 		
 		LotteryPlayConfig test3 = new LotteryPlayConfig();
@@ -57,6 +62,7 @@ public class Test {
 		test3.setCommissionRateMin("0.8");
 		test3.setBetRateLimit("10000");
 		test3.setIsEnable("1");
+		test3.setCurrentUser(xxxx);
 		configList.add(test3);
 		
 		LotteryPlayConfig test4 = new LotteryPlayConfig();
@@ -72,6 +78,7 @@ public class Test {
 		test4.setCommissionRateMin("0.8");
 		test4.setBetRateLimit("10000");
 		test4.setIsEnable("1");
+		test4.setCurrentUser(xxxx);
 		configList.add(test4);
 		
 		LotteryPlayConfig test5 = new LotteryPlayConfig();
@@ -87,6 +94,7 @@ public class Test {
 		test5.setCommissionRateMin("0.9");
 		test5.setBetRateLimit("10000");
 		test5.setIsEnable("1");
+		test5.setCurrentUser(xxxx);
 		configList.add(test5);
 		
 //		String jsonstr = JSONObject.toJSONString(configList);

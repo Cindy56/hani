@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.game.manager.common.persistence.CrudDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.lottery.entity.LotteryTimeNum;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.lottery.entity.LotteryTimeNum;
 
 /**
  * 开奖时刻和开奖结果DAO接口

@@ -5,7 +5,7 @@ package com.game.manager.modules.gen.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.game.manager.common.persistence.DataEntity;
+import com.game.common.persistence.DataEntity;
 
 /**
  * 生成方案Entity

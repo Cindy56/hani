@@ -8,31 +8,31 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.identity.Group;
+//import org.activiti.engine.IdentityService;
+//import org.activiti.engine.identity.Group;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.config.Global;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.security.Digests;
-import com.game.manager.common.security.shiro.session.SessionDAO;
-import com.game.manager.common.service.BaseService;
-import com.game.manager.common.service.ServiceException;
-import com.game.manager.common.utils.CacheUtils;
-import com.game.manager.common.utils.Encodes;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.Servlets;
+import com.game.common.config.Global;
+import com.game.common.persistence.Page;
+import com.game.common.security.Digests;
+import com.game.common.security.shiro.session.SessionDAO;
+import com.game.common.service.BaseService;
+import com.game.common.service.ServiceException;
+import com.game.common.utils.CacheUtils;
+import com.game.common.utils.Encodes;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.Servlets;
 import com.game.manager.modules.sys.dao.MenuDao;
 import com.game.manager.modules.sys.dao.RoleDao;
 import com.game.manager.modules.sys.dao.UserDao;
-import com.game.manager.modules.sys.entity.Menu;
-import com.game.manager.modules.sys.entity.Office;
-import com.game.manager.modules.sys.entity.Role;
-import com.game.manager.modules.sys.entity.User;
+import com.game.modules.sys.entity.Menu;
+import com.game.modules.sys.entity.Office;
+import com.game.modules.sys.entity.Role;
+import com.game.modules.sys.entity.User;
 import com.game.manager.modules.sys.security.SystemAuthorizingRealm;
 import com.game.manager.modules.sys.utils.LogUtils;
 import com.game.manager.modules.sys.utils.UserUtils;
@@ -65,8 +65,8 @@ public class SystemService extends BaseService implements InitializingBean {
 		return sessionDao;
 	}
 
-	@Autowired
-	private IdentityService identityService;
+//	@Autowired
+//	private IdentityService identityService;
 
 	//-- User Service --//
 	
@@ -417,127 +417,23 @@ public class SystemService extends BaseService implements InitializingBean {
 	 */
 	private static boolean isSynActivitiIndetity = true;
 	public void afterPropertiesSet() throws Exception {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		if (isSynActivitiIndetity){
-			isSynActivitiIndetity = false;
-	        // 同步角色数据
-			List<Group> groupList = identityService.createGroupQuery().list();
-			if (groupList.size() == 0){
-			 	Iterator<Role> roles = roleDao.findAllList(new Role()).iterator();
-			 	while(roles.hasNext()) {
-			 		Role role = roles.next();
-			 		saveActivitiGroup(role);
-			 	}
-			}
-		 	// 同步用户数据
-			List<org.activiti.engine.identity.User> userList = identityService.createUserQuery().list();
-			if (userList.size() == 0){
-			 	Iterator<User> users = userDao.findAllList(new User()).iterator();
-			 	while(users.hasNext()) {
-			 		saveActivitiUser(users.next());
-			 	}
-			}
-		}
+		
 	}
 	
 	private void saveActivitiGroup(Role role) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		String groupId = role.getEnname();
 		
-		// 如果修改了英文名，则删除原Activiti角色
-		if (StringUtils.isNotBlank(role.getOldEnname()) && !role.getOldEnname().equals(role.getEnname())){
-			identityService.deleteGroup(role.getOldEnname());
-		}
-		
-		Group group = identityService.createGroupQuery().groupId(groupId).singleResult();
-		if (group == null) {
-			group = identityService.newGroup(groupId);
-		}
-		group.setName(role.getName());
-		group.setType(role.getRoleType());
-		identityService.saveGroup(group);
-		
-		// 删除用户与用户组关系
-		List<org.activiti.engine.identity.User> activitiUserList = identityService.createUserQuery().memberOfGroup(groupId).list();
-		for (org.activiti.engine.identity.User activitiUser : activitiUserList){
-			identityService.deleteMembership(activitiUser.getId(), groupId);
-		}
-
-		// 创建用户与用户组关系
-		List<User> userList = findUser(new User(new Role(role.getId())));
-		for (User e : userList){
-			String userId = e.getLoginName();//ObjectUtils.toString(user.getId());
-			// 如果该用户不存在，则创建一个
-			org.activiti.engine.identity.User activitiUser = identityService.createUserQuery().userId(userId).singleResult();
-			if (activitiUser == null){
-				activitiUser = identityService.newUser(userId);
-				activitiUser.setFirstName(e.getName());
-				activitiUser.setLastName(StringUtils.EMPTY);
-				activitiUser.setEmail(e.getEmail());
-				activitiUser.setPassword(StringUtils.EMPTY);
-				identityService.saveUser(activitiUser);
-			}
-			identityService.createMembership(userId, groupId);
-		}
 	}
 
 	public void deleteActivitiGroup(Role role) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		if(role!=null) {
-			String groupId = role.getEnname();
-			identityService.deleteGroup(groupId);
-		}
+		
 	}
 
 	private void saveActivitiUser(User user) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		String userId = user.getLoginName();//ObjectUtils.toString(user.getId());
-		org.activiti.engine.identity.User activitiUser = identityService.createUserQuery().userId(userId).singleResult();
-		if (activitiUser == null) {
-			activitiUser = identityService.newUser(userId);
-		}
-		activitiUser.setFirstName(user.getName());
-		activitiUser.setLastName(StringUtils.EMPTY);
-		activitiUser.setEmail(user.getEmail());
-		activitiUser.setPassword(StringUtils.EMPTY);
-		identityService.saveUser(activitiUser);
 		
-		// 删除用户与用户组关系
-		List<Group> activitiGroups = identityService.createGroupQuery().groupMember(userId).list();
-		for (Group group : activitiGroups) {
-			identityService.deleteMembership(userId, group.getId());
-		}
-		// 创建用户与用户组关系
-		for (Role role : user.getRoleList()) {
-	 		String groupId = role.getEnname();
-	 		// 如果该用户组不存在，则创建一个
-		 	Group group = identityService.createGroupQuery().groupId(groupId).singleResult();
-            if(group == null) {
-	            group = identityService.newGroup(groupId);
-	            group.setName(role.getName());
-	            group.setType(role.getRoleType());
-	            identityService.saveGroup(group);
-            }
-			identityService.createMembership(userId, role.getEnname());
-		}
 	}
 
 	private void deleteActivitiUser(User user) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		if(user!=null) {
-			String userId = user.getLoginName();//ObjectUtils.toString(user.getId());
-			identityService.deleteUser(userId);
-		}
+		
 	}
 	
 	///////////////// Synchronized to the Activiti end //////////////////

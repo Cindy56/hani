@@ -3,9 +3,9 @@
  */
 package com.game.manager.modules.sys.dao;
 
-import com.game.manager.common.persistence.CrudDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.sys.entity.Log;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.sys.entity.Log;
 
 /**
  * 日志DAO接口

@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
 import com.game.manager.modules.lottery.dao.LotteryPlayConfigDao;
-import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
+import com.game.modules.lottery.entity.LotteryPlayConfig;
 
 /**
  * 彩票玩法管理Service

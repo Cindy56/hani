@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.manager.common.config.Global;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.modules.lottery.dto.TimeTask;
-import com.game.manager.modules.lottery.entity.LotteryTimeNum;
+import com.game.common.config.Global;
+import com.game.common.persistence.Page;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
 import com.game.manager.modules.lottery.service.LotteryTimeNumService;
+import com.game.modules.lottery.dto.TimeTask;
+import com.game.modules.lottery.entity.LotteryTimeNum;
 
 /**
  * 开奖时刻和开奖结果Controller

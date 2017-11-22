@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.game.manager.modules.lottery.entity.LotteryTimeNum;
 import com.game.manager.modules.lottery.service.LotteryTimeNumService;
-import com.game.manager.modules.order.entity.LotteryOrder;
+import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.order.entity.LotteryOrder;
 
 /**
  * 彩种基本功能服务总入口：提供订单检查、奖金计算

@@ -3,9 +3,9 @@ package com.game.manager.modules.draw;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.modules.lottery.entity.LotteryTimeNum;
-import com.game.manager.modules.order.entity.LotteryOrder;
+import com.game.common.utils.StringUtils;
+import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.order.entity.LotteryOrder;
 
 /**
  * 时时彩玩法
@@ -286,11 +286,11 @@ public enum SscService implements LotteryService {
                 return false;
             }
             // 匹配用户的投注号码是否存在于三星组三大底
-            Set<String> betSet = LotteryUtils.ssc3XinZuxuan3(betNum);
+            Set<String> betSet = LotteryUtils.ssc3XinZuXuan3(betNum);
             if (betSet.isEmpty()) {
                 return false;
             }
-            Set<String> dadi = LotteryUtils.ssc3XinZuxuan3();
+            Set<String> dadi = LotteryUtils.ssc3XinZuXuan3();
             // 只要有一注不在组三范围内，注单校验不通过
             for (String bet : betSet) {
                 if (!dadi.contains(bet)) {
@@ -320,8 +320,10 @@ public enum SscService implements LotteryService {
             BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
             BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
             BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-            // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值
-            return playModeMoney.multiply(betRate).multiply(playModeMoneyType);
+            String openNum = openlotteryTimeNum.getOpenNum();
+            BigDecimal winCount = new BigDecimal(LotteryUtils.winCountSsc3XingZu3Fu(openNum.substring(0, 5), lotteryOrder.getBetDetail()));
+            // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 * 中奖注数
+            return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
         }
     },
 

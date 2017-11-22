@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.game.manager.common.persistence.CrudDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.member.entity.MemberPlayConfig;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.member.entity.MemberPlayConfig;
 
 /**
  * 会员玩法奖金配置DAO接口

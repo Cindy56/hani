@@ -26,18 +26,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSON;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
-import com.game.manager.common.utils.DateUtils;
-import com.game.manager.common.utils.StringUtils;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
+import com.game.common.utils.DateUtils;
+import com.game.common.utils.StringUtils;
 import com.game.manager.modules.lottery.dao.LotteryTimeNumDao;
-import com.game.manager.modules.lottery.dto.TimeTask;
-import com.game.manager.modules.lottery.entity.LotteryTimeNum;
-import com.game.manager.modules.lottery.entity.LotteryType;
-import com.game.manager.modules.lottery.entity.LotteryTypeTime;
 import com.game.manager.modules.lottery.schedule.TimeTaskService;
-import com.game.manager.modules.sys.entity.Dict;
+import com.game.modules.lottery.dto.TimeTask;
+import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.lottery.entity.LotteryType;
+import com.game.modules.lottery.entity.LotteryTypeTime;
+import com.game.modules.sys.entity.Dict;
 
 /**
  * 开奖时刻和开奖结果Service

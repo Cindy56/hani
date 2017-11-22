@@ -6,10 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.cms.entity.Site;
+import com.game.common.web.BaseController;
+import com.game.modules.cms.entity.Site;
 import com.game.manager.modules.cms.service.FileTplService;
 import com.game.manager.modules.cms.service.SiteService;
+import com.game.manager.modules.cms.utils.CmsUtils;
 
 /**
  * 站点Controller
@@ -34,7 +35,7 @@ public class TemplateController extends BaseController {
     @RequiresPermissions("cms:template:edit")
    	@RequestMapping(value = "tree")
    	public String tree(Model model) {
-        Site site = siteService.get(Site.getCurrentSiteId());
+        Site site = siteService.get(CmsUtils.getCurrentSiteId());
    		model.addAttribute("templateList", fileTplService.getListForEdit(site.getSolutionPath()));
    		return "modules/cms/tplTree";
    	}

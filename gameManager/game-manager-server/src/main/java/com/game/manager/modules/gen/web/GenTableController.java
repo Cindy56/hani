@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.BaseController;
+import com.game.common.persistence.Page;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
 import com.game.manager.modules.gen.entity.GenTable;
 import com.game.manager.modules.gen.service.GenTableService;
 import com.game.manager.modules.gen.util.GenUtils;
-import com.game.manager.modules.sys.entity.User;
+import com.game.modules.sys.entity.User;
 import com.game.manager.modules.sys.utils.UserUtils;
 
 /**

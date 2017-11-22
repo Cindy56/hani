@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.manager.common.config.Global;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.lottery.constant.LotteryConstants;
-import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
-import com.game.manager.modules.lottery.entity.LotteryType;
+import com.game.common.config.Global;
+import com.game.common.persistence.Page;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
 import com.game.manager.modules.lottery.service.LotteryPlayConfigService;
 import com.game.manager.modules.lottery.service.LotteryTypeService;
+import com.game.modules.lottery.constant.LotteryConstants;
+import com.game.modules.lottery.entity.LotteryPlayConfig;
+import com.game.modules.lottery.entity.LotteryType;
 
 /**
  * 彩票玩法管理Controller

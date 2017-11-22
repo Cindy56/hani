@@ -22,17 +22,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.manager.common.beanvalidator.BeanValidators;
-import com.game.manager.common.config.Global;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.utils.DateUtils;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.utils.excel.ExportExcel;
-import com.game.manager.common.utils.excel.ImportExcel;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.sys.entity.Office;
-import com.game.manager.modules.sys.entity.Role;
-import com.game.manager.modules.sys.entity.User;
+import com.game.common.beanvalidator.BeanValidators;
+import com.game.common.config.Global;
+import com.game.common.persistence.Page;
+import com.game.common.utils.DateUtils;
+import com.game.common.utils.StringUtils;
+//import com.game.common.utils.excel.ExportExcel;
+//import com.game.common.utils.excel.ImportExcel;
+import com.game.common.web.BaseController;
+import com.game.modules.sys.entity.Office;
+import com.game.modules.sys.entity.Role;
+import com.game.modules.sys.entity.User;
 import com.game.manager.modules.sys.service.SystemService;
 import com.game.manager.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
@@ -165,14 +165,14 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:view")
     @RequestMapping(value = "export", method=RequestMethod.POST)
     public String exportFile(User user, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
-		try {
+/*		try {
             String fileName = "用户数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<User> page = systemService.findUser(new Page<User>(request, response, -1), user);
     		new ExportExcel("用户数据", User.class).setDataList(page.getList()).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());
-		}
+		}*/
 		return "redirect:" + adminPath + "/sys/user/list?repage";
     }
 
@@ -185,7 +185,7 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "import", method=RequestMethod.POST)
     public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
-		if(Global.isDemoMode()){
+/*		if(Global.isDemoMode()){
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
 			return "redirect:" + adminPath + "/sys/user/list?repage";
 		}
@@ -223,7 +223,7 @@ public class UserController extends BaseController {
 			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条用户"+failureMsg);
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
-		}
+		}*/
 		return "redirect:" + adminPath + "/sys/user/list?repage";
     }
 	
@@ -236,14 +236,14 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:view")
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
-		try {
-            String fileName = "用户数据导入模板.xlsx";
-    		List<User> list = Lists.newArrayList(); list.add(UserUtils.getUser());
-    		new ExportExcel("用户数据", User.class, 2).setDataList(list).write(response, fileName).dispose();
-    		return null;
-		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
-		}
+//		try {
+//            String fileName = "用户数据导入模板.xlsx";
+//    		List<User> list = Lists.newArrayList(); list.add(UserUtils.getUser());
+//    		new ExportExcel("用户数据", User.class, 2).setDataList(list).write(response, fileName).dispose();
+//    		return null;
+//		} catch (Exception e) {
+//			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+//		}
 		return "redirect:" + adminPath + "/sys/user/list?repage";
     }
 
