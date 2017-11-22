@@ -8,6 +8,7 @@
 		$(document).ready(function() {
 			$("#no").focus();
 			$("#inputForm").validate({
+				ignore:[],
 				rules: {
 					"user.loginName": {
 						remote: {
