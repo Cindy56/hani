@@ -178,53 +178,12 @@ public class LotteryUtils {
     }
 
     /**
-     * 时时彩直选单式 计算中奖注数
+     * 时时彩三星组三 计算中奖注数
      * @param betDetail 投注内容
      * @return 返回注单实际投注注数
      * @author Terry
      */
-    public static int winCountSscZhiXuanDan(String openNum, String betNum) {
-        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
-            return 0;
-        }
-        String[] betNumList = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
-        String[] openNumArr = openNum.trim().split(",");
-        int count = 0;
-        for (int i = 0; i < betNumList.length; i++) {
-            String[] betArr = betNumList[i].split("");
-            if (ArrayUtils.contains(betArr, openNumArr[i])) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /**
-     * 时时彩直选复式 计算投注注数
-     * @param betDetail 投注内容
-     * @return 返回注单实际投注注数
-     * @author Terry
-     */
-    public static int winCountSscZhiXuanFu(String openNum, String betNum) {
-        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
-            return 0;
-        }
-        String[] betNumList = betNum.trim().split(" ");
-        String formatOpenNum = formatNumber(openNum.trim().split(","));
-        int count = 0;
-        if (ArrayUtils.contains(betNumList, formatOpenNum)) {
-            count++;
-        }
-        return count;
-    }
-
-    /**
-     * 时时彩三星组三复式 计算投注注数
-     * @param betDetail 投注内容
-     * @return 返回注单实际投注注数
-     * @author Terry
-     */
-    public static int winCountSsc3XingZu3Fu(String openNum, String betNum) {
+    public static int winCountSsc3XingZu3(String openNum, String betNum) {
         int count = 0;
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return count;
