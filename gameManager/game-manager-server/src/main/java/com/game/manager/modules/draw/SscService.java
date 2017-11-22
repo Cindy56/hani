@@ -320,8 +320,10 @@ public enum SscService implements LotteryService {
             BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
             BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
             BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-            // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值
-            return playModeMoney.multiply(betRate).multiply(playModeMoneyType);
+            String openNum = openlotteryTimeNum.getOpenNum();
+            BigDecimal winCount = new BigDecimal(LotteryUtils.winCountSsc3XingZu3Fu(openNum.substring(0, 5), lotteryOrder.getBetDetail()));
+            // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 * 中奖注数
+            return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
         }
     },
 
