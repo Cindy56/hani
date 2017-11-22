@@ -44,6 +44,10 @@ public class LotteryOrderService {
 		return lotteryOrderManDao.drawingRecord(map);
 	}
 
+	public List<DrawingRecord> transferRecord(Map<String, Object> map) {
+		return lotteryOrderManDao.transferRecord(map);
+	}
+
 
 
 

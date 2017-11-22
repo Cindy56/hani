@@ -105,6 +105,34 @@ WHERE
      </if>
     </select> 
     
-    
+<!-- 转账记录查询 -->
+<select id="transferRecord" resultType="com.game.hall.modules.order.entity.TransferRecord">
+SELECT
+	a.transaction_number as transactionNumber,
+	a.type as type,	
+	a.user_id as "user.id",
+	a.receiver as receiver, 
+	a.payer as payer,
+ 	a.amount as amount,
+ 	a.transaction_time as transactionTime,
+	a.status  as status,
+	a.remark  as remark
+FROM
+	transfer_record a
+WHERE
+	a.user_id = #{userId}
+	 <if test="type != null and type != ''">
+                AND a.type = #{type}
+     </if> 
+     <if test="transactionNumber != null and transactionNumber != ''">
+                AND a.transaction_number = #{transactionNumber}
+     </if> 
+      <if test="startTime != null and startTime!=''">
+     	 		AND transaction_time &gt;= #{startTime}
+     </if> 
+	 <if test="endTime != null and endTime!=''">
+     	 		AND transaction_time &lt;= #{endTime}
+     </if>
+    </select>    
 
 </mapper>

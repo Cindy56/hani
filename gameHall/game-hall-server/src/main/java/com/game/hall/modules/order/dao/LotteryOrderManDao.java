@@ -18,6 +18,8 @@ public interface LotteryOrderManDao {
 	public List<RechargeRecord> rechargeRecord(Map<String, Object> map);
 	//根据用户id user_id查询该用户所有提现记录
 	public List<DrawingRecord> drawingRecord(Map<String, Object> map);
+	//根据用户id user_id查询该用户所有转账记录
+	public List<DrawingRecord> transferRecord(Map<String, Object> map);
 	
 	
 }

@@ -182,6 +182,45 @@ public class LotteryOrderController {
 		}
 		
 	}
+	
+	
+	/**
+	 * 根据user_id查看该用户转账记录
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/transferRecord", method = RequestMethod.GET)
+	public ResultData transferRecord(String userId,String type,String transactionNumber,Date startTime,Date endTime) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		ResultData rs = new ResultData();
+		//传入开始时间和结束时间
+		//格式Date类型
+		map.put("userId", userId);
+		map.put("transactionNumber", transactionNumber);
+		map.put("type", type);
+		//开始时间
+		map.put("startTime", "2000-00-00 00:00:00");
+		//结束时间
+		map.put("endTime", new Date());
+		
+		List<DrawingRecord> list = lotteryOrderService.transferRecord(map);
+		if(list.size() == 0) {
+			//该用户没有任何体现
+			rs.setErrorCode(001);
+			rs.setMessage("查询失败");
+			rs.setData(list);
+			return rs;
+		}else {
+			//查询体现记录成功
+			rs.setErrorCode(200);
+			rs.setMessage("查询成功");
+			rs.setData(list);	
+			return rs;
+		}
+		
+	}
+	
+	
 
 }
 
