@@ -49,6 +49,11 @@ import com.game.modules.sys.entity.User;
 @Controller
 @RequestMapping(value = "${adminPath}/memberadd/memberAccount")
 public class MemberAccountAddController extends BaseController {
+	
+	//代理
+	private static final String AGENCY = "agency";
+	//玩家
+	private static final String PLAYER = "gameplayer";
 
 	@Autowired
 	private MemberAccountService memberAccountService;
@@ -250,7 +255,8 @@ public class MemberAccountAddController extends BaseController {
 	public String save(MemberAccountOpenDto memberAccountOpenDto, Model model, RedirectAttributes redirectAttributes) {//,MemberAccount memberAccount
 		MemberAccount memberAccount=memberAccountOpenDto.getAccount();
 		if (!beanValidator(model, memberAccount)){
-			return form(memberAccount, model);
+			model.addAttribute("memberAccount", memberAccount);
+			return "modules/member/memberAccountBack";
 		}
 		
 		//获取当前用户信息 从seesion取出
@@ -260,7 +266,7 @@ public class MemberAccountAddController extends BaseController {
 		String userLoginName=user.getLoginName();
 		if(null!=systemService.getUserByLoginName(userLoginName)) {
 			addMessage(redirectAttributes, "登录名称已存在！");
-			return "redirect:"+Global.getAdminPath()+"/memberadd/memberAccount/";
+			return "modules/member/memberAccountBack";
 		}
 		//新开户用户设置和开户者同一个公司
 		user.setCompany(seesionUser.getCompany());
@@ -268,7 +274,8 @@ public class MemberAccountAddController extends BaseController {
 		user.setOffice(seesionUser.getOffice());
 		
 		if (!beanValidator(model, user)){
-			return form(memberAccount, model);
+			model.addAttribute("memberAccount", memberAccount);
+			return "redirect:"+Global.getAdminPath()+"/memberadd/memberAccount/";
 		}
 		user.setPassword(SystemService.entryptPassword(user.getPassword()));
 		
@@ -283,15 +290,15 @@ public class MemberAccountAddController extends BaseController {
 		String accountType=memberAccount.getAccountType();
 		if("2".equals(accountType)) {
 			//查询代理角色
-			Role agency=systemService.getRoleByEnname("agency");
+			Role agency=systemService.getRoleByEnname(AGENCY);
 			user.getRoleList().add(agency);
 		}else {
 			//查询玩家角色
-			Role gameplayer=systemService.getRoleByEnname("gameplayer");
+			Role gameplayer=systemService.getRoleByEnname(PLAYER);
 			user.getRoleList().add(gameplayer);
 		}
 		
-		//保存会员信息
+		//保存用户信息
 		systemService.saveUser(user);
 		
 		memberAccount.setParentAgentId(seesionUser.getId());
