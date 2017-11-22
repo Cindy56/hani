@@ -21,12 +21,37 @@ AND
 
     </select>
 	
+	
+<!-- 根据账户user_id查询账户明细 -->
+<select id="financeTradeDetail" resultType="com.game.hall.modules.order.entity.tradeDetail">
+SELECT
+	a.account_id,
+	a.amount,
+	a.account_blance_before,
+	a.account_blance_after
+FROM
+	finance_trade_detail a
+WHERE
+	a.user_id = #{userId}
+	 <if test="accountId != null and accountId != ''">
+                AND a.account_id = #{accountId}
+     </if> 
+      <if test="startTime != null and startTime!=''">
+     	 		AND create_date &gt;= #{startTime}
+     </if> 
+	 <if test="endTime != null and endTime!=''">
+     	 		AND create_date &lt;= #{endTime}
+     </if>
+</select>
+    
+    
+	
 
     <select id="rechargeRecord" resultType="com.game.hall.modules.order.entity.RechargeRecord">
 SELECT
 	a.serial_number,
 	a.user_id,
-	a.apply_time,
+	apply_time,
 	a.apply_amount,
 	a.arrival_amount,
 	a.recharge_mode,
@@ -35,6 +60,21 @@ FROM
 	recharge_record a
 WHERE
 	a.user_id = #{userId}
+	 <if test="status != null and status != ''">
+                AND a.status = #{status}
+     </if> 
+      <if test="serialNumber != null and serialNumber != ''">
+                AND a.serial_number = #{serialNumber}
+     </if> 
+     <if test="rechargeMode != null and rechargeMode != ''">
+                AND a.recharge_mode = #{rechargeMode}
+     </if> 
+      <if test="startTime != null and startTime!=''">
+     	 		AND apply_time &gt;= #{startTime}
+     </if> 
+	 <if test="endTime != null and endTime!=''">
+     	 		AND apply_time &lt;= #{endTime}
+     </if>
     </select>
 
 
@@ -54,6 +94,17 @@ FROM
 	drawing_record a
 WHERE
 	a.user_id = #{userId}
+	 <if test="transactionNumber != null and transactionNumber != ''">
+                AND a.transaction_number = #{transactionNumber}
+     </if> 
+      <if test="startTime != null and startTime!=''">
+     	 		AND drawing_time &gt;= #{startTime}
+     </if> 
+	 <if test="endTime != null and endTime!=''">
+     	 		AND drawing_time &lt;= #{endTime}
+     </if>
     </select> 
+    
+    
 
 </mapper>

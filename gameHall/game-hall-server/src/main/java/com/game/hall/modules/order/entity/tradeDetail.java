@@ -20,10 +20,13 @@ public class tradeDetail {
 	
 	private static final long serialVersionUID = 1L;
 	private String id;
-	private User user;		
-	private String user_name;		
-	private Office org_id;		
-	private String account_id;		
+	private User user;			
+	private Office orgId;		
+	private String accountId;	
+	private String busiNo;		
+	private BigDecimal amount;		
+	private BigDecimal accountBlanceBefore;		
+	private BigDecimal accountBlanceAfter;
 	public String getId() {
 		return id;
 	}
@@ -36,29 +39,23 @@ public class tradeDetail {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public String getUser_name() {
-		return user_name;
+	public Office getOrgId() {
+		return orgId;
 	}
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public void setOrgId(Office orgId) {
+		this.orgId = orgId;
 	}
-	public Office getOrg_id() {
-		return org_id;
+	public String getAccountId() {
+		return accountId;
 	}
-	public void setOrg_id(Office org_id) {
-		this.org_id = org_id;
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
-	public String getAccount_id() {
-		return account_id;
+	public String getBusiNo() {
+		return busiNo;
 	}
-	public void setAccount_id(String account_id) {
-		this.account_id = account_id;
-	}
-	public String getBusi_no() {
-		return busi_no;
-	}
-	public void setBusi_no(String busi_no) {
-		this.busi_no = busi_no;
+	public void setBusiNo(String busiNo) {
+		this.busiNo = busiNo;
 	}
 	public BigDecimal getAmount() {
 		return amount;
@@ -66,25 +63,23 @@ public class tradeDetail {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	public BigDecimal getAccount_blance_before() {
-		return account_blance_before;
+	public BigDecimal getAccountBlanceBefore() {
+		return accountBlanceBefore;
 	}
-	public void setAccount_blance_before(BigDecimal account_blance_before) {
-		this.account_blance_before = account_blance_before;
+	public void setAccountBlanceBefore(BigDecimal accountBlanceBefore) {
+		this.accountBlanceBefore = accountBlanceBefore;
 	}
-	public BigDecimal getAccount_blance_after() {
-		return account_blance_after;
+	public BigDecimal getAccountBlanceAfter() {
+		return accountBlanceAfter;
 	}
-	public void setAccount_blance_after(BigDecimal account_blance_after) {
-		this.account_blance_after = account_blance_after;
+	public void setAccountBlanceAfter(BigDecimal accountBlanceAfter) {
+		this.accountBlanceAfter = accountBlanceAfter;
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-	private String busi_no;		
-	private BigDecimal amount;		
-	private BigDecimal account_blance_before;		
-	private BigDecimal account_blance_after;		
+	}	
+	
+
 	
 	
 }

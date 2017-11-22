@@ -3,7 +3,9 @@ package com.game.hall.modules.order.web;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,8 +47,15 @@ public class LotteryOrderController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/allLotteryOrder", method = RequestMethod.GET)
-	public ResultData allLotteryOrder(String id) {
+	public ResultData allLotteryOrder(String id,String orderNo,Date startTime,Date endTime) {
 		List<Map<String,Object>> list = lotteryOrderService.allLotteryOrder(id);
+/*		Date date= new Date();
+		//传入开始时间和结束时间
+		//格式Date类型
+		//开始时间
+		map.put("startTime", "2000-00-00 00:00:00");
+		//结束时间
+		map.put("endTime", new Date());*/
 		ResultData rs = new ResultData();
 		if(list.size() == 0) {
 			//该用户未绑定银行卡
@@ -71,8 +80,18 @@ public class LotteryOrderController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/financeTradeDetail", method = RequestMethod.GET)
-	public ResultData financeTradeDetail(String userId) {
-		List<Map<String,Object>> list = lotteryOrderService.financeTradeDetail(userId);
+	public ResultData financeTradeDetail(String userId,String accountId,Date startTime,Date endTime) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		//传入开始时间和结束时间
+		//格式Date类型
+		//开始时间
+		map.put("startTime", "2000-00-00 00:00:00");
+		//结束时间
+		map.put("endTime", new Date());
+		map.put("userId",userId);
+		map.put("accountId",accountId);
+		
+		List<Map<String,Object>> list = lotteryOrderService.financeTradeDetail(map);
 		ResultData rs = new ResultData();
 		if(list.size() == 0) {
 			//该用户没有任何账户明细
@@ -97,8 +116,21 @@ public class LotteryOrderController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/rechargeRecord", method = RequestMethod.GET)
-	public ResultData rechargeRecord(String userId) {
-		List<RechargeRecord> list = lotteryOrderService.rechargeRecord(userId);
+	public ResultData rechargeRecord(String userId,String status,String serialNumber,String rechargeMode,Date startTime,Date endTime) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		Date date= new Date();
+		//传入开始时间和结束时间
+		//格式Date类型
+		map.put("userId", userId);
+		map.put("status", status);
+		map.put("serialNumber", serialNumber);
+		map.put("rechargeMode", rechargeMode);
+		//开始时间
+		map.put("startTime", "2000-00-00 00:00:00");
+		//结束时间
+		map.put("endTime", new Date());
+		
+		List<RechargeRecord> list = lotteryOrderService.rechargeRecord(map);
 		ResultData rs = new ResultData();
 		if(list.size() == 0) {
 			//该用户没有任何充值记录
@@ -122,9 +154,19 @@ public class LotteryOrderController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/drawingRecord", method = RequestMethod.GET)
-	public ResultData drawingRecord(String userId) {
-		List<DrawingRecord> list = lotteryOrderService.drawingRecord(userId);
+	public ResultData drawingRecord(String userId,String transactionNumber,Date startTime,Date endTime) {
+		Map<String,Object> map = new HashMap<String,Object>();
 		ResultData rs = new ResultData();
+		//传入开始时间和结束时间
+		//格式Date类型
+		map.put("userId", userId);
+		map.put("transactionNumber", transactionNumber);
+		//开始时间
+		map.put("startTime", "2000-00-00 00:00:00");
+		//结束时间
+		map.put("endTime", new Date());
+		
+		List<DrawingRecord> list = lotteryOrderService.drawingRecord(map);
 		if(list.size() == 0) {
 			//该用户没有任何体现
 			rs.setErrorCode(001);

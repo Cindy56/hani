@@ -31,17 +31,17 @@ public class LotteryOrderService {
 		return lotteryOrderManDao.allLotteryOrder(id);
 	}
 
-	public List<Map<String, Object>> financeTradeDetail(String userId) {
-		return lotteryOrderManDao.financeTradeDetail(userId);
+	public List<Map<String, Object>> financeTradeDetail(Map<String, Object> map) {
+		return lotteryOrderManDao.financeTradeDetail(map);
 	}
 
-	public List<RechargeRecord> rechargeRecord(String userId) {
-		return lotteryOrderManDao.rechargeRecord(userId);
+	public List<RechargeRecord> rechargeRecord(Map<String, Object> map) {
+		return lotteryOrderManDao.rechargeRecord(map);
 	}
 
-	public List<DrawingRecord> drawingRecord(String userId) {
+	public List<DrawingRecord> drawingRecord(Map<String, Object> map) {
 		
-		return lotteryOrderManDao.drawingRecord(userId);
+		return lotteryOrderManDao.drawingRecord(map);
 	}
 
 
