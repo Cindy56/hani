@@ -2,25 +2,25 @@ package com.game.manager.modules.draw;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.modules.lottery.entity.LotteryPlayConfig;
-import com.game.manager.modules.member.entity.MemberAccount;
+import com.game.common.mapper.JsonMapper;
 import com.game.manager.modules.member.service.MemberAccountService;
-import com.game.manager.modules.order.entity.LotteryOrder;
+import com.game.manager.modules.member.service.MemberPlayConfigService;
 import com.game.manager.modules.order.service.LotteryOrderService;
-import com.game.manager.modules.trade.entity.FinanceTradeDetail;
 import com.game.manager.modules.trade.service.FinanceTradeDetailService;
+import com.game.modules.lottery.entity.LotteryPlayConfig;
+import com.game.modules.member.entity.MemberAccount;
+import com.game.modules.member.entity.MemberPlayConfig;
+import com.game.modules.order.entity.LotteryOrder;
+import com.game.modules.trade.entity.FinanceTradeDetail;
 
 /**
  * 返水服务，佣金服务
@@ -38,6 +38,10 @@ public class LotteryCommissionService {
 	
 	@Autowired
 	private LotteryOrderService lotteryOrderService;
+	
+	@Autowired
+	private MemberPlayConfigService memberPlayConfigService;
+	
 	
 	/**
 	 * 根据期号查询等待派奖的订单,查数据库，
@@ -62,22 +66,29 @@ public class LotteryCommissionService {
 	 * 计算返点 服务
 	 * @param lotteryOrder
 	 */
-	private void calculateMemberCommission(LotteryOrder lotteryOrder) {
+	public void calculateMemberCommission(LotteryOrder lotteryOrder) {
 		if(null == lotteryOrder) {
 			return;
 		}
 		//查询该订单所有上级代理账户
 		List<MemberAccount> memberList = memberAccountService.findMemberId(lotteryOrder.getAccountId());
 		//查询所有账户的奖金设置
-		
-		//计算
-		Map<String, MemberAccount>  xxxx = new HashMap<String, MemberAccount>();
-		memberList.stream().forEach(memberAccount->{
-			xxxx.put(memberAccount.getId(), memberAccount);
+		if(CollectionUtils.isEmpty(memberList)) {
+			return;
+		}
+		List<String> ids = memberList.stream().map(MemberAccount::getId).collect(Collectors.toList());
+		List<MemberPlayConfig> configList = memberPlayConfigService.queryByAccountIdList(ids);
+		if(CollectionUtils.isEmpty(configList)) {
+			return;
+		}
+		Map<String, MemberPlayConfig> memberPlayMap =new HashMap<String, MemberPlayConfig>();
+		configList.stream().forEach(c->{memberPlayMap.put(c.getAccountId(), c);});
+		Map<String, MemberAccount>  memberAccountMap = new HashMap<String, MemberAccount>();
+		memberList.stream().forEach(c->{
+			memberAccountMap.put(c.getId(), c);
 		});
-		
 		//计算返点
-		List<String> ids = new ArrayList<String>();
+		JsonMapper jsonMapper = JsonMapper.getInstance();
 		memberList.stream().forEach(memberAccount->{
 			if(lotteryOrder.getAccountId().equals(memberAccount.getId())) {
 				//计算本人返点
@@ -87,38 +98,35 @@ public class LotteryCommissionService {
 				//生成账变
 				saveTradeDetail(memberAccount,lotteryOrder,currentAmount,"5");
 			}else {
-				if(xxxx.containsKey(memberAccount.getParentAgentId())) {
+				if(memberAccountMap.containsKey(memberAccount.getParentAgentId())) {
 					//计算上级返点
-					MemberAccount parentAgent = xxxx.get(memberAccount.getParentAgentId());
+					MemberPlayConfig parentAgent = memberPlayMap.get(memberAccount.getParentAgentId());
 					//当前
-					MemberAccount parentAgent2 = xxxx.get(memberAccount.getParentAgentId());
+					MemberPlayConfig currentAgent = memberPlayMap.get(memberAccount.getId());
+					if(null == parentAgent || null == currentAgent) {
+						return;
+					}
+					//上级彩种配置
+					List<LotteryPlayConfig> parentConfigList  =  jsonMapper.fromJson(parentAgent.getPlayConfig(), jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
+					//当前彩种配置
+					List<LotteryPlayConfig> currentfigList  =  jsonMapper.fromJson(currentAgent.getPlayConfig(), jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
+						
+					LotteryPlayConfig parentPlayConfig = parentConfigList.stream().filter(c->c.getLotteryCode().getCode().equals(lotteryOrder.getLotteryCode())).findFirst().get();
+				
+					LotteryPlayConfig currentPlayConfig = currentfigList.stream().filter(c->c.getLotteryCode().getCode().equals(lotteryOrder.getLotteryCode())).findFirst().get();
+
+					BigDecimal  difference = new BigDecimal(parentPlayConfig.getCommissionRateMax()).subtract( new BigDecimal(currentPlayConfig.getCommissionRateMax()));
+					if(BigDecimal.ZERO.compareTo(difference) == 0) {
+						return;
+					}
+					BigDecimal	parentAmount = lotteryOrder.getBetAmount().multiply(difference).setScale(4, BigDecimal.ROUND_HALF_DOWN);
+					//给上级加钱
+					memberAccountService.plusAmount(memberAccount.getParentAgentId(),parentAmount);
+					//生成账变
+					saveTradeDetail(memberAccountMap.get(memberAccount.getParentAgentId()),lotteryOrder,parentAmount,"5");
 				}
 			}
 		});
-		//模拟扣款
-		List<LotteryPlayConfig> playConfigList = JSON.parseObject("", List.class) ;
-	}
-	
-	private void calculate(LotteryPlayConfig current,LotteryPlayConfig superior,MemberAccount memberAccount ,LotteryOrder lotteryOrder) {
-		//betAmount 订单金额
-		//上级玩法最高返水   superior.get(lotteryOrder.getBetType()).getcommissionRateMax
-		//当前会员玩法最高返水 current.get(lotteryOrder.getBetType()).getcommissionRateMax
-		//上级返水
-	//	lotteryOrder.getBetAmount() * （superior.get(lotteryOrder.getBetType()).getcommissionRateMax - current.get(lotteryOrder.getBetType()).getcommissionRateMax）
-		
-		
-//		//上级返点金额
-//		BigDecimal superiorAmount = bonus.multiply(new BigDecimal(1).subtract(new BigDecimal(superior.getCommissionRateMax()))).setScale(4,BigDecimal.ROUND_HALF_UP);
-//		//当前返点
-//		BigDecimal currentBonus = bonus.
-//				multiply(new BigDecimal(1).subtract(new BigDecimal(current.getCommissionRateMax()))).setScale(4,BigDecimal.ROUND_HALF_UP);
-//		
-//		BigDecimal superiorBonus = superiorAmount.subtract(currentBonus).divide(bonus, 4, BigDecimal.ROUND_HALF_UP).multiply(bet);
-		
-		//给上级加钱
-	//	memberAccountService.plusAmount(memberAccount.getId(),superiorBonus);
-		//生成账变
-	//	saveTradeDetail(memberAccount,lotteryOrder,superiorBonus,"5");
 	}
 	
 	private void saveTradeDetail (MemberAccount memberAccount ,LotteryOrder lotteryOrder,BigDecimal amount,String tradeType) {
@@ -136,29 +144,23 @@ public class LotteryCommissionService {
 		this.financeTradeDetailService.save(trade);
 	}
 	public static void main(String[] args) {
-		/*//计算 奖金组
-		BigDecimal bet = new BigDecimal(1000);
-		
-		BigDecimal a = new BigDecimal(2).divide(new BigDecimal(1).
-				divide(bet, 4, BigDecimal.ROUND_HALF_UP), 4, BigDecimal.ROUND_HALF_UP).setScale(4,BigDecimal.ROUND_HALF_UP);
-		
-		BigDecimal bonus = a.multiply(new BigDecimal(1).subtract(new BigDecimal(0.022))).setScale(4,BigDecimal.ROUND_HALF_UP);
-		
-		BigDecimal bonus1 = a.
-				multiply(new BigDecimal(1).subtract(new BigDecimal(0.028))).setScale(4,BigDecimal.ROUND_HALF_UP);
-		
-		BigDecimal bonus3 = a.
-				multiply(new BigDecimal(1).subtract(new BigDecimal(0.03))).setScale(4,BigDecimal.ROUND_HALF_UP);
-		//返点计算
-		BigDecimal bonus2 = bonus.subtract(bonus1).divide(a, 4, BigDecimal.ROUND_HALF_UP).multiply(bet);
-		
-		
-		
-
-		System.out.println(bonus.doubleValue());
-		System.out.println(bonus1.doubleValue());
-		System.out.println(bonus2.doubleValue());*/
-
+		//查询该订单所有上级代理账户
+				List<MemberAccount> memberList = new ArrayList<MemberAccount>();
+				MemberAccount memberAccount = new MemberAccount();
+				memberAccount.setId("1");
+				MemberAccount memberAccount2 = new MemberAccount();
+				memberAccount2.setId("2");
+				MemberAccount memberAccount3 = new MemberAccount();
+				memberAccount3.setId("3");
+				memberList.add(memberAccount);
+				memberList.add(memberAccount2);
+				memberList.add(memberAccount3);
+				//查询所有账户的奖金设置
+				List<String> ids = memberList.stream().map(MemberAccount::getId).collect(Collectors.toList());
+				
+				ids.stream().forEach(c->{
+					System.out.println(c);
+				});
 		
 	}
 }

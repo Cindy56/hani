@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
-import com.game.manager.modules.trade.entity.FinanceTradeDetail;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
+import com.game.modules.trade.entity.FinanceTradeDetail;
 import com.game.manager.modules.gen.entity.GenScheme;
 import com.game.manager.modules.trade.dao.FinanceTradeDetailDao;
 

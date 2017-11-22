@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.manager.common.config.Global;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.sys.entity.Area;
+import com.game.common.config.Global;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
+import com.game.modules.sys.entity.Area;
 import com.game.manager.modules.sys.service.AreaService;
 import com.game.manager.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;

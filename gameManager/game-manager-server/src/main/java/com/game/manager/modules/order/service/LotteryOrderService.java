@@ -8,9 +8,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
-import com.game.manager.modules.order.entity.LotteryOrder;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
+import com.game.modules.order.entity.LotteryOrder;
 import com.game.manager.modules.order.dao.LotteryOrderDao;
 
 /**

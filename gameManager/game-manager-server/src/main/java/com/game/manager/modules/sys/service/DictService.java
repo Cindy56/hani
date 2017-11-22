@@ -8,10 +8,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.service.CrudService;
-import com.game.manager.common.utils.CacheUtils;
+import com.game.common.service.CrudService;
+import com.game.common.utils.CacheUtils;
 import com.game.manager.modules.sys.dao.DictDao;
-import com.game.manager.modules.sys.entity.Dict;
+import com.game.modules.sys.entity.Dict;
 import com.game.manager.modules.sys.utils.DictUtils;
 
 /**

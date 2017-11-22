@@ -7,25 +7,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.game.manager.common.config.Global;
-import com.game.manager.common.mapper.JsonMapper;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.utils.CacheUtils;
-import com.game.manager.common.utils.SpringContextHolder;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.modules.cms.entity.Article;
-import com.game.manager.modules.cms.entity.Category;
-import com.game.manager.modules.cms.entity.Link;
-import com.game.manager.modules.cms.entity.Site;
+import javax.servlet.ServletContext;
+
+import org.springframework.ui.Model;
+
+import com.game.common.config.Global;
+import com.game.common.mapper.JsonMapper;
+import com.game.common.persistence.Page;
+import com.game.common.utils.CacheUtils;
+import com.game.common.utils.SpringContextHolder;
+import com.game.common.utils.StringUtils;
 import com.game.manager.modules.cms.service.ArticleService;
 import com.game.manager.modules.cms.service.CategoryService;
 import com.game.manager.modules.cms.service.LinkService;
 import com.game.manager.modules.cms.service.SiteService;
+import com.game.manager.modules.sys.utils.UserUtils;
+import com.game.modules.cms.entity.Article;
+import com.game.modules.cms.entity.Category;
+import com.game.modules.cms.entity.Link;
+import com.game.modules.cms.entity.Site;
 import com.google.common.collect.Lists;
-
-import javax.servlet.ServletContext;
-
-import org.springframework.ui.Model;
 
 /**
  * 内容管理工具类
@@ -72,6 +73,14 @@ public class CmsUtils {
 			}
 		}
 		return new Site(id);
+	}
+	
+	/**
+	 * 获取当前编辑的站点编号
+	 */
+	public static String getCurrentSiteId(){
+		String siteId = (String)UserUtils.getCache("siteId");
+		return StringUtils.isNotBlank(siteId)?siteId: Site.defaultSiteId();
 	}
 	
 	/**

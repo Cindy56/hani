@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.game.manager.common.service.BaseService;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.utils.UserAgentUtils;
+import com.game.common.service.BaseService;
+import com.game.common.utils.StringUtils;
+import com.game.common.utils.UserAgentUtils;
 
 /**
  * 手机端视图拦截器

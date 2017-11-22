@@ -6,10 +6,10 @@ package com.game.manager.modules.cms.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
 import com.game.manager.modules.cms.dao.CommentDao;
-import com.game.manager.modules.cms.entity.Comment;
+import com.game.modules.cms.entity.Comment;
 
 /**
  * 评论Service

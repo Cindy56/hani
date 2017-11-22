@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.game.manager.common.web.BaseController;
+import com.game.common.web.BaseController;
 
 /**
  * 标签Controller

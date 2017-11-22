@@ -3,9 +3,9 @@
  */
 package com.game.manager.modules.sys.dao;
 
-import com.game.manager.common.persistence.TreeDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.sys.entity.Area;
+import com.game.common.persistence.TreeDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.sys.entity.Area;
 
 /**
  * 区域DAO接口

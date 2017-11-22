@@ -8,10 +8,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
 import com.game.manager.modules.member.dao.MemberAccountCardDao;
-import com.game.manager.modules.member.entity.MemberAccountCard;
+import com.game.modules.member.entity.MemberAccountCard;
 
 /**
  * 会员银行卡管理Service

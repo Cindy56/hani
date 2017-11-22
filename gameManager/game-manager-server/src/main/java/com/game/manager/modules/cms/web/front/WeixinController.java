@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.game.manager.common.web.BaseController;
+import com.game.common.web.BaseController;
 import com.game.manager.modules.cms.utils.WiexinSignUtil;
 
 /**

@@ -5,9 +5,9 @@ package com.game.manager.modules.cms.dao;
 
 import java.util.List;
 
-import com.game.manager.common.persistence.CrudDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.cms.entity.Link;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.cms.entity.Link;
 
 /**
  * 链接DAO接口

@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.alibaba.fastjson.JSON;
-import com.game.manager.common.config.Global;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.lottery.constant.LotteryConstants;
-import com.game.manager.modules.lottery.entity.LotteryType;
+import com.game.common.config.Global;
+import com.game.common.mapper.JsonMapper;
+import com.game.common.persistence.Page;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
 import com.game.manager.modules.lottery.service.LotteryTypeService;
 import com.game.manager.modules.sys.utils.DictUtils;
+import com.game.modules.lottery.constant.LotteryConstants;
+import com.game.modules.lottery.entity.LotteryType;
 
 /**
  * 彩种基本信息管理Controller
@@ -161,7 +161,7 @@ public class LotteryTypeController extends BaseController {
     public void findPlayCode(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
         model.addAttribute("lotteryPlayCode", DictUtils.getDictList(request.getParameter("lotterytype")));
         PrintWriter p = response.getWriter();
-        p.write(JSON.toJSONString(model));
+        p.write(JsonMapper.toJsonString(model));
         p.close();
     }
 }

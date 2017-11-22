@@ -5,10 +5,10 @@ package com.game.manager.modules.cms.dao;
 
 import java.util.List;
 
-import com.game.manager.common.persistence.CrudDao;
-import com.game.manager.common.persistence.annotation.MyBatisDao;
-import com.game.manager.modules.cms.entity.Article;
-import com.game.manager.modules.cms.entity.Category;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.cms.entity.Article;
+import com.game.modules.cms.entity.Category;
 
 /**
  * 文章DAO接口

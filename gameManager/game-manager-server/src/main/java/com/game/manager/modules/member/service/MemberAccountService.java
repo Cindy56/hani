@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
 import com.game.manager.modules.member.dao.MemberAccountDao;
-import com.game.manager.modules.member.entity.MemberAccount;
+import com.game.modules.member.entity.MemberAccount;
 
 /**
  * 会员开户Service

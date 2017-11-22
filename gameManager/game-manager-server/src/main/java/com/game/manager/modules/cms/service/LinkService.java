@@ -10,12 +10,12 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
-import com.game.manager.common.utils.CacheUtils;
-import com.game.manager.common.utils.StringUtils;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
+import com.game.common.utils.CacheUtils;
+import com.game.common.utils.StringUtils;
 import com.game.manager.modules.cms.dao.LinkDao;
-import com.game.manager.modules.cms.entity.Link;
+import com.game.modules.cms.entity.Link;
 import com.google.common.collect.Lists;
 
 /**

@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.manager.common.config.Global;
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.utils.CookieUtils;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.cms.entity.Site;
+import com.game.common.config.Global;
+import com.game.common.persistence.Page;
+import com.game.common.utils.CookieUtils;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
+import com.game.modules.cms.entity.Site;
 import com.game.manager.modules.cms.service.SiteService;
 import com.game.manager.modules.sys.utils.UserUtils;
 

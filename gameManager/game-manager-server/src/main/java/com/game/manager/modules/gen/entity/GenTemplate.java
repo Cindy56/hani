@@ -10,8 +10,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.game.manager.common.persistence.DataEntity;
-import com.game.manager.common.utils.StringUtils;
+import com.game.common.persistence.DataEntity;
+import com.game.common.utils.StringUtils;
 import com.google.common.collect.Lists;
 
 /**

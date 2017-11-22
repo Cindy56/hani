@@ -7,10 +7,10 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.CrudService;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
 import com.game.manager.modules.cms.dao.SiteDao;
-import com.game.manager.modules.cms.entity.Site;
+import com.game.modules.cms.entity.Site;
 import com.game.manager.modules.cms.utils.CmsUtils;
 
 /**

@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.utils.StringUtils;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.sys.entity.User;
+import com.game.common.persistence.Page;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
+import com.game.modules.sys.entity.User;
 import com.game.manager.modules.sys.utils.UserUtils;
 import com.game.manager.modules.test.entity.Test;
 import com.game.manager.modules.test.service.TestService;

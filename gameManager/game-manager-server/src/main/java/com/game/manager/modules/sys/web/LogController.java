@@ -12,9 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.web.BaseController;
-import com.game.manager.modules.sys.entity.Log;
+import com.game.common.persistence.Page;
+import com.game.common.web.BaseController;
+import com.game.modules.sys.entity.Log;
 import com.game.manager.modules.sys.service.LogService;
 
 /**

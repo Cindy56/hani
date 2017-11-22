@@ -9,9 +9,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.service.TreeService;
+import com.game.common.service.TreeService;
 import com.game.manager.modules.sys.dao.OfficeDao;
-import com.game.manager.modules.sys.entity.Office;
+import com.game.modules.sys.entity.Office;
 import com.game.manager.modules.sys.utils.UserUtils;
 
 /**

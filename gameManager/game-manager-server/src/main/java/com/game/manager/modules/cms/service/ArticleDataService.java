@@ -6,9 +6,9 @@ package com.game.manager.modules.cms.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.service.CrudService;
+import com.game.common.service.CrudService;
 import com.game.manager.modules.cms.dao.ArticleDataDao;
-import com.game.manager.modules.cms.entity.ArticleData;
+import com.game.modules.cms.entity.ArticleData;
 
 /**
  * 站点Service

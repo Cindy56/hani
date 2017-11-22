@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.game.manager.modules.sys.entity.Dict;
+import com.game.modules.sys.entity.Dict;
 
 /**
  * 生成方案Entity

@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.persistence.Page;
-import com.game.manager.common.service.BaseService;
-import com.game.manager.common.utils.StringUtils;
+import com.game.common.persistence.Page;
+import com.game.common.service.BaseService;
+import com.game.common.utils.StringUtils;
 import com.game.manager.modules.gen.dao.GenTemplateDao;
 import com.game.manager.modules.gen.entity.GenTemplate;
 

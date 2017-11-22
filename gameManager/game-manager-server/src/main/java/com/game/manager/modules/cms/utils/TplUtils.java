@@ -3,7 +3,7 @@ package com.game.manager.modules.cms.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.game.manager.common.utils.StringUtils;
+import com.game.common.utils.StringUtils;
 
 /**
  * User: songlai

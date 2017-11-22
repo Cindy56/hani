@@ -3,10 +3,8 @@
  */
 package com.game.manager.modules.lottery.schedule;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -24,8 +22,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.manager.common.utils.DateUtils;
-import com.game.manager.modules.lottery.dto.TimeTask;
+import com.game.modules.lottery.dto.TimeTask;
 
 /**
  * 定时任务管理Service
