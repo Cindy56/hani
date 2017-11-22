@@ -1,11 +1,16 @@
 package com.game.manager.modules.draw;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import com.game.modules.order.entity.LotteryOrder;
 
 /**
  * 算奖工具类
@@ -333,12 +338,76 @@ public class LotteryUtils {
     }
 
     /**
-	 * 时时彩组选6：3个号码里没有相同的2个号码
+     * 
+	 * 时时彩组选6：前3组选6 所选号码与开奖号码的前三位相同，顺序不限(前三、中三、后三通用 ,号码截取不一样)
 	 */
-	public static void ssc3XinZuxuan6() {
-		//TODO:XXXXX		
+	public static boolean ssc3XinZuxuan6(String openNum,String betNum) {
+		 // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] betNumArr = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
+        if (3 != betNumArr.length) {
+            return false;
+        }
+        List<String> betNumList = Arrays.asList(betNumArr);
+        // 开奖号码截取前三位 进行比较
+        String[] openNums = openNum.split(",");
+        List<String> openNumsList = Arrays.asList(openNums);
+        
+        //投注号码 ----string 转 Integer 
+        List<Integer> convertBetNumList = betNumList.stream().map(Integer::valueOf).collect(Collectors.toList());
+        //排序 升序
+        convertBetNumList.sort((a,b) ->a.compareTo(b));
+        // 拼成字符串
+		String betNumStr = convertBetNumList.stream().map(String::valueOf).collect(Collectors.joining());
+		
+		
+		 //开奖号码 ----string 转 Integer 
+        List<Integer> convertOpenNumList = openNumsList.stream().map(Integer::valueOf).collect(Collectors.toList());
+        //排序 升序
+        convertOpenNumList.sort((a,b) ->a.compareTo(b));
+        // 拼成字符串
+		String openNumStr = convertOpenNumList.stream().map(String::valueOf).collect(Collectors.joining());
+        
+		 // 开奖号码的前三位相同，顺序不限
+        if(openNumStr.equals(betNumStr)) {
+        	return true;
+        }
+		return false;
 	}	
 	
+
+    /**
+     * 
+	 * 时时彩组选6：前3组选6 计算注数
+	 */
+	public static int ssc3XinBetCount(LotteryOrder lotteryOrder) {
+		 // 参数不合法，返回false
+        if (null  == lotteryOrder) {
+            return 0;
+        }
+        // 获取投注倍数、单注金额
+        BigDecimal betRate =new BigDecimal(lotteryOrder.getBetRate());
+        BigDecimal price = new BigDecimal(2);
+        BigDecimal resule =BigDecimal.ZERO;
+        if("0".equals(lotteryOrder.getPlayModeMoneyType())) {//元
+        	resule=betRate.multiply(price).divide(new BigDecimal(1),4,BigDecimal.ROUND_HALF_DOWN)  ;
+        }else if("1".equals(lotteryOrder.getPlayModeMoneyType())) {//角
+        	resule=betRate.multiply(price).divide(new BigDecimal(10),4,BigDecimal.ROUND_HALF_DOWN) ;
+        }else if("2".equals(lotteryOrder.getPlayModeMoneyType())) {//分
+        	resule=betRate.multiply(price).divide(new BigDecimal(100),4,BigDecimal.ROUND_HALF_DOWN)  ;
+        }
+		return resule.intValue();
+	}	
+	
+	
+	public static void main(String[] args) {
+		LotteryOrder lotteryOrder = new LotteryOrder();
+		lotteryOrder.setBetRate(20);
+		lotteryOrder.setPlayModeMoneyType("1");
+		System.out.println(ssc3XinBetCount(lotteryOrder));
+	}
 	/**
 	 * 时时彩组选豹子
 	 */
