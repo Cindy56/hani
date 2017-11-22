@@ -331,15 +331,14 @@ public enum SscService implements LotteryService {
 			// TODO Auto-generated method stub
 			
 		}
-
 		@Override
 		public boolean checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			//对注单进行基础校验
-			if(!checkOrder(lotteryOrder,betLotteryTimeNum)) {
+			if(!super.checkOrder(lotteryOrder,betLotteryTimeNum)) {
 				return false;
 			}
 			//正则验证投注号码,必须是0-9的数字以逗号分隔
-			String  regex = "[0-9]{1},[0-9]{1},[0-9]{1}";
+			String  regex = "^\\d+(,\\d{0,2})*$";
 			if(!lotteryOrder.getBetDetail().matches(regex)) {
 				 return false;
 			}
@@ -379,11 +378,11 @@ public enum SscService implements LotteryService {
 		@Override
 		public boolean checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			//对注单进行基础校验
-			if(!checkOrder(lotteryOrder,betLotteryTimeNum)) {
+			if(!super.checkOrder(lotteryOrder,betLotteryTimeNum)) {
 				return false;
 			}
 			//正则验证投注号码,必须是0-9的数字以逗号分隔
-			String  regex = "[0-9]{1},[0-9]{1},[0-9]{1}";
+			String  regex = "^\\d+(,\\d{0,2})*$";
 			if(!lotteryOrder.getBetDetail().matches(regex)) {
 				 return false;
 			}
@@ -415,6 +414,42 @@ public enum SscService implements LotteryService {
             // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值
             return playModeMoney.multiply(betRate).multiply(playModeMoneyType);
 		}
+    },
+    /** 时时彩前3组选3 */
+     SSC_QIAN3_ZUXUANHEZHI("SSC_QIAN3_ZUXUAN3", "时时彩前3组选和值") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+		}
+		
+		@Override
+		public boolean checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			//对注单进行基础校验
+			if(!super.checkOrder(lotteryOrder,betLotteryTimeNum)) {
+				return false;
+			}
+			//正则验证投注号码,必须是0-9的数字以逗号分隔
+			String  regex = "^\\d+(,\\d{0,2})*$";
+			if(!lotteryOrder.getBetDetail().matches(regex)) {
+				 return false;
+			}
+			//校验订单金额
+		    return super.checkAmount(lotteryOrder,LotteryUtils.ssc3XinBetCount(lotteryOrder));
+		}
+		
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			
+			return false;
+		}
+
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+    	
     },
     //
     // /** 时时彩前3组选3 */

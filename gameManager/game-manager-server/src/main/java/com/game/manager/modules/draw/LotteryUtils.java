@@ -380,26 +380,23 @@ public class LotteryUtils {
         BigDecimal betRate =new BigDecimal(lotteryOrder.getBetRate());
         BigDecimal price = new BigDecimal(2);
         BigDecimal resule =BigDecimal.ZERO;
-        resule = lotteryOrder.getBetAmount().divide(betRate).divide(price.divide(new BigDecimal(1),4,BigDecimal.ROUND_HALF_DOWN)).setScale(4,BigDecimal.ROUND_HALF_DOWN);
-      /*  if("0".equals(lotteryOrder.getPlayModeMoneyType())) {//元
-        	
+       if("0".equals(lotteryOrder.getPlayModeMoneyType())) {//元
+     	   resule = lotteryOrder.getBetAmount().divide(betRate).divide(price).multiply(new BigDecimal(1)).setScale(4,BigDecimal.ROUND_HALF_DOWN);
         }else if("1".equals(lotteryOrder.getPlayModeMoneyType())) {//角
-        	resule = betRate.multiply(price).divide(new BigDecimal(10),4,BigDecimal.ROUND_HALF_DOWN) ;
+     	   resule = lotteryOrder.getBetAmount().divide(betRate).divide(price).multiply(new BigDecimal(10)).setScale(4,BigDecimal.ROUND_HALF_DOWN);
         }else if("2".equals(lotteryOrder.getPlayModeMoneyType())) {//分
-        	resule = betRate.multiply(price).divide(new BigDecimal(100),4,BigDecimal.ROUND_HALF_DOWN)  ;
-        }*/
+      	   resule = lotteryOrder.getBetAmount().divide(betRate).divide(price).multiply(new BigDecimal(100)).setScale(4,BigDecimal.ROUND_HALF_DOWN);
+        }
 		return resule.intValue();
 	}	
 	
 	
 	public static void main(String[] args) {
-		long s=System.currentTimeMillis();
-		for(int i=0;i < 10000000;i++) {
-			ssc3XinZuxuan6("1,2,3","0,1,2,3,4,5,6,7,8,9");
-		}
-		long e=System.currentTimeMillis();
-		System.out.println(e-s);
-		//System.out.println(ssc3XinZuxuan6("1,2,6","0,1,2,3,4,5,6,7,8,9"));
+		LotteryOrder lotteryOrder = new LotteryOrder();
+		lotteryOrder.setBetRate(20);
+		lotteryOrder.setPlayModeMoneyType("2");
+		lotteryOrder.setBetAmount(new BigDecimal(1.6));
+		System.out.println(ssc3XinBetCount(lotteryOrder));
 		
 	}
 	/**
