@@ -348,37 +348,21 @@ public class LotteryUtils {
             return false;
         }
         String[] betNumArr = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
-        if (3 != betNumArr.length) {
-            return false;
-        }
-        List<String> betNumList = Arrays.asList(betNumArr);
+        List<String> betNumList = Arrays.asList(betNumArr).stream().distinct().collect(Collectors.toList());
         // 开奖号码截取前三位 进行比较
         String[] openNums = openNum.split(",");
         List<String> openNumsList = Arrays.asList(openNums);
-        
-        //投注号码 ----string 转 Integer 
-        List<Integer> convertBetNumList = betNumList.stream().map(Integer::valueOf).distinct().collect(Collectors.toList());
-        //如果出现对子直接返回
-        if(convertBetNumList.size() < 3) {
+        //开奖号码有对子,不中奖
+        long count = openNumsList.stream().distinct().count();
+        if(count < 3) {
         	return false;
         }
-        //排序 升序
-        convertBetNumList.sort((a,b) ->a.compareTo(b));
-        // 拼成字符串
-		String betNumStr = convertBetNumList.stream().map(String::valueOf).collect(Collectors.joining());
-		
-		
-		 //开奖号码 ----string 转 Integer 
-        List<Integer> convertOpenNumList = openNumsList.stream().map(Integer::valueOf).collect(Collectors.toList());
-        //排序 升序
-        convertOpenNumList.sort((a,b) ->a.compareTo(b));
-        // 拼成字符串
-		String openNumStr = convertOpenNumList.stream().map(String::valueOf).collect(Collectors.joining());
-        
-		 // 开奖号码的前三位相同，顺序不限
-        if(openNumStr.equals(betNumStr)) {
-        	return true;
-        }
+		// 开奖号码的前三位相同，顺序不限
+		if(betNumList.contains(openNumsList.get(0)) &&
+				betNumList.contains(openNumsList.get(1)) &&
+				betNumList.contains(openNumsList.get(2))) {
+			return true;
+		}
 		return false;
 	}	
 	
@@ -396,19 +380,27 @@ public class LotteryUtils {
         BigDecimal betRate =new BigDecimal(lotteryOrder.getBetRate());
         BigDecimal price = new BigDecimal(2);
         BigDecimal resule =BigDecimal.ZERO;
-        if("0".equals(lotteryOrder.getPlayModeMoneyType())) {//元
-        	resule=betRate.multiply(price).divide(new BigDecimal(1),4,BigDecimal.ROUND_HALF_DOWN)  ;
+        resule = lotteryOrder.getBetAmount().divide(betRate).divide(price.divide(new BigDecimal(1),4,BigDecimal.ROUND_HALF_DOWN)).setScale(4,BigDecimal.ROUND_HALF_DOWN);
+      /*  if("0".equals(lotteryOrder.getPlayModeMoneyType())) {//元
+        	
         }else if("1".equals(lotteryOrder.getPlayModeMoneyType())) {//角
-        	resule=betRate.multiply(price).divide(new BigDecimal(10),4,BigDecimal.ROUND_HALF_DOWN) ;
+        	resule = betRate.multiply(price).divide(new BigDecimal(10),4,BigDecimal.ROUND_HALF_DOWN) ;
         }else if("2".equals(lotteryOrder.getPlayModeMoneyType())) {//分
-        	resule=betRate.multiply(price).divide(new BigDecimal(100),4,BigDecimal.ROUND_HALF_DOWN)  ;
-        }
+        	resule = betRate.multiply(price).divide(new BigDecimal(100),4,BigDecimal.ROUND_HALF_DOWN)  ;
+        }*/
 		return resule.intValue();
 	}	
 	
 	
 	public static void main(String[] args) {
-			System.out.println(ssc3XinZuxuan6("1,2,3","3,2,1"));		
+		long s=System.currentTimeMillis();
+		for(int i=0;i < 10000000;i++) {
+			ssc3XinZuxuan6("1,2,3","0,1,2,3,4,5,6,7,8,9");
+		}
+		long e=System.currentTimeMillis();
+		System.out.println(e-s);
+		//System.out.println(ssc3XinZuxuan6("1,2,6","0,1,2,3,4,5,6,7,8,9"));
+		
 	}
 	/**
 	 * 时时彩组选豹子
