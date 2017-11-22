@@ -54,7 +54,7 @@ public enum SscService implements LotteryService {
                 BigDecimal zero = new BigDecimal(0);
                 return zero;
             }
-            // 投注奖金组、投注倍数、投注模式
+            // 投注奖金组、投注倍数、投注模式、中奖注数
             BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
             BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
             BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
@@ -107,12 +107,11 @@ public enum SscService implements LotteryService {
                 BigDecimal zero = new BigDecimal(0);
                 return zero;
             }
-            // 投注奖金组、投注倍数、投注模式
+            // 投注奖金组、投注倍数、投注模式、中奖注数
             BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
             BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
             BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-            String openNum = openlotteryTimeNum.getOpenNum();
-            BigDecimal winCount = new BigDecimal(LotteryUtils.winCountSscZhiXuanDan(openNum.substring(0, 3), lotteryOrder.getBetDetail()));
+            BigDecimal winCount = new BigDecimal(1);
             // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 *中奖注数
             return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
         }
@@ -164,8 +163,7 @@ public enum SscService implements LotteryService {
             BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
             BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
             BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-            String openNum = openlotteryTimeNum.getOpenNum();
-            BigDecimal winCount = new BigDecimal(LotteryUtils.winCountSscZhiXuanFu(openNum.substring(0, 3), lotteryOrder.getBetDetail()));
+            BigDecimal winCount = new BigDecimal(1);
             // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 *中奖注数
             return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
         }
@@ -217,8 +215,7 @@ public enum SscService implements LotteryService {
             BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
             BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
             BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-            String openNum = openlotteryTimeNum.getOpenNum();
-            BigDecimal winCount = new BigDecimal(LotteryUtils.winCountSscZhiXuanDan(openNum.substring(0, 5), lotteryOrder.getBetDetail()));
+            BigDecimal winCount = new BigDecimal(1);
             // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 * 中奖注数
             return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
         }
@@ -259,8 +256,7 @@ public enum SscService implements LotteryService {
             BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
             BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
             BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-            String openNum = openlotteryTimeNum.getOpenNum();
-            BigDecimal winCount = new BigDecimal(LotteryUtils.winCountSscZhiXuanFu(openNum.substring(0, 5), lotteryOrder.getBetDetail()));
+            BigDecimal winCount = new BigDecimal(1);
             // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 * 中奖注数
             return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
         }
@@ -316,12 +312,12 @@ public enum SscService implements LotteryService {
                 BigDecimal zero = new BigDecimal(0);
                 return zero;
             }
-            // 投注奖金组、投注倍数、投注模式
+            // 投注奖金组、投注倍数、投注模式、中奖注数
             BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
             BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
             BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
             String openNum = openlotteryTimeNum.getOpenNum();
-            BigDecimal winCount = new BigDecimal(LotteryUtils.winCountSsc3XingZu3Fu(openNum.substring(0, 5), lotteryOrder.getBetDetail()));
+            BigDecimal winCount = new BigDecimal(LotteryUtils.winCountSsc3XingZu3(openNum.substring(0, 5), lotteryOrder.getBetDetail()));
             // 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 * 中奖注数
             return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
         }
