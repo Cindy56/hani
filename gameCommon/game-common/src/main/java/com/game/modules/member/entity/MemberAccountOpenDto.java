@@ -7,7 +7,7 @@ import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.sys.entity.User;
 
 public class MemberAccountOpenDto extends DataEntity<MemberPlayConfig> {
-	private static final long serialVersionUID = -9019546842665769956L;
+
 	private User user;
 	private MemberAccount account;
 	private List<LotteryPlayConfig> playList;
@@ -29,4 +29,6 @@ public class MemberAccountOpenDto extends DataEntity<MemberPlayConfig> {
 	public void setPlayList(List<LotteryPlayConfig> playList) {
 		this.playList = playList;
 	}
+	
+	
 }
