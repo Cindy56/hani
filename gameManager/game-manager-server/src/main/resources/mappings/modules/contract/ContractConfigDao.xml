@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.manager.modules.contract.dao.ContractConfigDao">
+    
+	<sql id="contractConfigColumns">
+		a.id AS "id",
+		a.contract_id AS "contractId",
+		a.range_start AS "rangeStart",
+		a.range_end AS "rangeEnd",
+		a.benift_rate AS "beniftRate",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.updte_date AS "updteDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="contractConfigJoins">
+		LEFT JOIN contract b ON b.id = a.contract_id
+	</sql>
+    
+	<select id="get" resultType="ContractConfig">
+		SELECT 
+			<include refid="contractConfigColumns"/>
+		FROM contract_config a
+		<include refid="contractConfigJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ContractConfig">
+		SELECT 
+			<include refid="contractConfigColumns"/>
+		FROM contract_config a
+		<include refid="contractConfigJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="contractId != null and contractId != ''">
+				AND a.contract_id = #{contractId.id}
+			</if>
+			<if test="rangeStart != null and rangeStart != ''">
+				AND a.range_start = #{rangeStart}
+			</if>
+			<if test="rangeEnd != null and rangeEnd != ''">
+				AND a.range_end = #{rangeEnd}
+			</if>
+			<if test="beniftRate != null and beniftRate != ''">
+				AND a.benift_rate = #{beniftRate}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ContractConfig">
+		SELECT 
+			<include refid="contractConfigColumns"/>
+		FROM contract_config a
+		<include refid="contractConfigJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO contract_config(
+			id,
+			contract_id,
+			range_start,
+			range_end,
+			benift_rate,
+			create_date,
+			create_by,
+			updte_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{contractId.id},
+			#{rangeStart},
+			#{rangeEnd},
+			#{beniftRate},
+			#{createDate},
+			#{createBy.id},
+			#{updteDate},
+			#{updateBy.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE contract_config SET 	
+			contract_id = #{contractId.id},
+			range_start = #{rangeStart},
+			range_end = #{rangeEnd},
+			benift_rate = #{beniftRate},
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE contract_config SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE contract_id = #{contractId.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

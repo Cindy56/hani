@@ -37,6 +37,7 @@
 					} else {
 						error.insertAfter(element);
 					}
+					$("#ck").click();
 				}
 			});
 		});
@@ -68,7 +69,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<%-- <shiro:hasPermission name="memberadd:memberAccount:edit"><li><a href="${ctx}/memberadd/memberAccount/form">会员开户添加</a></li></shiro:hasPermission> --%>
-		<li class="active" onclick="memberShow(this)"><a href="javascript:void(0);">会员开户添加</a></li>
+		<li class="active" onclick="memberShow(this)" id="ck"><a href="javascript:void(0);">会员开户添加</a></li>
 		<li class="" onclick="fdShow(this)"><a href="javascript:void(0);">返点信息</a></li>
 	</ul>
 	<sys:message content="${message}"/>
