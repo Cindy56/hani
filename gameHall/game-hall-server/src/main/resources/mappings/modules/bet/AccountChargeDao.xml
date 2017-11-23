@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.hall.modules.bet.dao.AccountChargeDao">
+
+	<sql id="memberAccountColumns">
+		a.id AS "id",
+		a.parent_agent_id AS "parentAgentId",
+		a.user_id AS "user.id",
+		a.org_id AS "orgId",
+		a.account_type AS
+		"accountType",
+		a.sec_password AS "secPassword",
+		a.qq_no AS "qqNo",
+		a.mobile_no AS "mobileNo",
+		a.blance AS "blance",
+		a.blance_frozen AS
+		"blanceFrozen",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="memberAccountJoins">
+	</sql>
+
+	<select id="get" resultType="MemberAccount">
+		SELECT
+		<include refid="memberAccountColumns" />
+		FROM member_account a
+		<include refid="memberAccountJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="MemberAccount">
+		SELECT
+		<include refid="memberAccountColumns" />
+		FROM member_account a
+		<include refid="memberAccountJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="mobileNo != null and mobileNo != ''">
+				AND a.mobile_no = #{mobileNo}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="MemberAccount">
+		SELECT
+		<include refid="memberAccountColumns" />
+		FROM member_account a
+		<include refid="memberAccountJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO member_account(
+		id,
+		parent_agent_id,
+		user_id,
+		org_id,
+		account_type,
+		sec_password,
+		qq_no,
+		mobile_no,
+		blance,
+		blance_frozen,
+		status,
+		create_date,
+		create_by,
+		update_date,
+		update_by,
+		del_flag
+		) VALUES (
+		#{id},
+		#{parentAgentId},
+		#{user.id},
+		#{orgId},
+		#{accountType},
+		#{secPassword},
+		#{qqNo},
+		#{mobileNo},
+		#{blance},
+		#{blanceFrozen},
+		#{status},
+		#{createDate},
+		#{createBy.id},
+		#{updateDate},
+		#{updateBy.id},
+		#{delFlag}
+		)
+	</insert>
+
+
+
+	<update id="AccountChargeAmount">
+		UPDATE member_account SET
+		blance =
+		blance-#{blance}
+		WHERE id = #{accountId}
+	</update>
+
+	<update id="update">
+		UPDATE member_account SET
+		parent_agent_id =
+		#{parentAgentId},
+		user_id = #{user.id},
+		org_id = #{orgId},
+		account_type =
+		#{accountType},
+		qq_no = #{qqNo},
+		mobile_no = #{mobileNo},
+		blance =
+		#{blance},
+		blance_frozen = #{blanceFrozen},
+		status = #{status},
+		update_date = #{updateDate},
+		update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE member_account SET
+		del_flag =
+		#{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<select id="getLotteryPlayConfig" resultType="java.util.Map">
+		select
+		a.lottery_code as lotteryCode,
+		a.play_code as playCode,
+		b.name as
+		parentName,
+		a.name as lotteryName,
+		a.play_type as playType,
+		a.winning_probability as winningProbability,
+		a.commission_rate_max as
+		commissionRateMax,
+		a.commission_rate_min as commissionRateMin
+		from
+		lottery_play_config a, lottery_type b
+		where
+		a.lottery_code=b.code
+		and
+		b.is_enable='1'
+		and a.is_enable = '1'
+		and a.del_flag='0'
+		and
+		b.del_flag='0'
+	</select>
+
+</mapper>
