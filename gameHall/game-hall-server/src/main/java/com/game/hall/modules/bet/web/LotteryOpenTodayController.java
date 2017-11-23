@@ -4,7 +4,6 @@
 package com.game.hall.modules.bet.web;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.game.hall.modules.bet.entity.BetData;
-import com.game.hall.modules.bet.entity.LotteryTimeNumbak;
-import com.game.hall.modules.bet.entity.ResultData;
+import com.entity.ResultData;
 import com.game.hall.modules.bet.service.LotteryAddBetService;
-import com.game.hall.modules.bet.service.LotteryOpenTodayService;
+import com.game.hall.modules.sys.utils.UserUtils;
+import com.game.modules.sys.entity.User;
+
 
 /**
  * @author antonio 开奖信息
@@ -25,72 +24,77 @@ import com.game.hall.modules.bet.service.LotteryOpenTodayService;
 @RequestMapping("/bet/opentoday")
 public class LotteryOpenTodayController {
 
-	@Autowired
-	private LotteryOpenTodayService lotteryTimeNumService;
+	// @Autowired
+	// private LotteryOpenTodayService lotteryTimeNumService;
 
 	@Autowired
 	private LotteryAddBetService lotteryAddBetService;
 
-	@ResponseBody
-	@RequestMapping(value = "/betData", method = RequestMethod.GET)
-	public ResultData addBet(BetData betData) {
-
-		// BetData betData;
-		ResultData rd = lotteryAddBetService.bet(betData);
-		System.out.println();
-
-		return null;
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "/getopentoday", method = RequestMethod.GET)
-	public List<LotteryTimeNumbak> getOpenToday(String name) {
-
-		// List<LotteryTimeNum> openToday = lotteryTimeNumService.OpenToday();
-
-		// String urlName = "http://localhost:8081/Hes";
-		//
-		// HessianProxyFactory factory = new HessianProxyFactory();
-		// // 开启方法重载
-		// factory.setOverloadEnabled(true);
-		//
-		// HessianApi hessionApi;
-		// try {
-		// hessionApi = (HessianApi) factory.create(HessianApi.class, urlName);
-		// // 调用方法
-		// System.out.println("call sayHello():" + hessionApi.test1());
-		// } catch (MalformedURLException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
-		// URL upath = this.getClass().getResource("/");
-
-		// System.out.println(upath);
-
-		// ApplicationContext context = new
-		// ClassPathXmlApplicationContext(upath+"..\\remoting-client.xml");
-		// ApplicationContext context = new
-		// ClassPathXmlApplicationContext("remoting-client.xml");
-
-		// HessianApi hello = (HessianApi) context.getBean("myServiceClient");
-
-		// BetData detData;
-		ResultData rd = lotteryTimeNumService.OpenToday();
-		System.out.println();
-
-		return null;
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "/getcur", method = RequestMethod.GET)
-	public List<LotteryTimeNumbak> getCur() {
-
-		Date dt = new Date();
-
-		List<LotteryTimeNumbak> openToday = lotteryTimeNumService.Cur(dt);
-
-		return openToday;
-	}
+	/**
+	 * 历史开奖
+	 * @param lotteryName
+	 * @param num
+	 * @return
+	 */
+	 @ResponseBody
+	 @RequestMapping(value = "/getopentoday", method = RequestMethod.GET)
+	 public ResultData getOpenToday(String lotteryName, int num) {
+	
+	 ResultData rd = lotteryAddBetService.openToday(lotteryName, num);
+	
+	 return null;
+	 }
+	
+	 /**
+	  * 当前开奖
+	  * @param lotteryName
+	  * @return
+	  */
+	 @ResponseBody
+	 @RequestMapping(value = "/getcur", method = RequestMethod.GET)
+	 public ResultData getCur(String lotteryName) {
+	
+	 Date dt = new Date();
+	
+	 ResultData openToday = lotteryAddBetService.curOpen(lotteryName);
+	
+	 return openToday;
+	 }
+	 
+	 /**
+	  * 玩法
+	  * @param lotteryName
+	  * @return
+	  */
+	 @ResponseBody
+	 @RequestMapping(value = "/getplayconfig", method = RequestMethod.GET)
+	 public ResultData getPlayConfig(String lotteryName) {
+	
+	 Date dt = new Date();
+	
+	 ResultData openToday = lotteryAddBetService.getPlayConfig(lotteryName);
+	
+	 return openToday;
+	 }
+	 
+	 /**
+	  * 我的方案
+	  * @param lotteryName
+	  * @return
+	  */
+	 @ResponseBody
+	 @RequestMapping(value = "/getorders", method = RequestMethod.GET)
+	 public ResultData getOrderList(String lotteryName,int num) {
+	
+	 Date dt = new Date();
+	 User user = UserUtils.getUser();
+	 
+	 String userId = user.getId();
+	 userId = "610494eafa624f30997eb0248f431e46";
+	 ResultData openToday = lotteryAddBetService.getOrders(userId, lotteryName, num);
+			 
+	 return openToday;
+	 }
+	 
 
 }

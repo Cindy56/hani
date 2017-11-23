@@ -2,9 +2,7 @@ package com.game.hall.modules.bet.entity;
 
 import java.math.BigDecimal;
 
-import com.game.common.persistence.DataEntity;
-
-public class BetData extends DataEntity<BetData> {
+public class BetData {
 
 	/**
 	 * @return the lotteryCode
@@ -12,108 +10,135 @@ public class BetData extends DataEntity<BetData> {
 	public String getLotteryCode() {
 		return lotteryCode;
 	}
+
 	/**
-	 * @param lotteryCode the lotteryCode to set
+	 * @param lotteryCode
+	 *            the lotteryCode to set
 	 */
 	public void setLotteryCode(String lotteryCode) {
 		this.lotteryCode = lotteryCode;
 	}
+
 	/**
 	 * @return the playDetailCode
 	 */
 	public String getPlayDetailCode() {
 		return playDetailCode;
 	}
+
 	/**
-	 * @param playDetailCode the playDetailCode to set
+	 * @param playDetailCode
+	 *            the playDetailCode to set
 	 */
 	public void setPlayDetailCode(String playDetailCode) {
 		this.playDetailCode = playDetailCode;
 	}
+
 	/**
 	 * @return the bettingIssuseNo
 	 */
 	public String getBettingIssuseNo() {
 		return bettingIssuseNo;
 	}
+
 	/**
-	 * @param bettingIssuseNo the bettingIssuseNo to set
+	 * @param bettingIssuseNo
+	 *            the bettingIssuseNo to set
 	 */
 	public void setBettingIssuseNo(String bettingIssuseNo) {
 		this.bettingIssuseNo = bettingIssuseNo;
 	}
+
 	/**
 	 * @return the bettingNumber
 	 */
 	public String getBettingNumber() {
 		return bettingNumber;
 	}
+
 	/**
-	 * @param bettingNumber the bettingNumber to set
+	 * @param bettingNumber
+	 *            the bettingNumber to set
 	 */
 	public void setBettingNumber(String bettingNumber) {
 		this.bettingNumber = bettingNumber;
 	}
+
 	/**
 	 * @return the bettingCount
 	 */
 	public BigDecimal getBettingCount() {
 		return bettingCount;
 	}
+
 	/**
-	 * @param bettingCount the bettingCount to set
+	 * @param bettingCount
+	 *            the bettingCount to set
 	 */
 	public void setBettingCount(BigDecimal bettingCount) {
 		this.bettingCount = bettingCount;
 	}
+
 	/**
 	 * @return the graduationCount
 	 */
 	public BigDecimal getGraduationCount() {
 		return graduationCount;
 	}
+
 	/**
-	 * @param graduationCount the graduationCount to set
+	 * @param graduationCount
+	 *            the graduationCount to set
 	 */
 	public void setGraduationCount(BigDecimal graduationCount) {
 		this.graduationCount = graduationCount;
 	}
+
 	/**
 	 * @return the bettingMoney
 	 */
 	public BigDecimal getBettingMoney() {
 		return bettingMoney;
 	}
+
 	/**
-	 * @param bettingMoney the bettingMoney to set
+	 * @param bettingMoney
+	 *            the bettingMoney to set
 	 */
 	public void setBettingMoney(BigDecimal bettingMoney) {
 		this.bettingMoney = bettingMoney;
 	}
+
 	/**
 	 * @return the bettingPoint
 	 */
 	public BigDecimal getBettingPoint() {
 		return bettingPoint;
 	}
+
 	/**
-	 * @param bettingPoint the bettingPoint to set
+	 * @param bettingPoint
+	 *            the bettingPoint to set
 	 */
 	public void setBettingPoint(BigDecimal bettingPoint) {
 		this.bettingPoint = bettingPoint;
 	}
+
 	/**
 	 * @return the bettingModel
 	 */
 	public BigDecimal getBettingModel() {
 		return bettingModel;
 	}
+
 	/**
-	 * @param bettingModel the bettingModel to set
+	 * @param bettingModel
+	 *            the bettingModel to set
 	 */
 	public void setBettingModel(BigDecimal bettingModel) {
 		this.bettingModel = bettingModel;
 	}
+
 	private String lotteryCode; // 彩种编码 ,"1000"
 	private String playDetailCode; // 玩法编码,"1000D11"
 	private String bettingIssuseNo; // 期号 "20171113034"
