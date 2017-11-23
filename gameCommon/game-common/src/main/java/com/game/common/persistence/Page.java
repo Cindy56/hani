@@ -3,6 +3,7 @@
  */
 package com.game.common.persistence;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -22,8 +23,9 @@ import com.game.common.utils.CookieUtils;
  * @version 2013-7-2
  * @param <T>
  */
-public class Page<T> {
-	
+public class Page<T> implements Serializable{
+
+	private static final long serialVersionUID = -5802941529386481138L;
 	private int pageNo = 1; // 当前页码
 	private int pageSize = Integer.valueOf(Global.getConfig("page.pageSize")); // 页面大小，设置为“-1”表示不进行分页（分页无效）
 	
