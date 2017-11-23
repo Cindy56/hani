@@ -38,8 +38,8 @@ public class PersonalDataService implements AccountMgrApi{
 	}
 
 	@Override
-	public List<Map<String,Object>> get(String id) {
-		return  personalDataDao.get(id);
+	public List<Map<String,Object>> get(String userId) {
+		return  personalDataDao.get(userId);
 	
 	}
 
@@ -67,9 +67,9 @@ public class PersonalDataService implements AccountMgrApi{
 		return personalDataDao.insert(memberAccount);
 	}
 	 
-	public String getSec(String id) {
+	public String getSec(String userId) {
 		
-		return personalDataDao.getSec(id);
+		return personalDataDao.getSec(userId);
 	}
 
 	public int delCard(String bankCardNo) {

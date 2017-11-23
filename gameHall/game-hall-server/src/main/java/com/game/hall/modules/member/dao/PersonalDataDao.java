@@ -26,7 +26,7 @@ public interface PersonalDataDao {
 	public List<Map<String,Object>> findAllCart();
 	
 	//查找某个用户银行卡信息
-	public List<Map<String,Object>> get(String id);
+	public List<Map<String,Object>> get(String userId);
 	
 	//修改账户信息
 	public int updateMemberAccount(MemberAccount memberAccount);
@@ -35,7 +35,7 @@ public interface PersonalDataDao {
 	public int modifySec(@Param("id")String id,@Param("newPassWord")String newPassWord);
 	
 	//查询安全码
-	public String getSec(String id);
+	public String getSec(String userId);
 	
 	//增加银行卡绑定
 	public int insertCard(MemberAccountCard memberAccountCard);

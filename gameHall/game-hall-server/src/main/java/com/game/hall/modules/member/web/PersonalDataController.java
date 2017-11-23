@@ -51,9 +51,9 @@ public class PersonalDataController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/personalData", method = RequestMethod.GET)
-	public ResultData personalData(String id) {
+	public ResultData personalData(String userId) {
 		ResultData rs = new ResultData();
-		List<Map<String,Object>> list = personalDataService.get(id);
+		List<Map<String,Object>> list = personalDataService.get(userId);
 		if(list.size() == 0) {
 			//该用户未绑定银行卡
 			rs.setErrorCode(001);
@@ -66,7 +66,6 @@ public class PersonalDataController {
 			rs.setData(list);		
 		}
 		return rs;
-
 		
 	}
 	
@@ -288,9 +287,9 @@ public class PersonalDataController {
 	//验证用户安全码
 	@ResponseBody
 	@RequestMapping(value = "/verSecPwd", method = RequestMethod.GET)
-	public String verSecPwd(String id,String secPassWord) {
+	public String verSecPwd(String userId,String secPassWord) {
 			//根据id查询该用户的安全密码
-	      String str = 	personalDataService.getSec(id);
+	      String str = 	personalDataService.getSec(userId);
 	      if(StringUtils.isNotBlank(secPassWord)) {
 	    	 if(PassWordUtils.validatePassword(secPassWord, str)) {
 	    		 //输入的安全密码正确

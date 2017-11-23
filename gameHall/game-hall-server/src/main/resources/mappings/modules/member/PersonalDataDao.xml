@@ -45,7 +45,7 @@
 		FROM
 		member_account_card a,
 		member_account b
-		WHERE b.user_id = #{id}
+		WHERE b.user_id = #{userId}
 		AND a.user_id = b.user_id
 		AND a.del_flag = '0'
 		
@@ -236,7 +236,7 @@
 	
 	<select id="getSec" resultType="java.lang.String">
 		SELECT sec_password from member_account b
-		where b.user_id = #{id}
+		where b.user_id = #{userId}
 	</select>
 	
 	<insert id="insertCard">
