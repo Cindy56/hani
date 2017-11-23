@@ -8,11 +8,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.hall.common.service.CrudService;
-import com.game.hall.common.utils.CacheUtils;
+import com.game.common.service.CrudService;
+import com.game.common.utils.CacheUtils;
 import com.game.hall.modules.sys.dao.DictDao;
-import com.game.hall.modules.sys.entity.Dict;
 import com.game.hall.modules.sys.utils.DictUtils;
+import com.game.modules.sys.entity.Dict;
 
 /**
  * 字典Service
@@ -30,17 +30,4 @@ public class DictService extends CrudService<DictDao, Dict> {
 	public List<String> findTypeList(){
 		return dao.findTypeList(new Dict());
 	}
-
-	@Transactional(readOnly = false)
-	public void save(Dict dict) {
-		super.save(dict);
-		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
-	}
-
-	@Transactional(readOnly = false)
-	public void delete(Dict dict) {
-		super.delete(dict);
-		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
-	}
-
 }

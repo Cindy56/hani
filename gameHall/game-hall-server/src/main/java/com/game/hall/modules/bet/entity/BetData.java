@@ -2,7 +2,7 @@ package com.game.hall.modules.bet.entity;
 
 import java.math.BigDecimal;
 
-import com.game.hall.common.persistence.DataEntity;
+import com.game.common.persistence.DataEntity;
 
 public class BetData extends DataEntity<BetData> {
 

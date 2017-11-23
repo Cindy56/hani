@@ -5,7 +5,7 @@ response.setStatus(403);
 Throwable ex = Exceptions.getThrowable(request);
 
 // 如果是异步请求或是手机端，则直接返回信息
-if (Servlets.isAjaxRequest(request)) {
+if (MobileUtils.isAjaxRequest(request)) {
 	if (ex!=null && StringUtils.startsWith(ex.getMessage(), "msg:")){
 		out.print(StringUtils.replace(ex.getMessage(), "msg:", ""));
 	}else{
@@ -16,9 +16,9 @@ if (Servlets.isAjaxRequest(request)) {
 //输出异常信息页面
 else {
 %>
-<%@page import="com.game.hall.common.web.Servlets"%>
-<%@page import="com.game.hall.common.utils.Exceptions"%>
-<%@page import="com.game.hall.common.utils.StringUtils"%>
+<%@page import="com.game.hall.modules.sys.security.MobileUtils"%>
+<%@page import="com.game.common.utils.Exceptions"%>
+<%@page import="com.game.common.utils.StringUtils"%>
 <%@page contentType="text/html;charset=UTF-8" isErrorPage="true"%>
 <%@include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>

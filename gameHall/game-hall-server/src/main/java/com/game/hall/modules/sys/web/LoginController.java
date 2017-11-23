@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.game.hall.common.config.Global;
-import com.game.hall.common.security.shiro.session.SessionDAO;
-import com.game.hall.common.servlet.ValidateCodeServlet;
-import com.game.hall.common.utils.CacheUtils;
-import com.game.hall.common.utils.CookieUtils;
-import com.game.hall.common.utils.IdGen;
-import com.game.hall.common.utils.StringUtils;
-import com.game.hall.common.web.BaseController;
+import com.game.common.config.Global;
+import com.game.common.security.shiro.session.SessionDAO;
+import com.game.common.servlet.ValidateCodeServlet;
+import com.game.common.utils.CacheUtils;
+import com.game.common.utils.CookieUtils;
+import com.game.common.utils.IdGen;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.BaseController;
 import com.game.hall.modules.sys.security.FormAuthenticationFilter;
 import com.game.hall.modules.sys.security.SystemAuthorizingRealm.Principal;
 import com.game.hall.modules.sys.utils.UserUtils;
@@ -168,8 +168,8 @@ public class LoginController extends BaseController{
 
 //		System.out.println("==========================a");
 //		try {
-//			byte[] bytes = com.game.hall.common.utils.FileUtils.readFileToByteArray(
-//					com.game.hall.common.utils.FileUtils.getFile("c:\\sxt.dmp"));
+//			byte[] bytes = com.game.common.utils.FileUtils.readFileToByteArray(
+//					com.game.common.utils.FileUtils.getFile("c:\\sxt.dmp"));
 //			UserUtils.getSession().setAttribute("kkk", bytes);
 //			UserUtils.getSession().setAttribute("kkk2", bytes);
 //		} catch (Exception e) {

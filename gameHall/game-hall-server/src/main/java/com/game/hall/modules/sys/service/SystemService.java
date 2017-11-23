@@ -8,34 +8,34 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.identity.Group;
+//import org.activiti.engine.IdentityService;
+//import org.activiti.engine.identity.Group;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.hall.common.config.Global;
-import com.game.hall.common.persistence.Page;
-import com.game.hall.common.security.Digests;
-import com.game.hall.common.security.shiro.session.SessionDAO;
-import com.game.hall.common.service.BaseService;
-import com.game.hall.common.service.ServiceException;
-import com.game.hall.common.utils.CacheUtils;
-import com.game.hall.common.utils.Encodes;
-import com.game.hall.common.utils.StringUtils;
-import com.game.hall.common.web.Servlets;
+import com.game.common.config.Global;
+import com.game.common.persistence.Page;
+import com.game.common.security.Digests;
+import com.game.common.security.shiro.session.SessionDAO;
+import com.game.common.service.BaseService;
+import com.game.common.service.ServiceException;
+import com.game.common.utils.CacheUtils;
+import com.game.common.utils.Encodes;
+import com.game.common.utils.StringUtils;
+import com.game.common.web.Servlets;
 import com.game.hall.modules.sys.dao.MenuDao;
 import com.game.hall.modules.sys.dao.RoleDao;
 import com.game.hall.modules.sys.dao.UserDao;
-import com.game.hall.modules.sys.entity.Menu;
-import com.game.hall.modules.sys.entity.Office;
-import com.game.hall.modules.sys.entity.Role;
-import com.game.hall.modules.sys.entity.User;
 import com.game.hall.modules.sys.security.SystemAuthorizingRealm;
 import com.game.hall.modules.sys.utils.LogUtils;
 import com.game.hall.modules.sys.utils.UserUtils;
+import com.game.modules.sys.entity.Menu;
+import com.game.modules.sys.entity.Office;
+import com.game.modules.sys.entity.Role;
+import com.game.modules.sys.entity.User;
 
 /**
  * 系统管理，安全相关实体的管理类,包括用户、角色、菜单.
@@ -65,8 +65,8 @@ public class SystemService extends BaseService implements InitializingBean {
 		return sessionDao;
 	}
 
-	@Autowired
-	private IdentityService identityService;
+//	@Autowired
+//	private IdentityService identityService;
 
 	//-- User Service --//
 	
@@ -261,46 +261,6 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 	
 	@Transactional(readOnly = false)
-	public void saveRole(Role role) {
-		if (StringUtils.isBlank(role.getId())){
-			role.preInsert();
-			roleDao.insert(role);
-			// 同步到Activiti
-			saveActivitiGroup(role);
-		}else{
-			role.preUpdate();
-			roleDao.update(role);
-		}
-		// 更新角色与菜单关联
-		roleDao.deleteRoleMenu(role);
-		if (role.getMenuList().size() > 0){
-			roleDao.insertRoleMenu(role);
-		}
-		// 更新角色与部门关联
-		roleDao.deleteRoleOffice(role);
-		if (role.getOfficeList().size() > 0){
-			roleDao.insertRoleOffice(role);
-		}
-		// 同步到Activiti
-		saveActivitiGroup(role);
-		// 清除用户角色缓存
-		UserUtils.removeCache(UserUtils.CACHE_ROLE_LIST);
-//		// 清除权限缓存
-//		systemRealm.clearAllCachedAuthorizationInfo();
-	}
-
-	@Transactional(readOnly = false)
-	public void deleteRole(Role role) {
-		roleDao.delete(role);
-		// 同步到Activiti
-		deleteActivitiGroup(role);
-		// 清除用户角色缓存
-		UserUtils.removeCache(UserUtils.CACHE_ROLE_LIST);
-//		// 清除权限缓存
-//		systemRealm.clearAllCachedAuthorizationInfo();
-	}
-	
-	@Transactional(readOnly = false)
 	public Boolean outUserInRole(Role role, User user) {
 		List<Role> roles = user.getRoleList();
 		for (Role e : roles){
@@ -337,65 +297,6 @@ public class SystemService extends BaseService implements InitializingBean {
 		return UserUtils.getMenuList();
 	}
 	
-	@Transactional(readOnly = false)
-	public void saveMenu(Menu menu) {
-		
-		// 获取父节点实体
-		menu.setParent(this.getMenu(menu.getParent().getId()));
-		
-		// 获取修改前的parentIds，用于更新子节点的parentIds
-		String oldParentIds = menu.getParentIds(); 
-		
-		// 设置新的父节点串
-		menu.setParentIds(menu.getParent().getParentIds()+menu.getParent().getId()+",");
-
-		// 保存或更新实体
-		if (StringUtils.isBlank(menu.getId())){
-			menu.preInsert();
-			menuDao.insert(menu);
-		}else{
-			menu.preUpdate();
-			menuDao.update(menu);
-		}
-		
-		// 更新子节点 parentIds
-		Menu m = new Menu();
-		m.setParentIds("%,"+menu.getId()+",%");
-		List<Menu> list = menuDao.findByParentIdsLike(m);
-		for (Menu e : list){
-			e.setParentIds(e.getParentIds().replace(oldParentIds, menu.getParentIds()));
-			menuDao.updateParentIds(e);
-		}
-		// 清除用户菜单缓存
-		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
-//		// 清除权限缓存
-//		systemRealm.clearAllCachedAuthorizationInfo();
-		// 清除日志相关缓存
-		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
-	}
-
-	@Transactional(readOnly = false)
-	public void updateMenuSort(Menu menu) {
-		menuDao.updateSort(menu);
-		// 清除用户菜单缓存
-		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
-//		// 清除权限缓存
-//		systemRealm.clearAllCachedAuthorizationInfo();
-		// 清除日志相关缓存
-		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
-	}
-
-	@Transactional(readOnly = false)
-	public void deleteMenu(Menu menu) {
-		menuDao.delete(menu);
-		// 清除用户菜单缓存
-		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
-//		// 清除权限缓存
-//		systemRealm.clearAllCachedAuthorizationInfo();
-		// 清除日志相关缓存
-		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
-	}
-	
 	/**
 	 * 获取Key加载信息
 	 */
@@ -417,127 +318,23 @@ public class SystemService extends BaseService implements InitializingBean {
 	 */
 	private static boolean isSynActivitiIndetity = true;
 	public void afterPropertiesSet() throws Exception {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		if (isSynActivitiIndetity){
-			isSynActivitiIndetity = false;
-	        // 同步角色数据
-			List<Group> groupList = identityService.createGroupQuery().list();
-			if (groupList.size() == 0){
-			 	Iterator<Role> roles = roleDao.findAllList(new Role()).iterator();
-			 	while(roles.hasNext()) {
-			 		Role role = roles.next();
-			 		saveActivitiGroup(role);
-			 	}
-			}
-		 	// 同步用户数据
-			List<org.activiti.engine.identity.User> userList = identityService.createUserQuery().list();
-			if (userList.size() == 0){
-			 	Iterator<User> users = userDao.findAllList(new User()).iterator();
-			 	while(users.hasNext()) {
-			 		saveActivitiUser(users.next());
-			 	}
-			}
-		}
+		
 	}
 	
 	private void saveActivitiGroup(Role role) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		String groupId = role.getEnname();
 		
-		// 如果修改了英文名，则删除原Activiti角色
-		if (StringUtils.isNotBlank(role.getOldEnname()) && !role.getOldEnname().equals(role.getEnname())){
-			identityService.deleteGroup(role.getOldEnname());
-		}
-		
-		Group group = identityService.createGroupQuery().groupId(groupId).singleResult();
-		if (group == null) {
-			group = identityService.newGroup(groupId);
-		}
-		group.setName(role.getName());
-		group.setType(role.getRoleType());
-		identityService.saveGroup(group);
-		
-		// 删除用户与用户组关系
-		List<org.activiti.engine.identity.User> activitiUserList = identityService.createUserQuery().memberOfGroup(groupId).list();
-		for (org.activiti.engine.identity.User activitiUser : activitiUserList){
-			identityService.deleteMembership(activitiUser.getId(), groupId);
-		}
-
-		// 创建用户与用户组关系
-		List<User> userList = findUser(new User(new Role(role.getId())));
-		for (User e : userList){
-			String userId = e.getLoginName();//ObjectUtils.toString(user.getId());
-			// 如果该用户不存在，则创建一个
-			org.activiti.engine.identity.User activitiUser = identityService.createUserQuery().userId(userId).singleResult();
-			if (activitiUser == null){
-				activitiUser = identityService.newUser(userId);
-				activitiUser.setFirstName(e.getName());
-				activitiUser.setLastName(StringUtils.EMPTY);
-				activitiUser.setEmail(e.getEmail());
-				activitiUser.setPassword(StringUtils.EMPTY);
-				identityService.saveUser(activitiUser);
-			}
-			identityService.createMembership(userId, groupId);
-		}
 	}
 
 	public void deleteActivitiGroup(Role role) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		if(role!=null) {
-			String groupId = role.getEnname();
-			identityService.deleteGroup(groupId);
-		}
+		
 	}
 
 	private void saveActivitiUser(User user) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		String userId = user.getLoginName();//ObjectUtils.toString(user.getId());
-		org.activiti.engine.identity.User activitiUser = identityService.createUserQuery().userId(userId).singleResult();
-		if (activitiUser == null) {
-			activitiUser = identityService.newUser(userId);
-		}
-		activitiUser.setFirstName(user.getName());
-		activitiUser.setLastName(StringUtils.EMPTY);
-		activitiUser.setEmail(user.getEmail());
-		activitiUser.setPassword(StringUtils.EMPTY);
-		identityService.saveUser(activitiUser);
 		
-		// 删除用户与用户组关系
-		List<Group> activitiGroups = identityService.createGroupQuery().groupMember(userId).list();
-		for (Group group : activitiGroups) {
-			identityService.deleteMembership(userId, group.getId());
-		}
-		// 创建用户与用户组关系
-		for (Role role : user.getRoleList()) {
-	 		String groupId = role.getEnname();
-	 		// 如果该用户组不存在，则创建一个
-		 	Group group = identityService.createGroupQuery().groupId(groupId).singleResult();
-            if(group == null) {
-	            group = identityService.newGroup(groupId);
-	            group.setName(role.getName());
-	            group.setType(role.getRoleType());
-	            identityService.saveGroup(group);
-            }
-			identityService.createMembership(userId, role.getEnname());
-		}
 	}
 
 	private void deleteActivitiUser(User user) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		if(user!=null) {
-			String userId = user.getLoginName();//ObjectUtils.toString(user.getId());
-			identityService.deleteUser(userId);
-		}
+		
 	}
 	
 	///////////////// Synchronized to the Activiti end //////////////////

@@ -13,7 +13,7 @@
 		ignore-unresolvable="true" location="classpath:application.properties" />
 
 	<!-- 使用Annotation自动注册Bean,只扫描@Controller -->
-	<context:component-scan base-package="com.game.hall"
+	<context:component-scan base-package="com.game"
 		use-default-filters="false"><!-- base-package 如果多个，用“,”分隔 -->
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
@@ -37,7 +37,7 @@
 				</property>
 				<property name="prettyPrint" value="false" />
 				<property name="objectMapper">
-					<bean class="com.game.hall.common.mapper.JsonMapper"></bean>
+					<bean class="com.game.common.mapper.JsonMapper"></bean>
 				</property>
 			</bean>
 			<!-- 使用XML格式输出数据 -->
@@ -50,10 +50,10 @@
 						</property>
 						<property name="annotatedClasses">
 							<list>
-								<value>com.game.hall.common.persistence.BaseEntity</value>
-								<value>com.game.hall.common.supcan.treelist.TreeList</value>
-								<value>com.game.hall.common.supcan.treelist.cols.Col</value>
-								<value>com.game.hall.common.supcan.treelist.cols.Group</value>
+								<value>com.game.common.persistence.BaseEntity</value>
+								<value>com.game.common.supcan.treelist.TreeList</value>
+								<value>com.game.common.supcan.treelist.cols.Col</value>
+								<value>com.game.common.supcan.treelist.cols.Group</value>
 							</list>
 						</property>
 					</bean>
@@ -136,6 +136,6 @@
 		<property name="maxUploadSize" value="${web.maxUploadSize}" />
 	</bean>
 
-	<import resource="remoting-client.xml" />
+	<import resource="spring-hessian-client.xml" />
 
 </beans>

@@ -9,10 +9,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.hall.common.service.TreeService;
+import com.game.common.service.TreeService;
 import com.game.hall.modules.sys.dao.OfficeDao;
-import com.game.hall.modules.sys.entity.Office;
 import com.game.hall.modules.sys.utils.UserUtils;
+import com.game.modules.sys.entity.Office;
 
 /**
  * 机构Service
@@ -43,17 +43,4 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		}
 		return  new ArrayList<Office>();
 	}
-	
-	@Transactional(readOnly = false)
-	public void save(Office office) {
-		super.save(office);
-		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
-	}
-	
-	@Transactional(readOnly = false)
-	public void delete(Office office) {
-		super.delete(office);
-		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
-	}
-	
 }

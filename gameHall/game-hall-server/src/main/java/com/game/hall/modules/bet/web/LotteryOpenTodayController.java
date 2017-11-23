@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.game.hall.modules.bet.entity.BetData;
-import com.game.hall.modules.bet.entity.LotteryTimeNum;
+import com.game.hall.modules.bet.entity.LotteryTimeNumbak;
 import com.game.hall.modules.bet.entity.ResultData;
 import com.game.hall.modules.bet.service.LotteryAddBetService;
 import com.game.hall.modules.bet.service.LotteryOpenTodayService;
@@ -44,7 +44,7 @@ public class LotteryOpenTodayController {
 
 	@ResponseBody
 	@RequestMapping(value = "/getopentoday", method = RequestMethod.GET)
-	public List<LotteryTimeNum> getOpenToday(String name) {
+	public List<LotteryTimeNumbak> getOpenToday(String name) {
 
 		// List<LotteryTimeNum> openToday = lotteryTimeNumService.OpenToday();
 
@@ -84,11 +84,11 @@ public class LotteryOpenTodayController {
 
 	@ResponseBody
 	@RequestMapping(value = "/getcur", method = RequestMethod.GET)
-	public List<LotteryTimeNum> getCur() {
+	public List<LotteryTimeNumbak> getCur() {
 
 		Date dt = new Date();
 
-		List<LotteryTimeNum> openToday = lotteryTimeNumService.Cur(dt);
+		List<LotteryTimeNumbak> openToday = lotteryTimeNumService.Cur(dt);
 
 		return openToday;
 	}

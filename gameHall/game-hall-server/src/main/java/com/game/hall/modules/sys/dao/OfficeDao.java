@@ -3,9 +3,9 @@
  */
 package com.game.hall.modules.sys.dao;
 
-import com.game.hall.common.persistence.TreeDao;
-import com.game.hall.common.persistence.annotation.MyBatisDao;
-import com.game.hall.modules.sys.entity.Office;
+import com.game.common.persistence.TreeDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.sys.entity.Office;
 
 /**
  * 机构DAO接口

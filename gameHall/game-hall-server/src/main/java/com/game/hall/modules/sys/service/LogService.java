@@ -6,11 +6,11 @@ package com.game.hall.modules.sys.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.game.hall.common.persistence.Page;
-import com.game.hall.common.service.CrudService;
-import com.game.hall.common.utils.DateUtils;
+import com.game.common.persistence.Page;
+import com.game.common.service.CrudService;
+import com.game.common.utils.DateUtils;
 import com.game.hall.modules.sys.dao.LogDao;
-import com.game.hall.modules.sys.entity.Log;
+import com.game.modules.sys.entity.Log;
 
 /**
  * 日志Service
