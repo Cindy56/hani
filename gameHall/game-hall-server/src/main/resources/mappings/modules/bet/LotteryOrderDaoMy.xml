@@ -7,7 +7,7 @@
 
 
 
-	<select id="findListById" resultType="com.game.manager.modules.order.entity.LotteryOrder">
+	<select id="findListById" resultType="LotteryOrder">
 		SELECT
 		<include refid="lotteryOrderColumns" />
 		FROM lottery_order a
