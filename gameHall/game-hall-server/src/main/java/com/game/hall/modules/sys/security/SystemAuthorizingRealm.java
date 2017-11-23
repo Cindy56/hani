@@ -26,18 +26,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.game.hall.common.config.Global;
-import com.game.hall.common.servlet.ValidateCodeServlet;
-import com.game.hall.common.utils.Encodes;
-import com.game.hall.common.utils.SpringContextHolder;
-import com.game.hall.common.web.Servlets;
-import com.game.hall.modules.sys.entity.Menu;
-import com.game.hall.modules.sys.entity.Role;
-import com.game.hall.modules.sys.entity.User;
+import com.game.common.config.Global;
+import com.game.common.servlet.ValidateCodeServlet;
+import com.game.common.utils.Encodes;
+import com.game.common.utils.SpringContextHolder;
+import com.game.common.web.Servlets;
 import com.game.hall.modules.sys.service.SystemService;
 import com.game.hall.modules.sys.utils.LogUtils;
 import com.game.hall.modules.sys.utils.UserUtils;
 import com.game.hall.modules.sys.web.LoginController;
+import com.game.modules.sys.entity.Menu;
+import com.game.modules.sys.entity.Role;
+import com.game.modules.sys.entity.User;
 
 /**
  * 系统安全认证实现类

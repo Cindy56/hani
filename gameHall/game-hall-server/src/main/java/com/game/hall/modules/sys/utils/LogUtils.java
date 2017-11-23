@@ -12,16 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.method.HandlerMethod;
 
-import com.game.hall.common.config.Global;
-import com.game.hall.common.utils.CacheUtils;
-import com.game.hall.common.utils.Exceptions;
-import com.game.hall.common.utils.SpringContextHolder;
-import com.game.hall.common.utils.StringUtils;
+import com.game.common.config.Global;
+import com.game.common.utils.CacheUtils;
+import com.game.common.utils.Exceptions;
+import com.game.common.utils.SpringContextHolder;
+import com.game.common.utils.StringUtils;
 import com.game.hall.modules.sys.dao.LogDao;
 import com.game.hall.modules.sys.dao.MenuDao;
-import com.game.hall.modules.sys.entity.Log;
-import com.game.hall.modules.sys.entity.Menu;
-import com.game.hall.modules.sys.entity.User;
+import com.game.modules.sys.entity.Log;
+import com.game.modules.sys.entity.Menu;
+import com.game.modules.sys.entity.User;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

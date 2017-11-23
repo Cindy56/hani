@@ -5,9 +5,9 @@ package com.game.hall.modules.sys.dao;
 
 import java.util.List;
 
-import com.game.hall.common.persistence.CrudDao;
-import com.game.hall.common.persistence.annotation.MyBatisDao;
-import com.game.hall.modules.sys.entity.Menu;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.sys.entity.Menu;
 
 /**
  * 菜单DAO接口

@@ -16,7 +16,7 @@ import com.hessianapi.MoneyMgrApi;
  */
 @Service
 public class LotteryAddBetService {
-	@Autowired // (name = "myServiceClient")
+//	@Autowired // (name = "myServiceClient")
 	private MoneyMgrApi heApi;
 
 	public ResultData bet(BetData betData) {

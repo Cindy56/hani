@@ -3,9 +3,9 @@
  */
 package com.game.hall.modules.sys.dao;
 
-import com.game.hall.common.persistence.CrudDao;
-import com.game.hall.common.persistence.annotation.MyBatisDao;
-import com.game.hall.modules.sys.entity.Role;
+import com.game.common.persistence.CrudDao;
+import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.sys.entity.Role;
 
 /**
  * 角色DAO接口

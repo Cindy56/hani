@@ -14,7 +14,7 @@
   <function>
     <description>获取当前管理站点编号</description>
     <name>getCurrentSiteId</name>
-    <function-class>com.game.hall.modules.cms.entity.Site</function-class>
+    <function-class>com.game.hall.modules.cms.utils.CmsUtils</function-class>
     <function-signature>java.lang.String getCurrentSiteId()</function-signature>
     <example>${fnc:getCurrentSiteId()}</example>  
   </function>
