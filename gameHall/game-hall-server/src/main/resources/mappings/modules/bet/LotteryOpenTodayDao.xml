@@ -26,15 +26,14 @@
 	<sql id="lotteryTimeNumJoins">
 	</sql>
 
-	<select id="get" resultType="com.game.hall.modules.bet.entity.LotteryTimeNum">
+	<select id="get" resultType="LotteryTimeNum">
 		SELECT
 		<include refid="lotteryTimeNumColumns" />
 		FROM lottery_time_num a
 		WHERE a.id = #{id}
 	</select>
 
-	<resultMap id="aResult"
-		type="com.game.hall.modules.bet.entity.LotteryTimeNum">
+	<resultMap id="aResult" type="LotteryTimeNum">
 		<id property="id" column="id" />
 		<result property="lotteryCode" column="lotteryCode" />
 		<result property="lotteryIssueNo" column="lotteryIssueNo" />

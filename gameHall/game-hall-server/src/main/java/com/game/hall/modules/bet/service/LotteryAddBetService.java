@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.api.BetServiceApi;
 import com.entity.GameError;
 import com.entity.ResultData;
-import com.game.common.utils.SpringContextHolder;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
 import com.game.modules.lottery.service.LotteryPlayConfigService;

@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-	<display-name>JeeSite</display-name>
+	<display-name>game-hall</display-name>
 
 	<!-- Context ConfigLocation -->
 	<context-param>
@@ -89,7 +89,7 @@
 			<param-value>classpath*:/spring-mvc*.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
-	</servlet>
+	</servlet>	
 	<servlet-mapping>
 		<servlet-name>springServlet</servlet-name>
 		<url-pattern>/</url-pattern>
