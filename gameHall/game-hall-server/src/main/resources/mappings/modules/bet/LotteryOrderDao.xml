@@ -41,7 +41,7 @@
 		LEFT JOIN sys_user u3 ON u3.id = a.user_id
 	</sql>
 
-	<select id="get" resultType="com.game.manager.modules.order.entity.LotteryOrder">
+	<select id="get" resultType="LotteryOrder">
 		SELECT
 		<include refid="lotteryOrderColumns" />
 		FROM lottery_order a
@@ -49,7 +49,7 @@
 		WHERE a.id = #{id}
 	</select>
 
-	<select id="findList" resultType="com.game.manager.modules.order.entity.LotteryOrder">
+	<select id="findList" resultType="LotteryOrder">
 		SELECT
 		<include refid="lotteryOrderColumns" />
 		FROM lottery_order a
@@ -131,7 +131,7 @@
 		</choose>
 	</select>
 
-	<select id="findAllList" resultType="com.game.manager.modules.order.entity.LotteryOrder">
+	<select id="findAllList" resultType="LotteryOrder">
 		SELECT
 		<include refid="lotteryOrderColumns" />
 		FROM lottery_order a

@@ -14,13 +14,16 @@ import com.entity.ResultData;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOpenTodayDao;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
-import com.game.hall.modules.bet.dao.LotteryPlayConfigDao;
 import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.lottery.entity.LotteryType;
+import com.game.modules.lottery.service.LotteryPlayConfigService;
+import com.game.modules.lottery.service.LotteryTimeNumService;
 import com.game.modules.order.entity.LotteryOrder;
 
 /**
  * 今日开奖
+ * 
  * @author antonio
  *
  */
@@ -30,13 +33,16 @@ public class LotteryOpenTodayService {
 	private BetServiceApi myServiceClient;
 
 	@Autowired
+	private LotteryTimeNumService myLotteryTimeNumService;
+
+	@Autowired
 	private LotteryOrderDao myOrder;
 
 	@Autowired
-	AccountChargeDao myAccountCharge;
+	private AccountChargeDao myAccountCharge;
 
 	@Autowired
-	LotteryPlayConfigDao myPlayConfig;
+	private LotteryPlayConfigService lotteryPlayConfigService;
 
 	@Autowired
 	private LotteryOpenTodayDao lotOpenToday;
@@ -45,12 +51,9 @@ public class LotteryOpenTodayService {
 	// }
 	//
 
-	public ResultData openToday(String lotteryName, Integer num) {
+	public ResultData openToday(String lotteryCode, Integer num) {
 
-		if (myServiceClient != null)
-			return myServiceClient.openToday(lotteryName, num);
-
-		List<LotteryTimeNum> lsLots = lotOpenToday.openToday(lotteryName, num);
+		List<LotteryTimeNum> lsLots = myLotteryTimeNumService.findLotteryTimeNum(lotteryCode, num);
 
 		ResultData rd = ResultData.ResultDataOK();
 
@@ -59,30 +62,35 @@ public class LotteryOpenTodayService {
 
 	}
 
-	public ResultData openCur(String lotteryName) {
-		if (myServiceClient != null)
-			return myServiceClient.curOpen(lotteryName);
+	public ResultData openCur(String lotteryCode) {
 
 		Date dt = new Date();
-		List<LotteryTimeNum> lsLot = lotOpenToday.currentIssue(lotteryName, dt);
+		LotteryTimeNum lot = myLotteryTimeNumService.findCurrentIssueNo(lotteryCode);
+
 		ResultData rd = ResultData.ResultDataOK();
 
-		rd.setData(lsLot);
+		rd.setData(lot);
 		return rd;
 	}
 
-	public ResultData getPlayConfig(String lotteryName) {
+	public ResultData getPlayConfig(String lotteryCode) {
 		if (myServiceClient != null)
-			return myServiceClient.curOpen(lotteryName);
+			return myServiceClient.curOpen(lotteryCode);
 
-		List<LotteryPlayConfig> lsLot = myPlayConfig.findAllConfigByName(lotteryName);
+		LotteryPlayConfig lotteryPlayConfig = new LotteryPlayConfig();
+		LotteryType lotteryType = new LotteryType();
+		lotteryType.setCode(lotteryCode);
+		lotteryPlayConfig.setLotteryCode(lotteryType);
+
+		List<LotteryPlayConfig> lsLot = lotteryPlayConfigService.findList(lotteryPlayConfig);
+
 		ResultData rd = ResultData.ResultDataOK();
 
 		rd.setData(lsLot);
 		return rd;
 	}
 
-	public ResultData getOrders( String userID, String lotteryName, int num) {
+	public ResultData getOrders(String userID, String lotteryName, int num) {
 		if (myServiceClient != null)
 			return myServiceClient.curOpen(lotteryName);
 

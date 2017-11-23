@@ -19,7 +19,7 @@ import com.entity.ResultData;
 import com.game.common.utils.SpringContextHolder;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
-import com.game.hall.modules.bet.dao.LotteryPlayConfigDao;
+import com.game.modules.lottery.service.LotteryPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.User;
@@ -44,23 +44,15 @@ public class LotteryAddBetService implements BetServiceApi {
 	private LotteryOrderDao myOrder;
 
 	@Autowired
-	AccountChargeDao myAccountCharge;
+	private AccountChargeDao myAccountCharge;
+
+//	@Autowired
+	private LotteryPlayConfigService lotteryPlayConfigService;
 
 	@Autowired
-	LotteryPlayConfigDao myPlayConfig;
+	private LotteryOpenTodayService myOpenToday;
 
-	@Autowired
-	LotteryOpenTodayService myOpenToday;
 
-	// public ResultData bet(BetData betData) {
-	//
-	// return heApi.addBet(betData);
-	//
-	// }
-
-	private BetServiceApi getBetServiceApi() {
-		return (BetServiceApi) SpringContextHolder.getBean("myServiceClient");
-	}
 
 	public String test1() {
 		// TODO Auto-generated method stub
@@ -87,7 +79,7 @@ public class LotteryAddBetService implements BetServiceApi {
 		LotteryOrder bet1 = new LotteryOrder();
 		bet1.preInsert();
 		User user = new User();
-		//user.setId("00user");
+		// user.setId("00user");
 		user.setName("00username");
 
 		bet1.setAccountId("034f37416db44fa4a8ab05d98da6fa7d");
@@ -95,7 +87,7 @@ public class LotteryAddBetService implements BetServiceApi {
 		Office company = new Office();
 		company.setCode("code");
 		user.setCompany(company);
-		//bet1.setUser(user);
+		// bet1.setUser(user);
 		String lotteryCode = "CQSSC";
 		bet1.setLotteryCode(lotteryCode);
 		BigDecimal betAmount = new BigDecimal(1);
@@ -105,7 +97,7 @@ public class LotteryAddBetService implements BetServiceApi {
 		String betType = "";
 		bet1.setBetType(betType);
 		User currentUser = null;
-	//	bet1.setCurrentUser(currentUser);
+		// bet1.setCurrentUser(currentUser);
 
 		String orderSource = "0";
 		bet1.setOrderSource(orderSource);
@@ -118,13 +110,12 @@ public class LotteryAddBetService implements BetServiceApi {
 		String playModeMoneyType = "0";
 		bet1.setPlayModeMoneyType(playModeMoneyType);
 
-	//	bet1.setOrderNum("10000001");
+		// bet1.setOrderNum("10000001");
 
 		bet1.setBetDetail("detail");
 		bet1.setBetRate(1);
 		bet1.setStatus("0");
 
-		
 		return bet1;
 	}
 
@@ -262,7 +253,7 @@ public class LotteryAddBetService implements BetServiceApi {
 
 		for (int i = 0; i < orderIds.size(); i++) {
 
-			int ret = myOrder.cancelByOrderNo(user, new Date(),orderIds.get(i));
+			int ret = myOrder.cancelByOrderNo(user, new Date(), orderIds.get(i));
 		}
 
 		ResultData rd = ResultData.ResultDataOK();
