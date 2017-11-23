@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.trade.modules.member.dao.MemberAccountDao">
+    
+	<sql id="memberAccountColumns">
+		a.id AS "id",
+		a.parent_agent_id AS "parentAgentId",
+		a.parent_agent_ids AS "parentAgentIds",
+		a.user_id AS "user.id",
+		b.login_name AS "user.loginName",
+		a.org_id AS "orgId.id",
+		a.account_type AS "accountType",
+		a.sec_password AS "secPassword",
+		a.qq_no AS "qqNo",
+		a.mobile_no AS "mobileNo",
+		a.blance AS "blance",
+		a.blance_frozen AS "blanceFrozen",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+
+    
+	<select id="get" resultType="MemberAccount">
+		SELECT 
+			<include refid="memberAccountColumns"/>
+		FROM member_account a, sys_user b
+		WHERE a.id = #{id}
+		and b.id = a.user_id
+	</select>
+	
+	<select id="findList" resultType="MemberAccount">
+		SELECT 
+			<include refid="memberAccountColumns"/>
+		FROM member_account a, sys_user b
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			and b.id = a.user_id
+			<if test="accountType != null and accountType != ''">
+				AND a.account_type = #{accountType}
+			</if>
+			
+			<if test="qqNo != null and qqNo != ''">
+				AND a.qq_no = #{qqNo}
+			</if>
+			<if test="mobileNo != null and mobileNo != ''">
+				AND a.mobile_no = #{mobileNo}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MemberAccount">
+		SELECT 
+			<include refid="memberAccountColumns"/>
+		FROM member_account a, sys_user b
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			and b.id = a.user_id
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO member_account(
+			id,
+			parent_agent_id,
+			parent_agent_ids,
+			user_id,
+			org_id,
+			account_type,
+			sec_password,
+			qq_no,
+			mobile_no,
+			blance,
+			blance_frozen,
+			status,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{parentAgentId},
+			#{parentAgentIds},
+			#{user.id},
+			#{orgId.id},
+			#{accountType},
+			#{secPassword},
+			#{qqNo},
+			#{mobileNo},
+			#{blance},
+			#{blanceFrozen},
+			#{status},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE member_account SET 	
+			parent_agent_id = #{parentAgentId},
+			user_id = #{user.id},
+			org_id = #{orgId.id},
+			account_type = #{accountType},
+			sec_password = #{secPassword},
+			qq_no = #{qqNo},
+			mobile_no = #{mobileNo},
+			blance = #{blance},
+			blance_frozen = #{blanceFrozen},
+			status = #{status},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE member_account SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<select id="getLotteryPlayConfig" resultType="java.util.Map">
+		select
+			a.lottery_code as lotteryCode,
+			a.play_code as playCode,
+			b.name as parentName,
+			a.name as lotteryName,
+			a.play_type as playType,
+			a.winning_probability as winningProbability,
+			a.commission_rate_max as commissionRateMax,
+			a.commission_rate_min as commissionRateMin
+		from
+			lottery_play_config a, lottery_type b
+		where 
+			a.lottery_code=b.code
+			and b.is_enable='1'
+			and a.is_enable = '1'
+			and a.del_flag='0'
+			and b.del_flag='0'
+	</select>
+	
+	<update id="plusAmount">
+		UPDATE member_account tt
+		SET tt.blance = tt.blance + #{amount}
+		WHERE tt.id = #{accountId}
+	</update>
+
+	<update id="minusAmount">
+		UPDATE member_account tt
+		SET tt.blance = tt.blance - #{amount}
+		WHERE tt.id = #{accountId}
+		and tt.blance - #{amount} >= 0
+	</update>	
+	
+	<select id="findMemberId" resultType="MemberAccount">
+		SELECT
+			a.id AS "id",
+			a.parent_agent_id AS "parentAgentId",
+			a.parent_agent_ids AS "parentAgentIds",
+			a.user_id AS "user.id",
+			a.org_id AS "orgId.id",
+			a.account_type AS "accountType",
+			a.sec_password AS "secPassword",
+			a.qq_no AS "qqNo",
+			a.mobile_no AS "mobileNo",
+			a.blance AS "blance",
+			a.blance_frozen AS "blanceFrozen",
+			a.status AS "status",
+			a.create_date AS "createDate",
+			a.create_by AS "createBy.id",
+			a.update_date AS "updateDate",
+			a.update_by AS "updateBy.id",
+			a.del_flag AS "delFlag"
+		FROM member_account a  where 
+		a.id = #{id} 
+		UNION ALL 
+		select 
+		    a.id AS "id",
+			a.parent_agent_id AS "parentAgentId",
+			a.parent_agent_ids AS "parentAgentIds",
+			a.user_id AS "user.id",
+			a.org_id AS "orgId.id",
+			a.account_type AS "accountType",
+			a.sec_password AS "secPassword",
+			a.qq_no AS "qqNo",
+			a.mobile_no AS "mobileNo",
+			a.blance AS "blance",
+			a.blance_frozen AS "blanceFrozen",
+			a.status AS "status",
+			a.create_date AS "createDate",
+			a.create_by AS "createBy.id",
+			a.update_date AS "updateDate",
+			a.update_by AS "updateBy.id",
+			a.del_flag AS "delFlag"
+		 from member_account a
+		where   (select q.parent_agent_ids from member_account q where q.id = #{id} ) REGEXP a.id 
+	</select>
+	
+</mapper>

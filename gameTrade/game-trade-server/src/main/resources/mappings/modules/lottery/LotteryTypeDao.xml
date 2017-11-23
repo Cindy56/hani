@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.trade.modules.lottery.dao.LotteryTypeDao">
+
+    <!-- 查询字段 -->
+    <sql id="lotteryTypeColumns">
+        a.id AS "id",
+        a.parent_code AS "parentCode",
+        a.code AS "code",
+        a.company_id AS "companyId",
+        a.name AS "name",
+        a.is_auto AS "isAuto",
+        a.is_enable AS "isEnable",
+        a.times AS "times",
+        a.amount_max_bet AS "amountMaxBet",
+        a.create_date AS "createDate",
+        a.create_by AS "createBy.id",
+        a.update_date AS "updateDate",
+        a.update_by AS "updateBy.id",
+        a.del_flag AS "delFlag"
+    </sql>
+    
+  
+    
+    <!-- 表关联 -->
+    <sql id="lotteryTypeJoins">
+    </sql>
+
+    <!-- 根据记录ID查询单条数据 -->
+    <select id="get" resultType="LotteryType">
+        SELECT 
+            <include refid="lotteryTypeColumns"/>
+        FROM lottery_type a
+        <include refid="lotteryTypeJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <!-- 根据彩种代码查询单条数据 -->
+    <select id="getByCode" resultType="LotteryType">
+        SELECT 
+            <include refid="lotteryTypeColumns"/>
+        FROM lottery_type a
+        <include refid="lotteryTypeJoins"/>
+        WHERE a.code = #{code}
+    </select>
+
+    <!-- 分页查询指定删除状态的数据 -->
+    <select id="findList" resultType="LotteryType">
+        SELECT 
+            <include refid="lotteryTypeColumns"/>
+        FROM lottery_type a
+        <include refid="lotteryTypeJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="parentCode != null and parentCode != ''">
+                AND a.parent_code = #{parentCode}
+            </if>
+            <if test="name != null and name != ''">
+                AND a.name LIKE concat('%',#{name},'%')
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 查询所有指定删除状态的数据 -->
+    <select id="findAllList" resultType="LotteryType">
+        SELECT 
+            <include refid="lotteryTypeColumns"/>
+        FROM lottery_type a
+        <include refid="lotteryTypeJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+        </where>        
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 插入单条数据 -->
+    <insert id="insert">
+        INSERT INTO lottery_type(
+            `id`,
+            `parent_code`,
+            `code`,
+            `company_id`,
+            `name`,
+            `is_auto`,
+            `is_enable`,
+            `times`,
+            `amount_max_bet`,
+            `create_date`,
+            `create_by`,
+            `update_date`,
+            `update_by`,
+            `del_flag`
+        ) VALUES (
+            #{id},
+            #{parentCode},
+            #{code},
+            #{companyId},
+            #{name},
+            #{isAuto},
+            #{isEnable},
+            #{times},
+            #{amountMaxBet},
+            #{createDate},
+            #{createBy.id},
+            #{updateDate},
+            #{updateBy.id},
+            #{delFlag}
+        )
+    </insert>
+
+    <!-- 根据记录ID更新单条数据 -->
+    <update id="update">
+        UPDATE lottery_type SET     
+            parent_code = #{parentCode},
+            code = #{code},
+            company_id = #{companyId},
+            name = #{name},
+            is_auto = #{isAuto},
+            is_enable = #{isEnable},
+            times = #{times},
+            amount_max_bet = #{amountMaxBet},
+            update_date = #{updateDate},
+            update_by = #{updateBy.id}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据记录ID删除数据（更新数据删除标识为1） -->
+    <update id="delete">
+        UPDATE lottery_type SET 
+            del_flag = #{DEL_FLAG_DELETE}
+        WHERE id = #{id}
+    </update>
+    
+    
+     <!-- 根据数据记录ID获取单条数据 -->
+    <select id="queryLotteryType" resultType="LotteryType">
+        SELECT 
+            <include refid="lotteryTypeColumns"/>
+        FROM lottery_type a
+        WHERE a.del_flag = 0 and a.code = #{lotteryCode} 
+    </select>
+</mapper>

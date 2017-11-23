@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+           http://www.springframework.org/schema/context  
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd  
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd  
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">  
+
+ 	<!-- lottery -->
+  	<bean name="/lotteryPlayConfigService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="lotteryPlayConfigService"></property>
+        <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryPlayConfigService"></property>  
+    </bean>
+    
+	<bean name="/lotteryTimeNumService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="lotteryTimeNumService"></property>  
+        <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryTimeNumService"></property>  
+    </bean>  
+    
+    <bean name="/lotteryTypeService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="lotteryTypeService"></property>  
+        <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryTypeService"></property>  
+    </bean>
+    
+    <!-- member -->
+	<bean name="/memberAccountCardService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="memberAccountCardService"></property>  
+        <property name="serviceInterface" value="com.game.modules.member.service.MemberAccountCardService"></property>  
+    </bean>
+             
+	<bean name="/memberAccountService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="memberAccountService"></property>  
+        <property name="serviceInterface" value="com.game.modules.member.service.MemberAccountService"></property>  
+    </bean>  
+                 
+	<bean name="/memberPlayConfigService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="memberPlayConfigService"></property>  
+        <property name="serviceInterface" value="com.game.modules.member.service.MemberPlayConfigService"></property>  
+    </bean> 
+    
+    <!-- order -->
+	<bean name="/lotteryOrderService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="lotteryOrderService"></property>  
+        <property name="serviceInterface" value="com.game.modules.order.service.LotteryOrderService"></property>  
+    </bean>
+    
+    <!-- finance -->
+	<bean name="/financeTradeDetailService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="financeTradeDetailService"></property>  
+        <property name="serviceInterface" value="com.game.modules.finance.service.FinanceTradeDetailService"></property>  
+    </bean>    
+                  
+</beans>  
