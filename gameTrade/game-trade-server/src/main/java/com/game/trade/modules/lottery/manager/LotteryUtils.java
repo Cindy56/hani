@@ -535,6 +535,51 @@ public class LotteryUtils {
 		return false;
 	}
 	
+	/**
+     * 
+	 * 时时彩前3 - 豹子：三个位开出的结果相同
+	 */
+	public static boolean ssc3XinBaoZi(String openNum,String betNum) {
+		 // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] betNumArr = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
+        List<String> betNumList = Arrays.asList(betNumArr);
+        // 开奖号码截取前三位 进行比较
+        String[] openNums = openNum.split(",");
+        List<String> openNumsList = Arrays.asList(openNums);
+        long count =  openNumsList.stream().distinct().count();
+        if(count == 1) {
+        	if(betNumList.contains(openNumsList.get(0))) {
+        		return true;
+        	}
+        }
+		return false;
+	}
+	
+
+    /**
+     * 
+	 * 时时彩前3直选和值：前3直选和值 所选数值等于开奖号码百位、十位、个位三个数字相加之和即中奖
+	 */
+	public static boolean ssc3XinZhiXuanHeZhi(String openNum,String betNum) {
+		 // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] openNums = openNum.split(",");
+        List<Integer> openNumsList = Arrays.asList(openNums).stream().map(Integer::valueOf).collect(Collectors.toList());
+        String[] betNumArr = betNum.trim().split(",");
+        List<String> betNumsList = Arrays.asList(betNumArr);
+        String openSum = openNumsList.stream().reduce(0, (sum,sum1)->sum+sum1).toString();
+        if(betNumsList.contains(openSum)) {
+        	return true;
+        }
+		return false;
+	}	
+	
+	
     /**
      * 
 	 * 时时彩组选6：前3组选6 计算注数
@@ -565,8 +610,8 @@ public class LotteryUtils {
 		lotteryOrder.setPlayModeMoneyType("2");
 		lotteryOrder.setBetAmount(new BigDecimal(1.6));
 		System.out.println(ssc3XinBetCount(lotteryOrder));*/
-		String s = "2";
-		System.out.println(s.substring(s.length()-1));
+		//String s = "2";
+		System.out.println(ssc3XinHeZhiWeiShu("1,1,1","1,2,3,4,5,6,8,9,10"));
 		
 	}
 	/**
