@@ -20,7 +20,7 @@ import com.game.common.persistence.Page;
 import com.game.common.web.BaseController;
 import com.game.common.utils.StringUtils;
 import com.game.modules.member.entity.MemberPlayConfig;
-import com.game.manager.modules.member.service.MemberPlayConfigService;
+import com.game.modules.member.service.MemberPlayConfigService;
 
 /**
  * 会员玩法奖金配置Controller

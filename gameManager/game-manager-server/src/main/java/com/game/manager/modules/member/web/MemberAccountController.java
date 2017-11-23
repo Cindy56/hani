@@ -23,7 +23,7 @@ import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
 import com.game.modules.member.entity.MemberAccount;
-import com.game.manager.modules.member.service.MemberAccountService;
+import com.game.modules.member.service.MemberAccountService;
 import com.game.modules.sys.entity.User;
 import com.game.manager.modules.sys.service.SystemService;
 import com.game.manager.modules.sys.utils.UserUtils;

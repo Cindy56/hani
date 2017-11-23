@@ -19,11 +19,11 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
-import com.game.manager.modules.lottery.service.LotteryPlayConfigService;
-import com.game.manager.modules.lottery.service.LotteryTypeService;
 import com.game.modules.lottery.constant.LotteryConstants;
 import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.entity.LotteryType;
+import com.game.modules.lottery.service.LotteryPlayConfigService;
+import com.game.modules.lottery.service.LotteryTypeService;
 
 /**
  * 彩票玩法管理Controller

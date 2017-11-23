@@ -23,10 +23,10 @@ import com.game.common.mapper.JsonMapper;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
-import com.game.manager.modules.lottery.service.LotteryTypeService;
 import com.game.manager.modules.sys.utils.DictUtils;
 import com.game.modules.lottery.constant.LotteryConstants;
 import com.game.modules.lottery.entity.LotteryType;
+import com.game.modules.lottery.service.LotteryTypeService;
 
 /**
  * 彩种基本信息管理Controller

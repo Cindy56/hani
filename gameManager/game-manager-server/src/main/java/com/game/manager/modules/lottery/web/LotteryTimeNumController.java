@@ -24,9 +24,9 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
-import com.game.manager.modules.lottery.service.LotteryTimeNumService;
 import com.game.modules.lottery.dto.TimeTask;
 import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.lottery.service.LotteryTimeNumService;
 
 /**
  * 开奖时刻和开奖结果Controller

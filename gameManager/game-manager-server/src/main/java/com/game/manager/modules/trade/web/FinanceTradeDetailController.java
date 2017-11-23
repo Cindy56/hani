@@ -19,8 +19,8 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.web.BaseController;
 import com.game.common.utils.StringUtils;
-import com.game.modules.trade.entity.FinanceTradeDetail;
-import com.game.manager.modules.trade.service.FinanceTradeDetailService;
+import com.game.modules.finance.entity.FinanceTradeDetail;
+import com.game.modules.finance.service.FinanceTradeDetailService;
 
 /**
  * 账变流水Controller

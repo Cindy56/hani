@@ -20,7 +20,7 @@ import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
 import com.game.modules.member.entity.MemberAccountCard;
-import com.game.manager.modules.member.service.MemberAccountCardService;
+import com.game.modules.member.service.MemberAccountCardService;
 
 /**
  * 会员银行卡管理Controller
