@@ -507,7 +507,68 @@ public enum SscService implements LotteryService {
     	
     },
      
-     
+     /** 时时彩前3 豹子 */
+     SSC_QIAN3_BAOZI("SSC_QIAN3_ZUXUAN3", "时时彩前3豹子") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (null == lotteryOrder || null == openLotteryTimeNum) {
+                return false;
+            }
+			return LotteryUtils.ssc3XinHeZhiWeiShu(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length()-5), lotteryOrder.getBetDetail());
+		}
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			// 如果没有中奖，直接返回金额为0
+            if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+                return BigDecimal.ZERO;
+            }
+        	// 投注奖金组、投注倍数、投注模式、中奖注数
+            BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
+            BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
+            BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
+            BigDecimal winCount = new BigDecimal(1);
+			return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
+		}
+    	
+    },
+     /** 时时彩前3直选和值 */
+     SSC_QIAN3_ZHIXUANHEZHI("SSC_HOU3_ZHIXUAN", "时时彩前3直选和值") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (null == lotteryOrder || null == openLotteryTimeNum) {
+                return false;
+            }
+			return LotteryUtils.ssc3XinZhiXuanHeZhi(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length()-5), lotteryOrder.getBetDetail());
+		}
+
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			// 如果没有中奖，直接返回金额为0
+            if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+                return BigDecimal.ZERO;
+            }
+        	// 投注奖金组、投注倍数、投注模式、中奖注数
+            BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
+            BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
+            BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
+            BigDecimal winCount = new BigDecimal(1);
+			return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
+		}
+    	
+    },
      
     //
     // /** 时时彩前3组选3 */
