@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.hall.modules.bet.dao.LotteryOrderDao">
+
+
+
+
+
+
+	<select id="findListById" resultType="LotteryOrder">
+		SELECT
+		<include refid="lotteryOrderColumns" />
+		FROM lottery_order a
+		<include refid="lotteryOrderJoins" />
+		WHERE
+		a.del_flag = 0
+		AND a.user_id = #{userid}
+		AND a.lottery_code = #{lotterycode}
+		ORDER BY
+		a.update_date DESC
+		LIMIT 0, #{num};
+	</select>
+
+	<update id="cancelByOrderNo">
+		UPDATE lottery_order SET
+		status = 3,
+		update_date = #{updateDate},
+		update_by = #{user.id}
+		WHERE 
+		order_no = #{orderNo}		
+	</update>
+
+
+
+
+
+</mapper>

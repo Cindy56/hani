@@ -50,6 +50,36 @@ public class LotteryUtilsTest {
     }
 
     /**
+     * 二星组选复式
+     * @author Terry
+     */
+    public static void ssc2XingZuXuanFu() {
+        long start = System.currentTimeMillis();
+        boolean isWin = false;
+        for (int i = 0; i < 10000000; i++) {
+            isWin = LotteryUtils.checkWinSsc2XingZuXuanFu("9,8", "2,6,8,5,6,8,2,0,5");
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
+        System.out.println("计算耗时：" + (end - start) + "ms");
+    }
+
+    /**
+     * 直选和值
+     * @author Terry
+     */
+    public static void sscZhiXuanHeZhi() {
+        long start = System.currentTimeMillis();
+        boolean isWin = false;
+        for (int i = 0; i < 10000000; i++) {
+            isWin = LotteryUtils.ssc3XinZhiXuanHeZhi("5,6", "10");
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
+        System.out.println("计算耗时：" + (end - start) + "ms");
+    }
+
+    /**
      * 3星直选单式
      * @author Terry
      */
@@ -101,6 +131,10 @@ public class LotteryUtilsTest {
         // ssc2XingZhiXuanDan();
         // 二星直选复式
         // ssc2XingZhiXuanFu();
+        // 二星组选复式
+        // ssc2XingZuXuanFu();
+        // 直选和值
+        sscZhiXuanHeZhi();
         // 三星直选单式
         // ssc3XingZhiXuanDan();
         // 三星直选复式
