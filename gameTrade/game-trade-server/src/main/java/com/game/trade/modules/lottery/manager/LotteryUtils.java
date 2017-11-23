@@ -74,6 +74,37 @@ public class LotteryUtils {
     }
 
     /**
+     * 时时彩2星组选复式 判断是否中奖
+     * @param openNum 开奖号码
+     * @param betNum 投注号码
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSsc2XingZuXuanFu(String openNum, String betNum) {
+        // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        // 判断开奖号码是否是对子，是则直接返回false
+        String[] openArr = openNum.split(",");
+        String numFirst = openArr[0];
+        String numSecend = openArr[1];
+        // 确保开奖号码没有问题
+        if (StringUtils.isBlank(numFirst) || StringUtils.isBlank(numSecend)) {
+            return false;
+        }
+        // 排除对子
+        if (numFirst.equals(numSecend)) {
+            return false;
+        }
+        // 同时包含开奖号码，即为中奖
+        if (StringUtils.contains(betNum, numFirst) && StringUtils.contains(betNum, numSecend)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 时时彩3星组选3 判断是否中奖
      * @param openNum 开奖号码
      * @param betNum 投注号码
@@ -169,6 +200,23 @@ public class LotteryUtils {
             }
             count *= string.length();
         }
+        return count;
+    }
+
+    /**
+     * 时时彩2星组选复式 投注注数
+     * @return 通过调用排列组合计算函数计算的投注注数
+     * @author Terry
+     */
+    public static int orderCountSsc2XingZuXuanFu(String betDetail) {
+        if (StringUtils.isBlank(betDetail)) {
+            return 0;
+        }
+        String[] betNumList = betDetail.contains(",") ? betDetail.trim().split(",") : new String[] {};
+        if (2 <= betNumList.length) {
+            return 0;
+        }
+        int count = new Long(combination(betNumList.length, 2)).intValue();
         return count;
     }
 
