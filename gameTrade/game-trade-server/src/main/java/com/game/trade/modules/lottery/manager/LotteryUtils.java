@@ -653,13 +653,8 @@ public class LotteryUtils {
 	
 	
 	public static void main(String[] args) {
-		/*LotteryOrder lotteryOrder = new LotteryOrder();
-		lotteryOrder.setBetRate(20);
-		lotteryOrder.setPlayModeMoneyType("2");
-		lotteryOrder.setBetAmount(new BigDecimal(1.6));
-		System.out.println(ssc3XinBetCount(lotteryOrder));*/
-		//String s = "2";
-		System.out.println(ssc3XinHeZhiWeiShu("1,1,1","1,2,3,4,5,6,8,9,10"));
+		String s = "1,2,3,4,5";
+		System.out.println(s.substring(0,5));
 		
 	}
 	/**
