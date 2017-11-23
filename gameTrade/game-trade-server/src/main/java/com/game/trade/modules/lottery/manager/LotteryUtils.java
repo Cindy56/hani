@@ -485,7 +485,9 @@ public class LotteryUtils {
 		return false;
 	}	
 	
-
+	
+	
+	
     /**
      * 
 	 * 时时彩组选和值：前3组选和值 所选数值等于开奖号码百位、十位、个位三个数字相加之和（不含豹子）即中奖
@@ -510,6 +512,28 @@ public class LotteryUtils {
 		return false;
 	}	
 	
+	/**
+     * 
+	 * 时时彩前3  和值尾数：从0-9中任意选择一个号码，所选数值等于开奖号码的百位、十位、个位三个数字相加之和的尾数，即中奖
+	 */
+	public static boolean ssc3XinHeZhiWeiShu(String openNum,String betNum) {
+		 // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] betNumArr = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
+        List<String> betNumList = Arrays.asList(betNumArr);
+        // 开奖号码截取前三位 进行比较
+        String[] openNums = openNum.split(",");
+        List<Integer> openNumsList = Arrays.asList(openNums).stream().map(Integer::valueOf).collect(Collectors.toList());
+        String openSum = openNumsList.stream().reduce(0, (sum,sum1)->sum+sum1).toString();
+        //截取最后一位比较
+        String subOpenSum = openSum.substring(openSum.length()-1);
+        if(betNumList.contains(subOpenSum)) {
+        	return true;
+        }
+		return false;
+	}
 	
     /**
      * 
@@ -536,11 +560,13 @@ public class LotteryUtils {
 	
 	
 	public static void main(String[] args) {
-		LotteryOrder lotteryOrder = new LotteryOrder();
+		/*LotteryOrder lotteryOrder = new LotteryOrder();
 		lotteryOrder.setBetRate(20);
 		lotteryOrder.setPlayModeMoneyType("2");
 		lotteryOrder.setBetAmount(new BigDecimal(1.6));
-		System.out.println(ssc3XinBetCount(lotteryOrder));
+		System.out.println(ssc3XinBetCount(lotteryOrder));*/
+		String s = "2";
+		System.out.println(s.substring(s.length()-1));
 		
 	}
 	/**
