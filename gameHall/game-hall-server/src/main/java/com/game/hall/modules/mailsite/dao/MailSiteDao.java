@@ -3,6 +3,8 @@
  */
 package com.game.hall.modules.mailsite.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.game.hall.common.persistence.CrudDao;
 import com.game.hall.common.persistence.Page;
 import com.game.hall.common.persistence.annotation.MyBatisDao;
@@ -35,6 +37,6 @@ public interface MailSiteDao extends CrudDao<MailSite> {
 	 * @param id
 	 * @return
 	 */
-	MailSite selectById(String id);
+	MailSite selectById(@Param("id")String id);
 	
 }

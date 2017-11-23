@@ -18,8 +18,8 @@ public class MailSite extends DataEntity<MailSite> {
 	private String userId;		// 用户ID
 	private String label;		// 标签
 	private String title;		// 标题
-	private String from;		// 发信人
-	private String to;		// 收信人
+	private String sender;		// 发信人
+	private String receiver;		// 收信人
 	private String context;		// 信件正文
 	private String readFlag;		// 读标志
 	
@@ -59,21 +59,21 @@ public class MailSite extends DataEntity<MailSite> {
 	}
 	
 	@Length(min=1, max=50, message="发信人长度必须介于 1 和 50 之间")
-	public String getFrom() {
-		return from;
+	public String getSender() {
+		return sender;
 	}
 
-	public void setFrom(String from) {
-		this.from = from;
+	public void setSender(String sender) {
+		this.sender = sender;
 	}
 	
 	@Length(min=1, max=50, message="收信人长度必须介于 1 和 50 之间")
-	public String getTo() {
-		return to;
+	public String getReceiver() {
+		return receiver;
 	}
 
-	public void setTo(String to) {
-		this.to = to;
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
 	}
 	
 	@Length(min=1, max=2000, message="信件正文长度必须介于 1 和 2000 之间")

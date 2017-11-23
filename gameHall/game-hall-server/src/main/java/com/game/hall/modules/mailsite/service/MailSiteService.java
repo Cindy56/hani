@@ -54,7 +54,7 @@ public class MailSiteService extends CrudService<MailSiteDao, MailSite> {
 
 		// return this.dao.findPageByUserId(userId, pageIndex);
 		Page<MailSite> page = new Page<MailSite>();
-		MailSite mailSite = new MailSite(); 
+		MailSite mailSite = new MailSite();
 		mailSite.setUserId(userId);
 
 		page.setPageNo(pageNo);
@@ -65,13 +65,13 @@ public class MailSiteService extends CrudService<MailSiteDao, MailSite> {
 
 	/**
 	 * 发信
-	 * @return 
+	 * 
+	 * @return
 	 */
 	@Transactional(readOnly = false)
 	public void save(MailSite mailSite) {
-		
-		super.save(mailSite);		
-		
+
+		this.dao.insert(mailSite);
 	}
 
 	@Transactional(readOnly = false)

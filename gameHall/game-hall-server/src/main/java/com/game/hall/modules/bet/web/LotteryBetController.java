@@ -3,21 +3,26 @@
  */
 package com.game.hall.modules.bet.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.entity.ResultData;
 import com.game.hall.modules.bet.service.LotteryAddBetService;
+import com.game.hall.modules.sys.entity.User;
+import com.game.hall.modules.sys.utils.UserUtils;
 import com.game.manager.modules.order.entity.LotteryOrder;
 
 /**
  * 投注
- * @author antonio 
+ * 
+ * @author antonio
  */
 @Controller
 @RequestMapping("/bet/bet")
@@ -33,26 +38,50 @@ public class LotteryBetController {
 	@RequestMapping(value = "/addbet", method = RequestMethod.GET)
 	public ResultData addBet(List<LotteryOrder> betData) {
 
-		//List<LotteryOrder> betData = null;
+		// List<LotteryOrder> betData = null;
 		System.out.println("1");
-		
-		
-		try {
-		// 前置校验
-		boolean ret = false;
-		ResultData rd = ResultData.ResultDataOK();
 
-		}
-		catch(Exception e)
-		{
+		try {
+			// 前置校验
+			boolean ret = false;
+			ResultData rd = ResultData.ResultDataOK();
+
+		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+
+		System.out.println("2");
+
+		// BetData betData;
+
+		return lotteryAddBetService.addBet(betData);
+		// System.out.println();
+
+	}
+
+	
+	@ResponseBody
+	@RequestMapping(value = "/cancelorder", method = RequestMethod.POST)
+	public ResultData cancelOrder(@RequestParam("orderIds")List<String> orderIds) {
+
+		// List<LotteryOrder> betData = null;
+		System.out.println("1");
+
+		try {
+			// 前置校验
+			boolean ret = false;
+			ResultData rd = ResultData.ResultDataOK();
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
 		System.out.println("2");
 		
 		// BetData betData;
-		
-		return lotteryAddBetService.addBet(betData);
+		User user = UserUtils.getUser();
+		user.preInsert();
+		return lotteryAddBetService.cancelOrder(user,orderIds);
 		// System.out.println();
 
 	}

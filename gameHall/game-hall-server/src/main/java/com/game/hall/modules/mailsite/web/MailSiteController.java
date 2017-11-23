@@ -26,6 +26,7 @@ import com.game.hall.common.utils.StringUtils;
 import com.game.hall.common.web.BaseController;
 import com.game.hall.modules.mailsite.entity.MailSite;
 import com.game.hall.modules.mailsite.service.MailSiteService;
+import com.game.hall.modules.sys.entity.User;
 
 /**
  * 站内信Controller
@@ -40,6 +41,36 @@ public class MailSiteController extends BaseController {
 	@Autowired
 	private MailSiteService mailSiteService;
 
+	private MailSite getMailSite() {
+		// TODO Auto-generated method stub
+
+		MailSite mail = new MailSite();
+		
+
+		mail.setUserId("userID2");
+		mail.preInsert();
+		
+		User user = new User();
+		user.setId("userid");
+		user.preInsert();
+		mail.setCreateBy(user);
+		mail.setUpdateBy(user);
+
+		
+		mail.setContext("context");
+		mail.setSender("sender");
+		mail.setReceiver("receiver");
+		//mail.setId("id");
+		mail.setLabel("label");
+		mail.setTitle("title");
+
+		mail.setDelFlag("0");
+		mail.setReadFlag("0");
+		
+		mail.setIsNewRecord(true);
+		return mail;
+	}
+	
 	/**
 	 * 发信
 	 * 
@@ -48,8 +79,10 @@ public class MailSiteController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/send", method = RequestMethod.POST)
-	public ResultData sendMail(MailSite mailSite) {
+	public ResultData sendMail(/*MailSite mailSite*/) {
 
+		
+		MailSite mailSite = getMailSite();
 		// 前置校验
 		if (false)
 			return ResultData.ResultDataFail();
@@ -73,10 +106,13 @@ public class MailSiteController extends BaseController {
 		if (false)
 			return ResultData.ResultDataFail();
 
-		String userId = "";
-		mailSiteService.findPageByUserId(userId, pageNo, pageSize);
+		String userId = "user_id";
+		Page<MailSite> pMail = mailSiteService.findPageByUserId(userId, pageNo, pageSize);
 
-		return ResultData.ResultDataOK();
+		ResultData rd = ResultData.ResultDataOK();
+		rd.setData(pMail);
+		
+		return rd;
 	}
 	
 	/**
@@ -105,16 +141,19 @@ public class MailSiteController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/getmailcontentbyid", method = RequestMethod.POST)
+	@RequestMapping(value = "/getmailcontentbyid", method = RequestMethod.GET)
 	public ResultData getMailContent(String mailId) {
 
 		// 前置校验
 		if (false)
 			return ResultData.ResultDataFail();
 		
-		mailSiteService.selectById(mailId);
+		MailSite mailsite = mailSiteService.selectById(mailId);
 
-		return ResultData.ResultDataOK();
+		ResultData rd = ResultData.ResultDataOK();
+		rd.setData(mailsite);
+		
+		return rd;
 	}
 
 }

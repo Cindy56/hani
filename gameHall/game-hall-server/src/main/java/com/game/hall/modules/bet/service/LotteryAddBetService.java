@@ -45,10 +45,10 @@ public class LotteryAddBetService implements BetServiceApi {
 
 	@Autowired
 	AccountChargeDao myAccountCharge;
-	
+
 	@Autowired
 	LotteryPlayConfigDao myPlayConfig;
-	
+
 	@Autowired
 	LotteryOpenTodayService myOpenToday;
 
@@ -137,15 +137,15 @@ public class LotteryAddBetService implements BetServiceApi {
 	public ResultData addBet(List<LotteryOrder> lsBetData) { // TODO
 
 		System.out.println("service_addbet here");
-		
-	//	LotteryOrder order = getOrder();
+
+		// LotteryOrder order = getOrder();
 		// 生成订单
-	//	myOrder.insert(order);
+		// myOrder.insert(order);
 
 		// 会员账户扣款
-	//	String thisAccountId = order.getAccountId();
-	//	BigDecimal amount = order.getBetAmount();
-	//	myAccountCharge.AccountChargeAmount(thisAccountId, amount );
+		// String thisAccountId = order.getAccountId();
+		// BigDecimal amount = order.getBetAmount();
+		// myAccountCharge.AccountChargeAmount(thisAccountId, amount );
 
 		// -------------------------------------
 		// myServiceClient.addBet(betData);
@@ -227,14 +227,14 @@ public class LotteryAddBetService implements BetServiceApi {
 			String thisAccountId = betData.getId();
 			myAccountCharge.AccountChargeAmount(thisAccountId, betData.getBetAmount());
 		}
-		
+
 		return rd;
 	}
 
 	@Override
 	public ResultData openToday(String lotteryName, Integer num) {
 		// TODO Auto-generated method stub
-		return myOpenToday.openToday( lotteryName,  num);
+		return myOpenToday.openToday(lotteryName, num);
 	}
 
 	@Override
@@ -243,18 +243,34 @@ public class LotteryAddBetService implements BetServiceApi {
 		return myOpenToday.openCur(lotteryName);
 	}
 
-
-
-
 	public ResultData getPlayConfig(String lotteryName) {
 		// TODO Auto-generated method stub
 		return myOpenToday.getPlayConfig(lotteryName);
 	}
 
 	@Override
-	public ResultData getOrders( String userId, String lotteryName, int num) {
+	public ResultData getOrders(String userId, String lotteryName, int num) {
 		// TODO Auto-generated method stub
-		return myOpenToday.getOrders( userId, lotteryName, num);
+		return myOpenToday.getOrders(userId, lotteryName, num);
+	}
+
+	/**
+	 * 撤销订单
+	 * 
+	 * @param orderIds
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public ResultData cancelOrder(User user, List<String> orderIds) {
+		// TODO Auto-generated method stub
+
+		for (int i = 0; i < orderIds.size(); i++) {
+
+			int ret = myOrder.cancelByOrderNo(user, new Date(),orderIds.get(i));
+		}
+
+		ResultData rd = ResultData.ResultDataOK();
+		return rd;
 	}
 
 }

@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.alibaba.fastjson.JSON;
 import com.entity.ResultData;
 import com.game.hall.common.mapper.JsonMapper;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
@@ -84,7 +86,7 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 		 */
 
 		LotteryOrder bet1 = new LotteryOrder();
-		//AddBetFormInput bet1 = new AddBetFormInput();
+		// AddBetFormInput bet1 = new AddBetFormInput();
 		bet1.preInsert();
 		User user = new User();
 		user.setId("00user");// 用户ID
@@ -92,11 +94,10 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 		Office company = new Office();
 		company.setCode("code");// 组织编号
 		user.setCompany(company);
-		
-//		bet1.setUserId("userId");
-//		bet1.setUserName("userName");
+
+		// bet1.setUserId("userId");
+		// bet1.setUserName("userName");
 		bet1.setOrgId("orgId");
-		
 
 		bet1.setAccountId("034f37416db44fa4a8ab05d98da6fa7d");
 		String lotteryCode = "SSC_CQ";
@@ -107,8 +108,8 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 		bet1.setBetIssueNo(betIssueNo);
 		String betType = "";
 		bet1.setBetType(betType);
-//		User currentUser = null;
-//		bet1.setCurrentUser(currentUser);
+		// User currentUser = null;
+		// bet1.setCurrentUser(currentUser);
 
 		String orderSource = "0";
 		bet1.setOrderSource(orderSource);
@@ -153,16 +154,41 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 
 		LotteryOrder bet1 = getOrder();
 
-	//	List<AddBetFormInput> lsbet = new  ArrayList<AddBetFormInput>();
-//		lsbet.add(bet1);
-		
+		// List<AddBetFormInput> lsbet = new ArrayList<AddBetFormInput>();
+		// lsbet.add(bet1);
+
 		lsbet.add(bet1);
-		
-		//String jsonStrng = JSON.toJSONString(betData);
-		
-		String jsonstr = JsonMapper.toJsonString(lsbet);
-		
+
+		// String jsonStrng = JSON.toJSONString(betData);
+
+		List<String> lsString = new ArrayList<String>();
+		lsString.add("123");
+		lsString.add("123");
+		lsString.add("123");
+
+		String jsonstr = JsonMapper.toJsonString(lsString);
+
 		System.out.println(jsonstr);
+
+		// 伪代码
+		long startTime = System.currentTimeMillis(); // 获取开始时间
+
+		int[] betIntArr ;
+		for (int i = 0; i < 10000; i++) {
+			String bet = "1,2,7,8,0,5,3,4,6,9";
+//			String[] betArr = bet.trim().split(",");
+//			int[] betIntArr = new int[betArr.length];
+//			for (int j = 0; j < betIntArr.length; j++) {
+//				betIntArr[j] = Integer.parseInt(betArr[j]);
+//			}
+			betIntArr = StringtoInt(bet);
+			
+			//String bet = "[\"1\",\"2\",\"7\",\"8\",\"0\",\"5\",\"3\",\"4\",\"6\",\"9\"]";//["123","123","123"]
+			//a1 = (int[]) JSON.parse(bet);
+			
+		}
+		long endTime = System.currentTimeMillis(); // 获取结束时间
+		System.out.println("程序运行时间： " + (endTime - startTime) + "ms");
 
 		LotteryOrder bet2 = new LotteryOrder();
 
@@ -188,12 +214,30 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 
 	}
 
+	
+	public int[] StringtoInt(String str) {  
+		  
+	    int ret[] = new int[str.length()];   
+	  
+	    StringTokenizer toKenizer = new StringTokenizer(str, ",");   
+	  
+	    int i = 0;  
+	  
+	    while (toKenizer.hasMoreElements()) {   
+	  
+	      ret[i++] = Integer.valueOf(toKenizer.nextToken());  
+	  
+	    }   
+	  
+	   return ret;  
+	  
+	 }  
+	
 	@Test
 	public void testLotteryAddBetServiceMethodaddBet() {
 
 		List<LotteryOrder> lsbet = new ArrayList<LotteryOrder>();
 
-		
 		LotteryOrder bet1 = null;// getOrder();
 
 		/*
@@ -237,8 +281,6 @@ public class LotteryBetController extends AbstractJUnit4SpringContextTests {
 		// myAddBetService = new
 		// com.game.hall.modules.bet.service.LotteryAddBetService();
 
-		
-		
 		myBetController.addBet(lsbet);
 
 		verify(myAddBetService).addBet(lsbet);
