@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.hall.modules.order.dao.LotteryOrderManDao">
+    <select id="allLotteryOrder" resultType="java.util.Map">
+SELECT
+	b.order_no,
+	b.order_type,
+	b.bet_amount,
+	b.bet_rate,
+	b.status,
+	a.id,
+	a.login_name
+FROM
+	lottery_order b,
+	sys_user a
+WHERE
+	a.id = #{id}
+AND
+	a.id = b.user_id
+
+
+    </select>
+	
+	
+<!-- 根据账户user_id查询账户明细 -->
+<select id="financeTradeDetail" resultType="com.game.hall.modules.order.entity.tradeDetail">
+SELECT
+	a.account_id,
+	a.amount,
+	a.account_blance_before,
+	a.account_blance_after
+FROM
+	finance_trade_detail a
+WHERE
+	a.user_id = #{userId}
+	 <if test="accountId != null and accountId != ''">
+                AND a.account_id = #{accountId}
+     </if> 
+      <if test="startTime != null and startTime!=''">
+     	 		AND create_date &gt;= #{startTime}
+     </if> 
+	 <if test="endTime != null and endTime!=''">
+     	 		AND create_date &lt;= #{endTime}
+     </if>
+</select>
+    
+    
+	
+
+    <select id="rechargeRecord" resultType="com.game.hall.modules.order.entity.RechargeRecord">
+SELECT
+	a.serial_number,
+	a.user_id,
+	apply_time,
+	a.apply_amount,
+	a.arrival_amount,
+	a.recharge_mode,
+	a.status
+FROM
+	recharge_record a
+WHERE
+	a.user_id = #{userId}
+	 <if test="status != null and status != ''">
+                AND a.status = #{status}
+     </if> 
+      <if test="serialNumber != null and serialNumber != ''">
+                AND a.serial_number = #{serialNumber}
+     </if> 
+     <if test="rechargeMode != null and rechargeMode != ''">
+                AND a.recharge_mode = #{rechargeMode}
+     </if> 
+      <if test="startTime != null and startTime!=''">
+     	 		AND apply_time &gt;= #{startTime}
+     </if> 
+	 <if test="endTime != null and endTime!=''">
+     	 		AND apply_time &lt;= #{endTime}
+     </if>
+    </select>
+
+
+
+
+
+   <select id="drawingRecord" resultType="com.game.hall.modules.order.entity.DrawingRecord">
+SELECT
+	a.transaction_number as transactionNumber,
+	a.user_id as "user.id",	
+	drawing_blance, 
+	drawing_time as "drawingTime",
+ 	a.account_id as "memberAccountCard.accountId",
+ 	a.bank_card_no as "memberAccountCard.bankCardNo",
+	a.status 
+FROM
+	drawing_record a
+WHERE
+	a.user_id = #{userId}
+	 <if test="transactionNumber != null and transactionNumber != ''">
+                AND a.transaction_number = #{transactionNumber}
+     </if> 
+      <if test="startTime != null and startTime!=''">
+     	 		AND drawing_time &gt;= #{startTime}
+     </if> 
+	 <if test="endTime != null and endTime!=''">
+     	 		AND drawing_time &lt;= #{endTime}
+     </if>
+    </select> 
+    
+<!-- 转账记录查询 -->
+<select id="transferRecord" resultType="com.game.hall.modules.order.entity.TransferRecord">
+SELECT
+	a.transaction_number as transactionNumber,
+	a.type as type,	
+	a.user_id as "user.id",
+	a.receiver as receiver, 
+	a.payer as payer,
+ 	a.amount as amount,
+ 	a.transaction_time as transactionTime,
+	a.status  as status,
+	a.remark  as remark
+FROM
+	transfer_record a
+WHERE
+	a.user_id = #{userId}
+	 <if test="type != null and type != ''">
+                AND a.type = #{type}
+     </if> 
+     <if test="transactionNumber != null and transactionNumber != ''">
+                AND a.transaction_number = #{transactionNumber}
+     </if> 
+      <if test="startTime != null and startTime!=''">
+     	 		AND transaction_time &gt;= #{startTime}
+     </if> 
+	 <if test="endTime != null and endTime!=''">
+     	 		AND transaction_time &lt;= #{endTime}
+     </if>
+    </select>    
+
+</mapper>
