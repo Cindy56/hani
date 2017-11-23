@@ -1,8 +1,8 @@
 package com.game.manager.modules.draw;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,7 +18,20 @@ import com.game.modules.order.entity.LotteryOrder;
  * @author Terry
  */
 public class LotteryUtils {
+
     // -------------------------------是否中奖判断-----------------------------------------
+
+    /**
+     * 时时彩一星复试投注 判断是否中奖
+     * @param openNum 开奖号码
+     * @param betNum 投注号码
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSsc1XingDingWei(String openNum, String betNum) {
+        return winCountSsc1XinDingWei(openNum, betNum) > 0;
+    }
+
     /**
      * 时时彩直选单式 检查是否中奖
      * @param openNum 开奖号码，格式为逗号分割“4,5,6”。
@@ -29,7 +42,7 @@ public class LotteryUtils {
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
         }
-        String[] betNumList = betNum.trim().split(" ");
+        String[] betNumList = betNum.trim().split(",");
         if (0 == betNumList.length) {
             return false;
         }
@@ -43,17 +56,17 @@ public class LotteryUtils {
     /**
      * 时时彩直选复式 检查是否中奖
      * @param openNum 开奖号码，格式为逗号分割“4,5,6”。
-     * @param betNum 投注号码，格式为逗号分割（234,567,678）或空格分割（234 567 678）
+     * @param betNum 投注号码，格式为逗号分割（234,567,678）
      * @return
      */
     public static boolean checkWinSscZhiXuanFu(String openNum, String betNum) {
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
         }
-        String[] open = openNum.split(",");
-        String[] bet = betNum.contains(",") ? betNum.split(",") : betNum.split(" ");
-        for (int i = 0; i < open.length; i++) {
-            if (!StringUtils.contains(bet[i], open[i])) {
+        String[] openArr = openNum.split(",");
+        String[] betArr = betNum.contains(",") ? betNum.split(",") : new String[] {};
+        for (int i = 0; i < openArr.length; i++) {
+            if (!StringUtils.contains(betArr[i], openArr[i])) {
                 return false;
             }
         }
@@ -61,24 +74,31 @@ public class LotteryUtils {
     }
 
     /**
-     * 时时彩3星组选 判断是否中奖
+     * 时时彩3星组选3 判断是否中奖
      * @param openNum 开奖号码
      * @param betNum 投注号码
      * @return 中奖返回true
      * @author Terry
      */
-    public static boolean checkWinSsc3XinZuXuan(String openNum, String betNum) {
+    public static boolean checkWinSsc3XingZuXuan3(String openNum, String betNum) {
         // 参数不合法，返回false
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
         }
-        // 格式化开奖号码
-        openNum = formatNumber(openNum.split(","));
-        // 生成用户投注号码
-        Set<String> betSet = ssc3XinZuXuan3(betNum);
-        // 迭代匹配，只要有一个用户投注号码是获奖投注，返回true
-        if (betSet.contains(openNum)) {
-            return true;
+        // 判断开奖号码是否有组三，没有直接返回false
+        String[] openArr = openNum.split(",");
+        int countFirst = openNum.length() - openNum.replace(openArr[0], "").length();
+        if (2 != countFirst) {
+            int countSecond = openNum.length() - openNum.replace(openArr[1], "").length();
+            if (2 != countSecond) {
+                return false;
+            }
+        }
+        String[] betArr = betNum.contains(",") ? betNum.split(",") : new String[] {};
+        for (String open : openArr) {
+            if (ArrayUtils.contains(betArr, open)) {
+                return true;
+            }
         }
         return false;
     }
@@ -96,7 +116,7 @@ public class LotteryUtils {
         if (StringUtils.isBlank(betDetail)) {
             return 0;
         }
-        String[] betNumList = betDetail.contains(",") ? betDetail.trim().split(",") : betDetail.trim().split(" ");
+        String[] betNumList = betDetail.contains(",") ? betDetail.trim().split(",") : new String[] {};
         if (0 == betNumList.length) {
             return 0;
         }
@@ -122,7 +142,7 @@ public class LotteryUtils {
         if (StringUtils.isBlank(betDetail)) {
             return 0;
         }
-        String[] betNumList = betDetail.trim().split(" ");
+        String[] betNumList = betDetail.trim().split(",");
         return betNumList.length;
     }
 
@@ -136,7 +156,7 @@ public class LotteryUtils {
         if (StringUtils.isBlank(betDetail)) {
             return 0;
         }
-        String[] betNumList = betDetail.contains(",") ? betDetail.trim().split(",") : betDetail.trim().split(" ");
+        String[] betNumList = betDetail.contains(",") ? betDetail.trim().split(",") : new String[] {};
         if (0 == betNumList.length) {
             return 0;
         }
@@ -157,7 +177,7 @@ public class LotteryUtils {
     /**
      * 时时彩一星定位胆 计算中奖注数
      * @param openNum 开奖号码,五个位（万,千,百,十,个）,位与位之间以英文逗号隔开
-     * @param betNum 投注号码，五个位（万,千,百,十,个），位与位之间以英文逗号或空格字符隔开
+     * @param betNum 投注号码，五个位（万,千,百,十,个），位与位之间以英文逗号隔开,空位以减号表示
      * @return 中奖返回true
      * @author Terry
      */
@@ -166,7 +186,7 @@ public class LotteryUtils {
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return 0;
         }
-        String[] betNumList = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
+        String[] betNumList = betNum.contains(",") ? betNum.trim().split(",") : new String[] {};
         if (5 != betNumList.length) {
             return 0;
         }
@@ -202,6 +222,51 @@ public class LotteryUtils {
         return count;
     }
 
+    // -------------------------------其他校验方法------------------------------------------------
+
+    /**
+     * 校验同一投注位不出现重复号码，例如：一行定位胆投注不允许出现 122,2,-,3,4
+     * @param betNumber 投注号码
+     * @return 返回校验结果，返回true校验通过
+     * @author Terry
+     */
+    public static boolean checkRepeatNumber(String betNumber) {
+        String[] betArr = betNumber.contains(",") ? betNumber.trim().split(",") : new String[] {};
+        if (ArrayUtils.isEmpty(betArr)) {
+            return false;
+        }
+        for (String bet : betArr) {
+            if ("-".equals(bet) || 1 == bet.length()) {
+                continue;
+            }
+            String[] tmpArr = bet.split("");
+            for (String string : tmpArr) {
+                int count = bet.length() - bet.replace(string, "").length();
+                if (1 != count) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 校验单式投注不允许出现相同投注号码，如二星直选单式不允许出现 22,23,22
+     * @param betNumber 投注内容
+     * @return 校验通过返回true
+     * @author Terry
+     */
+    public static boolean checkRepeatBet(String betNumber) {
+        String[] betArr = betNumber.contains(",") ? betNumber.trim().split(",") : new String[] {};
+        if (ArrayUtils.isEmpty(betArr)) {
+            return false;
+        }
+        Set<String> set = new HashSet<>(Arrays.asList(betArr));
+        if (set.size() == betArr.length) {
+            return true;
+        }
+        return false;
+    }
     // -------------------------------|------------------------------------------------
 
     /**
