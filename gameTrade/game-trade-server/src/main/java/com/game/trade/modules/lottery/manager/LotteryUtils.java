@@ -402,7 +402,61 @@ public class LotteryUtils {
         }
         return result;
     }
-
+    /**
+     * 
+	 * 时时彩前三混合组选：
+	 */
+	public static boolean ssc3XinHunHeZuXuan(String openNum,String betNum) {
+		 // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] betNumArr = betNum.trim().split(",");
+        List<String> betNumList = Arrays.asList(betNumArr);
+        //检查组3是否中奖
+       if(ssc3XinHunHeZuXuanDuiZi(openNum,betNum)) {
+    	   return true;
+       }
+        for(String bet:betNumList) {
+        	//判断是否有重复
+        	long count = Arrays.asList(bet.split("")).stream().distinct().count();
+        	if(count < 3) {
+        		continue;
+        	}
+        	if(ssc3XinZuxuan6(openNum,StringUtils.join(bet.split(""),","))) {
+        		return true;
+        	}
+        }
+		return false;
+	}	
+	/**
+	 * 开奖号码有对子
+	 */
+	public  static boolean ssc3XinHunHeZuXuanDuiZi(String openNum,String betNum) {
+		  String[] betNumArr = betNum.trim().split(",");
+	      String[] openNumArr = openNum.trim().split(",");
+	      List<String> betNumList = Arrays.asList(betNumArr);
+	      List<String> openNumList = Arrays.asList(openNumArr);
+	        //检查组3是否中奖
+	      boolean flag = false;
+	      for(String bet:betNumList) {
+	        	String[] betArr = bet.split("");
+	        	//判断是否有重复
+	        	long count = Arrays.asList(betArr).stream().distinct().count();
+	        	if(count > 3) {
+	        		continue;
+	        	}
+	        	// 开奖号码的前三位相同，顺序不限
+	    		if(openNumList.contains(betArr[0]) &&
+	    				openNumList.contains(betArr[1]) &&
+	    				openNumList.contains(betArr[2])) {
+	    			return true;
+	    		}
+		   }
+		
+		return flag;
+	}
+	
     /**
      * 
 	 * 时时彩组选6：前3组选6 所选号码与开奖号码的前三位相同，顺序不限(前三、中三、后三通用 ,号码截取不一样)
@@ -413,7 +467,7 @@ public class LotteryUtils {
             return false;
         }
         String[] betNumArr = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
-        List<String> betNumList = Arrays.asList(betNumArr).stream().distinct().collect(Collectors.toList());
+        List<String> betNumList = Arrays.asList(betNumArr);
         // 开奖号码截取前三位 进行比较
         String[] openNums = openNum.split(",");
         List<String> openNumsList = Arrays.asList(openNums);
@@ -432,6 +486,31 @@ public class LotteryUtils {
 	}	
 	
 
+    /**
+     * 
+	 * 时时彩组选和值：前3组选和值 所选数值等于开奖号码百位、十位、个位三个数字相加之和（不含豹子）即中奖
+	 */
+	public static boolean ssc3XinZuxuanHeZhi(String openNum,String betNum) {
+		 // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] openNums = openNum.split(",");
+        List<Integer> openNumsList = Arrays.asList(openNums).stream().map(Integer::valueOf).collect(Collectors.toList());
+        String[] betNumArr = betNum.trim().split(",");
+        List<String> betNumsList = Arrays.asList(betNumArr);
+        //出现豹子，不中奖
+        if(openNumsList.get(0) == openNumsList.get(1) && openNumsList.get(0) == openNumsList.get(2)) {
+        	return false;
+        }
+        String openSum = openNumsList.stream().reduce(0, (sum,sum1)->sum+sum1).toString();
+        if(betNumsList.contains(openSum)) {
+        	return true;
+        }
+		return false;
+	}	
+	
+	
     /**
      * 
 	 * 时时彩组选6：前3组选6 计算注数
