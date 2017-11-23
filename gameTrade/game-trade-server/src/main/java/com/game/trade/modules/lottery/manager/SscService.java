@@ -1014,7 +1014,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
                 return false;
             }
-			return LotteryUtils.ssc3XinHeZhiWeiShu(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length()-5), lotteryOrder.getBetDetail());
+			return LotteryUtils.ssc3XinHeZhiWeiShu(openLotteryTimeNum.getOpenNum().substring(0,5), lotteryOrder.getBetDetail());
 		}
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
@@ -1046,7 +1046,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
                 return false;
             }
-			return LotteryUtils.ssc3XinZhiXuanHeZhi(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length()-5), lotteryOrder.getBetDetail());
+			return LotteryUtils.ssc3XinZhiXuanHeZhi(openLotteryTimeNum.getOpenNum().substring(0,5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
