@@ -39,6 +39,8 @@ public class MemberAccountCard  {
 	private String qqNo;		//qq号码，用户
 	private String mobileNo;		//手机号码
 	private String delFlag;
+	private String createBy;
+	private String updateBy;
 	public String getDelFlag() {
 		return delFlag;
 	}
@@ -73,8 +75,7 @@ public class MemberAccountCard  {
 		this.updateBy = updateBy;
 	}
 
-	private String createBy;
-	private String updateBy;
+
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;

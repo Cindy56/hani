@@ -42,12 +42,12 @@ public class MemberAccountCardController  {
 		List<MemberAccountCard> memberAccountCard = memberAccountCardService.get(id);	
 		return memberAccountCard;
 	}
-	
+}
 	//验证安全码 如果验证通过就可以增加绑定银行卡
 	//如果没有通过 刷新页面给出提示信息
 	
 	
-	//增加银行卡信息
+/*	//增加银行卡信息
 	@ResponseBody
 	@RequestMapping(value = "/addAccountCard", method = RequestMethod.GET)
 	public String addAccountCard(MemberAccountCard memberAccountCard) {
@@ -62,13 +62,13 @@ public class MemberAccountCardController  {
 		memberAccountCard.setUpdateBy("cmh");
 		memberAccountCard.setCreateBy("cmh");
 		memberAccountCard.setDelFlag("1");
-/*		memberAccountCard.setEndCreateDate(new Date());*/
+		memberAccountCard.setEndCreateDate(new Date());
 		return "成功插入"+String.valueOf(memberAccountCardService.addAccountCard(memberAccountCard))+"条记录";
-	}
+	}*/
 	
 	
 
-	//验证用户安全码
+/*	//验证用户安全码
 	@ResponseBody
 	@RequestMapping(value = "/verSecPwd", method = RequestMethod.GET)
 	public String verSecPwd(String id,String secPassWord) {
@@ -85,9 +85,9 @@ public class MemberAccountCardController  {
 	    	  return "安全码不能为空";
 	      }
 		
-	}
+	}*/
 	
-	//验证用户安全码
+/*	//验证用户安全码
 	public boolean verSecPassWord(String id,String secPassWord) {
 			//根据id查询该用户的安全密码
 	      String str = 	memberAccountCardService.getSec(id);
@@ -102,10 +102,10 @@ public class MemberAccountCardController  {
 	    	  return false;
 	      }
 		
-	}
+	}*/
 	
 	
-	//修改用户安全码
+/*	//修改用户安全码
 	@ResponseBody
 	@RequestMapping(value = "/modifySecPwd", method = RequestMethod.GET)
 	public String modifySecPwd(String id,String secPassWord,String newPassWord) {
@@ -121,7 +121,7 @@ public class MemberAccountCardController  {
 		   }
 		
 	}
-	}
+	}*/
 	
 	
 	

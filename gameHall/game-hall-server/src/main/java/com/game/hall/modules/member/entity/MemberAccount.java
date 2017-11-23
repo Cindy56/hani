@@ -17,7 +17,6 @@ import com.game.hall.common.persistence.DataEntity;
 
 // extends DataEntity<LotteryTimeNum>
 public class MemberAccount extends DataEntity<MemberAccount> {
-
 	private static final long serialVersionUID = 1L;
 	private String parentAgentId;		// 上级代理账号id
 /*	private User user;		// 用户表主键id
