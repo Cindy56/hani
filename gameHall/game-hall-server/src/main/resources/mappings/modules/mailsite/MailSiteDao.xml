@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.hall.modules.mailsite.dao.MailSiteDao">
+
+	<sql id="mailSiteColumns">
+		a.id AS "id",
+		a.user_id AS "user.id",
+		a.label AS "label",
+		a.title AS "title",
+		a.sender AS "sender",
+		a.create_date AS "createDate",
+		a.receiver AS "receiver",
+		a.context AS "context",
+		a.read_flag AS "readFlag",
+		a.del_flag AS "delFlag",
+		a.create_by AS "createBy.id",
+		a.update_date AS
+		"updateDate",
+		a.update_by AS "updateBy.id"		
+	</sql>
+
+	<sql id="mailSiteJoins">
+		LEFT JOIN sys_user u2 ON u2.id = a.user_id
+	</sql>
+
+	<select id="get" resultType="MailSite">
+		SELECT
+		<include refid="mailSiteColumns" />
+		FROM mail_site a
+		<include refid="mailSiteJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="MailSite">
+		SELECT
+		<include refid="mailSiteColumns" />
+		FROM mail_site a
+		<include refid="mailSiteJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="userId != null ">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="label != null and label != ''">
+				AND a.label = #{label}
+			</if>
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="sender != null and sender != ''">
+				AND a.sender = #{sender}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="receiver != null and receiver != ''">
+				AND a.receiver = #{receiver}
+			</if>
+			<if test="context != null and context != ''">
+				AND a.context = #{context}
+			</if>
+			<if test="readFlag != null and readFlag != ''">
+				AND a.read_flag = #{readFlag}
+			</if>
+			<if test="delFlag != null and delFlag != ''">
+				AND a.del_flag = #{delFlag}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				AND a.update_by = #{updateBy.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="MailSite">
+		SELECT
+		<include refid="mailSiteColumns" />
+		FROM mail_site a
+		<include refid="mailSiteJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO mail_site(
+		id,
+		label,
+		title,
+		create_date,
+		sender,
+		receiver,
+		context,
+		create_by,
+		update_date,
+		update_by,
+		read_flag,
+		del_flag
+
+		) VALUES (
+		#{id},
+		#{label},
+		#{title},
+		#{createDate},
+		#{sender},
+		#{receiver},
+		#{context},
+		#{createBy.id},
+		#{updateDate},
+		#{updateBy.id},
+		#{readFlag},
+		#{delFlag}
+
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE mail_site SET
+		user_id = #{userId},
+		label =
+		#{label},
+		title = #{title},
+		from = #{from},
+		to = #{to},
+		context =
+		#{context},
+		read_flag = #{readFlag},
+		update_date = #{updateDate},
+		update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE mail_site SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

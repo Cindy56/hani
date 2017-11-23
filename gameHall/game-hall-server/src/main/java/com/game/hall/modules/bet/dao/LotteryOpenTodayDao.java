@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.game.common.persistence.annotation.MyBatisDao;
-import com.game.hall.modules.bet.entity.LotteryTimeNumbak;
+import com.game.modules.lottery.entity.LotteryTimeNum;
 
 /**
  * @author antonio
@@ -19,8 +19,8 @@ import com.game.hall.modules.bet.entity.LotteryTimeNumbak;
 @MyBatisDao
 public interface LotteryOpenTodayDao {
 
-	public List<LotteryTimeNumbak> openToday(/* Map<String, Object> params */);
+	public List<LotteryTimeNum> openToday(@Param("name")String lotteryName, @Param("num")Integer num/* Map<String, Object> params */);
 
-	public List<LotteryTimeNumbak> currentIssue(@Param("dt") Date dt);
+	public List<LotteryTimeNum> currentIssue(String lotteryName, @Param("dt") Date dt);
 
 }
