@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+           http://www.springframework.org/schema/context  
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd  
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd  
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">  
+  
+  	<!-- lottery -->
+	<bean id="lotteryPlayConfigService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/lotteryPlayConfigService"/>  
+        <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryPlayConfigService"/>  
+    </bean>
+	<bean id="lotteryTimeNumService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/lotteryTimeNumService"/>  
+        <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryTimeNumService"/>  
+    </bean>
+	<bean id="lotteryTypeService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/lotteryTypeService"/>  
+        <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryTypeService"/>  
+    </bean>
+    
+    <!-- member -->
+	<bean id="memberAccountCardService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/memberAccountCardService"/>  
+        <property name="serviceInterface" value="com.game.modules.member.service.MemberAccountCardService"/>  
+    </bean>    
+	<bean id="memberAccountService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/memberAccountService"/>  
+        <property name="serviceInterface" value="com.game.modules.member.service.MemberAccountService"/>  
+    </bean>
+	<bean id="memberPlayConfigService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/memberPlayConfigService"/>  
+        <property name="serviceInterface" value="com.game.modules.member.service.MemberPlayConfigService"/>  
+    </bean>
+    
+    <!-- order -->
+	<bean id="lotteryOrderService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/lotteryOrderService"/>  
+        <property name="serviceInterface" value="com.game.modules.order.service.LotteryOrderService"/>  
+    </bean>
+    
+    <!-- finance -->
+	<bean id="financeTradeDetailService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/financeTradeDetailService"/>  
+        <property name="serviceInterface" value="com.game.modules.finance.service.FinanceTradeDetailService"/>  
+    </bean>
+</beans>  
