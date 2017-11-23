@@ -1034,7 +1034,7 @@ public enum SscService implements LotteryService {
 		}
     },
      /** 时时彩前3和值尾数 */
-     SSC_QIAN3_ZUXUAN3("SSC_QIAN3_ZUXUAN3", "时时彩前3组选3") {
+    SSC_QIAN3_HEZHIWEISHU("SSC_QIAN3_HEZHIWEISHU", "时时彩前3和值尾数") {
 
 		@Override
 		public void trend(LotteryTimeNum openLotteryTimeNum) {
