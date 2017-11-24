@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.game.manager.modules.contract.service;
+package com.game.trade.modules.contract.service;
 
 import java.util.List;
 
@@ -12,19 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.game.common.persistence.Page;
 import com.game.common.service.CrudService;
 import com.game.common.utils.StringUtils;
-import com.game.manager.modules.contract.dao.ContractConfigDao;
-import com.game.manager.modules.contract.dao.ContractDao;
 import com.game.modules.contract.entity.Contract;
 import com.game.modules.contract.entity.ContractConfig;
+import com.game.modules.contract.service.ContractService;
+import com.game.trade.modules.contract.dao.ContractConfigDao;
+import com.game.trade.modules.contract.dao.ContractDao;
 
 /**
  * 开设分公司Service
  * @author freeman
  * @version 2017-11-22
  */
-@Service
+@Service("contractService")
 @Transactional(readOnly = true)
-public class ContractService extends CrudService<ContractDao, Contract> {
+public class ContractServiceImpl extends CrudService<ContractDao, Contract> implements ContractService {
 
 	@Autowired
 	private ContractConfigDao contractConfigDao;

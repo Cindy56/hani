@@ -38,6 +38,7 @@ public class Contract extends DataEntity<Contract> {
 	
 	private String qqNo;	//qq号码
 	private String mobileNo;	//手机号码
+	private String secPassword;	//安全密码
 	
 	private List<ContractConfig> contractConfigList = Lists.newArrayList();		// 子表列表
 	
@@ -197,6 +198,13 @@ public class Contract extends DataEntity<Contract> {
 
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+
+	public String getSecPassword() {
+		return secPassword;
+	}
+	public void setSecPassword(String secPassword) {
+		this.secPassword = secPassword;
 	}
 	
 }
