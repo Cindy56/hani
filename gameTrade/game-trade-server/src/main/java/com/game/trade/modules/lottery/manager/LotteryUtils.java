@@ -722,35 +722,44 @@ public class LotteryUtils {
         if(map.size() != 2) {//没有二重号直接返回
         	return false;
         }
-        String[] betNumArr = betNum.trim().split(",");
-        //统计出现的次数
-        List<String> betNumsList = Arrays.asList(betNumArr);
-        if(betNumsList.contains(map.get(0))) {
-        	
-        }
-        
-		return false;
+        for (String key : map.keySet()) {
+			if(map.get(key) != 2) {
+				return false;
+			}
+		}
+    	String[] betNumArr = betNum.trim().split("");
+         List<String> betNumsList = Arrays.asList(betNumArr);
+         for (String key : map.keySet()) {
+ 			if(!betNumsList.contains(key)) {
+ 				return false;
+ 			}
+ 		}
+        return true;
 	}
 	
 	
 	public static void main(String[] args) {
-		String s = "1,1,1,2";
-		/*  String[] openNums = s.split(",");
+		String s = "0,9,0,9";
+		 /* String[] openNums = s.split(",");
 		  List<String> openNumsList = Arrays.asList(openNums);
-		 Map<String, Long> map = openNumsList.stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
-		 map.forEach((k,v)->{
-			 if(v == 3) {
-				 
-			 }
-		 });*/
+		 Map<String,Long> map = openNumsList.stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
+		 boolean sss = false;
+		 for (String key : map.keySet()) {
+				if(map.get(key) == 2) {
+					sss = true;
+				}else {
+					sss = false;
+					break;
+			}
+		}
+		 System.out.println(sss);*/
 		long s2 = System.currentTimeMillis();
 		for (int i = 0; i < 10000000; i++) {
-			ssc4XinZuXuan4(s,"0123456789,0123456789");
+			ssc4XinZuXuan6(s,"01");
 		}
 		long s3 = System.currentTimeMillis();
-	
 		System.out.println(s3-s2);	
-		System.out.println(ssc4XinZuXuan4(s,"0123456789,0123456789"));
+		System.out.println(ssc4XinZuXuan6(s,"0123456789"));
 		
 		
 	}
