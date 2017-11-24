@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -651,10 +652,56 @@ public class LotteryUtils {
 		return resule.intValue();
 	}	
 	
+	/**
+     * 
+	 * 时时彩4星组4：
+	 */
+	public static boolean ssc4XinZuXuan4(String openNum,String betNum) {
+		 // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] openNums = openNum.split(",");
+        List<String> openNumsList = Arrays.asList(openNums);
+        String[] betNumArr = betNum.trim().split(",");
+        //取三重号 1 2 2 2
+        long count =  openNumsList.stream().distinct().count();
+        if(count != 2) {//没有三重号直接返回
+        	return false;
+        }
+        //统计出现的次数
+        boolean flag = false;
+        Map<String, Long> map = openNumsList.stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
+        List<String> betNumsList = Arrays.asList(betNumArr[0].split(""));
+        for (String bet : betNumsList) {
+			if(map.containsKey(bet)) {
+				long countNum = map.get(bet);
+				if(countNum == 3) {
+					flag = true;
+					break;
+				}
+			}
+		}
+        //取单号
+        if(flag) {
+        	 List<String> delayNumsList = Arrays.asList(betNumArr[1].split(""));
+        	 for (String delay : delayNumsList) {
+     			if(map.containsKey(delay)) {
+     				long countNum = map.get(delay);
+     				if(countNum == 1) {
+     					return true;
+     				}
+     			}
+     		}
+        }
+		return false;
+	}
+	
 	
 	public static void main(String[] args) {
-		String s = "1,2,3,4,5";
-		System.out.println(s.substring(0,5));
+		String s = "1,2,3,3,3";
+		System.out.println(s.substring(s.length()-7));
+		System.out.println(ssc4XinZuXuan4(s.substring(s.length()-6),"03,120"));
 		
 	}
 	/**
