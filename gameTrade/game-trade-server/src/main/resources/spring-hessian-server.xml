@@ -51,6 +51,18 @@
 	<bean name="/financeTradeDetailService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
         <property name="service" ref="financeTradeDetailService"></property>  
         <property name="serviceInterface" value="com.game.modules.finance.service.FinanceTradeDetailService"></property>  
-    </bean>    
+    </bean>   
+    
+    <!-- contract -->
+	<bean name="/contractService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="contractService"></property>  
+        <property name="serviceInterface" value="com.game.modules.contract.service.ContractService"></property>  
+    </bean>   
+    
+    <!-- todo -->
+	<bean name="/todoTaskService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="todoTaskService"></property>  
+        <property name="serviceInterface" value="com.game.modules.todo.service.TodoTaskService"></property>  
+    </bean>  
                   
 </beans>  

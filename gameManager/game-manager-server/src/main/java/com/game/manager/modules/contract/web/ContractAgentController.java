@@ -19,8 +19,8 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
-import com.game.manager.modules.contract.service.ContractService;
 import com.game.modules.contract.entity.Contract;
+import com.game.modules.contract.service.ContractService;
 
 /**
  * 开代理Controller
