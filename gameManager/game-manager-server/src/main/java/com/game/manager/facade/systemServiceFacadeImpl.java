@@ -10,8 +10,8 @@ import com.game.modules.sys.entity.Role;
 import com.game.modules.sys.entity.User;
 import com.game.modules.sys.service.SystemServiceFacade;
 
-@Service("systemFacadeService")
-public class SystemFacadeServiceImpl implements SystemServiceFacade {
+@Service("systemServiceFacade")
+public class systemServiceFacadeImpl implements SystemServiceFacade {
 	@Autowired
 	private SystemService systemService;
 	

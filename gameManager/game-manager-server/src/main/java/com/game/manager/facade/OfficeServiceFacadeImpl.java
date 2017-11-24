@@ -9,8 +9,8 @@ import com.game.manager.modules.sys.service.OfficeService;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.service.OfficeServiceFacade;
 
-@Service("officeFacadeService")
-public class OfficeFacadeServiceImpl implements OfficeServiceFacade  {
+@Service("officeServiceFacade")
+public class OfficeServiceFacadeImpl implements OfficeServiceFacade  {
 	@Autowired
 	private OfficeService officeService;
 	
