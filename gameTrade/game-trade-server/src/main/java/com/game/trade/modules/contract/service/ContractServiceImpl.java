@@ -109,7 +109,6 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 	
 	@Transactional(readOnly = false)
 	public Contract save(Contract contract) {
-<<<<<<< HEAD
 		
 		
 		/************************************************************/
@@ -295,8 +294,6 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		
 //		contract.setAccountId(memberAccount.getId());
 		/************************************************************/
-=======
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core.git
 		super.save(contract);
 		for (ContractConfig contractConfig : contract.getContractConfigList()){
 			if (contractConfig.getId() == null){

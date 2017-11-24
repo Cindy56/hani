@@ -41,9 +41,4 @@ public class systemServiceFacadeImpl implements SystemServiceFacade {
 		return this.systemService.assignUserToRole(role, user);
 	}
 
-	@Override
-	public String entryptPassword(String plainPassword) {
-		return SystemService.entryptPassword(plainPassword);
-	}
-
 }
