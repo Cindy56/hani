@@ -2,6 +2,7 @@ package com.game.trade.modules.lottery.manager;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -652,6 +653,7 @@ public class LotteryUtils {
 		return resule.intValue();
 	}	
 	
+	
 	/**
      * 
 	 * 时时彩4星组4：
@@ -661,47 +663,95 @@ public class LotteryUtils {
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
         }
-        String[] openNums = openNum.split(",");
-        List<String> openNumsList = Arrays.asList(openNums);
-        String[] betNumArr = betNum.trim().split(",");
         //取三重号 1 2 2 2
-        long count =  openNumsList.stream().distinct().count();
-        if(count != 2) {//没有三重号直接返回
+        Map<String, Long> map = Arrays.asList(openNum.split(",")).stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
+        if(map.size() != 2) {//没有三重号直接返回
         	return false;
         }
-        //统计出现的次数
         boolean flag = false;
-        Map<String, Long> map = openNumsList.stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
-        List<String> betNumsList = Arrays.asList(betNumArr[0].split(""));
-        for (String bet : betNumsList) {
-			if(map.containsKey(bet)) {
-				long countNum = map.get(bet);
-				if(countNum == 3) {
-					flag = true;
-					break;
-				}
+        for (String key : map.keySet()) {
+			if(map.get(key) == 3) {
+				flag=true;
+				break;
 			}
 		}
-        //取单号
         if(flag) {
-        	 List<String> delayNumsList = Arrays.asList(betNumArr[1].split(""));
-        	 for (String delay : delayNumsList) {
-     			if(map.containsKey(delay)) {
-     				long countNum = map.get(delay);
-     				if(countNum == 1) {
-     					return true;
-     				}
-     			}
-     		}
+        	  String[] betNumArr = betNum.trim().split(",");
+              //统计出现的次数
+              List<String> betNumsList = Arrays.asList(betNumArr[0].split(""));
+              boolean f = false;
+              for (String bet : betNumsList) {
+      			if(map.containsKey(bet)) {
+      				long countNum = map.get(bet);
+      				if(countNum == 3) {
+      					f = true;
+      					break;
+      				}
+      			}
+      		}
+	         if(f) {
+	        	 List<String> delayNumsList = Arrays.asList(betNumArr[1].split(""));
+	        	 for (String delay : delayNumsList) {
+	     			if(map.containsKey(delay)) {
+	     				long countNum = map.get(delay);
+	     				if(countNum == 1) {
+	     					return true;
+	     				}
+	     			}
+	     		}
+	         }
         }
 		return false;
 	}
 	
 	
+	
+	/**
+     * 
+	 * 时时彩4星组6：
+	 */
+	public static boolean ssc4XinZuXuan6(String openNum,String betNum) {
+		 // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] openNums = openNum.split(",");
+        List<String> openNumsList = Arrays.asList(openNums);
+        //2个二重号码 3 3 2 2
+        Map<String, Long> map = openNumsList.stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
+        if(map.size() != 2) {//没有二重号直接返回
+        	return false;
+        }
+        String[] betNumArr = betNum.trim().split(",");
+        //统计出现的次数
+        List<String> betNumsList = Arrays.asList(betNumArr);
+        if(betNumsList.contains(map.get(0))) {
+        	
+        }
+        
+		return false;
+	}
+	
+	
 	public static void main(String[] args) {
-		String s = "1,2,3,3,3";
-		System.out.println(s.substring(s.length()-7));
-		System.out.println(ssc4XinZuXuan4(s.substring(s.length()-6),"03,120"));
+		String s = "1,1,1,2";
+		/*  String[] openNums = s.split(",");
+		  List<String> openNumsList = Arrays.asList(openNums);
+		 Map<String, Long> map = openNumsList.stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
+		 map.forEach((k,v)->{
+			 if(v == 3) {
+				 
+			 }
+		 });*/
+		long s2 = System.currentTimeMillis();
+		for (int i = 0; i < 10000000; i++) {
+			ssc4XinZuXuan4(s,"0123456789,0123456789");
+		}
+		long s3 = System.currentTimeMillis();
+	
+		System.out.println(s3-s2);	
+		System.out.println(ssc4XinZuXuan4(s,"0123456789,0123456789"));
+		
 		
 	}
 	/**
