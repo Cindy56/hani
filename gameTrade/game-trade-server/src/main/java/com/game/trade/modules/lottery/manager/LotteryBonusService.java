@@ -26,7 +26,7 @@ public class LotteryBonusService {
 	@Autowired
 	private MemberAccountServiceImpl memberAccountService;
 	@Autowired
-	private LotteryCalculateService lotteryCalculateService;
+	private LotteryCalculateServiceImpl lotteryCalculateService;
 	@Autowired
 	private LotteryOrderServiceImpl lotteryOrderService;
 	@Autowired

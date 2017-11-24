@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.lottery.service.LotteryCalculateService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.modules.lottery.service.LotteryTimeNumServiceImpl;
 
@@ -28,17 +29,33 @@ import com.game.trade.modules.lottery.service.LotteryTimeNumServiceImpl;
  *
  */
 
-@Service
-public class LotteryCalculateService {
+@Service("lotteryCalculateService")
+public class LotteryCalculateServiceImpl implements LotteryCalculateService {
 	@Autowired
 	private LotteryTimeNumServiceImpl lotteryTimeNumService;
+	
+	
+
+	/**
+	 * @return the lotteryTimeNumService
+	 */
+	public LotteryTimeNumServiceImpl getLotteryTimeNumService() {
+		return lotteryTimeNumService;
+	}
+
+	/**
+	 * @param lotteryTimeNumService the lotteryTimeNumService to set
+	 */
+	public void setLotteryTimeNumService(LotteryTimeNumServiceImpl lotteryTimeNumService) {
+		this.lotteryTimeNumService = lotteryTimeNumService;
+	}
 
 	public void trend(LotteryTimeNum lotteryTimeNum) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public boolean checkOrder(LotteryOrder lotteryOrder) {
+	public int checkOrder(LotteryOrder lotteryOrder) {
 		//获取当前彩种的时刻，
 		LotteryTimeNum betLotteryTimeNum = lotteryTimeNumService.findCurrentIssueNo(lotteryOrder.getLotteryCode());
 		//校验

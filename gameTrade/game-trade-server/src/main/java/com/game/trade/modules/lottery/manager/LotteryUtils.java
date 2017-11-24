@@ -194,10 +194,7 @@ public class LotteryUtils {
         // 不为空的位置长度相加
         int count = 1;
         for (String string : betNumList) {
-            // 空位跳过
-            if ("-".equals(string)) {
-                continue;
-            }
+           
             count *= string.length();
         }
         return count;

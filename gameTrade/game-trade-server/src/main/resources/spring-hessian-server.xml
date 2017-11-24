@@ -25,6 +25,11 @@
         <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryTypeService"></property>  
     </bean>
     
+    <bean name="/lotteryCalculateService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="lotteryCalculateService"></property>  
+        <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryCalculateService"></property>  
+    </bean>
+    
     <!-- member -->
 	<bean name="/memberAccountCardService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
         <property name="service" ref="memberAccountCardService"></property>  
