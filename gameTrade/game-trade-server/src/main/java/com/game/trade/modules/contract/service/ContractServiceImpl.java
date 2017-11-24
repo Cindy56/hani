@@ -45,7 +45,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(Contract contract) {
+	public Contract save(Contract contract) {
 		super.save(contract);
 		for (ContractConfig contractConfig : contract.getContractConfigList()){
 			if (contractConfig.getId() == null){
@@ -64,6 +64,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 				contractConfigDao.delete(contractConfig);
 			}
 		}
+		return contract;
 	}
 	
 	@Transactional(readOnly = false)

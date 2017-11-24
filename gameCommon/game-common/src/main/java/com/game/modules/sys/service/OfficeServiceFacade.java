@@ -12,5 +12,5 @@ public interface OfficeServiceFacade {
 	/** 设置ParentIds，查找他的下级 */
 	public List<Office> findOfficesByParentId(String parentOfficeId);
 	/** 保存 */
-	public void save(Office office);
+	public Office save(Office office);
 }

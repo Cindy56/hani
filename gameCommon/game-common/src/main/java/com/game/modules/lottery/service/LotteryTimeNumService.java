@@ -25,7 +25,7 @@ public interface LotteryTimeNumService{
 	
 	public Page<LotteryTimeNum> findPage(Page<LotteryTimeNum> page, LotteryTimeNum lotteryTimeNum);
 	
-	public void save(LotteryTimeNum lotteryTimeNum);
+	public LotteryTimeNum save(LotteryTimeNum lotteryTimeNum);
 	
 	public void delete(LotteryTimeNum lotteryTimeNum);
 	

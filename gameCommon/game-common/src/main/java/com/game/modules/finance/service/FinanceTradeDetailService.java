@@ -20,7 +20,7 @@ public interface FinanceTradeDetailService {
 	
 	public Page<FinanceTradeDetail> findPage(Page<FinanceTradeDetail> page, FinanceTradeDetail financeTradeDetail);
 	
-	public void save(FinanceTradeDetail financeTradeDetail);
+	public FinanceTradeDetail save(FinanceTradeDetail financeTradeDetail);
 	
 	public void delete(FinanceTradeDetail financeTradeDetail);
 	

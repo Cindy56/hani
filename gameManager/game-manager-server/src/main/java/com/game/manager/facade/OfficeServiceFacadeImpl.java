@@ -27,8 +27,8 @@ public class OfficeServiceFacadeImpl implements OfficeServiceFacade  {
 	}
 
 	@Override
-	public void save(Office office) {
-		this.save(office);
+	public Office save(Office office) {
+		 return this.officeService.save(office);
 	}
 
 }

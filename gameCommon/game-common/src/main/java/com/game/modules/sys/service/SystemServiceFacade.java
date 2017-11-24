@@ -24,7 +24,7 @@ public interface SystemServiceFacade{
 	/** 根据officeid查找公司所有角色 */
 	public List<Role> findRoleByOfficeId(String officeId);
 	/** 保存角色 */
-	public void saveRole(Role role);
+	public Role saveRole(Role role);
 	/** 为用户分配角色 */
 	public User assignUserToRole(Role role, User user);
 }
