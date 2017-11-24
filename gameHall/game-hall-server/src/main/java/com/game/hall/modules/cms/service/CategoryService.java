@@ -130,7 +130,7 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(Category category) {
+	public Category save(Category category) {
 		category.setSite(new Site(CmsUtils.getCurrentSiteId()));
 		if (StringUtils.isNotBlank(category.getViewConfig())){
             category.setViewConfig(StringEscapeUtils.unescapeHtml4(category.getViewConfig()));
@@ -138,6 +138,7 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 		super.save(category);
 		UserUtils.removeCache(CACHE_CATEGORY_LIST);
 		CmsUtils.removeCache("mainNavList_"+category.getSite().getId());
+		return category;
 	}
 	
 	@Transactional(readOnly = false)

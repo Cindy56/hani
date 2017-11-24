@@ -48,4 +48,16 @@
         <property name="serviceUrl" value="${game.trade.url}/financeTradeDetailService"/>  
         <property name="serviceInterface" value="com.game.modules.finance.service.FinanceTradeDetailService"/>  
     </bean>
+    
+    <!-- contract -->
+	<bean id="contractService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/contractService"/>  
+        <property name="serviceInterface" value="com.game.modules.contract.service.ContractService"/>  
+    </bean>
+	
+	<!-- todo -->
+	<bean id="todoTaskService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/todoTaskService"/>  
+        <property name="serviceInterface" value="com.game.modules.todo.service.TodoTaskService"/>  
+    </bean>
 </beans>  

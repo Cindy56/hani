@@ -36,6 +36,8 @@ public interface AccountMgrApi {
 	
 	//增加账户
 	public int insert(MemberAccount memberAccount);
+
+	
 	
 
 }

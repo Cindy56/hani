@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.game.manager.modules.contract.dao;
+package com.game.trade.modules.contract.dao;
 
 import com.game.common.persistence.CrudDao;
 import com.game.common.persistence.annotation.MyBatisDao;

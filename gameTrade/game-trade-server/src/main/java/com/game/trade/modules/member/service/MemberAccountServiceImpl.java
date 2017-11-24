@@ -46,8 +46,8 @@ public class MemberAccountServiceImpl
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(MemberAccount memberAccount) {
-		super.save(memberAccount);
+	public MemberAccount save(MemberAccount memberAccount) {
+		return super.save(memberAccount);
 	}
 	
 	@Transactional(readOnly = false)

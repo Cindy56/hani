@@ -19,8 +19,14 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
-import com.game.manager.modules.contract.service.ContractService;
+import com.game.manager.modules.sys.service.OfficeService;
+import com.game.manager.modules.sys.service.SystemService;
+import com.game.manager.modules.sys.utils.UserUtils;
 import com.game.modules.contract.entity.Contract;
+import com.game.modules.contract.service.ContractService;
+import com.game.modules.member.service.MemberAccountService;
+import com.game.modules.sys.service.SystemServiceFacade;
+import com.game.modules.todo.service.TodoTaskService;
 
 /**
  * 开设分公司Controller
@@ -33,6 +39,22 @@ public class ContractCompanyController extends BaseController {
 
 	@Autowired
 	private ContractService contractService;
+	
+	@Autowired
+	private SystemService systemService;
+	
+	@Autowired
+	private OfficeService officeService;
+	
+	@Autowired
+	private MemberAccountService memberAccountService;
+	
+	@Autowired
+	private TodoTaskService todoTaskService;
+	
+	@Autowired
+	private SystemServiceFacade systemServiceFacade;
+	
 	
 	@ModelAttribute
 	public Contract get(@RequestParam(required=false) String id) {
@@ -64,9 +86,18 @@ public class ContractCompanyController extends BaseController {
 	@RequiresPermissions("contract:company:contract:edit")
 	@RequestMapping(value = "save")
 	public String save(Contract contract, Model model, RedirectAttributes redirectAttributes) {
+		
+		String userLoginName=contract.getUserName();
+		if(null!=systemService.getUserByLoginName(userLoginName)) {
+			addMessage(redirectAttributes, "登录名称已存在！");
+			return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
+		}
+		
 		if (!beanValidator(model, contract)){
 			return form(contract, model);
 		}
+		contract.setCurrentUser(UserUtils.getUser());
+		//保存公司信息
 		contractService.save(contract);
 		addMessage(redirectAttributes, "保存公司成功");
 		return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";

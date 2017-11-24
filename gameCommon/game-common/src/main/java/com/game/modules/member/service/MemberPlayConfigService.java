@@ -20,7 +20,7 @@ public interface MemberPlayConfigService {
 	
 	public Page<MemberPlayConfig> findPage(Page<MemberPlayConfig> page, MemberPlayConfig memberPlayConfig);
 	
-	public void save(MemberPlayConfig memberPlayConfig);
+	public MemberPlayConfig save(MemberPlayConfig memberPlayConfig);
 	
 	public void delete(MemberPlayConfig memberPlayConfig);
 	

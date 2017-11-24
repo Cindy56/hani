@@ -67,9 +67,10 @@ public class MailSiteService extends CrudService<MailSiteDao, MailSite> {
 	 * @return
 	 */
 	@Transactional(readOnly = false)
-	public void save(MailSite mailSite) {
+	public MailSite save(MailSite mailSite) {
 
 		this.dao.insert(mailSite);
+		return mailSite;
 	}
 
 	@Transactional(readOnly = false)

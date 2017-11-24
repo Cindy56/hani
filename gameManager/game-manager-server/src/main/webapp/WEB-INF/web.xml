@@ -86,14 +86,18 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath*:/spring-mvc*.xml</param-value>
+			<param-value>classpath*:/spring-mvc*.xml, classpath*:/spring-hessian-server.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
+		<!-- <load-on-startup>1</load-on-startup> -->
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>springServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>  
+	    <servlet-name>springServlet</servlet-name>  
+	    <url-pattern>/hessian/*</url-pattern>  
+  	</servlet-mapping>	
 
 	<!-- Activiti diagram-view callback filter-->
 

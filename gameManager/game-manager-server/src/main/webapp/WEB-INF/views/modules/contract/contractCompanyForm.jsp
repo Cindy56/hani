@@ -105,7 +105,15 @@
 		<div class="control-group">
 			<label class="control-label">公司名称：</label>
 			<div class="controls">
-				<form:input path="orgName" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入公司名称"/>
+				<form:input path="orgName" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入公司名称" value="456789"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">公司编码：</label>
+			<div class="controls">
+				<form:input path="office.code" htmlEscape="false" maxlength="10" minlength="3" class="input-xlarge required" placeholder="请输入公司编码（仅支持大小写字母）" value="456789"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -113,7 +121,7 @@
 		<div class="control-group">
 			<label class="control-label">登录名称：</label>
 			<div class="controls">
-				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入登录名称"/>
+				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入登录名称" value="456789"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -133,31 +141,39 @@
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 			</div>
+			<div class="control-group">
+				<label class="control-label">安全密码：</label>
+				<div class="controls">
+						<form:input path="secPassword" htmlEscape="false" maxlength="50" minlength="6" class="input-xlarge required" placeholder="请输入安全密码"/>
+					<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
 		</c:if>
+		
 		
 		<div class="control-group">
 				<label class="control-label">邮箱：</label>
 				<div class="controls">
-					<form:input path="user.email" htmlEscape="false" maxlength="100" placeholder="请输入邮箱" class="input-xlarge email"/>
+					<form:input path="user.email" htmlEscape="false" maxlength="100" placeholder="请输入邮箱" class="input-xlarge email" value="456789@qq.com"/>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">电话：</label>
 				<div class="controls">
-					<form:input path="user.phone" htmlEscape="false" maxlength="100" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入电话"/>
+					<form:input path="user.phone" htmlEscape="false" maxlength="100" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入电话" value="456789"/>
 				</div>
 			</div>
 			
 			<div class="control-group">
 				<label class="control-label">qq号码：</label>
 				<div class="controls">
-					<form:input path="qqNo" htmlEscape="false" maxlength="50" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入QQ号码"/>
+					<form:input path="qqNo" htmlEscape="false" maxlength="50" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入QQ号码" value="456789"/>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">手机号码：</label>
 				<div class="controls">
-					<form:input path="mobileNo" htmlEscape="false" maxlength="50"  onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入手机号码"/>
+					<form:input path="mobileNo" htmlEscape="false" maxlength="50"  onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入手机号码" value="456789"/>
 				</div>
 			</div>
 		
@@ -189,21 +205,21 @@
 		<div class="control-group">
 			<label class="control-label">平台租金：</label>
 			<div class="controls">
-				<form:input path="rentAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入平台租金（单位：元/月）" onkeyup="value=value.replace(/[^\d]/g,'') "/>
+				<form:input path="rentAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入平台租金（单位：元/月）" onkeyup="value=value.replace(/[^\d]/g,'') " value="456789"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">开户费：</label>
 			<div class="controls">
-				<form:input path="openAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入开户费（单位：元）" onkeyup="value=value.replace(/[^\d]/g,'') "/>
+				<form:input path="openAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入开户费（单位：元）" onkeyup="value=value.replace(/[^\d]/g,'') " value="456789"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">签约周期：</label>
 			<div class="controls">
-				<form:input path="contractTime" htmlEscape="false" maxlength="4" class="input-xlarge required" placeholder="请输入签约周期（单位：年）" onkeyup="value=value.replace(/[^\d]/g,'') "/>
+				<form:input path="contractTime" htmlEscape="false" maxlength="4" class="input-xlarge required" placeholder="请输入签约周期（单位：年）" onkeyup="value=value.replace(/[^\d]/g,'') " value="4"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -265,10 +281,10 @@
 								流水/盈利额：
 							</td>
 							<td>
-								<input id="contractConfigList{{idx}}_rangeStart" name="contractConfigList[{{idx}}].rangeStart" type="text" value="{{row.rangeStart}}" class="input-small required"/>
+								<input id="contractConfigList{{idx}}_rangeStart" name="contractConfigList[{{idx}}].rangeStart" type="text" value="{{row.rangeStart}}" class="input-small required" onkeyup="value=value.replace(/[^\d]/g,'') "/>
 							</td>
 							<td>
-								<input id="contractConfigList{{idx}}_rangeEnd" name="contractConfigList[{{idx}}].rangeEnd" type="text" value="{{row.rangeEnd}}" class="input-small required"/>
+								<input id="contractConfigList{{idx}}_rangeEnd" name="contractConfigList[{{idx}}].rangeEnd" type="text" value="{{row.rangeEnd}}" class="input-small required" onkeyup="value=value.replace(/[^\d]/g,'') "/>
 							</td>
 							<td>
 								<input id="contractConfigList{{idx}}_beniftRate" name="contractConfigList[{{idx}}].beniftRate" type="text" value="{{row.beniftRate}}" class="input-small required"/>

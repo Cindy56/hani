@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.trade.modules.contract.dao.ContractDao">
+    
+	<sql id="contractColumns">
+		a.id AS "id",
+		a.org_id AS "office.id",
+		a.org_name AS "orgName",
+		a.user_id AS "user.id",
+		a.user_name AS "userName",
+		a.account_id AS "accountId",
+		a.open_type AS "openType",
+		a.benefit_type AS "benefitType",
+		a.benefit_cycle AS "benefitCycle",
+		a.rent_amount AS "rentAmount",
+		a.open_amount AS "openAmount",
+		a.contract_time AS "contractTime",
+		a.remark AS "remark",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="contractJoins">
+	</sql>
+    
+	<select id="get" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM contract a
+		<include refid="contractJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM contract a
+		<include refid="contractJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.org_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{office.id}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{office.id}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{office.id},'%')</if>
+			</if>
+			<if test="orgName != null and orgName != ''">
+				AND a.org_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{orgName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{orgName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{orgName},'%')</if>
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND a.user_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{userName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{userName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{userName},'%')</if>
+			</if>
+			<if test="accountId != null and accountId != ''">
+				AND a.account_id = #{accountId}
+			</if>
+			<if test="openType != null and openType != ''">
+				AND a.open_type = #{openType}
+			</if>
+			<if test="benefitType != null and benefitType != ''">
+				AND a.benefit_type = #{benefitType}
+			</if>
+			<if test="benefitCycle != null and benefitCycle != ''">
+				AND a.benefit_cycle = #{benefitCycle}
+			</if>
+			<if test="contractTime != null and contractTime != ''">
+				AND a.contract_time = #{contractTime}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM contract a
+		<include refid="contractJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO contract(
+			id,
+			org_id,
+			org_name,
+			user_id,
+			user_name,
+			account_id,
+			open_type,
+			benefit_type,
+			benefit_cycle,
+			rent_amount,
+			open_amount,
+			contract_time,
+			remark,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{office.id},
+			#{orgName},
+			#{user.id},
+			#{userName},
+			#{accountId},
+			#{openType},
+			#{benefitType},
+			#{benefitCycle},
+			#{rentAmount},
+			#{openAmount},
+			#{contractTime},
+			#{remark},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE contract SET 	
+			org_id = #{office.id},
+			org_name = #{orgName},
+			user_id = #{user.id},
+			user_name = #{userName},
+			account_id = #{accountId},
+			open_type = #{openType},
+			benefit_type = #{benefitType},
+			benefit_cycle = #{benefitCycle},
+			rent_amount = #{rentAmount},
+			open_amount = #{openAmount},
+			contract_time = #{contractTime},
+			remark = #{remark},
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE contract SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

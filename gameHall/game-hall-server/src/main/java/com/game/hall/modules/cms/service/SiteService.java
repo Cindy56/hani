@@ -37,13 +37,14 @@ public class SiteService extends CrudService<SiteDao, Site> {
 	}
 
 	@Transactional(readOnly = false)
-	public void save(Site site) {
+	public Site save(Site site) {
 		if (site.getCopyright()!=null){
 			site.setCopyright(StringEscapeUtils.unescapeHtml4(site.getCopyright()));
 		}
 		super.save(site);
 		CmsUtils.removeCache("site_"+site.getId());
 		CmsUtils.removeCache("siteList");
+		return site;
 	}
 	
 	@Transactional(readOnly = false)

@@ -52,7 +52,7 @@ public  interface LotteryPlayConfigService{
      * @param lotteryPlayConfig 要更新到数据库的数据实体对象
      * @author terry
      */
-    public void save(LotteryPlayConfig lotteryPlayConfig);
+    public LotteryPlayConfig save(LotteryPlayConfig lotteryPlayConfig);
 
     /**
      * 删除数据（修改数据库数据删除标识为1）

@@ -83,8 +83,8 @@ public class LotteryPlayConfigServiceImpl
      */
     @Transactional(readOnly = false)
     @Override
-    public void save(LotteryPlayConfig lotteryPlayConfig) {
-        super.save(lotteryPlayConfig);
+    public LotteryPlayConfig save(LotteryPlayConfig lotteryPlayConfig) {
+    	return super.save(lotteryPlayConfig);
     }
 
     /**

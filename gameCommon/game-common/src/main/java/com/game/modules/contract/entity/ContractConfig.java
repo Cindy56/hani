@@ -21,7 +21,6 @@ public class ContractConfig extends DataEntity<ContractConfig> {
 	private String rangeStart;		// 以元为单位，界面上格式化万
 	private String rangeEnd;		// 以元为单位，界面上格式化万
 	private String beniftRate;		// 分红比例，小数存储，如0.5
-	private Date updteDate;		// 修改时间
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
 	
@@ -68,15 +67,6 @@ public class ContractConfig extends DataEntity<ContractConfig> {
 
 	public void setBeniftRate(String beniftRate) {
 		this.beniftRate = beniftRate;
-	}
-	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	public Date getUpdteDate() {
-		return updteDate;
-	}
-
-	public void setUpdteDate(Date updteDate) {
-		this.updteDate = updteDate;
 	}
 	
 	public Date getBeginCreateDate() {

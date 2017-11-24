@@ -19,8 +19,9 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
-import com.game.manager.modules.contract.service.ContractService;
+import com.game.manager.modules.sys.utils.UserUtils;
 import com.game.modules.contract.entity.Contract;
+import com.game.modules.contract.service.ContractService;
 
 /**
  * 开代理Controller
@@ -67,6 +68,9 @@ public class ContractAgentController extends BaseController {
 		if (!beanValidator(model, contract)){
 			return form(contract, model);
 		}
+		
+		contract.setCurrentUser(UserUtils.getUser());
+		
 		contractService.save(contract);
 		addMessage(redirectAttributes, "保存代理成功");
 		return "redirect:"+Global.getAdminPath()+"/contract/contractAgent/?repage";

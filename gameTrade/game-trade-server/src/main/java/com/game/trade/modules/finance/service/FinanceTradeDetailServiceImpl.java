@@ -41,8 +41,8 @@ public class FinanceTradeDetailServiceImpl
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(FinanceTradeDetail financeTradeDetail) {
-		super.save(financeTradeDetail);
+	public FinanceTradeDetail save(FinanceTradeDetail financeTradeDetail) {
+		return super.save(financeTradeDetail);
 	}
 	
 	@Transactional(readOnly = false)
