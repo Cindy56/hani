@@ -27,8 +27,7 @@ public class systemServiceFacadeImpl implements SystemServiceFacade {
 
 	@Override
 	public List<Role> findRoleByOfficeId(String officeId) {
-		// TODO Auto-generated method stub
-		return null;
+		return systemService.findRoleByOfficeId(officeId);
 	}
 
 	@Override
@@ -39,6 +38,11 @@ public class systemServiceFacadeImpl implements SystemServiceFacade {
 	@Override
 	public User assignUserToRole(Role role, User user) {
 		return this.systemService.assignUserToRole(role, user);
+	}
+
+	@Override
+	public String entryptPassword(String plainPassword) {
+		return SystemService.entryptPassword(plainPassword);
 	}
 
 }
