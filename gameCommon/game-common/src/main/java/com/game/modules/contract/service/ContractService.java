@@ -22,7 +22,7 @@ public interface ContractService {
 	
 	public Page<Contract> findPage(Page<Contract> page, Contract contract);
 	
-	public void save(Contract contract);
+	public Contract save(Contract contract);
 	
 	public void delete(Contract contract);
 }

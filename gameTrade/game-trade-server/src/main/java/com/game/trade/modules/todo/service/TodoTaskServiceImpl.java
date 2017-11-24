@@ -36,8 +36,8 @@ public class TodoTaskServiceImpl extends CrudService<TodoTaskDao, TodoTask> impl
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(TodoTask todoTask) {
-		super.save(todoTask);
+	public TodoTask save(TodoTask todoTask) {
+		return super.save(todoTask);
 	}
 	
 	@Transactional(readOnly = false)

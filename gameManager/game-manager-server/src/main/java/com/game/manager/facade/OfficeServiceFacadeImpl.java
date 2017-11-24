@@ -28,8 +28,12 @@ public class OfficeServiceFacadeImpl implements OfficeServiceFacade  {
 
 	@Override
 	public Office save(Office office) {
+<<<<<<< HEAD
 		this.officeService.save(office);
 		return office;
+=======
+		 return this.officeService.save(office);
+>>>>>>> branch 'game-1.0' of https://github.com/allen5460/core.git
 	}
 
 }

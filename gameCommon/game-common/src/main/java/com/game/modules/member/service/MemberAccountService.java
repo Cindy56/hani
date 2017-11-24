@@ -25,7 +25,7 @@ public interface MemberAccountService {
 	
 	public Page<MemberAccount> findPage(Page<MemberAccount> page, MemberAccount memberAccount);
 	
-	public void save(MemberAccount memberAccount);
+	public MemberAccount save(MemberAccount memberAccount);
 	
 	public void delete(MemberAccount memberAccount);
 	

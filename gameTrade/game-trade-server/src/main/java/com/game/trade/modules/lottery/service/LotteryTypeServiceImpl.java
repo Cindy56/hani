@@ -86,7 +86,7 @@ public class LotteryTypeServiceImpl
      * 保存表单提交数据
      */
     @Transactional(readOnly = false)
-    public void save(LotteryType lotteryType) {
+    public LotteryType save(LotteryType lotteryType) {
         super.save(lotteryType);
         for (LotteryTypeTime lotteryTypeTime : lotteryType.getLotteryTypeTimeList()) {
             if (lotteryTypeTime.getId() == null) {
@@ -107,6 +107,8 @@ public class LotteryTypeServiceImpl
                 lotteryTypeTimeDao.delete(lotteryTypeTime);
             }
         }
+        
+        return lotteryType;
     }
 
     /**

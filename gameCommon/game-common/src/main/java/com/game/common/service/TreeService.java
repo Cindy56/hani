@@ -21,7 +21,7 @@ import com.game.common.utils.StringUtils;
 public abstract class TreeService<D extends TreeDao<T>, T extends TreeEntity<T>> extends CrudService<D, T> {
 	
 	@Transactional(readOnly = false)
-	public void save(T entity) {
+	public T save(T entity) {
 		
 		@SuppressWarnings("unchecked")
 		Class<T> entityClass = Reflections.getClassGenricType(getClass(), 1);
@@ -69,7 +69,7 @@ public abstract class TreeService<D extends TreeDao<T>, T extends TreeEntity<T>>
 				dao.updateParentIds(e);
 			}
 		}
-		
+		return entity;
 	}
 	
 	/**

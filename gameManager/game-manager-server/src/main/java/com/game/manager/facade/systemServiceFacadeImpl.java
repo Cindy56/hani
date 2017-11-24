@@ -31,8 +31,9 @@ public class systemServiceFacadeImpl implements SystemServiceFacade {
 	}
 
 	@Override
-	public void saveRole(Role role) {
+	public Role saveRole(Role role) {
 		this.systemService.saveRole(role);
+		return role;
 	}
 
 	@Override
