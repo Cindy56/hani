@@ -5,14 +5,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.game.common.mapper.JsonMapper;
 import com.game.common.utils.StringUtils;
 import com.game.modules.lottery.entity.GameError;
+import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.member.entity.MemberPlayConfig;
+import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
-import com.game.trade.model.OpenLottery;
-import com.game.trade.model.Star5;
 import com.game.trade.modules.lottery.MoneyType;
-import com.game.trade.util.BetNoSeparate;
 import com.game.trade.util.CheckString;
 
 /**
@@ -22,6 +25,8 @@ import com.game.trade.util.CheckString;
  */
 public enum SscService implements LotteryService {
 
+
+	
 	/** 单星直选 */
 	SSC_DAN1_ZHIXUAN("SSC_DAN1_ZHIXUAN", "单星直选") {
 
@@ -1769,6 +1774,9 @@ public enum SscService implements LotteryService {
 	private String playCode;
 	/** 玩法名称 */
 	private String playName;
+	
+	@Autowired
+	private MemberPlayConfigService myMemberPlayConfigService; 
 
 	private SscService(String playCode, String playName) {
 		this.playCode = playCode;
@@ -1848,7 +1856,37 @@ public enum SscService implements LotteryService {
 		}
 
 		// TODO 返水范围校验 等待freeman提供接口，获取用户的返回范围
+		MemberPlayConfig memCfg = myMemberPlayConfigService.getMemberPlayConfigByUserId(lotteryOrder.getUser().getId());
+		
+		String jsPlayCfg = memCfg.getPlayConfig();
+		LotteryPlayConfig lotPlayCfg = (LotteryPlayConfig) JsonMapper.fromJsonString(jsPlayCfg, LotteryPlayConfig.class);
+		
+		//倍数限制
+		int betRateLimit = lotPlayCfg.getBetRateLimit();
+		BigDecimal winningProbability = lotPlayCfg.getWinningProbability();
+		BigDecimal CommissionRateMax = lotPlayCfg.getCommissionRateMax();
+		BigDecimal CommissionRateMin = lotPlayCfg.getCommissionRateMin();
+		
+		
+		//根据中奖概率和返水范围计算奖金组和返点
+		BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney()) ;//奖金模式
+		BigDecimal play_mode_commission_rate;//奖金模式返水比例
+		BigDecimal win_amount;//中奖金额
+		
+		//校验奖金模式是否在范围内
+		BigDecimal playModeMoneyMax;
+		BigDecimal playModeMoneyMin;
+		
+		playModeMoneyMax = new BigDecimal(2000).subtract(   CommissionRateMax.multiply(new BigDecimal(2000)) );
 
+		playModeMoneyMin = new BigDecimal(2000).subtract(   CommissionRateMin.multiply(new BigDecimal(2000)) );
+		
+		
+		if ( playModeMoney.compareTo(playModeMoneyMin)>0 && playModeMoney.compareTo(playModeMoneyMax)<0 )
+		{
+			
+		}
+		
 		return 0;
 	}
 
