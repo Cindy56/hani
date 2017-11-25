@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.game.modules.member.entity.MemberAccount">
+<mapper namespace="com.game.hall.modules.member.dao.PersonalDataDao">
     
 	<sql id="memberAccountColumns">
 		a.id AS "id",
@@ -22,7 +22,7 @@
 		a.del_flag AS "delFlag"
 	</sql>
     
-	<select id="get" resultType="java.util.Map">
+	<select id="getUserMap" resultType="java.util.Map">
 		SELECT 
 		a.id,
 		a.user_id,

@@ -16,16 +16,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.AccountMgrApi;
+import com.game.common.service.CrudService;
 import com.game.hall.modules.member.dao.PersonalDataDao;
+import com.game.hall.modules.utils.PassWordUtils;
 import com.game.modules.member.entity.MemberAccount;
 import com.game.modules.member.entity.MemberAccountCard;
 
-
-
-
 @Service
 @Transactional(readOnly = true)
-public class PersonalDataService implements AccountMgrApi{
+public class PersonalDataService extends CrudService<PersonalDataDao, MemberAccount> implements AccountMgrApi{
 
 	@Autowired
 	private PersonalDataDao personalDataDao;
@@ -35,10 +34,11 @@ public class PersonalDataService implements AccountMgrApi{
 		List<Map<String,Object>> list = personalDataDao.findAllCart();
 		return list;
 	}
-
-	@Override
-	public List<Map<String,Object>> get(String userId) {
-		return  personalDataDao.get(userId);
+	
+	public List<Map<String,Object>> getUserMap(String userId) {
+//		return  personalDataDao.get(userId);
+		
+		return personalDataDao.getUserMap(userId);
 	
 	}
 
@@ -123,10 +123,46 @@ public class PersonalDataService implements AccountMgrApi{
 
 
 
-	public Map isNormalStatus(String userId) {
-		return personalDataDao.isNormalStatus(userId);
+	public boolean isNormalStatus(String userId) {
+		boolean flag = false;
+		Map map= new HashMap();
+		map = personalDataDao.isNormalStatus(userId);
+		String str = (String) map.get("status");
+		if(Integer.valueOf(str) == 0) {
+			return true;
+		}
+		return false;
 	}
 
+	public boolean verSecPassWord(String userId,String secPassWord){
 
+		 String str = personalDataDao.getSec(userId);
+
+		    if(PassWordUtils.validatePassword(secPassWord, str)) {
+		    		return true;
+		
+		    	}
+
+		    return false;
+	      }
+
+	@Override
+	public List<Map<String, Object>> MemberAccount(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/**
+	 * 检查用户是否绑定银行卡
+	 * @return
+	 */
+	public boolean isBindingCard(String userId) {	
+		List<Map<String,Object>> list = personalDataDao.getUserMap(userId);
+		if(list.size() != 0) {
+			return true; 
+		}
+		return false;
+		
+	}
 
 }

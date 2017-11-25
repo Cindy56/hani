@@ -45,7 +45,7 @@ public class PersonalDataController {
 	@RequestMapping(value = "/personalData", method = RequestMethod.GET)
 	public ResultData personalData(String userId) {
 		ResultData rs = new ResultData();
-		List<Map<String,Object>> list = personalDataService.get(userId);
+		List<Map<String,Object>> list = personalDataService.getUserMap(userId);
 		if(list.size() == 0) {
 			//该用户未绑定银行卡
 			rs.setErrorCode(001);
@@ -327,18 +327,18 @@ public class PersonalDataController {
 	}
 	
 	
-	/**
+/*	*//**
 	 * 检查用户的账户状态是否正常
 	 * @param userId
 	 * @return
-	 */
+	 *//*
 	@ResponseBody
 	@RequestMapping(value = "/isNormalStatus", method = RequestMethod.GET)
 	public String isNormalStatus(String userId) {
 		Map map = new HashMap();
 		map = personalDataService.isNormalStatus(userId);
 		return  (String) map.get("status");
-	}
+	}*/
 	
 	
 	@Test
