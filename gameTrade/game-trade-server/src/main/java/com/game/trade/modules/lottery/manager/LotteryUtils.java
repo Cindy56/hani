@@ -731,6 +731,7 @@ public class LotteryUtils {
         if(map.size() != 2) {//没有三重号直接返回
         	return false;
         }
+        
         boolean flag = false;
         for (String key : map.keySet()) {
 			if(map.get(key) == 3) {
@@ -742,26 +743,20 @@ public class LotteryUtils {
         	  String[] betNumArr = betNum.trim().split(",");
               //统计出现的次数
               List<String> betNumsList = Arrays.asList(betNumArr[0].split(""));
-              boolean f = false;
-              for (String bet : betNumsList) {
-      			if(map.containsKey(bet)) {
-      				long countNum = map.get(bet);
-      				if(countNum == 3) {
-      					f = true;
-      					break;
-      				}
+              boolean betFlag = false;
+              for (String key : map.keySet()) {
+	       			if(betNumsList.contains(key) && map.get(key) == 3) {
+	       				betFlag = true;
+	       				break;
+	       			}
       			}
-      		}
-	         if(f) {
+	         if(betFlag) {
 	        	 List<String> delayNumsList = Arrays.asList(betNumArr[1].split(""));
-	        	 for (String delay : delayNumsList) {
-	     			if(map.containsKey(delay)) {
-	     				long countNum = map.get(delay);
-	     				if(countNum == 1) {
-	     					return true;
-	     				}
-	     			}
-	     		}
+	        	 for (String key : map.keySet()) {
+		       		if(delayNumsList.contains(key) && map.get(key) == 1) {
+		       			return true;
+		       		}
+	      		}
 	         }
         }
 		return false;
@@ -780,7 +775,7 @@ public class LotteryUtils {
         }
         String[] openNums = openNum.split(",");
         List<String> openNumsList = Arrays.asList(openNums);
-        //2个二重号码 3 3 2 2
+        //2个二重号码 3 3 2 2 ,
         Map<String, Long> map = openNumsList.stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
         if(map.size() != 2) {//没有二重号直接返回
         	return false;
@@ -791,7 +786,7 @@ public class LotteryUtils {
 			}
 		}
     	String[] betNumArr = betNum.trim().split("");
-         List<String> betNumsList = Arrays.asList(betNumArr);
+         List<String> betNumsList =Arrays.asList(betNumArr);
          for (String key : map.keySet()) {
  			if(!betNumsList.contains(key)) {
  				return false;
@@ -800,32 +795,49 @@ public class LotteryUtils {
         return true;
 	}
 	
-	
-	public static void main(String[] args) {
-		String s = "0,9,0,9";
-		 /* String[] openNums = s.split(",");
-		  List<String> openNumsList = Arrays.asList(openNums);
-		 Map<String,Long> map = openNumsList.stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
-		 boolean sss = false;
-		 for (String key : map.keySet()) {
-				if(map.get(key) == 2) {
-					sss = true;
-				}else {
-					sss = false;
-					break;
-			}
-		}
-		 System.out.println(sss);*/
-		long s2 = System.currentTimeMillis();
-		for (int i = 0; i < 10000000; i++) {
-			ssc4XinZuXuan6(s,"01");
-		}
-		long s3 = System.currentTimeMillis();
-		System.out.println(s3-s2);	
-		System.out.println(ssc4XinZuXuan6(s,"0123456789"));
-		
-		
+	/**
+     * 
+	 * 时时彩4星组12：
+	 */
+	public static boolean ssc4XinZuXuan12(String openNum,String betNum) {
+		 // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        String[] openNums = openNum.split(",");
+        List<String> openNumsList = Arrays.asList(openNums);
+        //1个二重号码和2个单号号码  :3 4 2 2
+        Map<String, Long> map = openNumsList.stream().collect(Collectors.groupingBy(p -> p,Collectors.counting()));
+        if(map.size() != 3) {//没有二重号直接返回
+        	return false;
+        }
+    	String[] betNumArr = betNum.trim().split("");
+        List<String> betNumsList = Arrays.asList(betNumArr);
+        boolean flag = true;
+        for (String key : map.keySet()) {
+ 			if(betNumsList.contains(key) && map.get(key) == 2) {
+ 				map.remove(key);
+ 				flag = true;
+ 				break;
+ 			}
+ 		}
+        if(flag) {
+        	boolean betFale= false;
+        	 for (String key : map.keySet()) {
+      			if(betNumsList.contains(key) && map.get(key) == 1) {
+      				betFale = true;
+      			}else {
+      				betFale = false;
+      				break;
+      			}
+      		}
+        	 return betFale;
+        }
+        return false;
 	}
+	
+	
+	
 	/**
 	 * 时时彩组选豹子
 	 */
