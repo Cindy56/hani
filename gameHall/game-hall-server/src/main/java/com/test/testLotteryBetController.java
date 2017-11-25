@@ -1,148 +1,58 @@
-/**
- * 
- */
-package com.game.hall.modules.bet.web;
+package com.test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Service;
 
-import com.entity.ResultData;
-import com.game.hall.modules.bet.service.LotteryAddBetService;
-import com.game.hall.modules.sys.utils.UserUtils;
-import com.game.modules.lottery.service.LotteryCalculateService;
+import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
+import com.game.modules.member.entity.MemberPlayConfig;
 import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.User;
-import com.test.testLotteryBetController;
 
-/**
- * 投注
- * 
- * @author antonio
- */
-@Controller
-@RequestMapping("/bet/bet")
-public class LotteryBetController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(LotteryBetController.class);
-	// @Autowired
-	// private LotteryOpenTodayService lotteryTimeNumService;
+@Service
+public class testLotteryBetController  {
 
-	@Autowired
-	private LotteryAddBetService lotteryAddBetService;
-	@Autowired
-	private LotteryCalculateService lotteryCalculateService;
-	
-	//---------------------test
-	
+
 	@Autowired
 	LotteryPlayConfigService mylotteryPlayConfigService;
 	
 	@Autowired
 	MemberPlayConfigService myMemberPlayConfigService;
-
-	@ResponseBody
-	@RequestMapping(value = "/addbet", method = RequestMethod.GET)
-	public ResultData addBet(/* List<LotteryOrder> betData */) {
-
-		testLotteryBetController test = new testLotteryBetController();
-		test.setMylotteryPlayConfigService(mylotteryPlayConfigService);
-		test.setMyMemberPlayConfigService(myMemberPlayConfigService);
-		List<LotteryOrder> lstest = test.testLotteryBetControllerMethodaddBet();
-		
-		List<LotteryOrder> betData = lstest;
-		//betData.add(getOrder());
-		System.out.println("1");
-
-		int ret = 0;
-		try {
-			// 前置校验
-			ResultData rd = ResultData.ResultDataOK();
-			
-
-			for (int i = 0; i < betData.size(); i++) {
-				ret = this.lotteryCalculateService.checkOrder(betData.get(i));
-				if (ret != 0) {
-					rd.setErrorCode(ret);
-					rd.setMessage("error");
-					return rd;
-				}
-			}
-
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-			ret = -1;
-		}
-
-		System.out.println("2");
-
-		// BetData betData;
-
-		if(ret!=0)return ResultData.ResultDataFail();
-		
-		return lotteryAddBetService.addBet(betData);
-		// System.out.println();
-
+	
+	/**
+	 * @return the myMemberPlayConfigService
+	 */
+	public MemberPlayConfigService getMyMemberPlayConfigService() {
+		return myMemberPlayConfigService;
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "/cancelorder", method = RequestMethod.POST)
-	public ResultData cancelOrder(@RequestParam("orderIds") List<String> orderIds) {
-
-		// List<LotteryOrder> betData = null;
-		System.out.println("1");
-
-		try {
-			// 前置校验
-			boolean ret = false;
-			ResultData rd = ResultData.ResultDataOK();
-
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-		}
-
-		System.out.println("2");
-
-		// BetData betData;
-		User user = UserUtils.getUser();
-		user.preInsert();
-		return lotteryAddBetService.cancelOrder(user, orderIds);
-		// System.out.println();
-
+	/**
+	 * @param myMemberPlayConfigService the myMemberPlayConfigService to set
+	 */
+	public void setMyMemberPlayConfigService(MemberPlayConfigService myMemberPlayConfigService) {
+		this.myMemberPlayConfigService = myMemberPlayConfigService;
 	}
 
-	// @ResponseBody
-	// @RequestMapping(value = "/getopentoday", method = RequestMethod.GET)
-	// public List<LotteryTimeNum> getOpenToday(String name) {
-	//
-	// ResultData rd = lotteryTimeNumService.OpenToday();
-	// System.out.println();
-	//
-	// return null;
-	// }
-	//
-	// @ResponseBody
-	// @RequestMapping(value = "/getcur", method = RequestMethod.GET)
-	// public List<LotteryTimeNum> getCur() {
-	//
-	// Date dt = new Date();
-	//
-	// List<LotteryTimeNum> openToday = lotteryTimeNumService.Cur(dt);
-	//
-	// return openToday;
-	// }
+	/**
+	 * @return the mylotteryPlayConfigService
+	 */
+	public LotteryPlayConfigService getMylotteryPlayConfigService() {
+		return mylotteryPlayConfigService;
+	}
+
+	/**
+	 * @param mylotteryPlayConfigService the mylotteryPlayConfigService to set
+	 */
+	public void setMylotteryPlayConfigService(LotteryPlayConfigService mylotteryPlayConfigService) {
+		this.mylotteryPlayConfigService = mylotteryPlayConfigService;
+	}
 
 	public static LotteryOrder getOrder() {
 
@@ -177,6 +87,7 @@ public class LotteryBetController {
 		 * statuschar(1) NOT NULL注单状态： 0等待开奖 1已中奖 2未中奖 3已撤单
 		 */
 
+
 		User user = new User();
 		user.setId("00user");// 用户ID
 		user.setName("00username");// 用户名
@@ -184,6 +95,7 @@ public class LotteryBetController {
 		company.setCode("code");// 组织编号
 		user.setCompany(company);
 
+		
 		LotteryOrder bet1 = new LotteryOrder();
 		bet1.setCurrentUser(user);
 		// AddBetFormInput bet1 = new AddBetFormInput();
@@ -215,7 +127,7 @@ public class LotteryBetController {
 		String playModeMoneyType = "0";
 		bet1.setPlayModeMoneyType(playModeMoneyType);
 
-		// bet1.setOrderNum("10000001");
+		//bet1.setOrderNum("10000001");
 		bet1.setBetDetail("detail");
 		bet1.setBetRate(1);
 		bet1.setStatus("0");
@@ -226,5 +138,56 @@ public class LotteryBetController {
 
 		return bet1;
 	}
+
+	public List<LotteryOrder> testLotteryBetControllerMethodaddBet() {
+
+		
+		//获得user
+		User user = new User();
+		user.setId("00user");// 用户ID
+		user.setName("00username");// 用户名
+		Office company = new Office();
+		company.setCode("code");// 组织编号
+		user.setCompany(company);
+		
+		LotteryPlayConfig lotteryPlayConfig = new LotteryPlayConfig();
+		lotteryPlayConfig.setCurrentUser(user);
+		
+		
+		//user获得玩法配置
+		MemberPlayConfig memberPlayConfig = myMemberPlayConfigService.getMemberPlayConfigByUserId("1");
+		
+		
+		
+		//选择玩法，投注号，玩法模式，倍数，奖金组，返点
+		LotteryOrder bet1 = getOrder();
+		String betType = "SSC_5_ZHIXUANDANSHI";
+		bet1.setBetType(betType );
+		
+		String betDetail = "0123,123,123,123,123";
+		bet1.setBetDetail(betDetail );
+		
+		String playModeMoneyType = "0";
+		bet1.setPlayModeMoneyType(playModeMoneyType );
+		
+		bet1.setBetRate(1);
+		
+		bet1.setPlayModeMoney(1980);
+		BigDecimal playModeCommissionRate = new BigDecimal(2.5);
+		bet1.setPlayModeCommissionRate(playModeCommissionRate );
+		//投注
+		
+	
+		List<LotteryOrder> lsbet = new ArrayList<LotteryOrder>();
+
+
+	
+		lsbet.add(bet1);
+		
+		return lsbet;
+		
+	}
+
+	
 
 }
