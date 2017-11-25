@@ -24,6 +24,7 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
+import com.game.manager.modules.sys.utils.UserUtils;
 import com.game.modules.lottery.dto.TimeTask;
 import com.game.modules.lottery.entity.LotteryTimeNum;
 import com.game.modules.lottery.service.LotteryTimeNumService;
@@ -82,6 +83,7 @@ public class LotteryTimeNumController extends BaseController {
 	@RequiresPermissions("lottery:lotteryTimeNum:edit")
 	@RequestMapping(value = "save")
 	public String save(TimeTask timeTaskDTO, Model model, RedirectAttributes redirectAttributes) throws SchedulerException {
+		timeTaskDTO.setCreateBy(UserUtils.getUser());
 		lotteryTimeNumService.generatePlanTime(timeTaskDTO);
 		addMessage(redirectAttributes,"生成计划时刻成功！");
 		return "redirect:"+Global.getAdminPath()+"/lottery/lotteryTimeNum/?repage";
@@ -90,6 +92,7 @@ public class LotteryTimeNumController extends BaseController {
 	@RequiresPermissions("lottery:lotteryTimeNum:edit")
 	@RequestMapping(value = "delete")
 	public String delete(LotteryTimeNum lotteryTimeNum, RedirectAttributes redirectAttributes) {
+		lotteryTimeNum.setCreateBy(UserUtils.getUser());
 		lotteryTimeNumService.delete(lotteryTimeNum);
 		addMessage(redirectAttributes, "删除保存开奖时刻成功成功");
 		return "redirect:"+Global.getAdminPath()+"/lottery/lotteryTimeNum/?repage";
