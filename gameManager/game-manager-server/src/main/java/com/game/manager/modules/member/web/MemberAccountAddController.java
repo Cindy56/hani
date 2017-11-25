@@ -130,9 +130,9 @@ public class MemberAccountAddController extends BaseController {
 					//中奖几率
 					BigDecimal winningProbability=new BigDecimal(lottery.getWinningProbability());
 					//最大返水
-					BigDecimal commissionRateMax=new BigDecimal(lottery.getCommissionRateMax());
+					BigDecimal commissionRateMax=lottery.getCommissionRateMax();
 					//最小返水
-					BigDecimal commissionRateMin=new BigDecimal(lottery.getCommissionRateMin());
+					BigDecimal commissionRateMin=lottery.getCommissionRateMin();
 					//每种玩法的list
 					List<Map> groupList=new ArrayList<Map>();
 					

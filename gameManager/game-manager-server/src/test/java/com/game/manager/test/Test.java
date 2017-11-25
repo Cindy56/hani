@@ -1,5 +1,6 @@
-package com.game.manager.test;
+/*package com.game.manager.test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +27,9 @@ public class Test {
 		test1.setName("haha");
 		test1.setPlayType("x");
 		test1.setWinningProbability("0.001");
-		test1.setCommissionRateMax("1.5");
-		test1.setCommissionRateMin("1.1");
-		test1.setBetRateLimit("10000");
+		test1.setCommissionRateMax(new BigDecimal("1.5"));
+		test1.setCommissionRateMin(new BigDecimal("1.1"));
+		test1.setBetRateLimit(10000);
 		test1.setIsEnable("1");
 		test1.setCurrentUser(xxxx);
 		configList.add(test1);
@@ -42,9 +43,9 @@ public class Test {
 		test2.setName("看看");
 		test2.setPlayType("x");
 		test2.setWinningProbability("0.001");
-		test2.setCommissionRateMax("1.5");
-		test2.setCommissionRateMin("0.9");
-		test2.setBetRateLimit("10000");
+		test2.setCommissionRateMax(new BigDecimal("1.5"));
+		test2.setCommissionRateMin(new BigDecimal("0.9"));
+		test2.setBetRateLimit(10000);
 		test2.setIsEnable("1");
 		test2.setCurrentUser(xxxx);
 		configList.add(test2);
@@ -58,9 +59,9 @@ public class Test {
 		test3.setName("尽快看");
 		test3.setPlayType("x");
 		test3.setWinningProbability("0.001");
-		test3.setCommissionRateMax("1.5");
-		test3.setCommissionRateMin("0.8");
-		test3.setBetRateLimit("10000");
+		test3.setCommissionRateMax(new BigDecimal("1.5"));
+		test3.setCommissionRateMin(new BigDecimal("0.8"));
+		test3.setBetRateLimit(10000);
 		test3.setIsEnable("1");
 		test3.setCurrentUser(xxxx);
 		configList.add(test3);
@@ -74,9 +75,9 @@ public class Test {
 		test4.setName("啊啊啊");
 		test4.setPlayType("x");
 		test4.setWinningProbability("0.001");
-		test4.setCommissionRateMax("1.5");
-		test4.setCommissionRateMin("0.8");
-		test4.setBetRateLimit("10000");
+		test4.setCommissionRateMax(new BigDecimal("1.5"));
+		test4.setCommissionRateMin(new BigDecimal("0.8"));
+		test4.setBetRateLimit(10000);
 		test4.setIsEnable("1");
 		test4.setCurrentUser(xxxx);
 		configList.add(test4);
@@ -90,9 +91,9 @@ public class Test {
 		test5.setName("林俊杰");
 		test5.setPlayType("x");
 		test5.setWinningProbability("0.001");
-		test5.setCommissionRateMax("1.5");
-		test5.setCommissionRateMin("0.9");
-		test5.setBetRateLimit("10000");
+		test5.setCommissionRateMax(new BigDecimal("1.5"));
+		test5.setCommissionRateMin(new BigDecimal("0.9"));
+		test5.setBetRateLimit(10000);
 		test5.setIsEnable("1");
 		test5.setCurrentUser(xxxx);
 		configList.add(test5);
@@ -106,7 +107,7 @@ public class Test {
 		
 		System.out.println(jsonstr);
 		
-		/*System.out.println(jsonstr);
+		System.out.println(jsonstr);
 		String s=JSON.toJSONString(configList);
 		System.out.println(s);
 		
@@ -116,15 +117,15 @@ public class Test {
 		
 		System.out.println(l);
 		
-		JsonMapper jsonMapper = JsonMapper.getInstance();*/
-		/*List<LotteryPlayConfig> xxxxxx  =  jsonMapper.fromJson(jsonstr, jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
-		System.out.println(jsonstr);*/
+		JsonMapper jsonMapper = JsonMapper.getInstance();
+		List<LotteryPlayConfig> xxxxxx  =  jsonMapper.fromJson(jsonstr, jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
+		System.out.println(jsonstr);
 		
 //		System.out.println(xxxxxx);
-		/*for (LotteryPlayConfig lotteryPlayConfig : xxxxxx) {
+		for (LotteryPlayConfig lotteryPlayConfig : xxxxxx) {
 			System.out.println(lotteryPlayConfig);
 			System.out.println(lotteryPlayConfig.getMap());
-		}*/
+		}
 	
 	}
-}
+}*/

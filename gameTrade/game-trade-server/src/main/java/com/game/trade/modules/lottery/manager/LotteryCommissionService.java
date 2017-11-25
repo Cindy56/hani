@@ -92,7 +92,7 @@ public class LotteryCommissionService {
 		memberList.stream().forEach(memberAccount->{
 			if(lotteryOrder.getAccountId().equals(memberAccount.getId())) {
 				//计算本人返点
-				BigDecimal	currentAmount = lotteryOrder.getBetAmount().multiply(new BigDecimal(lotteryOrder.getPlayModeCommissionRate())).setScale(4, BigDecimal.ROUND_HALF_DOWN);
+				BigDecimal	currentAmount = lotteryOrder.getBetAmount().multiply(lotteryOrder.getPlayModeCommissionRate()).setScale(4, BigDecimal.ROUND_HALF_DOWN);
 				//给上级加钱
 				memberAccountService.plusAmount(memberAccount.getId(),currentAmount);
 				//生成账变
@@ -114,8 +114,9 @@ public class LotteryCommissionService {
 					LotteryPlayConfig parentPlayConfig = parentConfigList.stream().filter(c->c.getLotteryCode().getCode().equals(lotteryOrder.getLotteryCode())).findFirst().get();
 				
 					LotteryPlayConfig currentPlayConfig = currentfigList.stream().filter(c->c.getLotteryCode().getCode().equals(lotteryOrder.getLotteryCode())).findFirst().get();
-
-					BigDecimal  difference = new BigDecimal(parentPlayConfig.getCommissionRateMax()).subtract( new BigDecimal(currentPlayConfig.getCommissionRateMax()));
+                    // 修改返水级别和最大返水级别为BigDecimal类型，相应更改 by Terry
+                    // BigDecimal difference = new BigDecimal(parentPlayConfig.getCommissionRateMax()).subtract(new BigDecimal(currentPlayConfig.getCommissionRateMax()));
+                    BigDecimal difference = parentPlayConfig.getCommissionRateMax().subtract(currentPlayConfig.getCommissionRateMax());
 					if(BigDecimal.ZERO.compareTo(difference) == 0) {
 						return;
 					}
