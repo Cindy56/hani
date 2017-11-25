@@ -28,7 +28,7 @@ import com.game.modules.finance.service.FinanceRechargeService;
  * @version 2017-11-25
  */
 @Controller
-@RequestMapping(value = "${adminPath}/finance/financeRecharge")
+@RequestMapping(value = "/finance/financeRecharge")
 public class FinanceRechargeController extends BaseController {
 
 	@Autowired
