@@ -122,9 +122,42 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		/****************************************************
 		 ********************* 复制模板start********************
 		 ****************************************************/
-		List<Office> officeList=officeServiceFacade.findOfficesByParentId(COMPANY_TEMPLET_ID);
+		//查询出模板公司
+		Office company=officeServiceFacade.get(COMPANY_TEMPLET_ID);
+		//查询模板公司下的股东角色
+		Role companyRole=this.systemServiceFacade.findRoleByOfficeId(company.getId()).get(0);
+		//查询模板公司下面所有机构部门
+		List<Office> officeList=officeServiceFacade.findOfficesByParentId(company.getParentId()+","+company.getId());
+		//复制模板公司数据插入数据库
+		company.setId(null);
+		company.setName(contract.getOrgName());
+		company=officeServiceFacade.save(company);
+		
+		companyRole.setId(null);
+		companyRole.setName(contract.getOrgName()+companyRole.getName());
+		companyRole.setEnname(contract.getOffice().getCode()+companyRole.getEnname());
+		//设置股东角色隶属部门
+		companyRole.setOffice(company);
+		companyRole = systemServiceFacade.saveRole(companyRole);
+		//循环得到模板公司下面部门
 		for (Office office : officeList) {
-			System.out.println(office);
+			//查询机构下的所有角色
+			List<Role> mubanList = this.systemServiceFacade.findRoleByOfficeId(office.getId());
+			office.setId(null);
+			office.setName(contract.getOrgName()+office.getName());
+			office.setParent(company);
+			office.setParentIds(company.getParentId()+","+company.getId());
+			//复制机构保存
+			office=officeServiceFacade.save(office);
+			for (Role role : mubanList) {
+				//复制角色,保存角色
+				role.setId(null);
+				role.setName(contract.getOrgName()+role.getName());
+				role.setEnname(contract.getOffice().getCode()+role.getEnname());
+				//设置角色隶属部门
+				role.setOffice(office);
+				role = systemServiceFacade.saveRole(role);
+			}
 		}
 		//复制模板公司
 		/*Office company=officeServiceFacade.get(COMPANY_TEMPLET_ID);
@@ -186,7 +219,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		 ****************************************************/
 		
 		
-		List<Role> mubanList = this.systemServiceFacade.findRoleByOfficeId(COMPANY_TEMPLET_ID);
+		
 		/*for (Role role : mubanList) {
 			//Role yongRole = new Role();
 			role.setId(null);
@@ -245,6 +278,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		/*contract.setOffice(company);
 		
 		//保存用户信息
+		systemServiceFacade.assignUserToRole(companyRole,user);
 		systemServiceFacade.saveUser(user);*/
 		
 		
@@ -294,6 +328,8 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		
 //		contract.setAccountId(memberAccount.getId());
 		/************************************************************/
+		contract.setOffice(company);
+		contract.setUser(user);
 		super.save(contract);
 		for (ContractConfig contractConfig : contract.getContractConfigList()){
 			if (contractConfig.getId() == null){
