@@ -57,6 +57,10 @@
         <property name="service" ref="financeTradeDetailService"></property>  
         <property name="serviceInterface" value="com.game.modules.finance.service.FinanceTradeDetailService"></property>  
     </bean>   
+	<bean name="/financeRechargeService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="financeRechargeService"></property>  
+        <property name="serviceInterface" value="com.game.modules.finance.service.FinanceRechargeService"></property>  
+    </bean>   
     
     <!-- contract -->
 	<bean name="/contractService" class="org.springframework.remoting.caucho.HessianServiceExporter">  

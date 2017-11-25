@@ -4,24 +4,18 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.game.modules.lottery.entity.LotteryTimeNum;
-import com.game.modules.lottery.service.LotteryCalculateService;
-import com.game.modules.lottery.service.LotteryTimeNumService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.User;
@@ -133,9 +127,10 @@ public class LotteryCalBetTest extends AbstractJUnit4SpringContextTests {
 		bet1.setOrderSource(orderSource);
 		String orderType = "2";
 		bet1.setOrderType(orderType);
-		String playModeCommissionRate = "0";
+		BigDecimal playModeCommissionRate = new BigDecimal(0);
 		bet1.setPlayModeCommissionRate(playModeCommissionRate);
-		String playModeMoney = "1960";
+		Integer playModeMoney = 1960;
+
 		bet1.setPlayModeMoney(playModeMoney);
 		String playModeMoneyType = "0";
 		bet1.setPlayModeMoneyType(playModeMoneyType);
