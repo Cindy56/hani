@@ -39,12 +39,12 @@ public class LotteryTypeTime extends DataEntity<LotteryTypeTime> {
     /**
      * 开奖周期时间
      */
-    private String periodTotalTime;
+    private Integer periodTotalTime;
 
     /**
      * 每期封单时间
      */
-    private String periodHaltTime;
+    private Integer periodHaltTime;
 
     public LotteryTypeTime() {
         super();
@@ -94,20 +94,20 @@ public class LotteryTypeTime extends DataEntity<LotteryTypeTime> {
     }
 
     @Length(min = 1, max = 6, message = "开奖周期时间长度必须介于 1 和 6 之间")
-    public String getPeriodTotalTime() {
+    public Integer getPeriodTotalTime() {
         return periodTotalTime;
     }
 
-    public void setPeriodTotalTime(String periodTotalTime) {
+    public void setPeriodTotalTime(Integer periodTotalTime) {
         this.periodTotalTime = periodTotalTime;
     }
 
     @Length(min = 1, max = 6, message = "每期封单时间长度必须介于 1 和 6 之间")
-    public String getPeriodHaltTime() {
+    public Integer getPeriodHaltTime() {
         return periodHaltTime;
     }
 
-    public void setPeriodHaltTime(String periodHaltTime) {
+    public void setPeriodHaltTime(Integer periodHaltTime) {
         this.periodHaltTime = periodHaltTime;
     }
 
