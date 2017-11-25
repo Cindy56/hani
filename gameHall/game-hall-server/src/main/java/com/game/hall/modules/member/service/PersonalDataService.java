@@ -135,9 +135,7 @@ public class PersonalDataService extends CrudService<PersonalDataDao, MemberAcco
 	}
 
 	public boolean verSecPassWord(String userId,String secPassWord){
-
 		 String str = personalDataDao.getSec(userId);
-
 		    if(PassWordUtils.validatePassword(secPassWord, str)) {
 		    		return true;
 		
