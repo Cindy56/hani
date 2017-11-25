@@ -482,8 +482,7 @@ public enum SscService implements LotteryService {
 			return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
 		}
 	},
-	
-	
+
 	//
 	// /** 时时彩前3组选3 */
 	// SSC_QIAN3_ZUXUAN3("SSC_QIAN3_ZUXUAN3", "时时彩前3组选3") {},
@@ -1872,6 +1871,377 @@ public enum SscService implements LotteryService {
 		}
 	},
 
+	/** 5星组选120 */
+	SSC_5_GROUP120("SSC_5_GROUP120", "5星组选120") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+				return 1;
+			}
+			// 2、数据格式校验，
+			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
+			String betNumber = lotteryOrder.getBetDetail();
+			String formatRegex = "^\\d{1,}(,\\d{1,})*$";
+
+			if (!betNumber.matches(formatRegex)) {
+				return 1;
+			}
+
+			String[] arrSubBet = betNumber.split(",");
+
+			List<String> lsSubBets = Arrays.asList(arrSubBet);
+
+			if (CheckString.hasSameLetterStream(lsSubBets))
+				return 1;
+
+			for (int j = 0; j < arrSubBet.length; j++) {
+				CheckString.hasSameLetter(arrSubBet[j]);
+			}
+
+			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
+			boolean ret = checkAmount(lotteryOrder);
+			if (!ret)
+				return 1;
+			return 0;
+		}
+
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public int calBetNum(String bet) {
+			// TODO Auto-generated method stub
+
+			String[] betNumList = bet.split(",");
+
+			return betNumList.length;
+
+		}
+
+		@Override
+		public boolean checkAmount(LotteryOrder lotteryOrder) {
+			// TODO Auto-generated method stub
+
+			// 校验投注金额 amount = betno * 2 * rate * moneytype
+			int betNum = calBetNum(lotteryOrder.getBetDetail());
+			return super.chkAmount(lotteryOrder, betNum);
+
+		}
+	},
+	
+	/** 5星组选60 */
+	SSC_5_GROUP60("SSC_5_GROUP60", "5星组选60") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+				return 1;
+			}
+			// 2、数据格式校验，
+			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
+			String betNumber = lotteryOrder.getBetDetail();
+			String formatRegex = "^\\d{1,}(,\\d{1,})*$";
+
+			if (!betNumber.matches(formatRegex)) {
+				return 1;
+			}
+
+			String[] arrSubBet = betNumber.split(",");
+
+			List<String> lsSubBets = Arrays.asList(arrSubBet);
+
+			if (CheckString.hasSameLetterStream(lsSubBets))
+				return 1;
+
+			for (int j = 0; j < arrSubBet.length; j++) {
+				CheckString.hasSameLetter(arrSubBet[j]);
+			}
+
+			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
+			boolean ret = checkAmount(lotteryOrder);
+			if (!ret)
+				return 1;
+			return 0;
+		}
+
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public int calBetNum(String bet) {
+			// TODO Auto-generated method stub
+
+			String[] betNumList = bet.split(",");
+
+			return betNumList.length;
+
+		}
+
+		@Override
+		public boolean checkAmount(LotteryOrder lotteryOrder) {
+			// TODO Auto-generated method stub
+
+			// 校验投注金额 amount = betno * 2 * rate * moneytype
+			int betNum = calBetNum(lotteryOrder.getBetDetail());
+			return super.chkAmount(lotteryOrder, betNum);
+
+		}
+	},
+
+	/** 5星组选30 */
+	SSC_5_GROUP30("SSC_5_GROUP30", "5星组选30") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+				return 1;
+			}
+			// 2、数据格式校验，
+			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
+			String betNumber = lotteryOrder.getBetDetail();
+			String formatRegex = "^\\d{1,}(,\\d{1,})*$";
+
+			if (!betNumber.matches(formatRegex)) {
+				return 1;
+			}
+
+			String[] arrSubBet = betNumber.split(",");
+
+			List<String> lsSubBets = Arrays.asList(arrSubBet);
+
+			if (CheckString.hasSameLetterStream(lsSubBets))
+				return 1;
+
+			for (int j = 0; j < arrSubBet.length; j++) {
+				CheckString.hasSameLetter(arrSubBet[j]);
+			}
+
+			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
+			boolean ret = checkAmount(lotteryOrder);
+			if (!ret)
+				return 1;
+			return 0;
+		}
+
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public int calBetNum(String bet) {
+			// TODO Auto-generated method stub
+
+			String[] betNumList = bet.split(",");
+
+			return betNumList.length;
+
+		}
+
+		@Override
+		public boolean checkAmount(LotteryOrder lotteryOrder) {
+			// TODO Auto-generated method stub
+
+			// 校验投注金额 amount = betno * 2 * rate * moneytype
+			int betNum = calBetNum(lotteryOrder.getBetDetail());
+			return super.chkAmount(lotteryOrder, betNum);
+
+		}
+	},
+
+	/** 5星组选20 */
+	SSC_5_GROUP20("SSC_5_GROUP20", "5星组选20") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+				return 1;
+			}
+			// 2、数据格式校验，
+			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
+			String betNumber = lotteryOrder.getBetDetail();
+			String formatRegex = "^\\d{1,}(,\\d{1,})*$";
+
+			if (!betNumber.matches(formatRegex)) {
+				return 1;
+			}
+
+			String[] arrSubBet = betNumber.split(",");
+
+			List<String> lsSubBets = Arrays.asList(arrSubBet);
+
+			if (CheckString.hasSameLetterStream(lsSubBets))
+				return 1;
+
+			for (int j = 0; j < arrSubBet.length; j++) {
+				CheckString.hasSameLetter(arrSubBet[j]);
+			}
+
+			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
+			boolean ret = checkAmount(lotteryOrder);
+			if (!ret)
+				return 1;
+			return 0;
+		}
+
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public int calBetNum(String bet) {
+			// TODO Auto-generated method stub
+
+			String[] betNumList = bet.split(",");
+
+			return betNumList.length;
+
+		}
+
+		@Override
+		public boolean checkAmount(LotteryOrder lotteryOrder) {
+			// TODO Auto-generated method stub
+
+			// 校验投注金额 amount = betno * 2 * rate * moneytype
+			int betNum = calBetNum(lotteryOrder.getBetDetail());
+			return super.chkAmount(lotteryOrder, betNum);
+
+		}
+	},
+	
+	/** 5星组选10 */
+	SSC_5_GROUP10("SSC_5_GROUP10", "5星组选10") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+				return 1;
+			}
+			// 2、数据格式校验，
+			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
+			String betNumber = lotteryOrder.getBetDetail();
+			String formatRegex = "^\\d{1,}(,\\d{1,})*$";
+
+			if (!betNumber.matches(formatRegex)) {
+				return 1;
+			}
+
+			String[] arrSubBet = betNumber.split(",");
+
+			List<String> lsSubBets = Arrays.asList(arrSubBet);
+
+			if (CheckString.hasSameLetterStream(lsSubBets))
+				return 1;
+
+			for (int j = 0; j < arrSubBet.length; j++) {
+				CheckString.hasSameLetter(arrSubBet[j]);
+			}
+
+			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
+			boolean ret = checkAmount(lotteryOrder);
+			if (!ret)
+				return 1;
+			return 0;
+		}
+
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public int calBetNum(String bet) {
+			// TODO Auto-generated method stub
+
+			String[] betNumList = bet.split(",");
+
+			return betNumList.length;
+
+		}
+
+		@Override
+		public boolean checkAmount(LotteryOrder lotteryOrder) {
+			// TODO Auto-generated method stub
+
+			// 校验投注金额 amount = betno * 2 * rate * moneytype
+			int betNum = calBetNum(lotteryOrder.getBetDetail());
+			return super.chkAmount(lotteryOrder, betNum);
+
+		}
+	},
+
+
 	//
 	// /** 时时彩前3组选3 */
 	// SSC_QIAN3_ZUXUAN3("SSC_QIAN3_ZUXUAN3", "时时彩前3组选3") {},
@@ -1989,14 +2359,14 @@ public enum SscService implements LotteryService {
 
 		// 倍数限制
 		int betRateLimit = lotPlayCfg.getBetRateLimit();
-		BigDecimal winningProbability = new BigDecimal( lotPlayCfg.getWinningProbability());
+		BigDecimal winningProbability = new BigDecimal(lotPlayCfg.getWinningProbability());
 		BigDecimal CommissionRateMax = lotPlayCfg.getCommissionRateMax();
 		BigDecimal CommissionRateMin = lotPlayCfg.getCommissionRateMin();
 
 		// 根据中奖概率和返水范围计算奖金组和返点
 		BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());// 奖金模式
-		BigDecimal play_mode_commission_rate = lotteryOrder.getPlayModeCommissionRate();// 奖金模式返水比例
-		BigDecimal win_amount;// 中奖金额
+		BigDecimal playModeCommissionRate = lotteryOrder.getPlayModeCommissionRate();// 奖金模式返水比例
+		BigDecimal winAmount = lotteryOrder.getWinAmount();// 中奖金额
 
 		// 校验奖金模式是否在范围内
 		BigDecimal playModeMoneyMax;
@@ -2009,11 +2379,15 @@ public enum SscService implements LotteryService {
 		if (playModeMoney.compareTo(playModeMoneyMin) > 0 && playModeMoney.compareTo(playModeMoneyMax) < 0) {
 			return GameError.errCodePlayModeMoney;
 		}
-		
-		//校验返水比例，奖金组是否符合规则
-		BigDecimal playModeMoneyCheck ;
-		
-		playModeMoneyCheck = new BigDecimal(2000).subtract(CommissionRateMax.multiply(new BigDecimal(2000)));
+
+		// 校验返水比例，奖金组是否符合规则
+		BigDecimal playModeMoneyCheck;
+
+		playModeMoneyCheck = new BigDecimal(2000).subtract(playModeCommissionRate.multiply(new BigDecimal(2000)));
+
+		if (!playModeMoneyCheck.equals(winAmount)) {
+			return GameError.errCodePlayModeMoney;
+		}
 
 		return 0;
 	}
