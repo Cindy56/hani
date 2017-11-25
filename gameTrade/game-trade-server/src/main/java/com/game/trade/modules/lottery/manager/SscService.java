@@ -1,9 +1,11 @@
 package com.game.trade.modules.lottery.manager;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,8 +17,11 @@ import com.game.modules.lottery.entity.LotteryTimeNum;
 import com.game.modules.member.entity.MemberPlayConfig;
 import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
+import com.game.trade.model.OpenLottery;
+import com.game.trade.model.Star5;
 import com.game.trade.modules.lottery.MoneyType;
 import com.game.trade.util.CheckString;
+import com.game.trade.util.Combination;
 
 /**
  * 时时彩玩法 将通用的重构出来，在子枚举类里通过supper调用
@@ -1886,29 +1891,18 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 2、数据格式校验，
-			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
+			// 选择0~9中的5个数字作为一注，以逗号分割。数值不可以重复。
 			String betNumber = lotteryOrder.getBetDetail();
-			String formatRegex = "^\\d{1,}(,\\d{1,})*$";
+			String formatRegex = "^\\d{1}(,\\d{1}){4,}$";
 
 			if (!betNumber.matches(formatRegex)) {
-				return 1;
-			}
-
-			String[] arrSubBet = betNumber.split(",");
-
-			List<String> lsSubBets = Arrays.asList(arrSubBet);
-
-			if (CheckString.hasSameLetterStream(lsSubBets))
-				return 1;
-
-			for (int j = 0; j < arrSubBet.length; j++) {
-				CheckString.hasSameLetter(arrSubBet[j]);
+				return GameError.errCodeBetDetial;
 			}
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
 			boolean ret = checkAmount(lotteryOrder);
 			if (!ret)
-				return 1;
+				return GameError.errCodeBettingMoney;
 			return 0;
 		}
 
@@ -1930,7 +1924,16 @@ public enum SscService implements LotteryService {
 
 			String[] betNumList = bet.split(",");
 
-			return betNumList.length;
+			List<String> lsBets = Arrays.asList(betNumList);
+
+			List<Integer> lsIntBets = lsBets.stream().map(Integer::valueOf).collect(Collectors.toList());
+
+			// get combination
+			ArrayList<Integer> t = new ArrayList<Integer>();
+			ArrayList<ArrayList<Integer>> arrCombs = Combination.Combination(lsIntBets, lsIntBets.size(), 5, t);
+
+			OpenLottery ol = new OpenLottery();
+			return arrCombs.size();
 
 		}
 
@@ -1944,7 +1947,7 @@ public enum SscService implements LotteryService {
 
 		}
 	},
-	
+
 	/** 5星组选60 */
 	SSC_5_GROUP60("SSC_5_GROUP60", "5星组选60") {
 
@@ -1960,30 +1963,30 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 2、数据格式校验，
-			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
+			// 选择0~9中的一个数字作为二重号，选择3个单号，作为一注，以逗号分割。
 			String betNumber = lotteryOrder.getBetDetail();
-			String formatRegex = "^\\d{1,}(,\\d{1,})*$";
+			String formatRegex = "^\\d{1,9},\\d{1,9}$";
 
 			if (!betNumber.matches(formatRegex)) {
-				return 1;
+				return GameError.errCodeBetDetial;
 			}
 
 			String[] arrSubBet = betNumber.split(",");
 
 			List<String> lsSubBets = Arrays.asList(arrSubBet);
 
-			if (CheckString.hasSameLetterStream(lsSubBets))
-				return 1;
+			Boolean bRet = CheckString.hasSameNum(lsSubBets);
+			
+			if (bRet)
+				return GameError.errCodeBetDetial;
 
-			for (int j = 0; j < arrSubBet.length; j++) {
-				CheckString.hasSameLetter(arrSubBet[j]);
-			}
+
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
 			boolean ret = checkAmount(lotteryOrder);
 			if (!ret)
-				return 1;
-			return 0;
+				return GameError.errCodeBettingMoney;
+			return GameError.errCodeOkay;
 		}
 
 		@Override
@@ -2004,7 +2007,55 @@ public enum SscService implements LotteryService {
 
 			String[] betNumList = bet.split(",");
 
-			return betNumList.length;
+			
+			List<Star5> lsStar5 = new ArrayList<Star5>();
+
+			int a0 = 0;
+			int a1 = 0;
+			int a2 = 0;
+			int a3 = 0;
+			int a4 = 0;
+
+			// double No array
+			List<Integer> doubleNo = Arrays.asList( betNumList[0].split("") ).stream().map(Integer::valueOf ).collect(Collectors.toList());
+			
+
+			// single No array
+			List<Integer> singleNo = Arrays.asList( betNumList[1].split("") ).stream().map(Integer::valueOf ).collect(Collectors.toList());
+			
+
+			// single No array => combination N,3
+			ArrayList<Integer> t = new ArrayList<Integer>();
+			ArrayList<ArrayList<Integer>> arr = Combination.Combination(singleNo, singleNo.size(), 3, t);
+
+			for (int idb = 0; idb < doubleNo.size(); idb++) {
+
+				a0 = a1 = doubleNo.get(idb);
+
+				for (int isingle = 0; isingle < arr.size(); isingle++) {
+
+					a2 = arr.get(isingle).get(0);
+					a3 = arr.get(isingle).get(1);
+					a4 = arr.get(isingle).get(2);
+
+					int arrAN[] = new int[5];
+					arrAN[0] = a0;
+					arrAN[1] = a1;
+					arrAN[2] = a2;
+					arrAN[3] = a3;
+					arrAN[4] = a4;
+
+					Arrays.sort(arrAN);
+
+					Star5 s5 = new Star5(arrAN);
+
+					lsStar5.add(s5);
+				}
+
+			}
+
+			
+			return lsStar5.size();
 
 		}
 
@@ -2166,9 +2217,51 @@ public enum SscService implements LotteryService {
 
 		}
 	},
-	
+
 	/** 5星组选10 */
 	SSC_5_GROUP10("SSC_5_GROUP10", "5星组选10") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+				return 1;
+			}
+			// 2、数据格式校验，
+			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
+			String betNumber = lotteryOrder.getBetDetail();
+			String formatRegex = "^\\d{1,}(,\\d{1,})*$";
+
+			if (!betNumber.matches(formatRegex)) {
+				return 1;
+			}
+
+			String[] arrSubBet = betNumber.split(",");
+
+			List<String> lsSubBets = Arrays.asList(arrSubBet);
+
+			if (CheckString.hasSameLetterStream(lsSubBets))
+				return 1;
+
+			for (int j = 0; j < arrSubBet.length; j++) {
+				CheckString.hasSameLetter(arrSubBet[j]);
+			}
+
+			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
+			boolean ret = checkAmount(lotteryOrder);
+			if (!ret)
+				return 1;
+			return 0;
+		}
+	},
+
+	/** 5星组选5 */
+	SSC_5_GROUP5("SSC_5_GROUP5", "5星组选5") {
 
 		@Override
 		public void trend(LotteryTimeNum openLotteryTimeNum) {
@@ -2240,7 +2333,6 @@ public enum SscService implements LotteryService {
 
 		}
 	},
-
 
 	//
 	// /** 时时彩前3组选3 */

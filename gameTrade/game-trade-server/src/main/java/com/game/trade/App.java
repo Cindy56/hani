@@ -1,14 +1,17 @@
 package com.game.trade;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
 import com.game.trade.algorithm.SSC;
 import com.game.trade.model.OpenLottery;
+import com.game.trade.util.CheckString;
 import com.game.trade.util.Combination;
 import com.game.trade.util.Common;
-import com.game.trade.util.math;
 
 /**
  * Hello world!
@@ -20,6 +23,20 @@ public class App {
 	public static void main(String[] args) {
 		LOG.debug("Hello World!");
 
+		
+		String betNumber = "0123456,0123456";
+		String[] arrSubBet = betNumber.split(",");
+		List<String> lsSubBets = Arrays.asList(arrSubBet);
+		
+		List<Boolean> lss = lsSubBets.stream().map(s->Arrays.asList(s.split("")))
+				.map(s->CheckString.hasSameLetterStream(s))				
+				//.map(s->CheckString.hasSameBooleanStream(s))				
+				.collect(Collectors.toList());
+				//.map(CheckString.hasSameLetterStream(lsSubBets)).collect(Collectors.toList());
+		
+		
+		Boolean b = lss.contains(true);
+		
 		// testCombination();
 		 testOpenLottery();
 
