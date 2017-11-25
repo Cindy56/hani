@@ -482,6 +482,8 @@ public enum SscService implements LotteryService {
 			return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
 		}
 	},
+	
+	
 	//
 	// /** 时时彩前3组选3 */
 	// SSC_QIAN3_ZUXUAN3("SSC_QIAN3_ZUXUAN3", "时时彩前3组选3") {},
