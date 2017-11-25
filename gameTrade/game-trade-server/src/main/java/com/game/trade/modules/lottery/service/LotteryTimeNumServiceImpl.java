@@ -131,9 +131,9 @@ public class LotteryTimeNumServiceImpl
 				//截至时间 endTime
 				LocalDateTime endTime = tempDate.atTime(LocalTime.parse(lotteryTypeTime.getEndTime()));//每日开售时间
 				//每期总时间 5分钟/10分钟
-				int periodTotalTime = Integer.parseInt(lotteryTypeTime.getPeriodTotalTime());
+				int periodTotalTime = lotteryTypeTime.getPeriodTotalTime();
 				//封单时间
-				int periodHaltTime = Integer.parseInt(lotteryTypeTime.getPeriodHaltTime());
+				int periodHaltTime = lotteryTypeTime.getPeriodHaltTime();
 				//计算次数(endTime - startTime) / periodTotalTime
 				Long minutes = Duration.between(startTime, endTime).toMinutes();
 		    	BigDecimal bg = new BigDecimal(minutes);
