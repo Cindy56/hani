@@ -154,6 +154,7 @@ public class LotteryTimeNumServiceImpl
 					lotteryTimeNum.setBetHaltDate(Date.from(betHaltTime.atZone(ZoneId.systemDefault()).toInstant()));//封单时刻时间
 					lotteryTimeNum.setDelFlag("0");
 					lotteryTimeNum.setStatus("0");
+					lotteryTimeNum.setCreateBy(timeTask.getCreateBy());
 					lotteryTimeNumList.add(lotteryTimeNum);
 					//递增旗号
 					issueNO++;
