@@ -2,6 +2,9 @@ package com.game.modules.lottery.entity;
 
 public class GameError {
 
+	public static final Integer errCodeInvalid = 1;
+	public static final String errInvalid = "无效";
+	
 	public static final Integer errCodeCountInvalid = 101;
 	public static final String errCountInvalid = "计数无效";
 
