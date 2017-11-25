@@ -24,11 +24,12 @@ import com.game.modules.finance.service.FinanceRechargeService;
 
 /**
  * 账户充值管理Controller
+ * 
  * @author David
  * @version 2017-11-25
  */
 @Controller
-@RequestMapping(value = "/finance/financeRecharge")
+@RequestMapping(value = "${adminPath}/finance/financeRecharge")
 public class FinanceRechargeController extends BaseController {
 
 	@Autowired
