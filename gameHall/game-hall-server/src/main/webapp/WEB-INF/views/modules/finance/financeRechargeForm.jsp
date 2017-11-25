@@ -69,7 +69,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">充值银行代码：</label>
+			<label class="control-label">充值银行：</label>
 			<div class="controls">
 				<form:input path="bankCode" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>

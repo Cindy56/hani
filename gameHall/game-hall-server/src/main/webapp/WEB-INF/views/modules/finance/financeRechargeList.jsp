@@ -101,12 +101,8 @@
 				</a></td>
 				<td>${financeRecharge.orgId}</td>
 				<td>${financeRecharge.rechargeNo}</td>
-				<td>
-					${financeRecharge.bankName}
-				</td>
-				<td>
-					${financeRecharge.bankCardNo}
-				</td>	
+				<td>${financeRecharge.bankName}</td>
+				<td>${financeRecharge.bankCardNo}</td>	
 				<td>
 					${financeRecharge.rechargeAmount}
 				</td>
