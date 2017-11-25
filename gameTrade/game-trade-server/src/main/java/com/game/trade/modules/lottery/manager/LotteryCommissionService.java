@@ -114,8 +114,9 @@ public class LotteryCommissionService {
 					LotteryPlayConfig parentPlayConfig = parentConfigList.stream().filter(c->c.getLotteryCode().getCode().equals(lotteryOrder.getLotteryCode())).findFirst().get();
 				
 					LotteryPlayConfig currentPlayConfig = currentfigList.stream().filter(c->c.getLotteryCode().getCode().equals(lotteryOrder.getLotteryCode())).findFirst().get();
-
-					BigDecimal  difference = new BigDecimal(parentPlayConfig.getCommissionRateMax()).subtract( new BigDecimal(currentPlayConfig.getCommissionRateMax()));
+                    // 修改返水级别和最大返水级别为BigDecimal类型，相应更改 by Terry
+                    // BigDecimal difference = new BigDecimal(parentPlayConfig.getCommissionRateMax()).subtract(new BigDecimal(currentPlayConfig.getCommissionRateMax()));
+                    BigDecimal difference = parentPlayConfig.getCommissionRateMax().subtract(currentPlayConfig.getCommissionRateMax());
 					if(BigDecimal.ZERO.compareTo(difference) == 0) {
 						return;
 					}
