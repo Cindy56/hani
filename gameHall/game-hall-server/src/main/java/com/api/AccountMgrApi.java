@@ -23,7 +23,7 @@ public interface AccountMgrApi {
 	public List<Map<String,Object>> findAllCart();
 	
 	//查找某个用户信息
-	public List<Map<String,Object>> get(String name);
+	public List<Map<String,Object>> MemberAccount(String name);
 	
 	//修改用户账户信息
 	public int updateMemberAccount(MemberAccount memberAccount);

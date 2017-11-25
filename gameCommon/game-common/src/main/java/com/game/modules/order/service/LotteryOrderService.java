@@ -21,7 +21,7 @@ public interface LotteryOrderService {
 	
 	public Page<LotteryOrder> findPage(Page<LotteryOrder> page, LotteryOrder lotteryOrder);
 	
-	public void save(LotteryOrder lotteryOrder);
+	public LotteryOrder save(LotteryOrder lotteryOrder);
 	
 	public void delete(LotteryOrder lotteryOrder);
 	

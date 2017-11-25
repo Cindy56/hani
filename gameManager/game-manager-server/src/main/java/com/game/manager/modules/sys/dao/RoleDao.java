@@ -3,6 +3,8 @@
  */
 package com.game.manager.modules.sys.dao;
 
+import java.util.List;
+
 import com.game.common.persistence.CrudDao;
 import com.game.common.persistence.annotation.MyBatisDao;
 import com.game.modules.sys.entity.Role;
@@ -36,5 +38,14 @@ public interface RoleDao extends CrudDao<Role> {
 	public int deleteRoleOffice(Role role);
 
 	public int insertRoleOffice(Role role);
+	
+	/**
+	 * 根据机构id查询该机构下所有角色
+	 * @author freemam
+	 * 2017年11月24日 下午3:23:24
+	 * @param officeId
+	 * @return 属于该机构的所有角色
+	 */
+	public List<Role> findRoleByOfficeId(String officeId);
 
 }

@@ -9,7 +9,9 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.game.common.persistence.CrudDao;
 import com.game.common.persistence.annotation.MyBatisDao;
+import com.game.modules.lottery.entity.LotteryType;
 import com.game.modules.member.entity.MemberAccount;
 import com.game.modules.member.entity.MemberAccountCard;
 
@@ -19,13 +21,13 @@ import com.game.modules.member.entity.MemberAccountCard;
  */
 
 @MyBatisDao
-public interface PersonalDataDao {
+public interface PersonalDataDao extends CrudDao<MemberAccount> {
 	
 	//查看所有银行卡信息
 	public List<Map<String,Object>> findAllCart();
 	
 	//查找某个用户银行卡信息
-	public List<Map<String,Object>> get(String userId);
+	public List<Map<String,Object>> getUserMap(String userId);
 	
 	//修改账户信息
 	public int updateMemberAccount(MemberAccount memberAccount);

@@ -37,8 +37,8 @@ public class MemberAccountCardServiceImpl
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(MemberAccountCard memberAccountCard) {
-		super.save(memberAccountCard);
+	public MemberAccountCard save(MemberAccountCard memberAccountCard) {
+		return super.save(memberAccountCard);
 	}
 	
 	@Transactional(readOnly = false)

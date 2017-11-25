@@ -22,6 +22,10 @@
         <property name="serviceUrl" value="${game.trade.url}/lotteryTypeService"/>  
         <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryTypeService"/>  
     </bean>
+	<bean id="lotteryCalculateService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/lotteryCalculateService"/>  
+        <property name="serviceInterface" value="com.game.modules.lottery.service.LotteryCalculateService"/>  
+    </bean>
     
     <!-- member -->
 	<bean id="memberAccountCardService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  

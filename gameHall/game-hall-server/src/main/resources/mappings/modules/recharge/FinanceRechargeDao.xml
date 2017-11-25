@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.hall.modules.recharge.dao.FinanceRechargeDao">
+    
+	<sql id="financeRechargeColumns">
+		a.id AS "id",
+		a.user_id AS "user.id",
+		a.user_name AS "userName",
+		a.org_id AS "orgId",
+		a.recharge_no AS "rechargeNo",
+		a.payment_channel_id AS "paymentChannelId",
+		a.bank_code AS "bankCode",
+		a.bank_name AS "bankName",
+		a.bank_card_no AS "bankCardNo",
+		a.recharge_amount AS "rechargeAmount",
+		a.validate_code AS "validateCode",
+		a.recharge_date AS "rechargeDate",
+		a.third_pay_no AS "thirdPayNo",
+		a.third_pay_date AS "thirdPayDate",
+		a.audit_user_id AS "auditUserId",
+		a.audit_user_name AS "auditUserName",
+		a.audit_date AS "auditDate",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="financeRechargeJoins">
+	</sql>
+    
+	<select id="get" resultType="FinanceRecharge">
+		SELECT 
+			<include refid="financeRechargeColumns"/>
+		FROM finance_recharge a
+		<include refid="financeRechargeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FinanceRecharge">
+		SELECT 
+			<include refid="financeRechargeColumns"/>
+		FROM finance_recharge a
+		<include refid="financeRechargeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND a.user_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{userName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{userName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{userName},'%')</if>
+			</if>
+			<if test="orgId != null and orgId != ''">
+				AND a.org_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{orgId}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{orgId}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{orgId},'%')</if>
+			</if>
+			<if test="rechargeNo != null and rechargeNo != ''">
+				AND a.recharge_no LIKE 
+					<if test="dbName == 'oracle'">'%'||#{rechargeNo}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{rechargeNo}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{rechargeNo},'%')</if>
+			</if>
+			<if test="beginRechargeDate != null and endRechargeDate != null and beginRechargeDate != '' and endRechargeDate != ''">
+				AND a.recharge_date BETWEEN #{beginRechargeDate} AND #{endRechargeDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FinanceRecharge">
+		SELECT 
+			<include refid="financeRechargeColumns"/>
+		FROM finance_recharge a
+		<include refid="financeRechargeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO finance_recharge(
+			id,
+			user_id,
+			user_name,
+			org_id,
+			recharge_no,
+			payment_channel_id,
+			bank_code,
+			bank_name,
+			bank_card_no,
+			recharge_amount,
+			validate_code,
+			recharge_date,
+			third_pay_no,
+			third_pay_date,
+			audit_user_id,
+			audit_user_name,
+			audit_date,
+			status,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{user.id},
+			#{userName},
+			#{orgId},
+			#{rechargeNo},
+			#{paymentChannelId},
+			#{bankCode},
+			#{bankName},
+			#{bankCardNo},
+			#{rechargeAmount},
+			#{validateCode},
+			#{rechargeDate},
+			#{thirdPayNo},
+			#{thirdPayDate},
+			#{auditUserId},
+			#{auditUserName},
+			#{auditDate},
+			#{status},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE finance_recharge SET 	
+			user_id = #{user.id},
+			user_name = #{userName},
+			org_id = #{orgId},
+			recharge_no = #{rechargeNo},
+			payment_channel_id = #{paymentChannelId},
+			bank_code = #{bankCode},
+			bank_name = #{bankName},
+			bank_card_no = #{bankCardNo},
+			recharge_amount = #{rechargeAmount},
+			validate_code = #{validateCode},
+			recharge_date = #{rechargeDate},
+			third_pay_no = #{thirdPayNo},
+			third_pay_date = #{thirdPayDate},
+			audit_user_id = #{auditUserId},
+			audit_user_name = #{auditUserName},
+			audit_date = #{auditDate},
+			status = #{status},
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE finance_recharge SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

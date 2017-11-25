@@ -73,7 +73,7 @@ public class FundMmanagementController {
 	 */
 	@RequestMapping(value = "/isNormalStatus", method = RequestMethod.GET)
 	public String isNormalStatus(String userId,HttpServletRequest req,HttpServletResponse res,Model model) {
-		List<Map<String,Object>> list = personalDataService.get(userId);
+		List<Map<String,Object>> list = personalDataService.getUserMap(userId);
 		//判断该用户是否有银行卡绑定
 		
 		return "";
@@ -86,7 +86,7 @@ public class FundMmanagementController {
 	 * @return
 	 */
 	public boolean isCardBinding(String userId) {
-		List<Map<String,Object>> list = personalDataService.get(userId);
+		List<Map<String,Object>> list = personalDataService.getUserMap(userId);
 		//判断该用户是否有银行卡绑定
 		if(list.size() == 0) {
 			return false;
@@ -104,7 +104,7 @@ public class FundMmanagementController {
 	 */
 	@RequestMapping(value = "/isNoCardBinding", method = RequestMethod.GET)
 	public String isNoCardBinding(String userId,HttpServletRequest req,HttpServletResponse res,Model model) {
-		List<Map<String,Object>> list = personalDataService.get(userId);
+		List<Map<String,Object>> list = personalDataService.getUserMap(userId);
 		//判断该用户是否有银行卡绑定
 		if(list.size() == 0) {
 			System.out.println("======================"+"用户"+userId+"没有绑定银行卡");

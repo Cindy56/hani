@@ -20,7 +20,7 @@ public interface TodoTaskService {
 	
 	public Page<TodoTask> findPage(Page<TodoTask> page, TodoTask todoTask);
 	
-	public void save(TodoTask todoTask) ;
+	public TodoTask save(TodoTask todoTask) ;
 	
 	public void delete(TodoTask todoTask) ;
 }

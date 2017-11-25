@@ -41,8 +41,8 @@ public class MemberPlayConfigServiceImpl
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(MemberPlayConfig memberPlayConfig) {
-		super.save(memberPlayConfig);
+	public MemberPlayConfig save(MemberPlayConfig memberPlayConfig) {
+		return super.save(memberPlayConfig);
 	}
 	
 	@Transactional(readOnly = false)

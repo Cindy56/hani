@@ -45,9 +45,10 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(Office office) {
+	public Office save(Office office) {
 		super.save(office);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+		return office;
 	}
 	
 	@Transactional(readOnly = false)

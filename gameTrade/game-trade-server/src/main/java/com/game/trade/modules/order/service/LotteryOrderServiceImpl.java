@@ -37,8 +37,8 @@ public class LotteryOrderServiceImpl
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(LotteryOrder lotteryOrder) {
-		super.save(lotteryOrder);
+	public LotteryOrder save(LotteryOrder lotteryOrder) {
+		return super.save(lotteryOrder);
 	}
 	
 	@Transactional(readOnly = false)

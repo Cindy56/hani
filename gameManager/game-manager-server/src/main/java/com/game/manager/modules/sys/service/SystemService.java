@@ -326,6 +326,17 @@ public class SystemService extends BaseService implements InitializingBean {
 		saveUser(user);
 		return user;
 	}
+	/**
+	 * 根据机构id查询该机构下所有角色
+	 * @author freemam
+	 * 2017年11月24日 下午3:23:24
+	 * @param officeId
+	 * @return 属于该机构的所有角色
+	 */
+	public List<Role> findRoleByOfficeId(String officeId) {
+		List<Role> list = roleDao.findRoleByOfficeId(officeId);
+				return list;
+	}
 
 	//-- Menu Service --//
 	
