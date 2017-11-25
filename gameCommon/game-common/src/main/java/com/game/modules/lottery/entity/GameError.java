@@ -1,6 +1,10 @@
 package com.game.modules.lottery.entity;
 
 public class GameError {
+	
+	public static final Integer errCodeOkay = 0;
+	public static final String errOkay = "成功";
+	
 
 	public static final Integer errCodeInvalid = 1;
 	public static final String errInvalid = "无效";
@@ -38,7 +42,8 @@ public class GameError {
 	public static final Integer errCodePlayModeMoney = 111;
 	public static final String errPlayModeMoney = "奖金模式不在范围内";
 	
-	
+	public static final Integer errCodeBetDetial = 112;
+	public static final String errBetDetial = "投注号码格式不正确";
 
 	
 }
