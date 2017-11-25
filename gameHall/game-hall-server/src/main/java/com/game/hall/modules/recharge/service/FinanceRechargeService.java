@@ -14,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.game.common.persistence.Page;
 import com.game.common.service.CrudService;
 import com.game.hall.modules.member.service.PersonalDataService;
-import com.game.hall.modules.recharge.dao.FinanceRechargeDao;
 import com.game.modules.finance.entity.FinanceRecharge;
+import com.game.trade.modules.finance.dao.FinanceRechargeDao;
+
+
 
 /**
  * 账户充值管理Service
