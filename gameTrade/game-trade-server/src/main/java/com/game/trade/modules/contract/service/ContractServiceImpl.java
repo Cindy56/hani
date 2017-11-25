@@ -124,7 +124,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		 ****************************************************/
 		List<Office> officeList=officeServiceFacade.findOfficesByParentId(COMPANY_TEMPLET_ID);
 		for (Office office : officeList) {
-			System.out.println();
+			System.out.println(office);
 		}
 		//复制模板公司
 		/*Office company=officeServiceFacade.get(COMPANY_TEMPLET_ID);
