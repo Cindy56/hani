@@ -1,4 +1,4 @@
-package com.game.manager.test;
+/*package com.game.manager.test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ public class Test {
 		
 		System.out.println(jsonstr);
 		
-		/*System.out.println(jsonstr);
+		System.out.println(jsonstr);
 		String s=JSON.toJSONString(configList);
 		System.out.println(s);
 		
@@ -117,15 +117,15 @@ public class Test {
 		
 		System.out.println(l);
 		
-		JsonMapper jsonMapper = JsonMapper.getInstance();*/
-		/*List<LotteryPlayConfig> xxxxxx  =  jsonMapper.fromJson(jsonstr, jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
-		System.out.println(jsonstr);*/
+		JsonMapper jsonMapper = JsonMapper.getInstance();
+		List<LotteryPlayConfig> xxxxxx  =  jsonMapper.fromJson(jsonstr, jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
+		System.out.println(jsonstr);
 		
 //		System.out.println(xxxxxx);
-		/*for (LotteryPlayConfig lotteryPlayConfig : xxxxxx) {
+		for (LotteryPlayConfig lotteryPlayConfig : xxxxxx) {
 			System.out.println(lotteryPlayConfig);
 			System.out.println(lotteryPlayConfig.getMap());
-		}*/
+		}
 	
 	}
-}
+}*/

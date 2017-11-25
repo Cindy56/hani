@@ -35,4 +35,7 @@ public class GameError {
 	public static final Integer errCodePlayDetailCode = 110;
 	public static final String errPlayDetailCode = "玩法代码无效";
 
+	public static final Integer errCodePlayModeMoney = 111;
+	public static final String errPlayModeMoney = "奖金模式不在范围内";
+	
 }
