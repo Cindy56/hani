@@ -41,7 +41,7 @@ public interface LotteryTypeService {
     /**
      * 保存表单提交数据
      */
-    public void save(LotteryType lotteryType);
+    public LotteryType save(LotteryType lotteryType);
 
     /**
      * 删除一条数据（更新删除标识）

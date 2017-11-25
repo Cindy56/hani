@@ -21,7 +21,7 @@ public interface MemberAccountCardService {
 	
 	public Page<MemberAccountCard> findPage(Page<MemberAccountCard> page, MemberAccountCard memberAccountCard);
 	
-	public void save(MemberAccountCard memberAccountCard);
+	public MemberAccountCard save(MemberAccountCard memberAccountCard);
 	
 	public void delete(MemberAccountCard memberAccountCard);
 	

@@ -16,7 +16,7 @@ public class OfficeServiceFacadeImpl implements OfficeServiceFacade  {
 	
 	@Override
 	public Office get(String id) {
-		return this.get(id);
+		return this.officeService.get(id);
 	}
 
 	@Override
@@ -27,8 +27,9 @@ public class OfficeServiceFacadeImpl implements OfficeServiceFacade  {
 	}
 
 	@Override
-	public void save(Office office) {
-		this.save(office);
+	public Office save(Office office) {
+		this.officeService.save(office);
+		return office;
 	}
 
 }

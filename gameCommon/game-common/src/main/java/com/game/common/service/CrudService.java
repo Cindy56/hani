@@ -70,7 +70,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	 * @param entity
 	 */
 	@Transactional(readOnly = false)
-	public void save(T entity) {
+	public T save(T entity) {
 		if (entity.getIsNewRecord()){
 			entity.preInsert();
 			dao.insert(entity);
@@ -78,6 +78,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 			entity.preUpdate();
 			dao.update(entity);
 		}
+		return entity;
 	}
 	
 	/**

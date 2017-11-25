@@ -27,13 +27,13 @@ public class systemServiceFacadeImpl implements SystemServiceFacade {
 
 	@Override
 	public List<Role> findRoleByOfficeId(String officeId) {
-		// TODO Auto-generated method stub
-		return null;
+		return systemService.findRoleByOfficeId(officeId);
 	}
 
 	@Override
-	public void saveRole(Role role) {
+	public Role saveRole(Role role) {
 		this.systemService.saveRole(role);
+		return role;
 	}
 
 	@Override

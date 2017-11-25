@@ -37,14 +37,14 @@ public class LotteryUtils {
     /**
      * 时时彩直选单式 检查是否中奖
      * @param openNum 开奖号码，格式为逗号分割“4,5,6”。
-     * @param betNum 投注号码，没有分隔符“456 789 258”，多注以空格分开
+     * @param betNum 投注号码，没有分隔符“456,789,258”，多注以逗号分开
      * @return
      */
     public static boolean checkWinSscZhiXuanDan(String openNum, String betNum) {
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
         }
-        String[] betNumList = betNum.trim().split(",");
+        String[] betNumList = betNum.split(",");
         if (0 == betNumList.length) {
             return false;
         }
@@ -66,7 +66,7 @@ public class LotteryUtils {
             return false;
         }
         String[] openArr = openNum.split(",");
-        String[] betArr = betNum.contains(",") ? betNum.split(",") : new String[] {};
+        String[] betArr = betNum.split(",");
         for (int i = 0; i < openArr.length; i++) {
             if (!StringUtils.contains(betArr[i], openArr[i])) {
                 return false;
@@ -119,21 +119,87 @@ public class LotteryUtils {
             return false;
         }
         // 判断开奖号码是否有组三，没有直接返回false
-        String[] openArr = openNum.split(",");
-        int countFirst = openNum.length() - openNum.replace(openArr[0], "").length();
-        if (2 != countFirst) {
-            int countSecond = openNum.length() - openNum.replace(openArr[1], "").length();
-            if (2 != countSecond) {
+        List<String> openNumList = Arrays.asList(openNum.split(","));
+        Map<String, Long> map = openNumList.stream().collect(Collectors.groupingBy(p -> p, Collectors.counting()));
+        if (2 != map.size()) {
+            return false;
+        }
+        // 判断开奖号码是否存在于投注号码中，只要一个不存在就不中奖
+        Set<String> set = map.keySet();
+        for (String open : set) {
+            if (!StringUtils.contains(betNum, open)) {
                 return false;
             }
         }
-        String[] betArr = betNum.contains(",") ? betNum.split(",") : new String[] {};
-        for (String open : openArr) {
-            if (ArrayUtils.contains(betArr, open)) {
-                return true;
+        return true;
+    }
+
+    /**
+     * 时时彩5星组选120 判断是否中奖
+     * @param openNum 开奖号码，五个位以逗号隔开
+     * @param betNum 投注号码，至少五个号码，以逗号隔开
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSsc5XingZuXuan120(String openNum, String betNum) {
+        // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        // 判断开奖号码中的号码是否出现重复，有则直接返回false
+        List<String> openNumList = Arrays.asList(openNum.split(","));
+        Map<String, Long> map = openNumList.stream().collect(Collectors.groupingBy(p -> p, Collectors.counting()));
+        // if (openNum.matches(".*(\\d).*\\1.*")) {
+        if (5 != map.size()) {
+            return false;
+        }
+        // 如果判断的号码没有出现重复则继续判断该位号码是否存在于投注号码，不存在同样不中奖，返回false
+        for (String open : openNumList) {
+            if (!StringUtils.contains(betNum, open)) {
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    /**
+     * 时时彩5星组选60 判断是否中奖
+     * @param openNum 开奖号码，五个位以逗号隔开
+     * @param betNum 投注号码，至少五个号码，以逗号隔开
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSsc5XingZuXuan60(String openNum, String betNum) {
+        // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        // 开奖号码有且仅有1个号码重复，否则不是组60，直接返回false
+        String[] openArr = openNum.split(",");
+        List<String> openNumList = Arrays.asList(openArr);
+        Map<String, Long> map = openNumList.stream().collect(Collectors.groupingBy(p -> p, Collectors.counting()));
+        if (4 != map.size()) {
+            return false;
+        }
+
+        // 取出开奖号码中的二重号，判断是否存在与投注号码中，如果不存在，肯定不中奖，返回false
+        String[] butArr = betNum.split(",");
+        // 因为这里最多仅有一个重复的号码，而且重复次数肯定为2，所以写死直接取
+        List<String> list = map.entrySet().stream().filter((p) -> (p.getValue() == 2)).map(c -> c.getKey()).collect(Collectors.toList());
+        if (!StringUtils.contains(butArr[0], list.get(0))) {
+            return false;
+        }
+
+        // 从开奖号码中取出剩余的单号，依次判断是否存在于投注号码的单号内，只要一个不存在就不中奖
+        map.remove(list.get(0));
+        String aloneNum = butArr[1];
+        Set<String> set = map.keySet();
+        for (String alone : set) {
+            if (!StringUtils.contains(aloneNum, alone)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // -------------------------------投注注数计算-----------------------------------------
@@ -196,10 +262,7 @@ public class LotteryUtils {
         // 不为空的位置长度相加
         int count = 1;
         for (String string : betNumList) {
-            // 空位跳过
-            if ("-".equals(string)) {
-                continue;
-            }
+           
             count *= string.length();
         }
         return count;

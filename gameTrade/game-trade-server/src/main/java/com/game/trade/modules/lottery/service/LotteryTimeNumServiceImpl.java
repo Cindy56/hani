@@ -77,8 +77,8 @@ public class LotteryTimeNumServiceImpl
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(LotteryTimeNum lotteryTimeNum) {
-		super.save(lotteryTimeNum);
+	public LotteryTimeNum save(LotteryTimeNum lotteryTimeNum) {
+		return super.save(lotteryTimeNum);
 	}
 	
 	@Transactional(readOnly = false)

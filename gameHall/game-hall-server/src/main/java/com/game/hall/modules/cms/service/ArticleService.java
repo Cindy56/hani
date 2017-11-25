@@ -75,7 +75,7 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 	}
 
 	@Transactional(readOnly = false)
-	public void save(Article article) {
+	public Article save(Article article) {
 		if (article.getArticleData().getContent()!=null){
 			article.getArticleData().setContent(StringEscapeUtils.unescapeHtml4(
 					article.getArticleData().getContent()));
@@ -111,6 +111,7 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 			dao.update(article);
 			articleDataDao.update(article.getArticleData());
 		}
+		return article;
 	}
 	
 	@Transactional(readOnly = false)
