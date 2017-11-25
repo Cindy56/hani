@@ -136,11 +136,7 @@ public class LotteryCalBetTest extends AbstractJUnit4SpringContextTests {
 		BigDecimal playModeCommissionRate = new BigDecimal(0);
 		bet1.setPlayModeCommissionRate(playModeCommissionRate);
 		Integer playModeMoney = 1960;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core.git
 		bet1.setPlayModeMoney(playModeMoney);
 		String playModeMoneyType = "0";
 		bet1.setPlayModeMoneyType(playModeMoneyType);
