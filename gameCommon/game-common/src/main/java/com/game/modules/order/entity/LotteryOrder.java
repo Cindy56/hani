@@ -3,15 +3,15 @@
  */
 package com.game.modules.order.entity;
 
+import java.math.BigDecimal;
+
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import com.game.common.persistence.DataEntity;
 import com.game.modules.sys.entity.User;
-
-import java.math.BigDecimal;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 订单明细Entity
@@ -31,7 +31,7 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 	private BigDecimal betAmount;		// 投注金额，单位为元
 	private Integer betRate;		// 投注倍数
 	private Integer playModeMoney;		// 奖金模式：1800,1700,1960，需要在服务端做校验
-	private Integer playModeCommissionRate;		// 佣金比例，返点比例，返水比例需要在应用服务器做校验，看看奖金模式和返佣比率是否符合公式
+	private BigDecimal playModeCommissionRate;		// 佣金比例，返点比例，返水比例需要在应用服务器做校验，看看奖金模式和返佣比率是否符合公式
 	private String playModeMoneyType;		// 玩法模式：0元1角2分
 	private String orderSource;		// 注单来源：1浏览器2移动app
 	private String orderType;		// 注单类型：1正常投注2追号注单2合买注单
@@ -148,11 +148,11 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 	}
 	
 	@Length(min=1, max=6, message="佣金比例，返点比例，返水比例需要在应用服务器做校验，看看奖金模式和返佣比率是否符合公式长度必须介于 1 和 6 之间")
-	public Integer getPlayModeCommissionRate() {
+	public BigDecimal getPlayModeCommissionRate() {
 		return playModeCommissionRate;
 	}
 
-	public void setPlayModeCommissionRate(Integer playModeCommissionRate) {
+	public void setPlayModeCommissionRate(BigDecimal playModeCommissionRate) {
 		this.playModeCommissionRate = playModeCommissionRate;
 	}
 	
