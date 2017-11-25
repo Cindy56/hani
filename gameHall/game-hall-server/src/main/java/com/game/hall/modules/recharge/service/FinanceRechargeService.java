@@ -51,10 +51,10 @@ public class FinanceRechargeService extends CrudService<FinanceRechargeDao, Fina
 		return super.findPage(page, financeRecharge);
 	}
 	
-	@Transactional(readOnly = false)
-	public void save(FinanceRecharge financeRecharge) {
-		super.save(financeRecharge);
-	}
+//	@Transactional(readOnly = false)
+//	public void save(FinanceRecharge financeRecharge) {
+//		super.save(financeRecharge);
+//	}
 	
 	@Transactional(readOnly = false)
 	public void delete(FinanceRecharge financeRecharge) {
