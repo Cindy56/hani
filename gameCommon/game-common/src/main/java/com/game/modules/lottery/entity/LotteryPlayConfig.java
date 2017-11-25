@@ -3,6 +3,7 @@
  */
 package com.game.modules.lottery.entity;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.hibernate.validator.constraints.Length;
@@ -46,17 +47,17 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
     /**
      * 返水级别
      */
-    private String commissionRateMax;
+    private BigDecimal commissionRateMax;
 
     /**
      * 最低返水级别
      */
-    private String commissionRateMin;
+    private BigDecimal commissionRateMin;
 
     /**
      * 单人单期投注倍数限制 
      */
-    private String betRateLimit;
+    private int betRateLimit;
 
     /**
      * 是否启用
@@ -76,14 +77,14 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
      * 返点信息
      */
     private Map map;
-    
-    public Map getMap() {
-		return map;
-	}
 
-	public void setMap(Map map) {
-		this.map = map;
-	}
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
 
     public LotteryPlayConfig() {
         super();
@@ -141,28 +142,28 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
         this.winningProbability = winningProbability;
     }
 
-    public String getCommissionRateMax() {
+    public BigDecimal getCommissionRateMax() {
         return commissionRateMax;
     }
 
-    public void setCommissionRateMax(String commissionRateMax) {
+    public void setCommissionRateMax(BigDecimal commissionRateMax) {
         this.commissionRateMax = commissionRateMax;
     }
 
-    public String getCommissionRateMin() {
+    public BigDecimal getCommissionRateMin() {
         return commissionRateMin;
     }
 
-    public void setCommissionRateMin(String commissionRateMin) {
+    public void setCommissionRateMin(BigDecimal commissionRateMin) {
         this.commissionRateMin = commissionRateMin;
     }
 
     @Length(min = 0, max = 6, message = "单人单期投注倍数限制长度必须介于 0 和 6 之间")
-    public String getBetRateLimit() {
+    public int getBetRateLimit() {
         return betRateLimit;
     }
 
-    public void setBetRateLimit(String betRateLimit) {
+    public void setBetRateLimit(int betRateLimit) {
         this.betRateLimit = betRateLimit;
     }
 
