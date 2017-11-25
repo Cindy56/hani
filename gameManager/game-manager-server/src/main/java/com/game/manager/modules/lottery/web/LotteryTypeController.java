@@ -24,6 +24,7 @@ import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
 import com.game.manager.modules.sys.utils.DictUtils;
+import com.game.manager.modules.sys.utils.UserUtils;
 import com.game.modules.lottery.constant.LotteryConstants;
 import com.game.modules.lottery.entity.LotteryType;
 import com.game.modules.lottery.service.LotteryTypeService;
@@ -127,6 +128,7 @@ public class LotteryTypeController extends BaseController {
             return form(lotteryType, model);
         }
         // 校验通过更新数据到数据库
+        lotteryType.setCurrentUser(UserUtils.getUser());
         lotteryTypeService.save(lotteryType);
         addMessage(redirectAttributes, LotteryConstants.SAVE_SUCCESS);
         // 重定向到查询列表页面
@@ -143,6 +145,7 @@ public class LotteryTypeController extends BaseController {
     @RequiresPermissions("lottery:lotteryType:edit")
     @RequestMapping(value = "delete")
     public String delete(LotteryType lotteryType, RedirectAttributes redirectAttributes) {
+    	lotteryType.setCurrentUser(UserUtils.getUser());
         lotteryTypeService.delete(lotteryType);
         addMessage(redirectAttributes, LotteryConstants.REMOVE_SUCCESS);
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryType/?repage";
