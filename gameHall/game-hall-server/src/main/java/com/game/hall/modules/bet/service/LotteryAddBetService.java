@@ -102,7 +102,7 @@ public class LotteryAddBetService implements BetServiceApi {
 		bet1.setOrderSource(orderSource);
 		String orderType = "2";
 		bet1.setOrderType(orderType);
-		Integer playModeCommissionRate = 0;
+		BigDecimal playModeCommissionRate = new BigDecimal(0);
 		bet1.setPlayModeCommissionRate(playModeCommissionRate);
 		Integer playModeMoney = 1960;
 		bet1.setPlayModeMoney(playModeMoney);
