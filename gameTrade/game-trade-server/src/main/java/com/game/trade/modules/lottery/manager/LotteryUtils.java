@@ -2,7 +2,6 @@ package com.game.trade.modules.lottery.manager;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -135,13 +134,14 @@ public class LotteryUtils {
     }
 
     /**
-     * 时时彩5星组选120 判断是否中奖
+     * 时时彩5星组选120 4星组选24 判断是否中奖
      * @param openNum 开奖号码，五个位以逗号隔开
      * @param betNum 投注号码，至少五个号码，以逗号隔开
+     * @param groupSize 投注位数标识，5星为5，4星为4
      * @return 中奖返回true
      * @author Terry
      */
-    public static boolean checkWinSsc5XingZuXuan120(String openNum, String betNum) {
+    public static boolean checkWinSscZuXuan24_120(String openNum, String betNum, int groupSize) {
         // 参数不合法，返回false
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
@@ -149,8 +149,7 @@ public class LotteryUtils {
         // 判断开奖号码中的号码是否出现重复，有则直接返回false
         List<String> openNumList = Arrays.asList(openNum.split(","));
         Map<String, Long> map = openNumList.stream().collect(Collectors.groupingBy(p -> p, Collectors.counting()));
-        // if (openNum.matches(".*(\\d).*\\1.*")) {
-        if (5 != map.size()) {
+        if (groupSize != map.size()) {
             return false;
         }
         // 如果判断的号码没有出现重复则继续判断该位号码是否存在于投注号码，不存在同样不中奖，返回false
@@ -196,6 +195,127 @@ public class LotteryUtils {
         Set<String> set = map.keySet();
         for (String alone : set) {
             if (!StringUtils.contains(aloneNum, alone)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 时时彩5星组选30 判断是否中奖
+     * @param openNum 开奖号码，五个位以逗号隔开
+     * @param betNum 投注号码，至少五个号码，以逗号隔开
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSsc5XingZuXuan30(String openNum, String betNum) {
+        // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        // 开奖号码有且仅有2个二重号，否则不是组30，直接返回false
+        String[] openArr = openNum.split(",");
+        List<String> openNumList = Arrays.asList(openArr);
+        Map<String, Long> map = openNumList.stream().collect(Collectors.groupingBy(p -> p, Collectors.counting()));
+        if (3 != map.size()) {
+            return false;
+        }
+        String[] butArr = betNum.split(",");
+        List<String> list = map.entrySet().stream().filter((p) -> (p.getValue() == 2)).map(c -> c.getKey()).collect(Collectors.toList());
+        if (2 != list.size()) {
+            return false;
+        }
+
+        // 判断出现的二重号是否存在与投注号码的二重号中，只要又一个没有，直接返回false
+        String doubleArr = butArr[0];
+        for (String doubleNum : list) {
+            if (!StringUtils.contains(doubleArr, doubleNum)) {
+                return false;
+            }
+            map.remove(doubleNum);
+        }
+
+        // 从开奖号码中取出剩余的单号，依次判断是否存在于投注号码的单号内，只要一个不存在就不中奖
+        String aloneNum = butArr[1];
+        Set<String> set = map.keySet();
+        for (String alone : set) {
+            if (!StringUtils.contains(aloneNum, alone)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 时时彩5星组选10 判断是否中奖
+     * @param openNum 开奖号码，五个位以逗号隔开
+     * @param betNum 投注号码，至少五个号码，以逗号隔开
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSsc5XingZuXuan10(String openNum, String betNum) {
+        // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        // 开奖号码有且仅有2个重复号，一个三重号，一个二重号，否则不是组10，直接返回false
+        String[] openArr = openNum.split(",");
+        List<String> openNumList = Arrays.asList(openArr);
+        Map<String, Long> map = openNumList.stream().collect(Collectors.groupingBy(p -> p, Collectors.counting()));
+        if (2 != map.size()) {
+            return false;
+        }
+        // 没有2重号或者2重号不存在于投注号码中
+        String[] butArr = betNum.split(",");
+        List<String> list = map.entrySet().stream().filter((p) -> (p.getValue() == 2)).map(c -> c.getKey()).collect(Collectors.toList());
+        if (1 != list.size() || !StringUtils.contains(butArr[1], list.get(0))) {
+            return false;
+        }
+
+        // 从开奖号码中取出剩余的号码（三重号），依次判断是否存在于投注号码的三重号内，只要一个不存在就不中奖
+        map.remove(list.get(0));
+        String threeNum = butArr[0];
+        Set<String> set = map.keySet();
+        for (String num : set) {
+            if (!StringUtils.contains(threeNum, num)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 时时彩5星组选5 判断是否中奖
+     * @param openNum 开奖号码，五个位以逗号隔开
+     * @param betNum 投注号码，至少五个号码，以逗号隔开
+     * @return 中奖返回true
+     * @author Terry
+     */
+    public static boolean checkWinSsc5XingZuXuan5(String openNum, String betNum) {
+        // 参数不合法，返回false
+        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+            return false;
+        }
+        // 开奖号码有且仅有1个重复号，一个四重号，一个单号，否则不是组5，直接返回false
+        String[] openArr = openNum.split(",");
+        List<String> openNumList = Arrays.asList(openArr);
+        Map<String, Long> map = openNumList.stream().collect(Collectors.groupingBy(p -> p, Collectors.counting()));
+        if (2 != map.size()) {
+            return false;
+        }
+        // 没有4重号或者4重号不存在于投注号码中
+        String[] butArr = betNum.split(",");
+        List<String> list = map.entrySet().stream().filter((p) -> (p.getValue() == 4)).map(c -> c.getKey()).collect(Collectors.toList());
+        if (1 != list.size() || !StringUtils.contains(butArr[0], list.get(0))) {
+            return false;
+        }
+
+        // 从开奖号码中取出剩余的号码单号，依次判断是否存在于投注号码的单号内，只要一个不存在就不中奖
+        map.remove(list.get(0));
+        String threeNum = butArr[1];
+        Set<String> set = map.keySet();
+        for (String num : set) {
+            if (!StringUtils.contains(threeNum, num)) {
                 return false;
             }
         }
@@ -262,7 +382,6 @@ public class LotteryUtils {
         // 不为空的位置长度相加
         int count = 1;
         for (String string : betNumList) {
-           
             count *= string.length();
         }
         return count;
