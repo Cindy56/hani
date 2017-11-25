@@ -343,7 +343,7 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
-			if(null==lotteryOrder||null==openLotteryTimeNum){return false;}return LotteryUtils.ssc4XinZuXuan4(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length()-7),lotteryOrder.getBetDetail());
+			if(null==lotteryOrder||null==openLotteryTimeNum){return false;}return LotteryUtils.ssc4XinZuXuan4(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length()-7),lotteryOrder.getBetDetail(),2);
 		}
 
 		@Override
