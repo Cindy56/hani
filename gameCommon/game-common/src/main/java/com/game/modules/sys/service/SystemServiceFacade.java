@@ -16,7 +16,7 @@ import com.game.modules.sys.entity.User;
 public interface SystemServiceFacade{
 	//-- User Service --//
 	/** 保存用户 */
-	public void saveUser(User user);
+	public User saveUser(User user);
 	
 	//-- Role Service --//
 	/** 根据主键查找role */
@@ -27,4 +27,5 @@ public interface SystemServiceFacade{
 	public Role saveRole(Role role);
 	/** 为用户分配角色 */
 	public User assignUserToRole(Role role, User user);
+	
 }

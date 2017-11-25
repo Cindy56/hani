@@ -299,6 +299,7 @@ public class MemberAccountAddController extends BaseController {
 		}
 		
 		//保存用户信息
+		user.setCurrentUser(UserUtils.getUser());
 		systemService.saveUser(user);
 		
 		memberAccount.setParentAgentId(seesionUser.getId());
@@ -312,7 +313,8 @@ public class MemberAccountAddController extends BaseController {
 		memberAccount.setSecPassword(SystemService.entryptPassword(memberAccount.getSecPassword()));
 		
 		//保存会员信息
-		memberAccountService.save(memberAccount);
+		memberAccount.setCurrentUser(UserUtils.getUser());
+		memberAccount=memberAccountService.save(memberAccount);
 		
 		//保存用户的返点信息
 		List<LotteryPlayConfig> playConfigList=memberAccountOpenDto.getPlayList();
@@ -322,9 +324,9 @@ public class MemberAccountAddController extends BaseController {
 		memberPlayConfig.setAccountId(memberAccount.getId());
 		memberPlayConfig.setPlayConfig(JsonMapper.toJsonString(playConfigList));
 		memberPlayConfig.setUserName(user.getName());
-		
+		memberPlayConfig.setAccountId(memberAccount.getId());
+		memberPlayConfig.setCurrentUser(UserUtils.getUser());
 		memberPlayConfigService.save(memberPlayConfig);
-		
 		addMessage(redirectAttributes, "保存会员信息成功");
 		return "redirect:"+Global.getAdminPath()+"/memberadd/memberAccount/";
 	}

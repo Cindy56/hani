@@ -16,8 +16,9 @@ public class systemServiceFacadeImpl implements SystemServiceFacade {
 	private SystemService systemService;
 	
 	@Override
-	public void saveUser(User user) {
+	public User saveUser(User user) {
 		this.systemService.saveUser(user);
+		return user;
 	}
 
 	@Override
@@ -40,5 +41,6 @@ public class systemServiceFacadeImpl implements SystemServiceFacade {
 	public User assignUserToRole(Role role, User user) {
 		return this.systemService.assignUserToRole(role, user);
 	}
+
 
 }

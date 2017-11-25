@@ -25,6 +25,7 @@ import com.game.manager.modules.sys.utils.UserUtils;
 import com.game.modules.contract.entity.Contract;
 import com.game.modules.contract.service.ContractService;
 import com.game.modules.member.service.MemberAccountService;
+import com.game.modules.sys.entity.User;
 import com.game.modules.sys.service.SystemServiceFacade;
 import com.game.modules.todo.service.TodoTaskService;
 
@@ -97,6 +98,10 @@ public class ContractCompanyController extends BaseController {
 			return form(contract, model);
 		}
 		contract.setCurrentUser(UserUtils.getUser());
+		contract.setSecPassword(SystemService.entryptPassword(contract.getSecPassword()));
+		User user=contract.getUser();
+		user.setPassword(SystemService.entryptPassword(user.getPassword()));
+		contract.setUser(user);
 		//保存公司信息
 		contractService.save(contract);
 		addMessage(redirectAttributes, "保存公司成功");
