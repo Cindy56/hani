@@ -92,7 +92,7 @@ public class LotteryCommissionService {
 		memberList.stream().forEach(memberAccount->{
 			if(lotteryOrder.getAccountId().equals(memberAccount.getId())) {
 				//计算本人返点
-				BigDecimal	currentAmount = lotteryOrder.getBetAmount().multiply(new BigDecimal(lotteryOrder.getPlayModeCommissionRate())).setScale(4, BigDecimal.ROUND_HALF_DOWN);
+				BigDecimal	currentAmount = lotteryOrder.getBetAmount().multiply(lotteryOrder.getPlayModeCommissionRate()).setScale(4, BigDecimal.ROUND_HALF_DOWN);
 				//给上级加钱
 				memberAccountService.plusAmount(memberAccount.getId(),currentAmount);
 				//生成账变
