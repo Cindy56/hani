@@ -56,6 +56,7 @@ public class LotteryCalculateServiceImpl implements LotteryCalculateService {
 	}
 
 	public int checkOrder(LotteryOrder lotteryOrder) {
+		
 		//获取当前彩种的时刻，
 		LotteryTimeNum betLotteryTimeNum = lotteryTimeNumService.findCurrentIssueNo(lotteryOrder.getLotteryCode());
 		//校验

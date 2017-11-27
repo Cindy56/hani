@@ -1,57 +1,34 @@
 package com.game.trade.modules.lottery;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
-public class MoneyType {
+import org.apache.commons.collections.map.HashedMap;
 
-	enum MoneyTypeName implements MoneyTypeNum {
-		YUAN("元") {
-			public BigDecimal getVal() {
-				return new BigDecimal(1);
-			}
-		},
-		JIAO("角") {
-			public BigDecimal getVal() {
-				return new BigDecimal(0.1);
-			}
-		},
-		FEN("分") {
-			public BigDecimal getVal() {
-				return new BigDecimal(0.01);
-			}
-		},
+public class MoneyTypeDecimal {
 
-		LI("厘") {
-
-			public BigDecimal getVal() {
-				return new BigDecimal(0.001);
-			}
-		},;
-
-		private String v;
-
-		private MoneyTypeName(String v) {
-			this.v = v;
-		}
+	private static final  Map<String, BigDecimal> moneyType = new HashedMap();
+	
+	private MoneyTypeDecimal()
+	{
+		moneyType.put("0",new BigDecimal("1") );
+		moneyType.put("1",new BigDecimal("0.1") );
+		moneyType.put("2",new BigDecimal("0.01") );
+		moneyType.put("3",new BigDecimal("0.001") );
+		
+	}
+	
+	public static MoneyTypeDecimal getInstants()
+	{
+		return new MoneyTypeDecimal();
 	}
 
-	interface MoneyTypeNum {
-
-		public BigDecimal getVal();
+	public BigDecimal findMoneyType(String key)
+	{
+		return moneyType.get(key);
 	}
-
-	/**
-	 * 获得模式对应金额
-	 * 
-	 * @param moneyType
-	 * @return
-	 */
-	static public BigDecimal getMoneyType(String moneyType) {
-
-		MoneyTypeName moneyTypeName = MoneyTypeName.valueOf(moneyType);
-
-		return moneyTypeName.getVal();
-
-	}
+	
+	
+	
 
 }

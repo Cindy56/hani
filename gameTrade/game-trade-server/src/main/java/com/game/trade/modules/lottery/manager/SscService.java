@@ -18,7 +18,7 @@ import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.model.OpenLottery;
 import com.game.trade.model.Star5;
-import com.game.trade.modules.lottery.MoneyType;
+import com.game.trade.modules.lottery.MoneyTypeDecimal;
 import com.game.trade.util.CheckString;
 import com.game.trade.util.Combination;
 
@@ -1720,8 +1720,9 @@ public enum SscService implements LotteryService {
 		@Override
 		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
-				return 1;
+			int superRet = super.checkOrder(lotteryOrder, betLotteryTimeNum);
+			if ( superRet != 0) {
+				return superRet;
 			}
 			// 2、数据格式校验，
 			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
@@ -1733,13 +1734,20 @@ public enum SscService implements LotteryService {
 			}
 
 			String[] arrSubBet = betNumber.split(",");
-			for (int j = 0; j < arrSubBet.length; j++) {
-				CheckString.hasSameLetter(arrSubBet[j]);
-			}
+
+			List<String> lsSubBet = Arrays.asList(arrSubBet);
+
+			boolean ret0 = CheckString.hasSameNum(lsSubBet);
+
+			if (ret0)
+				return 1;
+			// for (int j = 0; j < arrSubBet.length; j++) {
+			// CheckString.hasSameLetter(arrSubBet[j]);
+			// }
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			boolean ret = checkAmount(lotteryOrder);
-			if (!ret)
+			boolean ret1 = checkAmount(lotteryOrder);
+			if (!ret1)
 				return 1;
 			return 0;
 		}
@@ -1952,11 +1960,9 @@ public enum SscService implements LotteryService {
 			List<String> lsSubBets = Arrays.asList(arrSubBet);
 
 			Boolean bRet = CheckString.hasSameNum(lsSubBets);
-			
+
 			if (bRet)
 				return GameError.errCodeBetDetial;
-
-
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
 			boolean ret = checkAmount(lotteryOrder);
@@ -1983,7 +1989,6 @@ public enum SscService implements LotteryService {
 
 			String[] betNumList = bet.split(",");
 
-			
 			List<Star5> lsStar5 = new ArrayList<Star5>();
 
 			int a0 = 0;
@@ -1993,12 +1998,12 @@ public enum SscService implements LotteryService {
 			int a4 = 0;
 
 			// double No array
-			List<Integer> doubleNo = Arrays.asList( betNumList[0].split("") ).stream().map(Integer::valueOf ).collect(Collectors.toList());
-			
+			List<Integer> doubleNo = Arrays.asList(betNumList[0].split("")).stream().map(Integer::valueOf)
+					.collect(Collectors.toList());
 
 			// single No array
-			List<Integer> singleNo = Arrays.asList( betNumList[1].split("") ).stream().map(Integer::valueOf ).collect(Collectors.toList());
-			
+			List<Integer> singleNo = Arrays.asList(betNumList[1].split("")).stream().map(Integer::valueOf)
+					.collect(Collectors.toList());
 
 			// single No array => combination N,3
 			ArrayList<Integer> t = new ArrayList<Integer>();
@@ -2030,7 +2035,6 @@ public enum SscService implements LotteryService {
 
 			}
 
-			
 			return lsStar5.size();
 
 		}
@@ -2405,57 +2409,81 @@ public enum SscService implements LotteryService {
 		// 期号检查,投注期号与当前期号作对比，如果不一致，返回false，校验失败
 		String currentIssueNo = lotteryOrder.getBetIssueNo();
 		if (StringUtils.isBlank(currentIssueNo) || !currentIssueNo.equals(betLotteryTimeNum.getLotteryIssueNo())) {
-			//return GameError.errCodeInvalid;
+			return GameError.errCodeIssuseNo;
 		}
 		// 投注有效性检查，当前时间是否在当前有效投注时间段内，如果不在，返回false，校验失败
 		Long currentDate = System.currentTimeMillis();
 		Long startDate = betLotteryTimeNum.getBetStartDate().getTime();
 		Long endDate = betLotteryTimeNum.getBetHaltDate().getTime();
 		if (currentDate <= startDate || currentDate >= endDate) {
-			//return GameError.errCodeInvalid;
+			return GameError.errCodeIssuseNo;
 		}
 
 		// TODO 返水范围校验 等待freeman提供接口，获取用户的返回范围
 		MemberPlayConfigService myMemberPlayConfigService = SpringContextHolder.getBean("memberPlayConfigService");
-		
+
 		MemberPlayConfig memCfg = myMemberPlayConfigService.getMemberPlayConfigByUserId(lotteryOrder.getUser().getId());
 
 		String jsPlayCfg = memCfg.getPlayConfig();
-		LotteryPlayConfig lotPlayCfg = (LotteryPlayConfig) JsonMapper.fromJsonString(jsPlayCfg,
-				LotteryPlayConfig.class);
+		// LotteryPlayConfig lotPlayCfg = (LotteryPlayConfig)
+		// JsonMapper.fromJsonString(jsPlayCfg,
+		// LotteryPlayConfig.class);
+
+		List<LotteryPlayConfig> playConfigList = (List<LotteryPlayConfig>) JsonMapper.getInstance().fromJson(jsPlayCfg,
+				JsonMapper.getInstance().createCollectionType(List.class, LotteryPlayConfig.class));
+
+		String playCode = lotteryOrder.getBetType();
+		List<LotteryPlayConfig> lsPlayCfg = playConfigList.stream().filter(s -> playCode.equals(s.getPlayCode()))
+				.collect(Collectors.toList());
+
+		if (lsPlayCfg == null || lsPlayCfg.size() <= 0)
+			return 1;
+		LotteryPlayConfig lotPlayCfg = lsPlayCfg.get(0);
+		if (lotPlayCfg == null)
+			return 1;
 
 		// 倍数限制
-		int betRateLimit = lotPlayCfg.getBetRateLimit();
-		BigDecimal winningProbability = new BigDecimal(lotPlayCfg.getWinningProbability());
-		BigDecimal CommissionRateMax = lotPlayCfg.getCommissionRateMax();
-		BigDecimal CommissionRateMin = lotPlayCfg.getCommissionRateMin();
+
+		int betRateLimitcfg = lotPlayCfg.getBetRateLimit();
+		int betRate = lotteryOrder.getBetRate();
+		if (betRate <= 0 && betRate > betRateLimitcfg)
+			return GameError.errCodeBetRate;
+
+		BigDecimal winningProbabilityCfg = new BigDecimal(lotPlayCfg.getWinningProbability());
+		BigDecimal CommissionRateMaxCfg = lotPlayCfg.getCommissionRateMax().multiply(new BigDecimal("0.01"));
+		BigDecimal CommissionRateMinCfg = lotPlayCfg.getCommissionRateMin().multiply(new BigDecimal("0.01"));
 
 		// 根据中奖概率和返水范围计算奖金组和返点
 		BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());// 奖金模式
-		BigDecimal playModeCommissionRate = lotteryOrder.getPlayModeCommissionRate();// 奖金模式返水比例
+		playModeMoney.setScale(2);
+		BigDecimal playModeCommissionRate = lotteryOrder.getPlayModeCommissionRate().multiply(new BigDecimal("0.01"));// 奖金模式返水比例
 		BigDecimal winAmount = lotteryOrder.getWinAmount();// 中奖金额
 
 		// 校验奖金模式是否在范围内
 		BigDecimal playModeMoneyMax;
 		BigDecimal playModeMoneyMin;
 
-		playModeMoneyMax = new BigDecimal(2000).subtract(CommissionRateMax.multiply(new BigDecimal(2000)));
+		// 中奖概率
+		BigDecimal winningProbability = new BigDecimal(lotPlayCfg.getWinningProbability());
+		BigDecimal maxWin = new BigDecimal("2").divide(winningProbability);
 
-		playModeMoneyMin = new BigDecimal(2000).subtract(CommissionRateMin.multiply(new BigDecimal(2000)));
+		playModeMoneyMax = maxWin.multiply(new BigDecimal("1").subtract(CommissionRateMaxCfg));
 
-		if (playModeMoney.compareTo(playModeMoneyMin) > 0 && playModeMoney.compareTo(playModeMoneyMax) < 0) {
+		playModeMoneyMin = maxWin.multiply(new BigDecimal("1").subtract(CommissionRateMinCfg));
+
+		//奖金组是否在范围内
+		if (playModeMoney.compareTo(playModeMoneyMin) > 0 || playModeMoney.compareTo(playModeMoneyMax) < 0) {
 			return GameError.errCodePlayModeMoney;
 		}
 
 		// 校验返水比例，奖金组是否符合规则
-		BigDecimal playModeMoneyCheck;
+		// 个人投注返点 = 个人最高奖金组 - 投注时奖金组 / 2000 × 投注金额
+		BigDecimal playModeCommissionRateCfg = playModeMoneyMin.subtract(playModeMoney).divide(new BigDecimal("2000"));
 
-		playModeMoneyCheck = new BigDecimal(2000).subtract(playModeCommissionRate.multiply(new BigDecimal(2000)));
-
-		if (!playModeMoneyCheck.equals(winAmount)) {
-			return GameError.errCodePlayModeMoney;
-		}
-
+		// 校验返点，是否正确
+		if (playModeCommissionRate.compareTo(playModeCommissionRateCfg) != 0)
+			return GameError.errCodePlayModeCommissionRate;
+	
 		return 0;
 	}
 
@@ -2491,10 +2519,11 @@ public enum SscService implements LotteryService {
 	 */
 	public boolean chkAmount(LotteryOrder lotteryOrder, int betNum) {
 		// 校验投注金额 amount = betno * 2 * rate * moneytype
-		BigDecimal moneyType = MoneyType.getMoneyType(lotteryOrder.getPlayModeMoneyType());
+
+		BigDecimal moneyType = MoneyTypeDecimal.getInstants().findMoneyType(lotteryOrder.getPlayModeMoneyType());
 		BigDecimal rate = new BigDecimal(lotteryOrder.getBetRate());
 		BigDecimal amount = rate.multiply(moneyType).multiply(new BigDecimal(betNum * 2));
-		return amount.equals(lotteryOrder.getBetAmount());
+		return (amount.compareTo(lotteryOrder.getBetAmount()) == 0);
 	}
 
 	@Override
