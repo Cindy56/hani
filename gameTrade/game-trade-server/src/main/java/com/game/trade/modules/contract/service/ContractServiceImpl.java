@@ -142,20 +142,6 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		user = systemServiceFacade.saveUser(user);
 		systemServiceFacade.assignUserToRole(companyRole,user);
 		
-		
-		
-		
-		//保存账户信息
-		
-		//保存contract
-		
-		//保存config
-		
-		//分配角色
-		
-		//公司模板
-		
-		
 		MemberAccount memberAccount=new MemberAccount();
 		//获取当前用户信息 
 		User seesionUser = contract.getCurrentUser();
@@ -193,6 +179,8 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		/************************************************************/
 		contract.setOffice(company);
 		contract.setUser(user);
+		//开户类型：1公司，2代理
+		contract.setOpenType("1");
 		super.save(contract);
 		for (ContractConfig contractConfig : contract.getContractConfigList()){
 			if (contractConfig.getId() == null){
@@ -201,6 +189,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			if (ContractConfig.DEL_FLAG_NORMAL.equals(contractConfig.getDelFlag())){
 				if (StringUtils.isBlank(contractConfig.getId())){
 					contractConfig.setContractId(contract);
+					contractConfig.setCurrentUser(contract.getCurrentUser());
 					contractConfig.preInsert();
 					contractConfigDao.insert(contractConfig);
 				}else{

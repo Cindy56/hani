@@ -61,10 +61,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/trade/financeTradeDetail/">账变流水列表</a></li>
+		<li class="active"><a href="${ctx}/finance/financeTradeDetail/">账变流水列表</a></li>
 		<shiro:hasPermission name="trade:financeTradeDetail:edit"></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="financeTradeDetail" action="${ctx}/trade/financeTradeDetail/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="financeTradeDetail" action="${ctx}/finance/financeTradeDetail/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
