@@ -19,7 +19,10 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/finance/financeRecharge/">账户充值列表</a></li>
-		<li><a href="${ctx}/finance/financeRecharge/form?id=${financeRecharge.id}">账户充值<shiro:hasPermission name="trade:financeRecharge:edit">${not empty financeRecharge.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="trade:financeRecharge:edit">查看</shiro:lacksPermission></a></li>		
+		<li><a href="${ctx}/finance/financeRecharge/rechargeForm">账户充值
+		<shiro:hasPermission name="trade:financeRecharge:edit">${not empty financeRecharge.id?'修改':'添加'}
+		</shiro:hasPermission><shiro:lacksPermission name="trade:financeRecharge:edit">
+		</shiro:lacksPermission></a></li>		
 	</ul>
 	<form:form id="searchForm" modelAttribute="financeRecharge" action="${ctx}/finance/financeRecharge/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -103,36 +106,16 @@
 				<td>${financeRecharge.rechargeNo}</td>
 				<td>${financeRecharge.bankName}</td>
 				<td>${financeRecharge.bankCardNo}</td>	
-				<td>
-					${financeRecharge.rechargeAmount}
-				</td>
-				<td>
-					${financeRecharge.validateCode}
-				</td>	
-				<td>
-					<fmt:formatDate value="${financeRecharge.rechargeDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${financeRecharge.paymentChannelId}
-				</td>
-				<td>
-					${financeRecharge.thirdPayNo}
-				</td>
-				<td>
-					<fmt:formatDate value="${financeRecharge.thirdPayDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${financeRecharge.auditUserName}
-				</td>
-				<td>
-					<fmt:formatDate value="${financeRecharge.auditDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${financeRecharge.status}
-				</td>
-				<td>
-					<fmt:formatDate value="${financeRecharge.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
+				<td>${financeRecharge.rechargeAmount}</td>
+				<td>${financeRecharge.validateCode}</td>	
+				<td><fmt:formatDate value="${financeRecharge.rechargeDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				<td>${financeRecharge.paymentChannelId}</td>
+				<td>${financeRecharge.thirdPayNo}</td>
+				<td><fmt:formatDate value="${financeRecharge.thirdPayDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				<td>${financeRecharge.auditUserName}</td>
+				<td><fmt:formatDate value="${financeRecharge.auditDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				<td>${financeRecharge.status}</td>
+				<td><fmt:formatDate value="${financeRecharge.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<shiro:hasPermission name="trade:financeRecharge:edit">
 					<td><a href="${ctx}/finance/financeRecharge/audit?id=${financeRecharge.id}">撤销</a>
 				</td></shiro:hasPermission>

@@ -62,21 +62,37 @@ public class FinanceRechargeController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/finance/financeRechargeList";
 	}
+	
 
-	@RequiresPermissions("finance:financeRecharge:view")
+	
+	
+
+	@RequiresPermissions("finance:financeRecharge:edit")
 	@RequestMapping(value = "form")
 	public String form(FinanceRecharge financeRecharge, Model model) {
-		//TODO:相关验证
-		
+		//TODO:相关验证		
+
+		financeRechargeService.save(financeRecharge);
 		
 		model.addAttribute("financeRecharge", financeRecharge);
+		//return "modules/finance/financeRechargeForm";
+		return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list"; 
+	}
+	
+	
+
+	@RequestMapping(value = "rechargeForm")
+	public String rechargeForm() {
 		return "modules/finance/financeRechargeForm";
 	}
+	
 	
 	@RequiresPermissions("trade:financeRecharge:edit")
 	@RequestMapping(value = "save")
 	public String save(FinanceRecharge financeRecharge, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, financeRecharge)){
+			
+			
 			return form(financeRecharge, model);
 		}
 		financeRechargeService.save(financeRecharge);
