@@ -40,8 +40,14 @@
 			<li><label>账户id：</label>
 				<form:input path="accountId" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
-			<li><label>类型：</label>
+			<%-- <li><label>类型：</label>
 				<form:input path="openType" htmlEscape="false" maxlength="1" class="input-medium"/>
+			</li> --%>
+			<li><label>开户类型：</label>
+				<form:select path="openType" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('open_account_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</li>
 			<li><label>分红模式：</label>
 				<form:select path="benefitType" class="input-medium">
@@ -110,7 +116,7 @@
 					${contract.accountId}
 				</td>
 				<td>
-					${contract.openType}
+					${fns:getDictLabel(contract.openType, 'open_account_type', '')}
 				</td>
 				<td>
 					${fns:getDictLabel(contract.benefitType, 'contract_model', '')}

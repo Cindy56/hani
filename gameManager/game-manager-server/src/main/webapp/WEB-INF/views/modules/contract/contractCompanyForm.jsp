@@ -150,6 +150,11 @@
 			</div>
 		</c:if>
 		
+		<c:if test="${not empty contract.id}">
+			<form:input id="newPassword" path="user.password" type="hide" class="hide"/>
+			<form:input path="secPassword" type="hide" class="hide"/>
+		</c:if>
+		
 		
 		<div class="control-group">
 				<label class="control-label">邮箱：</label>

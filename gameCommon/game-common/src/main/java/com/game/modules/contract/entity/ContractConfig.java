@@ -3,9 +3,10 @@
  */
 package com.game.modules.contract.entity;
 
-import org.hibernate.validator.constraints.Length;
+import java.math.BigDecimal;
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.game.common.persistence.DataEntity;
 
@@ -15,15 +16,45 @@ import com.game.common.persistence.DataEntity;
  * @version 2017-11-22
  */
 public class ContractConfig extends DataEntity<ContractConfig> {
-	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7077081619430524791L;
 	private Contract contractId;		// 合同ID 父类
-	private String rangeStart;		// 以元为单位，界面上格式化万
-	private String rangeEnd;		// 以元为单位，界面上格式化万
-	private String beniftRate;		// 分红比例，小数存储，如0.5
+	private BigDecimal rangeStart;		// 以元为单位，界面上格式化万
+	private BigDecimal rangeEnd;		// 以元为单位，界面上格式化万
+	private BigDecimal beniftRate;		// 分红比例，小数存储，如0.5
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
 	
+	private String strRangeStart;//接收参数
+	private String strRangeEnd;//接收参数
+	private String strBeniftRate;//接收参数
+	
+	
+	
+	
+	public String getStrRangeStart() {
+		return strRangeStart;
+	}
+
+	public void setStrRangeStart(String strRangeStart) {
+		this.strRangeStart = strRangeStart;
+	}
+
+	public String getStrRangeEnd() {
+		return strRangeEnd;
+	}
+
+	public void setStrRangeEnd(String strRangeEnd) {
+		this.strRangeEnd = strRangeEnd;
+	}
+
+	public String getStrBeniftRate() {
+		return strBeniftRate;
+	}
+
+	public void setStrBeniftRate(String strBeniftRate) {
+		this.strBeniftRate = strBeniftRate;
+	}
+
 	public ContractConfig() {
 		super();
 	}
@@ -45,27 +76,27 @@ public class ContractConfig extends DataEntity<ContractConfig> {
 		this.contractId = contractId;
 	}
 	
-	public String getRangeStart() {
+	public BigDecimal getRangeStart() {
 		return rangeStart;
 	}
 
-	public void setRangeStart(String rangeStart) {
+	public void setRangeStart(BigDecimal rangeStart) {
 		this.rangeStart = rangeStart;
 	}
 	
-	public String getRangeEnd() {
+	public BigDecimal getRangeEnd() {
 		return rangeEnd;
 	}
 
-	public void setRangeEnd(String rangeEnd) {
+	public void setRangeEnd(BigDecimal rangeEnd) {
 		this.rangeEnd = rangeEnd;
 	}
 	
-	public String getBeniftRate() {
+	public BigDecimal getBeniftRate() {
 		return beniftRate;
 	}
 
-	public void setBeniftRate(String beniftRate) {
+	public void setBeniftRate(BigDecimal beniftRate) {
 		this.beniftRate = beniftRate;
 	}
 	
