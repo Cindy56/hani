@@ -33,59 +33,70 @@
 	<form:form id="inputForm" modelAttribute="financeRecharge" action="${ctx}/finance/financeRecharge/form" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
+<%-- 		<div class="control-group">
 			<label class="control-label">用户id：</label>
 			<div class="controls">
 				<form:input path="user.id" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
+		</div> --%>
+		
 		<div class="control-group">
 			<label class="control-label">用户名：</label>
 			<div class="controls">
 				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> 
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">公司id：</label>
 			<div class="controls">
 				<form:input path="orgId" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">充值单编号：</label>
 			<div class="controls">
 				<form:input path="rechargeNo" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">充值通道外键：</label>
 			<div class="controls">
 				<form:input path="paymentChannelId" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">充值银行代码：</label>
 			<div class="controls">
 				<form:input path="bankCode" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
-		</div>
+		</div> --%>
+		
+		
 		<div class="control-group">
 			<label class="control-label">充值银行名称：</label>
 			<div class="controls">
 				<form:input path="bankName" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
 		</div>
+		
 		<div class="control-group">
 			<label class="control-label">充值银行卡号：</label>
 			<div class="controls">
 				<form:input path="bankCardNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
 		</div>
+		
 		<div class="control-group">
 			<label class="control-label">充值金额：</label>
 			<div class="controls">
@@ -93,60 +104,71 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">验证码：</label>
 			<div class="controls">
 				<form:input path="validateCode" htmlEscape="false" maxlength="10" class="input-xlarge "/>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">充值时间：</label>
 			<div class="controls">
 				<input name="rechargeDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
 					value="<fmt:formatDate value="${financeRecharge.rechargeDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">第三方支付平台凭证单号：</label>
 			<div class="controls">
 				<form:input path="thirdPayNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">第三方支付平台到账时间：</label>
 			<div class="controls">
 				<input name="thirdPayDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
 					value="<fmt:formatDate value="${financeRecharge.thirdPayDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">audit_user_id：</label>
 			<div class="controls">
 				<form:input path="auditUserId" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">audit_user_name：</label>
 			<div class="controls">
 				<form:input path="auditUserName" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">audit_date：</label>
 			<div class="controls">
 				<input name="auditDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
 					value="<fmt:formatDate value="${financeRecharge.auditDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		
+<%-- 		<div class="control-group">
 			<label class="control-label">状态:0支付中、1取消支付，2第三方平台到账，3财务审核中，4财务审核通过，5平台到账 )：</label>
 			<div class="controls">
 				<form:input path="status" htmlEscape="false" maxlength="1" class="input-xlarge "/>
 			</div>
-		</div>
+		</div> --%>
+		
+		
 		<div class="form-actions">
 			<%-- <shiro:hasPermission name="trade:financeRecharge:edit"> --%>
 			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>
