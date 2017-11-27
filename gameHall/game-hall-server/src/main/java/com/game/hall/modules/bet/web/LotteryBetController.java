@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.entity.ResultData;
 import com.game.hall.modules.bet.service.LotteryAddBetService;
+import com.game.hall.modules.bet.service.OrderUtils;
 import com.game.hall.modules.sys.utils.UserUtils;
+import com.game.modules.lottery.entity.GameError;
 import com.game.modules.lottery.service.LotteryCalculateService;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
 import com.game.modules.member.service.MemberPlayConfigService;
@@ -44,39 +46,53 @@ public class LotteryBetController {
 	private LotteryAddBetService lotteryAddBetService;
 	@Autowired
 	private LotteryCalculateService lotteryCalculateService;
-	
-	//---------------------test
-	
+
+	// ---------------------test
+
 	@Autowired
 	LotteryPlayConfigService mylotteryPlayConfigService;
-	
+
 	@Autowired
 	MemberPlayConfigService myMemberPlayConfigService;
 
 	@ResponseBody
 	@RequestMapping(value = "/addbet", method = RequestMethod.GET)
-	public ResultData addBet(/* List<LotteryOrder> betData */) {
+	public ResultData addBet( List<LotteryOrder> betData ) {
 
-		testLotteryBetController test = new testLotteryBetController();
-		test.setMylotteryPlayConfigService(mylotteryPlayConfigService);
-		test.setMyMemberPlayConfigService(myMemberPlayConfigService);
-		List<LotteryOrder> lstest = test.testLotteryBetControllerMethodaddBet();
-		
-		List<LotteryOrder> betData = lstest;
-		//betData.add(getOrder());
+//		testLotteryBetController test = new testLotteryBetController();
+//		test.setMylotteryPlayConfigService(mylotteryPlayConfigService);
+//		test.setMyMemberPlayConfigService(myMemberPlayConfigService);
+//		List<LotteryOrder> lstest = test.testLotteryBetControllerMethodaddBet();
+
+		//List<LotteryOrder> betData = lstest;
+		// betData.add(getOrder());
 		System.out.println("1");
 
 		int ret = 0;
 		try {
 			// 前置校验
 			ResultData rd = ResultData.ResultDataOK();
-			
 
 			for (int i = 0; i < betData.size(); i++) {
-				ret = this.lotteryCalculateService.checkOrder(betData.get(i));
+
+				LotteryOrder lotOrder = betData.get(i);
+				lotOrder.setOrderNo(OrderUtils.getOrderNo());
+				
+				//获得user
+				User user = new User();
+				user.setId("00user");// 用户ID
+				user.setName("00username");// 用户名
+				Office company = new Office();
+				company.setCode("code");// 组织编号
+				user.setCompany(company);
+				
+				lotOrder.setUser(user);
+				lotOrder.setCurrentUser(user);
+
+				ret = this.lotteryCalculateService.checkOrder(lotOrder);
 				if (ret != 0) {
 					rd.setErrorCode(ret);
-					rd.setMessage("error");
+					rd.setMessage(GameError.getInstance().findErrorString(ret));
 					return rd;
 				}
 			}
@@ -90,8 +106,9 @@ public class LotteryBetController {
 
 		// BetData betData;
 
-		if(ret!=0)return ResultData.ResultDataFail();
-		
+		if (ret != 0)
+			return ResultData.ResultDataFail();
+
 		return lotteryAddBetService.addBet(betData);
 		// System.out.println();
 
@@ -197,7 +214,7 @@ public class LotteryBetController {
 		bet1.setLotteryCode(lotteryCode);
 		BigDecimal betAmount = new BigDecimal(100);
 		bet1.setBetAmount(betAmount);
-		String betIssueNo = "20171117";
+		String betIssueNo = "20171125083";
 		bet1.setBetIssueNo(betIssueNo);
 		String betType = "SSC_5_ZHIXUANFUSHI";
 		bet1.setBetType(betType);

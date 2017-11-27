@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.BetServiceApi;
-import com.entity.GameError;
 import com.entity.ResultData;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.modules.lottery.entity.GameError;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.Office;
@@ -151,8 +151,8 @@ public class LotteryAddBetService implements BetServiceApi {
 			rd.setMessage(GameError.errBettingCountInvalid); // return rd; // }
 
 			if (betData.getBetIssueNo().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingIssuseNo);
-				rd.setMessage(GameError.errBettingIssuseNo);
+				rd.setErrorCode(GameError.errCodeIssuseNo);
+				rd.setMessage(GameError.errIssuseNo);
 				return rd;
 			}
 
