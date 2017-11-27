@@ -27,12 +27,11 @@ import com.game.trade.modules.lottery.dao.LotteryTypeTimeDao;
  */
 @Service("lotteryTypeService")
 @Transactional(readOnly = true)
-public class LotteryTypeServiceImpl 
-	extends CrudService<LotteryTypeDao, LotteryType> implements LotteryTypeService {
-	
-	@Autowired
+public class LotteryTypeServiceImpl extends CrudService<LotteryTypeDao, LotteryType> implements LotteryTypeService {
+
+    @Autowired
     private LotteryTypeDao lotteryTypeDao;
-	
+
     /**
      * 彩种玩法DAO
      */
@@ -61,10 +60,10 @@ public class LotteryTypeServiceImpl
      * @author Terry
      */
     public LotteryType getByCode(String code) {
-    	 LotteryType lotteryType = lotteryTypeDao.getByCode(code);
-    	 if(null != lotteryType) {
-    		 lotteryType.setLotteryTypeTimeList(lotteryTypeTimeDao.findList(new LotteryTypeTime(lotteryType)));
-    	 }
+        LotteryType lotteryType = lotteryTypeDao.getByCode(code);
+        if (null != lotteryType) {
+            lotteryType.setLotteryTypeTimeList(lotteryTypeTimeDao.findList(new LotteryTypeTime(lotteryType)));
+        }
         return lotteryType;
     }
 
@@ -95,19 +94,18 @@ public class LotteryTypeServiceImpl
             if (LotteryTypeTime.DEL_FLAG_NORMAL.equals(lotteryTypeTime.getDelFlag())) {
                 if (StringUtils.isBlank(lotteryTypeTime.getId())) {
                     lotteryTypeTime.setLotteryTypeId(lotteryType);
+                    lotteryTypeTime.setCurrentUser(lotteryType.getCurrentUser());
                     lotteryTypeTime.preInsert();
                     lotteryTypeTimeDao.insert(lotteryTypeTime);
-                }
-                else {
+                } else {
                     lotteryTypeTime.preUpdate();
                     lotteryTypeTimeDao.update(lotteryTypeTime);
                 }
-            }
-            else {
+            } else {
                 lotteryTypeTimeDao.delete(lotteryTypeTime);
             }
         }
-        
+
         return lotteryType;
     }
 
@@ -121,16 +119,12 @@ public class LotteryTypeServiceImpl
         lotteryTypeTimeDao.delete(new LotteryTypeTime(lotteryType));
     }
 
-    
     /**
      * 根据彩种code查询彩种信息
      */
-   
+
     public LotteryType queryLotteryType(String lotteryCode) {
         return lotteryTypeDao.queryLotteryType(lotteryCode);
     }
- 
-  
-    
 
 }
