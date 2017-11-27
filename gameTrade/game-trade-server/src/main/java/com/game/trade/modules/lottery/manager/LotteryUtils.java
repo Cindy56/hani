@@ -410,7 +410,7 @@ public class LotteryUtils {
      * 时时彩一星定位胆 计算中奖注数
      * @param openNum 开奖号码,五个位（万,千,百,十,个）,位与位之间以英文逗号隔开
      * @param betNum 投注号码，五个位（万,千,百,十,个），位与位之间以英文逗号隔开,空位以减号表示
-     * @return 中奖返回true
+     * @return 返回中奖注数，没有中奖返回0
      * @author Terry
      */
     public static int winCountSsc1XinDingWei(String openNum, String betNum) {
@@ -418,20 +418,15 @@ public class LotteryUtils {
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return 0;
         }
-        String[] betNumList = betNum.contains(",") ? betNum.trim().split(",") : new String[] {};
-        if (5 != betNumList.length) {
-            return 0;
-        }
-        // 每个位的号码分别判断是否包含对应的开奖号码
+        String[] betNumList = betNum.split(",");
+        String[] openNums = openNum.split(",");
+        // 每个位的号码分别判断是否包含对应的开奖号码,对应位上的投注号码包含开奖号码,中奖注释加1
         int count = 0;
-        String[] openNums = openNum.trim().split(",");
         for (int i = 0; i < openNums.length; i++) {
-            // 只要有一个包含就判断为中奖
             if (StringUtils.contains(betNumList[i], openNums[i])) {
                 count++;
             }
         }
-        // 没有一个位包含对应的开奖号码，返回false
         return count;
     }
 
@@ -634,6 +629,7 @@ public class LotteryUtils {
         }
         return result;
     }
+
     /**
      * 
 	 * 时时彩前三混合组选：
@@ -860,17 +856,15 @@ public class LotteryUtils {
         if(flag) {
         	  String[] betNumArr = betNum.trim().split(",");
               //统计出现的次数
-              List<String> betNumsList = Arrays.asList(betNumArr[0].split(""));
               boolean betFlag = false;
               for (String key : map.keySet()) {
-	       			if(betNumsList.contains(key) && map.get(key) == 3) {
+                if (map.get(key) == 3 && StringUtils.contains(betNumArr[0], key)) {
 	       				map.remove(key);
 	       				betFlag = true;
 	       				break;
 	       			}
       			}
 	         if(betFlag) {
-	        	// List<String> delayNumsList = Arrays.asList(betNumArr[1].split(""));
 	        	 for (String key : map.keySet()) {
 		       		if(!StringUtils.contains(betNumArr[1],key)) {
 		       			return false;
@@ -931,11 +925,11 @@ public class LotteryUtils {
         if(map.size() != 3) {//没有二重号直接返回
         	return false;
         }
-    	String[] betNumArr = betNum.trim().split("");
-        List<String> betNumsList = Arrays.asList(betNumArr);
+
+        String[] betNumArr = betNum.split(",");
         boolean flag = true;
         for (String key : map.keySet()) {
- 			if(betNumsList.contains(key) && map.get(key) == 2) {
+            if (map.get(key) == 2 && StringUtils.contains(betNumArr[0], key)) {
  				map.remove(key);
  				flag = true;
  				break;
@@ -944,7 +938,7 @@ public class LotteryUtils {
         if(flag) {
         	boolean betFale= false;
         	 for (String key : map.keySet()) {
-      			if(betNumsList.contains(key) && map.get(key) == 1) {
+                if (map.get(key) == 1 && StringUtils.contains(betNumArr[1], key)) {
       				betFale = true;
       			}else {
       				betFale = false;
