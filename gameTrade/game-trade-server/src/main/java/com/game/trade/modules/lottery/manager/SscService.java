@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.game.common.mapper.JsonMapper;
 import com.game.common.utils.SpringContextHolder;
 import com.game.common.utils.StringUtils;
@@ -120,8 +118,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinHunHeZuXuan(openLotteryTimeNum.getOpenNum().substring(0, 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingHunHeZuXuan(openLotteryTimeNum.getOpenNum().substring(0, 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -161,7 +158,7 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.ssc3XinBetCount(lotteryOrder));
+            return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSsc3XingZuXuan6(lotteryOrder));
 		}
 
 		@Override
@@ -169,8 +166,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinZuxuan6(openLotteryTimeNum.getOpenNum().trim().substring(2, 7),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingZuxuan6(openLotteryTimeNum.getOpenNum().trim().substring(2, 7), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -206,8 +202,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinHunHeZuXuan(openLotteryTimeNum.getOpenNum().substring(2, 7),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingHunHeZuXuan(openLotteryTimeNum.getOpenNum().substring(2, 7), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -240,8 +235,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinHeZhiWeiShu(openLotteryTimeNum.getOpenNum().substring(2, 7),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingHeZhiWeiShu(openLotteryTimeNum.getOpenNum().substring(2, 7), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -274,8 +268,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinZhiXuanHeZhi(openLotteryTimeNum.getOpenNum().substring(2, 7),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingZhiXuanHeZhi(openLotteryTimeNum.getOpenNum().substring(2, 7), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -315,7 +308,7 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.ssc3XinBetCount(lotteryOrder));
+            return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSsc3XingZuXuan6(lotteryOrder));
 		}
 
 		@Override
@@ -323,8 +316,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinZuxuan6(openLotteryTimeNum.getOpenNum().trim().substring(0, 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingZuxuan6(openLotteryTimeNum.getOpenNum().trim().substring(0, 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -361,8 +353,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinHunHeZuXuan(openLotteryTimeNum.getOpenNum().substring(0, 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingHunHeZuXuan(openLotteryTimeNum.getOpenNum().substring(0, 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -395,9 +386,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinHeZhiWeiShu(
-					openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingHeZhiWeiShu(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -430,9 +419,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinZhiXuanHeZhi(
-					openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingZhiXuanHeZhi(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -469,9 +456,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc4XinZuXuan4(
-					openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 7),
-					lotteryOrder.getBetDetail(), 2);
+            return LotteryUtils.checkWinSscZuXuan4_20(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 7), lotteryOrder.getBetDetail(), 2);
 		}
 
 		@Override
@@ -1368,7 +1353,7 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.ssc3XinBetCount(lotteryOrder));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSsc3XingZuXuan6(lotteryOrder));
 		}
 
 		@Override
@@ -1376,8 +1361,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinZuxuan6(openLotteryTimeNum.getOpenNum().trim().substring(0, 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingZuxuan6(openLotteryTimeNum.getOpenNum().trim().substring(0, 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -1425,8 +1409,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinHunHeZuXuan(openLotteryTimeNum.getOpenNum().substring(0, 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingHunHeZuXuan(openLotteryTimeNum.getOpenNum().substring(0, 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -1476,9 +1459,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinZuxuanHeZhi(
-					openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingZuxuanHeZhi(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -1522,9 +1503,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinHeZhiWeiShu(
-					openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingHeZhiWeiShu(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -1569,9 +1548,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinHeZhiWeiShu(
-					openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingHeZhiWeiShu(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
@@ -1615,9 +1592,7 @@ public enum SscService implements LotteryService {
 			if (null == lotteryOrder || null == openLotteryTimeNum) {
 				return false;
 			}
-			return LotteryUtils.ssc3XinZhiXuanHeZhi(
-					openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5),
-					lotteryOrder.getBetDetail());
+            return LotteryUtils.checkWinSsc3XingZhiXuanHeZhi(openLotteryTimeNum.getOpenNum().substring(openLotteryTimeNum.getOpenNum().length() - 5), lotteryOrder.getBetDetail());
 		}
 
 		@Override
