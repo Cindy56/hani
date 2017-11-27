@@ -3,7 +3,10 @@
  */
 package com.game.trade.modules.contract.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,6 +81,10 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		/************************************************************/
 		//保存用户信息
 		User user=contract.getUser();
+		String officeCode=getFixLenthString(10);
+		/*Office initOffice=new Office();
+		initOffice.setCode(officeCode);
+		contract.setOffice(initOffice);*/
 		
 		String userName=contract.getUserName();
 		
@@ -92,7 +99,9 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		//复制模板公司数据插入数据库
 		company.setId(null);
 		company.setName(contract.getOrgName());
+		company.setCode(officeCode);
 		company=officeServiceFacade.save(company);
+		contract.setOffice(company);
 		
 		companyRole.setId(null);
 		companyRole.setName(contract.getOrgName()+companyRole.getName());
@@ -103,12 +112,14 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		companyRole = systemServiceFacade.saveRole(companyRole);
 		//循环得到模板公司下面部门
 		for (Office office : officeList) {
+			int codeCount=1;
 			//查询机构下的所有角色
 			List<Role> mubanList = this.systemServiceFacade.findRoleByOfficeId(office.getId());
 			office.setId(null);
 			office.setName(contract.getOrgName()+office.getName());
 			office.setParent(company);
 			office.setParentIds(company.getParentId()+","+company.getId());
+			office.setCode(officeCode+"00"+codeCount++);
 			//复制机构保存
 			office=officeServiceFacade.save(office);
 			for (Role role : mubanList) {
@@ -191,12 +202,26 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 					contractConfig.setContractId(contract);
 					contractConfig.setCurrentUser(contract.getCurrentUser());
 					contractConfig.preInsert();
+					//将页面上的分红百分比转换为小数
+					BigDecimal beniftRate = contractConfig.getBeniftRate().divide(new BigDecimal(100),4,RoundingMode.HALF_UP);
+					//将页面上万元转换为元
+					contractConfig.setRangeStart(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
+					contractConfig.setRangeEnd(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
+					contractConfig.setBeniftRate(beniftRate);
 					contractConfigDao.insert(contractConfig);
 				}else{
+					contractConfig.setCurrentUser(contract.getCurrentUser());
 					contractConfig.preUpdate();
+					//将页面上的分红百分比转换为小数
+					BigDecimal beniftRate = contractConfig.getBeniftRate().divide(new BigDecimal(100),4,RoundingMode.HALF_UP);
+					//将页面上万元转换为元
+					contractConfig.setRangeStart(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
+					contractConfig.setRangeEnd(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
+					contractConfig.setBeniftRate(beniftRate);
 					contractConfigDao.update(contractConfig);
 				}
 			}else{
+				contractConfig.setCurrentUser(contract.getCurrentUser());
 				contractConfigDao.delete(contractConfig);
 			}
 		}
@@ -207,6 +232,34 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 	public void delete(Contract contract) {
 		super.delete(contract);
 		contractConfigDao.delete(new ContractConfig(contract));
+	}
+	/* 
+	 * 返回长度为【strLength】的随机数
+	 */  
+	private static String getFixLenthString(int strLength) {  
+	      
+	    Random rm = new Random();  
+	      
+	    // 获得随机数  
+	    double pross = (1 + rm.nextDouble()) * Math.pow(10, strLength);  
+	  
+	    // 将获得的获得随机数转化为字符串  
+	    String fixLenthString = String.valueOf(pross);  
+	  
+	    // 返回固定的长度的随机数  
+	    return fixLenthString.substring(2, strLength + 2);  
+	}  
+	
+	public static void main(String[] args) {
+		/*int i=0;
+		while (i<100) {
+			String math=getFixLenthString(10);
+			System.out.println(math);
+			i++;
+		}*/
+		BigDecimal a= new BigDecimal(12).divide(new BigDecimal(100), 4,RoundingMode.HALF_UP);
+		System.out.println(a);
+		
 	}
 	
 }
