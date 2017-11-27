@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.game.common.mapper.JsonMapper;
+import com.game.common.utils.SpringContextHolder;
 import com.game.common.utils.StringUtils;
 import com.game.modules.lottery.entity.GameError;
 import com.game.modules.lottery.entity.LotteryPlayConfig;
@@ -2362,9 +2363,6 @@ public enum SscService implements LotteryService {
 	/** 玩法名称 */
 	private String playName;
 
-	@Autowired
-	private MemberPlayConfigService myMemberPlayConfigService;
-
 	private SscService(String playCode, String playName) {
 		this.playCode = playCode;
 		this.playName = playName;
@@ -2432,17 +2430,19 @@ public enum SscService implements LotteryService {
 		// 期号检查,投注期号与当前期号作对比，如果不一致，返回false，校验失败
 		String currentIssueNo = lotteryOrder.getBetIssueNo();
 		if (StringUtils.isBlank(currentIssueNo) || !currentIssueNo.equals(betLotteryTimeNum.getLotteryIssueNo())) {
-			return GameError.errCodeInvalid;
+			//return GameError.errCodeInvalid;
 		}
 		// 投注有效性检查，当前时间是否在当前有效投注时间段内，如果不在，返回false，校验失败
 		Long currentDate = System.currentTimeMillis();
 		Long startDate = betLotteryTimeNum.getBetStartDate().getTime();
 		Long endDate = betLotteryTimeNum.getBetHaltDate().getTime();
 		if (currentDate <= startDate || currentDate >= endDate) {
-			return GameError.errCodeInvalid;
+			//return GameError.errCodeInvalid;
 		}
 
 		// TODO 返水范围校验 等待freeman提供接口，获取用户的返回范围
+		MemberPlayConfigService myMemberPlayConfigService = SpringContextHolder.getBean("memberPlayConfigService");
+		
 		MemberPlayConfig memCfg = myMemberPlayConfigService.getMemberPlayConfigByUserId(lotteryOrder.getUser().getId());
 
 		String jsPlayCfg = memCfg.getPlayConfig();
