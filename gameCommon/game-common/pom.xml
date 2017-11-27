@@ -378,7 +378,7 @@
 			<artifactId>hessian</artifactId>
 			<version>4.0.7</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/hessian-4.0.7.jar</systemPath>			
+			<systemPath>${project.basedir}/lib/hessian-4.0.7.jar</systemPath>
 		</dependency>		
 
 		<!-- xstream xml -->
