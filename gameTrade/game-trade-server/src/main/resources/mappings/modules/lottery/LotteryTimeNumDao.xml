@@ -46,6 +46,9 @@
             <if test="lotteryCode != null and lotteryCode != ''">
                AND a.lottery_code = #{lotteryCode}
            </if>
+             <if test="status != null and status != ''">
+               AND a.status = #{status}
+           </if>
            ORDER BY a.bet_start_date 
 	</select>
 	
@@ -234,5 +237,17 @@
 		where a.lottery_code = #{lotteryCode} and a.lottery_issue_no =  #{lotteryIssueNo}  
 	</select>
 	
+	<select id="queryByLikeLotteryCodeIssueNo" resultType="LotteryTimeNum">
+		SELECT 
+			<include refid="lotteryTimeNumColumns"/>
+		FROM lottery_time_num a
+		where a.lottery_code = #{lotteryCode}   AND a.lottery_issue_no LIKE concat(#{dateTime}, '%') 
+	</select>
+	
+	<!-- 批量删除 -->
+	<select id="batchDel" >
+		delete FROM lottery_time_num 
+		where lottery_code = #{lotteryCode}   AND lottery_issue_no LIKE concat(#{dateTime}, '%') 
+	</select>
 	
 </mapper>

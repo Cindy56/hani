@@ -5,7 +5,7 @@
 
 	<sql id="lotteryOrderColumns">
 		a.id AS "id",
-		a.order_no AS "orderNum",
+		a.order_no AS "orderNo",
 		a.user_id AS
 		"user.id",
 		a.lottery_code AS "lotteryCode",
@@ -59,8 +59,8 @@
 			<if test="id != null and id != ''">
 				AND a.id = #{id}
 			</if>
-			<if test="orderNum != null and orderNum != ''">
-				AND a.order_no = #{orderNum}
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
 			</if>
 			<if test="user != null and user.id != null and user.id != ''">
 				AND a.user_id = #{user.id}
@@ -179,7 +179,7 @@
 		del_flag
 		) VALUES (
 		#{id},
-		#{orderNum},
+		#{orderNo},
 		#{user.id},
 		#{user.name},
 		#{user.company.code},
@@ -209,7 +209,7 @@
 
 	<update id="update">
 		UPDATE lottery_order SET
-		order_no = #{orderNum},
+		order_no = #{orderNo},
 		user_id = #{user.id},
 		lottery_code = #{lotteryCode},
 		bet_issue_no = #{betIssueNo},

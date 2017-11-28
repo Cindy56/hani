@@ -115,5 +115,16 @@ public class ContractCompanyController extends BaseController {
 		addMessage(redirectAttributes, "删除公司成功");
 		return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
 	}
+	
+	
+	@RequestMapping(value = "checkCompanyName")
+	public String checkCompanyName(String oldCompanyName, String companyName) {
+		if (companyName !=null && companyName.equals(oldCompanyName)) {
+			return "true";
+		} else if (companyName !=null && systemService.getUserByLoginName(companyName) == null) {
+			return "true";
+		}
+		return "false";
+	}
 
 }

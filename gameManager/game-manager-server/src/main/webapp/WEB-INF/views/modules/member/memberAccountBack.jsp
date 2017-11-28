@@ -291,7 +291,7 @@
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${LotteryPlayConfig.name}:
 									<select name="playList[${index}].commissionRateMax">
 										<c:forEach items="${LotteryPlayConfig.map.awardList}" var="awardList">
-											<option  name="${LotteryPlayConfig.playCode}" value="${awardList.commissionRate}">${awardList.awardMoney}(${awardList.commissionRate}%)</option>
+											<option  name="${LotteryPlayConfig.playCode}" value="${awardList.commissionRate}">${awardList.awardMoney}(${awardList.commissionRate*100}%)</option>
 										</c:forEach>
 									</select> 
 									<c:set var="index" value="${index+1}" />  

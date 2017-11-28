@@ -24,36 +24,6 @@ public class ContractConfig extends DataEntity<ContractConfig> {
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
 	
-	private String strRangeStart;//接收参数
-	private String strRangeEnd;//接收参数
-	private String strBeniftRate;//接收参数
-	
-	
-	
-	
-	public String getStrRangeStart() {
-		return strRangeStart;
-	}
-
-	public void setStrRangeStart(String strRangeStart) {
-		this.strRangeStart = strRangeStart;
-	}
-
-	public String getStrRangeEnd() {
-		return strRangeEnd;
-	}
-
-	public void setStrRangeEnd(String strRangeEnd) {
-		this.strRangeEnd = strRangeEnd;
-	}
-
-	public String getStrBeniftRate() {
-		return strBeniftRate;
-	}
-
-	public void setStrBeniftRate(String strBeniftRate) {
-		this.strBeniftRate = strBeniftRate;
-	}
 
 	public ContractConfig() {
 		super();

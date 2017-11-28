@@ -147,7 +147,7 @@ public class LotteryUtilsTest {
         long start = System.currentTimeMillis();
         boolean isWin = false;
         for (int i = 0; i < 10000000; i++) {
-            isWin = LotteryUtils.checkWinSsc5XingZuXuan30("1,1,1,9,9", "1549326780,6150493782");
+            isWin = LotteryUtils.checkWinSsc5XingZuXuan30("1,1,2,9,9", "1549326780,6150493782");
         }
         long end = System.currentTimeMillis();
         System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
@@ -162,7 +162,7 @@ public class LotteryUtilsTest {
         long start = System.currentTimeMillis();
         boolean isWin = false;
         for (int i = 0; i < 10000000; i++) {
-            isWin = LotteryUtils.checkWinSsc5XingZuXuan10("1,1,1,5,5", "1549326780,6150493782");
+            isWin = LotteryUtils.checkWinSsc5XingZuXuan10("1,1,1,1,5", "1549326780,6150493782");
         }
         long end = System.currentTimeMillis();
         System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
@@ -192,7 +192,7 @@ public class LotteryUtilsTest {
         long start = System.currentTimeMillis();
         boolean isWin = false;
         for (int i = 0; i < 10000000; i++) {
-            isWin = LotteryUtils.ssc4XinZuXuan4("1,5,1,1", "1549326780,6150493782", 2);
+            isWin = LotteryUtils.checkWinSscZuXuan4_20("1,5,1,1", "1549326780,6150493782", 2);
         }
         long end = System.currentTimeMillis();
         System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
@@ -207,7 +207,7 @@ public class LotteryUtilsTest {
         long start = System.currentTimeMillis();
         boolean isWin = false;
         for (int i = 0; i < 10000000; i++) {
-            isWin = LotteryUtils.ssc4XinZuXuan6("5,5,1,1", "1549326780");
+            isWin = LotteryUtils.checkWinSsc4XingZuXuan6("5,5,1,1", "1549326780");
         }
         long end = System.currentTimeMillis();
         System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
@@ -222,7 +222,7 @@ public class LotteryUtilsTest {
         long start = System.currentTimeMillis();
         boolean isWin = false;
         for (int i = 0; i < 10000000; i++) {
-            isWin = LotteryUtils.ssc4XinZuXuan12("5,5,0,1", "1549326780,6150493782");
+            isWin = LotteryUtils.checkWinSsc4XingZuXuan12("5,5,0,1", "1549326780,6150493782");
         }
         long end = System.currentTimeMillis();
         System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
@@ -237,8 +237,113 @@ public class LotteryUtilsTest {
         long start = System.currentTimeMillis();
         boolean isWin = false;
         for (int i = 0; i < 10000000; i++) {
-            isWin = LotteryUtils.ssc4XinZuXuan4("5,5,5,1,0", "1549326780,6150493782", 3);
+            isWin = LotteryUtils.checkWinSscZuXuan4_20("5,5,5,1,0", "1549326780,6150493782", 3);
         }
+        long end = System.currentTimeMillis();
+        System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
+        System.out.println("计算耗时：" + (end - start) + "ms");
+    }
+
+    /**
+     * 大小单双
+     * @author Terry
+     */
+    public static void checkWinSscDaXiaoDanShuang() {
+        long start = System.currentTimeMillis();
+        boolean isWin = false;
+        for (int i = 0; i < 10000000; i++) {
+            isWin = LotteryUtils.checkWinSscDaXiaoDanShuang("1,1", "DA XIAO DAN SHUANG,DA XIAO DAN SHUANG");
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
+        System.out.println("计算耗时：" + (end - start) + "ms");
+    }
+
+    /**
+     * 一帆风顺
+     * @author Terry
+     */
+    public static void checkWin1FanFengShun() {
+        long start = System.currentTimeMillis();
+        boolean isWin = false;
+        for (int i = 0; i < 10000000; i++) {
+            isWin = LotteryUtils.checkWin1FanFengShun("1,5,4,0,3", "1,4,9,6,3,2,5,8,7,0");
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
+        System.out.println("计算耗时：" + (end - start) + "ms");
+    }
+
+    /**
+     * 好事成双
+     * @author Terry
+     */
+    public static void checkWinHaoShiChengShuang() {
+        long start = System.currentTimeMillis();
+        boolean isWin = false;
+        for (int i = 0; i < 10000000; i++) {
+            isWin = LotteryUtils.checkWinQuWei("1,5,4,3,4", "1,4,9,6,3,2,5,8,7,0", 2);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
+        System.out.println("计算耗时：" + (end - start) + "ms");
+    }
+
+    /**
+     * 三星报喜
+     * @author Terry
+     */
+    public static void checkWin3XingBaoXi() {
+        long start = System.currentTimeMillis();
+        boolean isWin = false;
+        for (int i = 0; i < 10000000; i++) {
+            isWin = LotteryUtils.checkWinQuWei("1,5,4,4,4", "1,4,9,6,3,2,5,8,7,0", 3);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
+        System.out.println("计算耗时：" + (end - start) + "ms");
+    }
+
+    /**
+     * 好事成双
+     * @author Terry
+     */
+    public static void checkWin4JiFaCai() {
+        long start = System.currentTimeMillis();
+        boolean isWin = false;
+        for (int i = 0; i < 10000000; i++) {
+            isWin = LotteryUtils.checkWinQuWei("1,5,5,5,5", "1,4,9,6,3,2,5,8,7,0", 4);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
+        System.out.println("计算耗时：" + (end - start) + "ms");
+    }
+
+    /**
+     * 二星直选和值
+     * @author Terry
+     */
+    public static void checkWinSsc2XingZhiXuanHeZhi() {
+        long start = System.currentTimeMillis();
+        boolean isWin = false;
+        for (int i = 0; i < 10000000; i++) {
+            isWin = LotteryUtils.checkWinSsc2XingZhiXuanHeZhi("1,5", "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18");
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
+        System.out.println("计算耗时：" + (end - start) + "ms");
+    }
+
+    /**
+     * 二星直选和值
+     * @author Terry
+     */
+    public static void checkWinSsc3XingHunHeZuXuan() {
+        long start = System.currentTimeMillis();
+        boolean isWin = false;
+        // for (int i = 0; i < 10000000; i++) {
+        isWin = LotteryUtils.checkWinSsc3XingHunHeZuXuan("1,5,5", "123,456");
+        // }
         long end = System.currentTimeMillis();
         System.out.println("计算结果：" + (isWin ? "已中奖，恭喜你，再接再厉。" : "未中奖，别灰心，再来一次。"));
         System.out.println("计算耗时：" + (end - start) + "ms");
@@ -249,6 +354,8 @@ public class LotteryUtilsTest {
         // ssc1XingDingWei();
         // 二星直选单式
         // ssc2XingZhiXuanDan();
+        // 二星直选和值
+        // checkWinSsc2XingZhiXuanHeZhi();
         // 二星直选复式
         // ssc2XingZhiXuanFu();
         // 二星组选复式
@@ -259,6 +366,8 @@ public class LotteryUtilsTest {
         // sscQian3ZhiXuanFu();
         // 三星组选3
         // ssc3XingZuXuan3();
+        // 三星混合组选
+        checkWinSsc3XingHunHeZuXuan();
         // 五星组选120
         // checkWinSsc5XingZuXuan120();
         // 五星组选60
@@ -276,6 +385,16 @@ public class LotteryUtilsTest {
         // 四星组选12
         // ssc4XinZuXuan12();
         // 五星组选20
-        ssc4XinZuXuan20();
+        // ssc4XinZuXuan20();
+        // 大小单双
+        // checkWinSscDaXiaoDanShuang();
+        // 一帆风顺
+        // checkWin1FanFengShun();
+        // 好事成双
+        // checkWinHaoShiChengShuang();
+        // 三星报喜
+        // checkWin3XingBaoXi();
+        // 四季发财
+        // checkWin4JiFaCai();
     }
 }

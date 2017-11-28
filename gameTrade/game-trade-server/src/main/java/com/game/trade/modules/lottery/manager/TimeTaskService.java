@@ -98,7 +98,8 @@ public class TimeTaskService {
     	
     	Trigger trigger = TriggerBuilder.newTrigger()
 	    		.withIdentity(taskname.toString(), "lotteryNumTrigger-group001")
-	    		.withSchedule(SimpleScheduleBuilder.repeatSecondlyForTotalCount(10, 5))
+	    		.withSchedule(SimpleScheduleBuilder.repeatSecondlyForTotalCount(20, 5)
+	    				.withMisfireHandlingInstructionNextWithRemainingCount())//错过之后，不用管
 	    		.startAt(timeTask.getRunAtTime())
 //	    		.withSchedule(CronScheduleBuilder.cronSchedule(timeTask.getCronExpression()))//设置定时任务执行的表达式
 	    		.build();
@@ -116,7 +117,10 @@ public class TimeTaskService {
     	//TODO:XXXXXX
         //删除定时任务时   先暂停任务，然后再删除  
         JobKey jobKey = new JobKey(key);
+        TriggerKey triggerKey = TriggerKey.triggerKey(key, "lotteryNumTrigger-group001");
         Scheduler scheduler = schedulerFactoryBean.getScheduler();  
+        scheduler.pauseTrigger(triggerKey);// 停止触发器 
+        scheduler.unscheduleJob(triggerKey);// 移除触发器  
         scheduler.pauseJob(jobKey);  
         scheduler.deleteJob(jobKey);  
     }  

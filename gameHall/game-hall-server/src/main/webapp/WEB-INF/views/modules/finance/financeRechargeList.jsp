@@ -87,13 +87,15 @@
 				<th>验证码</th>
 				<th>充值时间</th>
 				<th>充值通道</th>
-				<th>第三方支付凭证</th>
-				<th>第三方支付平台到账时间</th>
+<!-- <				<th>第三方支付凭证</th>
+				<th>第三方支付平台到账时间</th> 
 				<th>审核人</th>
-				<th>审核日期</th>
+				<th>审核日期</th> -->
 				<th>状态</th>
-				<th>创建者</th>
-				<shiro:hasPermission name="trade:financeRecharge:edit"><th>操作</th></shiro:hasPermission>
+				<!-- <th>创建者</th> -->
+				<%-- <shiro:hasPermission name="trade:financeRecharge:edit"> --%>
+				<th>操作</th>
+				<%-- </shiro:hasPermission> --%>
 			</tr>
 		</thead>
 		<tbody>
@@ -109,16 +111,17 @@
 				<td>${financeRecharge.rechargeAmount}</td>
 				<td>${financeRecharge.validateCode}</td>	
 				<td><fmt:formatDate value="${financeRecharge.rechargeDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				<td>${financeRecharge.paymentChannelId}</td>
-				<td>${financeRecharge.thirdPayNo}</td>
-				<td><fmt:formatDate value="${financeRecharge.thirdPayDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				<td>${financeRecharge.auditUserName}</td>
-				<td><fmt:formatDate value="${financeRecharge.auditDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				<td>${financeRecharge.paymentChannelId}</td> 
+				<%-- <td>${financeRecharge.thirdPayNo}</td> --%>
+				<%-- <td><fmt:formatDate value="${financeRecharge.thirdPayDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td> --%>
+				<%-- <td>${financeRecharge.auditUserName}</td> --%>
+				<%-- <td><fmt:formatDate value="${financeRecharge.auditDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td> --%>
 				<td>${financeRecharge.status}</td>
-				<td><fmt:formatDate value="${financeRecharge.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				<shiro:hasPermission name="trade:financeRecharge:edit">
-					<td><a href="${ctx}/finance/financeRecharge/audit?id=${financeRecharge.id}">撤销</a>
-				</td></shiro:hasPermission>
+				<%-- <td><fmt:formatDate value="${financeRecharge.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td> --%>
+				<%-- <shiro:hasPermission name="trade:financeRecharge:edit"> --%>
+					<td><a href="${ctx}/finance/financeRecharge/delete?id=${financeRecharge.id}">撤销</a>
+				</td>
+				<%-- </shiro:hasPermission> --%>
 			</tr>
 		</c:forEach>
 		</tbody>

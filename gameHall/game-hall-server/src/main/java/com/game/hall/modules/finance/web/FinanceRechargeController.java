@@ -3,6 +3,8 @@
  */
 package com.game.hall.modules.finance.web;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,6 +23,7 @@ import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
 import com.game.modules.finance.entity.FinanceRecharge;
 import com.game.modules.finance.service.FinanceRechargeService;
+import com.game.modules.sys.entity.User;
 
 /**
  * 账户充值管理Controller
@@ -62,16 +65,23 @@ public class FinanceRechargeController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/finance/financeRechargeList";
 	}
-	
-
-	
-	
 
 	@RequiresPermissions("finance:financeRecharge:edit")
 	@RequestMapping(value = "form")
 	public String form(FinanceRecharge financeRecharge, Model model) {
 		//TODO:相关验证		
-
+		
+		//充值表单提交 产生一条充值记录 状态支付中
+		User user = new User();
+		user.setId("00ff432e9e77424e82a6e4752a6f4c37");
+		financeRecharge.setUser(user);
+		financeRecharge.setOrgId("机构名字");
+		financeRecharge.setRechargeNo("充值单编号");
+		financeRecharge.setRechargeDate(new Date());
+		financeRecharge.setPaymentChannelId("工商银行");
+		financeRecharge.setStatus("0");
+		//随机产生6位数附言
+		financeRecharge.setValidateCode(String.valueOf((int)((Math.random()*9+1)*100000)));
 		financeRechargeService.save(financeRecharge);
 		
 		model.addAttribute("financeRecharge", financeRecharge);
@@ -101,12 +111,12 @@ public class FinanceRechargeController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/trade/financeRecharge/?repage";
 	}
 	
-	@RequiresPermissions("trade:financeRecharge:edit")
+/*	@RequiresPermissions("trade:financeRecharge:edit")*/
 	@RequestMapping(value = "delete")
 	public String delete(FinanceRecharge financeRecharge, RedirectAttributes redirectAttributes) {
 		financeRechargeService.delete(financeRecharge);
 		addMessage(redirectAttributes, "撤销充值成功");
-		return "redirect:"+Global.getAdminPath()+"/trade/financeRecharge/?repage";
+		return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list"; 
 	}	
 
 }

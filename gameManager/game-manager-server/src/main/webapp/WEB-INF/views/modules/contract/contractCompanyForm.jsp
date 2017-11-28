@@ -8,6 +8,7 @@
 		$(document).ready(function() {
 			$("input[name='orgName']").focus();
 			$("#inputForm").validate({
+				debug:true,
 				rules: {
 					userName: {
 						remote: {
@@ -24,8 +25,19 @@
 					userName: {remote: "登录名已存在"},
 				}, 
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
+					var flag=true;
+					var submitFlag=$("input[name='submitFlag']");
+					submitFlag.each(function(index,obj){
+						if($(obj).val()=="false"){
+							flag=false;
+						}
+					});
+					if(flag){
+						loading('正在提交，请稍等...');
+						//form.submit();	
+					}else{
+						alert("分红设置有误，请修改后提交！");
+					}
 				},
 				errorContainer: "#messageBox",
 				errorPlacement: function(error, element) {
@@ -58,7 +70,12 @@
 			var id = $(prefix+"_id");
 			var delFlag = $(prefix+"_delFlag");
 			if (id.val() == ""){
-				$(obj).parent().parent().remove();
+				var tr=$(obj).parent().parent().siblings("tr").length;
+				if(tr>0){
+					$(obj).parent().parent().remove();
+				}else{
+					alert("必填信息！");
+				}
 			}else if(delFlag.val() == "0"){
 				delFlag.val("1");
 				$(obj).html("&divide;").attr("title", "撤销删除");
@@ -101,87 +118,106 @@
 			</div>
 		</div> --%>
 		<!-- ----------------------------------------------- -->
-		
-		<div class="control-group">
-			<label class="control-label">公司名称：</label>
-			<div class="controls">
-				<form:input path="orgName" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入公司名称" value="456789"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		
-		<div class="control-group">
-			<label class="control-label">公司编码：</label>
-			<div class="controls">
-				<form:input path="office.code" htmlEscape="false" maxlength="10" minlength="3" class="input-xlarge required" placeholder="请输入公司编码（仅支持大小写字母）" value="456789"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		
-		<div class="control-group">
-			<label class="control-label">登录名称：</label>
-			<div class="controls">
-				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入登录名称" value="456789"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		
-		<c:if test="${empty contract.id}">
-			<div class="control-group">
-					<label class="control-label">登录密码：</label>
+		<table style="width: 100%;">
+			<tr>
+				<td>
+					<div class="control-group">
+						<label class="control-label">公司名称：</label>
+						<div class="controls">
+							<form:input path="orgName" htmlEscape="false" maxlength="20" class="input-xlarge required" placeholder="请输入公司名称"  value="456789"/>
+							<span class="help-inline"><font color="red">*</font> </span>
+						</div>
+					</div>
+				</td>
+				<td>
+				<%-- <div class="control-group">
+					<label class="control-label">公司编码：</label>
 					<div class="controls">
-						<form:input id="newPassword" path="user.password" type="password" value="" maxlength="50" minlength="6" class="input-xlarge ${empty user.id?'required':''}" placeholder="请输入密码"/>
+						<form:input path="office.code" htmlEscape="false" maxlength="10" minlength="3" class="input-xlarge required" placeholder="请输入公司编码（仅支持大小写字母）" value="456789"/>
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
-			</div>
+				</div> --%>
+				
+					<div class="control-group">
+						<label class="control-label">登录名称：</label>
+						<div class="controls">
+							<form:input path="userName" htmlEscape="false" maxlength="8" class="input-xlarge required" placeholder="请输入登录名称" value="456789"/>
+							<span class="help-inline"><font color="red">*</font> </span>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<c:if test="${empty contract.id}">
+			<tr><td>
 				<div class="control-group">
-					<label class="control-label">确认密码：</label>
-					<div class="controls">
-						<input id="confirmNewPassword" type="password" value="" maxlength="50" minlength="6" equalTo="#newPassword" class="input-xlarge required" placeholder="请输入确认密码"/>
-						<span class="help-inline"><font color="red">*</font> </span>
-					</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">安全密码：</label>
-				<div class="controls">
-						<form:input path="secPassword" htmlEscape="false" maxlength="50" minlength="6" class="input-xlarge required" placeholder="请输入安全密码"/>
-					<span class="help-inline"><font color="red">*</font> </span>
+						<label class="control-label">登录密码：</label>
+						<div class="controls">
+							<form:input id="newPassword" path="user.password" type="password" value="" maxlength="20" minlength="6" class="input-xlarge ${empty user.id?'required':''}" placeholder="请输入密码"/>
+							<span class="help-inline"><font color="red">*</font> </span>
+						</div>
 				</div>
-			</div>
-		</c:if>
+				</td>
+				<td>
+				
+					<div class="control-group">
+						<label class="control-label">确认密码：</label>
+						<div class="controls">
+							<input id="confirmNewPassword" type="password" value="" maxlength="20" minlength="6" equalTo="#newPassword" class="input-xlarge required" placeholder="请输入确认密码"/>
+							<span class="help-inline"><font color="red">*</font> </span>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div class="control-group">
+						<label class="control-label">安全密码：</label>
+						<div class="controls">
+								<form:input path="secPassword" htmlEscape="false" maxlength="20" minlength="6" class="input-xlarge required" placeholder="请输入安全密码"/>
+							<span class="help-inline"><font color="red">*</font> </span>
+						</div>
+					</div>
+				</td>
+			</tr>
+			</c:if>
 		
 		<c:if test="${not empty contract.id}">
 			<form:input id="newPassword" path="user.password" type="hide" class="hide"/>
 			<form:input path="secPassword" type="hide" class="hide"/>
 		</c:if>
 		
-		
+		<tr><td>
 		<div class="control-group">
 				<label class="control-label">邮箱：</label>
 				<div class="controls">
 					<form:input path="user.email" htmlEscape="false" maxlength="100" placeholder="请输入邮箱" class="input-xlarge email" value="456789@qq.com"/>
 				</div>
-			</div>
+			</div></td><td>
 			<div class="control-group">
 				<label class="control-label">电话：</label>
 				<div class="controls">
 					<form:input path="user.phone" htmlEscape="false" maxlength="100" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入电话" value="456789"/>
 				</div>
-			</div>
-			
+			</div></td>
+		</tr>
+		<tr>
+			<td>
 			<div class="control-group">
 				<label class="control-label">qq号码：</label>
 				<div class="controls">
 					<form:input path="qqNo" htmlEscape="false" maxlength="50" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入QQ号码" value="456789"/>
 				</div>
 			</div>
+			</td>
+			<td>
 			<div class="control-group">
 				<label class="control-label">手机号码：</label>
 				<div class="controls">
 					<form:input path="mobileNo" htmlEscape="false" maxlength="50"  onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入手机号码" value="456789"/>
 				</div>
 			</div>
-		
+			</td>
+		</tr>
 		<%-- <div class="control-group">
 			<label class="control-label">账户id：</label>
 			<div class="controls">
@@ -196,69 +232,67 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div> --%>
-		
-		<div class="control-group">
-			<label class="control-label">分红周期：</label>
-			<div class="controls">
-				<form:select path="benefitCycle" class="input-xlarge required">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('contract_period')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-				<span class="help-inline"><font color="red">*</font> </span>
+		<tr>
+			<td>
+				<div class="control-group">
+					<label class="control-label">分红周期：</label>
+					<div class="controls">
+						<form:select path="benefitCycle" class="input-xlarge required">
+							<form:option value="" label=""/>
+							<form:options items="${fns:getDictList('contract_period')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				</div>
+			</td>
+			<td>
+				<div class="control-group">
+					<label class="control-label">保底服务费（元/月）：</label>
+					<div class="controls">
+						<form:input path="rentAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入平台租金（单位：元/月）" onkeyup="value=value.replace(/[^\d]/g,'') " value="456789" min="0"/>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<div class="control-group">
+				<label class="control-label">开户费（元）：</label>
+				<div class="controls">
+					<form:input path="openAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入开户费（单位：元）" onkeyup="value=value.replace(/[^\d]/g,'') " value="456789" min="0"/>
+					<span class="help-inline"><font color="red">*</font> </span>
+				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">平台租金：</label>
-			<div class="controls">
-				<form:input path="rentAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入平台租金（单位：元/月）" onkeyup="value=value.replace(/[^\d]/g,'') " value="456789"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+			</td>
+			<td>
+			<div class="control-group">
+				<label class="control-label">签约周期（年）：</label>
+				<div class="controls">
+					<form:input path="contractTime" htmlEscape="false" maxlength="4" class="input-xlarge required" placeholder="请输入签约周期（单位：年）" onkeyup="value=value.replace(/[^\d]/g,'') " value="4" min="0"/>
+					<span class="help-inline"><font color="red">*</font> </span>
+				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">开户费：</label>
-			<div class="controls">
-				<form:input path="openAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入开户费（单位：元）" onkeyup="value=value.replace(/[^\d]/g,'') " value="456789"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">签约周期：</label>
-			<div class="controls">
-				<form:input path="contractTime" htmlEscape="false" maxlength="4" class="input-xlarge required" placeholder="请输入签约周期（单位：年）" onkeyup="value=value.replace(/[^\d]/g,'') " value="4"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		
-		<div class="control-group">
-			<label class="control-label">分红模式：</label>
-			<div class="controls">
-				<form:select path="benefitType" class="input-xlarge required">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('contract_model')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<div class="control-group">
+					<label class="control-label">分红模式：</label>
+					<div class="controls">
+						<form:select path="benefitType" class="input-xlarge required">
+							<form:option value="" label=""/>
+							<form:options items="${fns:getDictList('contract_model')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				</div>
+			</td>
+		</tr>
+		</table>
 			<div class="control-group">
 				<label class="control-label">分红设置：</label>
 				<div class="controls">
-					<!-- <table id="contentTable" class="table table-striped table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th class="hide"></th>
-								<th></th>
-								<th>单位：万</th>
-								<th>单位：万</th>
-								<th>分红百分比</th>
-								<shiro:hasPermission name="contract:company:contract:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
-							</tr>
-						</thead>
-						<tbody id="contractConfigList">
-						</tbody>
-						<shiro:hasPermission name="contract:company:contract:edit"><tfoot>
-							<tr><td colspan="5"><a href="javascript:" onclick="addRow('#contractConfigList', contractConfigRowIdx, contractConfigTpl);contractConfigRowIdx = contractConfigRowIdx + 1;" class="btn">新增</a></td></tr>
-						</tfoot></shiro:hasPermission>
-					</table> -->
 					<table id="contentTable" class="table table-striped table-bordered table-condensed" ><!-- style="width: 45rem;" -->
 						<thead>
 							<tr>
@@ -273,7 +307,7 @@
 						<tbody id="contractConfigList">
 						</tbody>
 						<shiro:hasPermission name="contract:company:contract:edit"><tfoot>
-							<tr><td colspan="5"><a href="javascript:" onclick="addRow('#contractConfigList', contractConfigRowIdx, contractConfigTpl);contractConfigRowIdx = contractConfigRowIdx + 1;" class="btn">新增</a></td></tr>
+							<tr><td colspan="5"><a href="javascript:" onclick="addRow('#contractConfigList', contractConfigRowIdx, contractConfigTpl);contractConfigRowIdx = contractConfigRowIdx + 1;" class="btn" id="xz">新增</a></td></tr>
 						</tfoot></shiro:hasPermission>
 					</table><!-- contractConfigTpl -->
 					<script type="text/template" id="contractConfigTpl">//<!--
@@ -281,18 +315,19 @@
 							<td class="hide">
 								<input id="contractConfigList{{idx}}_id" name="contractConfigList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
 								<input id="contractConfigList{{idx}}_delFlag" name="contractConfigList[{{idx}}].delFlag" type="hidden" value="0"/>
+								<input name="submitFlag" type="hidden" value="true"/>
 							</td>
 							<td>
 								流水/盈利额：
 							</td>
 							<td>
-								<input id="contractConfigList{{idx}}_rangeStart" name="contractConfigList[{{idx}}].rangeStart" type="text" value="{{row.rangeStart}}" class="input-small required" onkeyup="value=value.replace(/[^\d]/g,'') "/>
+								<input id="contractConfigList{{idx}}_rangeStart" name="contractConfigList[{{idx}}].rangeStart" type="number" value="{{row.rangeStart}}" class="input-small required" onchange="checkMoneyA(this)" min="0"/>
 							</td>
 							<td>
-								<input id="contractConfigList{{idx}}_rangeEnd" name="contractConfigList[{{idx}}].rangeEnd" type="text" value="{{row.rangeEnd}}" class="input-small required" onkeyup="value=value.replace(/[^\d]/g,'') "/>
+								<input id="contractConfigList{{idx}}_rangeEnd" name="contractConfigList[{{idx}}].rangeEnd" type="number" value="{{row.rangeEnd}}" class="input-small required" onchange="checkMoneyB(this)" min="0"/>
 							</td>
 							<td>
-								<input id="contractConfigList{{idx}}_beniftRate" name="contractConfigList[{{idx}}].beniftRate" type="text" value="{{row.beniftRate}}" class="input-small required"/>
+								<input id="contractConfigList{{idx}}_beniftRate" name="contractConfigList[{{idx}}].beniftRate" type="number" value="{{row.beniftRate}}" class="input-small required" max=""/>
 							</td>
 							<shiro:hasPermission name="contract:company:contract:edit"><td class="text-center" width="10">
 								{{#delBtn}}<span class="close" onclick="delRow(this, '#contractConfigList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
@@ -307,7 +342,46 @@
 								addRow('#contractConfigList', contractConfigRowIdx, contractConfigTpl, data[i]);
 								contractConfigRowIdx = contractConfigRowIdx + 1;
 							}
+							if($("#contractConfigList").find("tr").length<=0){
+								$("#xz").click();
+							}
 						});
+						function checkMoneyA(e){
+							var tr=$(e).parent().next("td").find("input");
+							if(tr.val()){
+								//alert(parseInt(tr.val())>parseInt($(e).val()));
+								if(parseInt(tr.val())<=parseInt($(e).val())){
+									alert("需小于截至金额！");
+									$(e).parent().parent().find("input[name=submitFlag]").val("false");
+								}else{
+									$(e).parent().parent().find("input[name=submitFlag]").val("true");
+								}
+							}
+						}
+						function checkMoneyB(e){
+							var tr=$(e).parent().prev("td").find("input");
+							if(tr.val()){
+								//alert(parseInt(tr.val())<parseInt($(e).val()));
+								if(parseInt(tr.val())>=parseInt($(e).val())){
+									//if($(e).next("label")){
+										/* $(e).next("label").text("需大于起始金额！");
+										$(e).next("label").show(); */
+									//}else{
+										//$(e).after("<label for='"+$(e).attr("id")+"' class='error'>需大于起始金额！</label>");
+									//}
+									 /*$(e).next("label").show(); */
+									alert("需大于起始金额！");
+									$(e).parent().parent().find("input[name=submitFlag]").val("false");
+								}else{
+									$(e).parent().parent().find("input[name=submitFlag]").val("true");
+								}
+							}
+							/* var prevTr=$(e).parent().parent().prev("tr");
+							if(prevTr){
+								var findTd=prevTr.find("td").eq(2);
+								alert(findTd);
+							} */
+						}
 					</script>
 				</div>
 			</div>

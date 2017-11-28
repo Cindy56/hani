@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.BetServiceApi;
-import com.entity.GameError;
 import com.entity.ResultData;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.modules.lottery.entity.GameError;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.Office;
@@ -146,13 +146,10 @@ public class LotteryAddBetService implements BetServiceApi {
 		for (int i = 0; i < lsBetData.size(); i++) { // 前置校验 LotteryOrder betData =
 			LotteryOrder betData = lsBetData.get(i);
 
-			// if (betData.getIsNewRecord()compareTo(new BigDecimal(0)) <= 0) { //
-			rd.setErrorCode(GameError.errCodeBettingCount); //
-			rd.setMessage(GameError.errBettingCountInvalid); // return rd; // }
-
+		
 			if (betData.getBetIssueNo().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingIssuseNo);
-				rd.setMessage(GameError.errBettingIssuseNo);
+				rd.setErrorCode(GameError.errCodeIssuseNo);
+				rd.setMessage(GameError.errIssuseNo);
 				return rd;
 			}
 
@@ -170,24 +167,21 @@ public class LotteryAddBetService implements BetServiceApi {
 
 			// 订单编号应该在此处生成
 			if (betData.getOrderNo() != null && betData.getOrderNo().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingNumber);
-				rd.setMessage(GameError.errBettingNumber);
+				rd.setErrorCode(GameError.errCodeOrderNo);
+				rd.setMessage(GameError.errOrderNo);
 				return rd;
 			}
 
-			// if (betData.getBettingPoint().compareTo(new BigDecimal(0)) < 0) { //
-			rd.setErrorCode(GameError.errCodeBettingNumber); //
-			rd.setMessage(GameError.errBettingNumber); // return rd; // }
-
+		
 			if (betData.getLotteryCode().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingNumber);
-				rd.setMessage(GameError.errBettingNumber);
+				rd.setErrorCode(GameError.errCodeLotteryCode);
+				rd.setMessage(GameError.errLotteryCode);
 				return rd;
 			}
 
 			if (betData.getBetDetail() != null && betData.getBetDetail().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingNumber);
-				rd.setMessage(GameError.errBettingNumber);
+				rd.setErrorCode(GameError.errCodeBetDetial);
+				rd.setMessage(GameError.errBetDetial);
 				return rd;
 			}
 
