@@ -206,7 +206,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 					BigDecimal beniftRate = contractConfig.getBeniftRate().divide(new BigDecimal(100),4,RoundingMode.HALF_UP);
 					//将页面上万元转换为元
 					contractConfig.setRangeStart(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
-					contractConfig.setRangeEnd(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
+					contractConfig.setRangeEnd(contractConfig.getRangeEnd().multiply(new BigDecimal(10000)));
 					contractConfig.setBeniftRate(beniftRate);
 					contractConfigDao.insert(contractConfig);
 				}else{
@@ -216,7 +216,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 					BigDecimal beniftRate = contractConfig.getBeniftRate().divide(new BigDecimal(100),4,RoundingMode.HALF_UP);
 					//将页面上万元转换为元
 					contractConfig.setRangeStart(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
-					contractConfig.setRangeEnd(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
+					contractConfig.setRangeEnd(contractConfig.getRangeEnd().multiply(new BigDecimal(10000)));
 					contractConfig.setBeniftRate(beniftRate);
 					contractConfigDao.update(contractConfig);
 				}
