@@ -146,10 +146,7 @@ public class LotteryAddBetService implements BetServiceApi {
 		for (int i = 0; i < lsBetData.size(); i++) { // 前置校验 LotteryOrder betData =
 			LotteryOrder betData = lsBetData.get(i);
 
-			// if (betData.getIsNewRecord()compareTo(new BigDecimal(0)) <= 0) { //
-			rd.setErrorCode(GameError.errCodeBettingCount); //
-			rd.setMessage(GameError.errBettingCountInvalid); // return rd; // }
-
+		
 			if (betData.getBetIssueNo().isEmpty()) {
 				rd.setErrorCode(GameError.errCodeIssuseNo);
 				rd.setMessage(GameError.errIssuseNo);
@@ -170,24 +167,21 @@ public class LotteryAddBetService implements BetServiceApi {
 
 			// 订单编号应该在此处生成
 			if (betData.getOrderNo() != null && betData.getOrderNo().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingNumber);
-				rd.setMessage(GameError.errBettingNumber);
+				rd.setErrorCode(GameError.errCodeOrderNo);
+				rd.setMessage(GameError.errOrderNo);
 				return rd;
 			}
 
-			// if (betData.getBettingPoint().compareTo(new BigDecimal(0)) < 0) { //
-			rd.setErrorCode(GameError.errCodeBettingNumber); //
-			rd.setMessage(GameError.errBettingNumber); // return rd; // }
-
+		
 			if (betData.getLotteryCode().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingNumber);
-				rd.setMessage(GameError.errBettingNumber);
+				rd.setErrorCode(GameError.errCodeLotteryCode);
+				rd.setMessage(GameError.errLotteryCode);
 				return rd;
 			}
 
 			if (betData.getBetDetail() != null && betData.getBetDetail().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingNumber);
-				rd.setMessage(GameError.errBettingNumber);
+				rd.setErrorCode(GameError.errCodeBetDetial);
+				rd.setMessage(GameError.errBetDetial);
 				return rd;
 			}
 

@@ -10,13 +10,13 @@ public class ShortID {
 
 	public static volatile long time;
 	private static volatile int nums = 0;
-	private static List<String> poolStrings;
+	private static List<Integer> poolStrings;
 	// private static HashSet<String> poolStrings;
 	static {
 		// 初始你的数据池poolStrings,这里你可以从1-100000,直接数字初始化都可以
 		// 或者按照上面的随机串初始化，但是要保证list里面的数据是非重复的,切记。
 
-		poolStrings = new ArrayList<String>(100000);
+		poolStrings = new ArrayList<Integer>(100000);
 
 		SecureRandom random = new SecureRandom();
 
@@ -29,14 +29,14 @@ public class ShortID {
 
 			int n = random.nextInt();
 //			String s = Integer.toHexString(n);
-			String s = Integer.toString(n);
+			//String s = Integer.toString(n);
 
-			if (poolStrings.contains(s)) {
+			if (poolStrings.contains(n)) {
 				System.out.println("errLine=35, now size =" + poolStrings.size());
 				break;
 			}
 
-			poolStrings.add(s);
+			poolStrings.add(n);
 
 		}
 
@@ -59,7 +59,7 @@ public class ShortID {
 			throw new RuntimeException("每秒需求的随机数超过了你的数据池");
 		}
 		// 正常取数字
-		String randomString = (String) poolStrings.get(nums);
+		String randomString = (String) poolStrings.get(nums).toString();
 		// 对数字+1
 		nums++;
 

@@ -85,6 +85,7 @@ public class GameError {
 	public static final Integer errCodePlayModeCommissionRate = 114;
 	public static final String errPlayModeCommissionRate = "返点比例不正确";
 
-	 
+	public static final Integer errCodeOrderNo = 115;
+	public static final String errOrderNo = "订单号无效";
 
 }
