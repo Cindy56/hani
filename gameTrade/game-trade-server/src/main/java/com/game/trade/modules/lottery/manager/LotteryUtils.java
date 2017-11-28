@@ -15,6 +15,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.game.modules.order.entity.LotteryOrder;
+import com.game.trade.model.OpenLottery;
+import com.game.trade.model.Star5;
+import com.game.trade.util.Combination;
 
 /**
  * 算奖工具类
@@ -1261,4 +1264,120 @@ public class LotteryUtils {
 	        combinationSelect(dataList, i + 1, resultList, resultIndex + 1);  
 	    }  
 	}  
+	
+	
+	public static int calBetNum5XingZhiXuanDanShi(String bet) {
+		// TODO Auto-generated method stub
+
+		String[] betNumList = bet.split(",");
+
+		return betNumList.length;
+
+	}
+	
+	public static int calBetNum5XingZhiXuanFuShi(String bet)
+	{
+		String[] betNumList = bet.split(",");
+		int count = 0;
+		for (String string : betNumList) {
+			count *= string.length();
+		}
+
+		return count;
+		
+	}
+	
+	public static int calBetNum5XingZhiXuanHeZhi(String bet) {
+		// TODO Auto-generated method stub
+
+		String[] betNumList = bet.split(",");
+
+		return betNumList.length;
+
+	}
+	
+	
+	public static int calBetNum5XingZuXuan120(String bet) {
+		
+
+		String[] betNumList = bet.split(",");
+
+		List<String> lsBets = Arrays.asList(betNumList);
+
+		List<Integer> lsIntBets = lsBets.stream().map(Integer::valueOf).collect(Collectors.toList());
+
+		// get combination
+		ArrayList<Integer> t = new ArrayList<Integer>();
+		ArrayList<ArrayList<Integer>> arrCombs = Combination.Combination(lsIntBets, lsIntBets.size(), 5, t);
+
+		OpenLottery ol = new OpenLottery();
+		return arrCombs.size();
+		
+	}
+
+	public static int calBetNum5XingZuXuan60(String betDetail) {
+		// TODO Auto-generated method stub
+		
+
+		String[] betNumList = betDetail.split(",");
+
+		List<Star5> lsStar5 = new ArrayList<Star5>();
+
+		int a0 = 0;
+		int a1 = 0;
+		int a2 = 0;
+		int a3 = 0;
+		int a4 = 0;
+
+		// double No array
+		List<Integer> doubleNo = Arrays.asList(betNumList[0].split("")).stream().map(Integer::valueOf)
+				.collect(Collectors.toList());
+
+		// single No array
+		List<Integer> singleNo = Arrays.asList(betNumList[1].split("")).stream().map(Integer::valueOf)
+				.collect(Collectors.toList());
+
+		// single No array => combination N,3
+		ArrayList<Integer> t = new ArrayList<Integer>();
+		ArrayList<ArrayList<Integer>> arr = Combination.Combination(singleNo, singleNo.size(), 3, t);
+
+		for (int idb = 0; idb < doubleNo.size(); idb++) {
+
+			a0 = a1 = doubleNo.get(idb);
+
+			for (int isingle = 0; isingle < arr.size(); isingle++) {
+
+				a2 = arr.get(isingle).get(0);
+				a3 = arr.get(isingle).get(1);
+				a4 = arr.get(isingle).get(2);
+
+				int arrAN[] = new int[5];
+				arrAN[0] = a0;
+				arrAN[1] = a1;
+				arrAN[2] = a2;
+				arrAN[3] = a3;
+				arrAN[4] = a4;
+
+				Arrays.sort(arrAN);
+
+				Star5 s5 = new Star5(arrAN);
+
+				lsStar5.add(s5);
+			}
+
+		}
+
+		return lsStar5.size();
+		
+	}
+
+	public static int calBetNum5XingZuXuan30(String betDetail) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	
+	
+	
 }

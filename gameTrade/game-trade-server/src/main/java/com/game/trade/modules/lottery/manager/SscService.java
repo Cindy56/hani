@@ -1572,7 +1572,7 @@ public enum SscService implements LotteryService {
 	},
 
 	/** 时时彩5星直选单式 */
-	SSC_5XING_ZHIXUANDAN("SSC_5XING_ZHIXUANDAN", "时时彩5星直选单式") {
+	SSC_5XING_ZHIXUANDANSHI("SSC_5XING_ZHIXUANDANSHI", "时时彩5星直选单式") {
 
 		@Override
 		public void trend(LotteryTimeNum openLotteryTimeNum) {
@@ -1608,9 +1608,11 @@ public enum SscService implements LotteryService {
 			// }
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			boolean ret1 = checkAmount(lotteryOrder);
+			int betNum = LotteryUtils.calBetNum5XingZhiXuanDanShi(lotteryOrder.getBetDetail());
+			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
+
 			if (!ret1)
-				return 1;
+				return GameError.errCodeBettingMoney;
 			return 0;
 		}
 
@@ -1626,26 +1628,9 @@ public enum SscService implements LotteryService {
 			return null;
 		}
 
-		public int calBetNum(String bet) {
-			// TODO Auto-generated method stub
-
-			String[] betNumList = bet.split(",");
-
-			return betNumList.length;
-
-		}
-
-		public boolean checkAmount(LotteryOrder lotteryOrder) {
-			// TODO Auto-generated method stub
-
-			// 校验投注金额 amount = betno * 2 * rate * moneytype
-			int betNum = calBetNum(lotteryOrder.getBetDetail());
-			return super.chkAmount(lotteryOrder, betNum);
-
-		}
 	},
 	/** 时时彩5星直选复式 */
-	SSC_5XING_ZHIXUANFU("SSC_5XING_ZHIXUANFU", "时时彩5星直选复式") {
+	SSC_5XING_ZHIXUANFUSHI("SSC_5XING_ZHIXUANFUSHI", "时时彩5星直选复式") {
 
 		@Override
 		public void trend(LotteryTimeNum openLotteryTimeNum) {
@@ -1673,9 +1658,11 @@ public enum SscService implements LotteryService {
 			}
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			boolean ret = checkAmount(lotteryOrder);
-			if (!ret)
-				return 1;
+			int betNum = LotteryUtils.calBetNum5XingZhiXuanFuShi(lotteryOrder.getBetDetail());
+			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
+
+			if (!ret1)
+				return GameError.errCodeBettingMoney;
 
 			return 0;
 		}
@@ -1692,37 +1679,6 @@ public enum SscService implements LotteryService {
 			return null;
 		}
 
-		public int calBetNum(String bet) {
-			// TODO Auto-generated method stub
-
-			String[] betNumList = bet.split(",");
-			int count = 0;
-			for (String string : betNumList) {
-				count *= string.length();
-			}
-
-			return count;
-
-		}
-
-		public boolean checkAmount(LotteryOrder lotteryOrder) {
-			// TODO Auto-generated method stub
-
-			// 校验投注金额 amount = betno * 2 * rate * moneytype
-			int betNum = calBetNum(lotteryOrder.getBetDetail());
-			return super.chkAmount(lotteryOrder, betNum);
-
-			// int betNum = calBetNum(lotteryOrder.getBetDetail());
-			//
-			// BigDecimal moneyType =
-			// MoneyType.getMoneyType(lotteryOrder.getPlayModeMoneyType());
-			// BigDecimal rate = new BigDecimal(lotteryOrder.getBetRate());
-			//
-			// BigDecimal amount = rate.multiply(moneyType).multiply(new BigDecimal(betNum *
-			// 2));
-			//
-			// return amount.equals(lotteryOrder.getBetAmount());
-		}
 	},
 	/** 时时彩5星直选和值 */
 	SSC_5XING_ZHIXUANHE("SSC_5XING_ZHIXUANHE", "时时彩5星直选和值") {
@@ -1759,9 +1715,12 @@ public enum SscService implements LotteryService {
 			}
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			boolean ret = checkAmount(lotteryOrder);
-			if (!ret)
-				return 1;
+			int betNum = LotteryUtils.calBetNum5XingZhiXuanHeZhi(lotteryOrder.getBetDetail());
+			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
+
+			if (!ret1)
+				return GameError.errCodeBettingMoney;
+
 			return 0;
 		}
 
@@ -1777,22 +1736,6 @@ public enum SscService implements LotteryService {
 			return null;
 		}
 
-		public int calBetNum(String bet) {
-			// TODO Auto-generated method stub
-
-			String[] betNumList = bet.split(",");
-
-			return betNumList.length;
-
-		}
-
-		public boolean checkAmount(LotteryOrder lotteryOrder) {
-			// TODO Auto-generated method stub
-
-			// 校验投注金额 amount = betno * 2 * rate * moneytype
-			int betNum = calBetNum(lotteryOrder.getBetDetail());
-			return super.chkAmount(lotteryOrder, betNum);
-		}
 	},
 
 	/** 时时彩5星组选120 */
@@ -1819,9 +1762,12 @@ public enum SscService implements LotteryService {
 			}
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			boolean ret = checkAmount(lotteryOrder);
-			if (!ret)
+			int betNum = LotteryUtils.calBetNum5XingZuXuan120(lotteryOrder.getBetDetail());
+			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
+
+			if (!ret1)
 				return GameError.errCodeBettingMoney;
+
 			return 0;
 		}
 
@@ -1835,33 +1781,6 @@ public enum SscService implements LotteryService {
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
 			// TODO Auto-generated method stub
 			return null;
-		}
-
-		public int calBetNum(String bet) {
-			// TODO Auto-generated method stub
-
-			String[] betNumList = bet.split(",");
-
-			List<String> lsBets = Arrays.asList(betNumList);
-
-			List<Integer> lsIntBets = lsBets.stream().map(Integer::valueOf).collect(Collectors.toList());
-
-			// get combination
-			ArrayList<Integer> t = new ArrayList<Integer>();
-			ArrayList<ArrayList<Integer>> arrCombs = Combination.Combination(lsIntBets, lsIntBets.size(), 5, t);
-
-			OpenLottery ol = new OpenLottery();
-			return arrCombs.size();
-
-		}
-
-		public boolean checkAmount(LotteryOrder lotteryOrder) {
-			// TODO Auto-generated method stub
-
-			// 校验投注金额 amount = betno * 2 * rate * moneytype
-			int betNum = calBetNum(lotteryOrder.getBetDetail());
-			return super.chkAmount(lotteryOrder, betNum);
-
 		}
 
 	},
@@ -1898,9 +1817,12 @@ public enum SscService implements LotteryService {
 				return GameError.errCodeBetDetial;
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			boolean ret = checkAmount(lotteryOrder);
-			if (!ret)
+			int betNum = LotteryUtils.calBetNum5XingZuXuan60(lotteryOrder.getBetDetail());
+			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
+
+			if (!ret1)
 				return GameError.errCodeBettingMoney;
+
 			return GameError.errCodeOkay;
 		}
 
@@ -1914,70 +1836,6 @@ public enum SscService implements LotteryService {
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
 			// TODO Auto-generated method stub
 			return null;
-		}
-
-		public int calBetNum(String bet) {
-			// TODO Auto-generated method stub
-
-			String[] betNumList = bet.split(",");
-
-			List<Star5> lsStar5 = new ArrayList<Star5>();
-
-			int a0 = 0;
-			int a1 = 0;
-			int a2 = 0;
-			int a3 = 0;
-			int a4 = 0;
-
-			// double No array
-			List<Integer> doubleNo = Arrays.asList(betNumList[0].split("")).stream().map(Integer::valueOf)
-					.collect(Collectors.toList());
-
-			// single No array
-			List<Integer> singleNo = Arrays.asList(betNumList[1].split("")).stream().map(Integer::valueOf)
-					.collect(Collectors.toList());
-
-			// single No array => combination N,3
-			ArrayList<Integer> t = new ArrayList<Integer>();
-			ArrayList<ArrayList<Integer>> arr = Combination.Combination(singleNo, singleNo.size(), 3, t);
-
-			for (int idb = 0; idb < doubleNo.size(); idb++) {
-
-				a0 = a1 = doubleNo.get(idb);
-
-				for (int isingle = 0; isingle < arr.size(); isingle++) {
-
-					a2 = arr.get(isingle).get(0);
-					a3 = arr.get(isingle).get(1);
-					a4 = arr.get(isingle).get(2);
-
-					int arrAN[] = new int[5];
-					arrAN[0] = a0;
-					arrAN[1] = a1;
-					arrAN[2] = a2;
-					arrAN[3] = a3;
-					arrAN[4] = a4;
-
-					Arrays.sort(arrAN);
-
-					Star5 s5 = new Star5(arrAN);
-
-					lsStar5.add(s5);
-				}
-
-			}
-
-			return lsStar5.size();
-
-		}
-
-		public boolean checkAmount(LotteryOrder lotteryOrder) {
-			// TODO Auto-generated method stub
-
-			// 校验投注金额 amount = betno * 2 * rate * moneytype
-			int betNum = calBetNum(lotteryOrder.getBetDetail());
-			return super.chkAmount(lotteryOrder, betNum);
-
 		}
 
 	},
@@ -2016,9 +1874,12 @@ public enum SscService implements LotteryService {
 			}
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			boolean ret = checkAmount(lotteryOrder);
-			if (!ret)
-				return 1;
+			int betNum = LotteryUtils.calBetNum5XingZuXuan30(lotteryOrder.getBetDetail());
+			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
+
+			if (!ret1)
+				return GameError.errCodeBettingMoney;
+			
 			return 0;
 		}
 
@@ -2034,23 +1895,7 @@ public enum SscService implements LotteryService {
 			return null;
 		}
 
-		public int calBetNum(String bet) {
-			// TODO Auto-generated method stub
-
-			String[] betNumList = bet.split(",");
-
-			return betNumList.length;
-
-		}
-
-		public boolean checkAmount(LotteryOrder lotteryOrder) {
-			// TODO Auto-generated method stub
-
-			// 校验投注金额 amount = betno * 2 * rate * moneytype
-			int betNum = calBetNum(lotteryOrder.getBetDetail());
-			return super.chkAmount(lotteryOrder, betNum);
-
-		}
+	
 	},
 	/** 时时彩5星组选20 */
 	SSC_5XING_ZUXUAN20("SSC_5XING_ZUXUAN20", "时时彩5星组选20") {
@@ -2087,9 +1932,12 @@ public enum SscService implements LotteryService {
 			}
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			boolean ret = checkAmount(lotteryOrder);
-			if (!ret)
-				return 1;
+			int betNum = LotteryUtils.calBetNum5XingZuXuan30(lotteryOrder.getBetDetail());
+			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
+
+			if (!ret1)
+				return GameError.errCodeBettingMoney;
+			
 			return 0;
 		}
 
@@ -2105,23 +1953,7 @@ public enum SscService implements LotteryService {
 			return null;
 		}
 
-		public int calBetNum(String bet) {
-			// TODO Auto-generated method stub
-
-			String[] betNumList = bet.split(",");
-
-			return betNumList.length;
-
-		}
-
-		public boolean checkAmount(LotteryOrder lotteryOrder) {
-			// TODO Auto-generated method stub
-
-			// 校验投注金额 amount = betno * 2 * rate * moneytype
-			int betNum = calBetNum(lotteryOrder.getBetDetail());
-			return super.chkAmount(lotteryOrder, betNum);
-
-		}
+	
 	},
 	/** 时时彩5星组选10 */
 	SSC_5XING_ZUXUAN10("SSC_5XING_ZUXUAN10", "时时彩5星组选10") {
@@ -2158,10 +1990,12 @@ public enum SscService implements LotteryService {
 			}
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			// 删除父类接口后，此行代码报错编译不通过
-			// boolean ret = checkAmount(lotteryOrder);
-			// if (!ret)
-			// return 1;
+			int betNum = LotteryUtils.calBetNum5XingZuXuan30(lotteryOrder.getBetDetail());
+			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
+
+			if (!ret1)
+				return GameError.errCodeBettingMoney;
+			
 			return 0;
 		}
 
@@ -2212,9 +2046,12 @@ public enum SscService implements LotteryService {
 			}
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
-			boolean ret = checkAmount(lotteryOrder);
-			if (!ret)
-				return 1;
+			int betNum = LotteryUtils.calBetNum5XingZuXuan30(lotteryOrder.getBetDetail());
+			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
+
+			if (!ret1)
+				return GameError.errCodeBettingMoney;
+			
 			return 0;
 		}
 
@@ -2230,22 +2067,7 @@ public enum SscService implements LotteryService {
 			return null;
 		}
 
-		public int calBetNum(String bet) {
-			// TODO Auto-generated method stub
-
-			String[] betNumList = bet.split(",");
-
-			return betNumList.length;
-
-		}
-
-		public boolean checkAmount(LotteryOrder lotteryOrder) {
-			// TODO Auto-generated method stub
-
-			// 校验投注金额 amount = betno * 2 * rate * moneytype
-			int betNum = calBetNum(lotteryOrder.getBetDetail());
-			return super.chkAmount(lotteryOrder, betNum);
-		}
+	
 	};
 
 	/** 玩法代码 */
