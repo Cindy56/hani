@@ -2423,7 +2423,8 @@ public enum SscService implements LotteryService {
 		MemberPlayConfigService myMemberPlayConfigService = SpringContextHolder.getBean("memberPlayConfigService");
 
 		MemberPlayConfig memCfg = myMemberPlayConfigService.getMemberPlayConfigByUserId(lotteryOrder.getUser().getId());
-
+		
+		if(memCfg==null)return 1;
 		String jsPlayCfg = memCfg.getPlayConfig();
 		// LotteryPlayConfig lotPlayCfg = (LotteryPlayConfig)
 		// JsonMapper.fromJsonString(jsPlayCfg,
