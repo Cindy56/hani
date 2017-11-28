@@ -6,6 +6,8 @@ package com.game.modules.finance.entity;
 import com.game.modules.sys.entity.User;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -27,7 +29,7 @@ public class FinanceRecharge extends DataEntity<FinanceRecharge> {
 	private String bankCode;		// 充值银行代码
 	private String bankName;		// 充值银行名称
 	private String bankCardNo;		// 充值银行卡号
-	private String rechargeAmount;		// 充值金额
+	private BigDecimal rechargeAmount;		// 充值金额
 	private String validateCode;		// 验证码
 	private Date rechargeDate;		// 充值时间
 	private String thirdPayNo;		// 第三方支付平台凭证单号
@@ -121,17 +123,19 @@ public class FinanceRecharge extends DataEntity<FinanceRecharge> {
 		this.bankCardNo = bankCardNo;
 	}
 	
-	public String getRechargeAmount() {
-		return rechargeAmount;
-	}
 
-	public void setRechargeAmount(String rechargeAmount) {
-		this.rechargeAmount = rechargeAmount;
-	}
 	
 	@Length(min=0, max=10, message="验证码长度必须介于 0 和 10 之间")
 	public String getValidateCode() {
 		return validateCode;
+	}
+
+	public BigDecimal getRechargeAmount() {
+		return rechargeAmount;
+	}
+
+	public void setRechargeAmount(BigDecimal rechargeAmount) {
+		this.rechargeAmount = rechargeAmount;
 	}
 
 	public void setValidateCode(String validateCode) {

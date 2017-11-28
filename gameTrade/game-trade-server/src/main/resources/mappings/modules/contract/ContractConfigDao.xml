@@ -5,12 +5,12 @@
 	<sql id="contractConfigColumns">
 		a.id AS "id",
 		a.contract_id AS "contractId",
-		a.range_start AS "rangeStart",
-		a.range_end AS "rangeEnd",
-		a.benift_rate AS "beniftRate",
+		a.range_start/10000 AS "rangeStart",
+		a.range_end/10000 AS "rangeEnd",
+		a.benift_rate*100 AS "beniftRate",
 		a.create_date AS "createDate",
 		a.create_by AS "createBy.id",
-		a.updte_date AS "updteDate",
+		a.update_date AS "updateDate",
 		a.update_by AS "updateBy.id",
 		a.del_flag AS "delFlag"
 	</sql>
@@ -87,7 +87,7 @@
 			benift_rate,
 			create_date,
 			create_by,
-			updte_date,
+			update_date,
 			update_by,
 			del_flag
 		) VALUES (
@@ -98,7 +98,7 @@
 			#{beniftRate},
 			#{createDate},
 			#{createBy.id},
-			#{updteDate},
+			#{updateDate},
 			#{updateBy.id},
 			#{delFlag}
 		)

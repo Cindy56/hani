@@ -373,12 +373,13 @@
 		<!-- fastjson json -->
 		<!-- <dependency> <groupId>com.alibaba</groupId> <artifactId>fastjson</artifactId> 
 			<version>${fastjson.version}</version> </dependency> -->
-
 		<dependency>
 			<groupId>com.caucho</groupId>
 			<artifactId>hessian</artifactId>
 			<version>4.0.7</version>
-		</dependency>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/hessian-4.0.7.jar</systemPath>
+		</dependency>		
 
 		<!-- xstream xml -->
 		<dependency>

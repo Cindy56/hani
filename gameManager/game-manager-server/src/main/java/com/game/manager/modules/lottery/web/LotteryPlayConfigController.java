@@ -19,6 +19,7 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
+import com.game.manager.modules.sys.utils.UserUtils;
 import com.game.modules.lottery.constant.LotteryConstants;
 import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.entity.LotteryType;
@@ -137,6 +138,7 @@ public class LotteryPlayConfigController extends BaseController {
         if (!beanValidator(model, lotteryPlayConfig)) {
             return form(lotteryPlayConfig, model);
         }
+        lotteryPlayConfig.setCurrentUser(UserUtils.getUser());
         lotteryPlayConfigService.save(lotteryPlayConfig);
         addMessage(redirectAttributes, LotteryConstants.SAVE_SUCCESS);
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryPlayConfig/?repage";
@@ -152,6 +154,7 @@ public class LotteryPlayConfigController extends BaseController {
     @RequiresPermissions("lottery:lotteryPlayConfig:edit")
     @RequestMapping(value = "delete")
     public String delete(LotteryPlayConfig lotteryPlayConfig, RedirectAttributes redirectAttributes) {
+        lotteryPlayConfig.setCurrentUser(UserUtils.getUser());
         lotteryPlayConfigService.delete(lotteryPlayConfig);
         addMessage(redirectAttributes, LotteryConstants.REMOVE_SUCCESS);
         return "redirect:" + Global.getAdminPath() + "/lottery/lotteryPlayConfig/?repage";

@@ -20,7 +20,7 @@ import com.game.common.persistence.DataEntity;
  */
 public class Contract extends DataEntity<Contract> {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2068384035681508128L;
 	private Office office;		// 机构id
 	private String orgName;		// 机构名称
 	private User user;		// 用户id
@@ -41,6 +41,7 @@ public class Contract extends DataEntity<Contract> {
 	private String secPassword;	//安全密码
 	
 	private List<ContractConfig> contractConfigList = Lists.newArrayList();		// 子表列表
+//	private List<ContractConfig> contractConfigList	;// 子表列表
 	
 	
 	
@@ -52,7 +53,6 @@ public class Contract extends DataEntity<Contract> {
 		super(id);
 	}
 
-	@NotNull(message="机构id不能为空")
 	public Office getOffice() {
 		return office;
 	}

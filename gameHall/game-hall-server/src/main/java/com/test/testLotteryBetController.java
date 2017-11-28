@@ -89,7 +89,7 @@ public class testLotteryBetController  {
 
 
 		User user = new User();
-		user.setId("00user");// 用户ID
+		user.setId("a4fff2ed9be246268fb742d9c684dba0");// 用户ID
 		user.setName("00username");// 用户名
 		Office company = new Office();
 		company.setCode("code");// 组织编号
@@ -97,9 +97,11 @@ public class testLotteryBetController  {
 
 		
 		LotteryOrder bet1 = new LotteryOrder();
+		
 		bet1.setCurrentUser(user);
-		// AddBetFormInput bet1 = new AddBetFormInput();
+		bet1.setUser(user);
 		bet1.preInsert();
+		// AddBetFormInput bet1 = new AddBetFormInput();
 		// bet1.setUserId("userId");
 		// bet1.setUserName("userName");
 		bet1.setOrgId("orgId");
@@ -109,7 +111,7 @@ public class testLotteryBetController  {
 		bet1.setLotteryCode(lotteryCode);
 		BigDecimal betAmount = new BigDecimal(100);
 		bet1.setBetAmount(betAmount);
-		String betIssueNo = "20171117";
+		String betIssueNo = "20171125084";
 		bet1.setBetIssueNo(betIssueNo);
 		String betType = "SSC_5_ZHIXUANFUSHI";
 		bet1.setBetType(betType);
@@ -150,12 +152,12 @@ public class testLotteryBetController  {
 		company.setCode("code");// 组织编号
 		user.setCompany(company);
 		
-		LotteryPlayConfig lotteryPlayConfig = new LotteryPlayConfig();
-		lotteryPlayConfig.setCurrentUser(user);
+	//	LotteryPlayConfig lotteryPlayConfig = new LotteryPlayConfig();
+	//	lotteryPlayConfig.setCurrentUser(user);
 		
 		
 		//user获得玩法配置
-		MemberPlayConfig memberPlayConfig = myMemberPlayConfigService.getMemberPlayConfigByUserId("1");
+		//MemberPlayConfig memberPlayConfig = myMemberPlayConfigService.getMemberPlayConfigByUserId("1");
 		
 		
 		
@@ -164,7 +166,10 @@ public class testLotteryBetController  {
 		String betType = "SSC_5_ZHIXUANDANSHI";
 		bet1.setBetType(betType );
 		
-		String betDetail = "0123,123,123,123,123";
+		//String betDetail = "0123,123,123,123,123";//直选复式
+		String betDetail = "01234,12345,12345,12345,12345";//直选单式
+		
+		bet1.setBetIssueNo("20171127068");
 		bet1.setBetDetail(betDetail );
 		
 		String playModeMoneyType = "0";
@@ -172,9 +177,12 @@ public class testLotteryBetController  {
 		
 		bet1.setBetRate(1);
 		
-		bet1.setPlayModeMoney(1980);
-		BigDecimal playModeCommissionRate = new BigDecimal(2.5);
+		bet1.setPlayModeMoney(1900);
+		BigDecimal playModeCommissionRate = new BigDecimal("2.8");
 		bet1.setPlayModeCommissionRate(playModeCommissionRate );
+		
+		BigDecimal betAmount = new BigDecimal("10");
+		bet1.setBetAmount(betAmount );
 		//投注
 		
 	

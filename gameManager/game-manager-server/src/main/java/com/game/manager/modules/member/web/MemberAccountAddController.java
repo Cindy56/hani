@@ -138,7 +138,7 @@ public class MemberAccountAddController extends BaseController {
 					
 					while (commissionRateMax.compareTo(commissionRateMin)>=0) {
 						//循环算出玩法的奖金与返点
-						BigDecimal awardMoney=new BigDecimal(2).divide(winningProbability,3).multiply(new BigDecimal(1).subtract(commissionRateMin.divide(new BigDecimal(100))));
+						BigDecimal awardMoney=new BigDecimal(2).divide(winningProbability,3).multiply(new BigDecimal(1).subtract(commissionRateMin));
 						DecimalFormat dfFormat = new DecimalFormat("0.000"); 
 						String Money=dfFormat.format(awardMoney);
 						
@@ -148,9 +148,10 @@ public class MemberAccountAddController extends BaseController {
 						awardMap.put("awardMoney", Money);
 						//返点百分比
 						awardMap.put("commissionRate", commissionRateMin);
+						//.multiply(new BigDecimal(100))
 						//把每种返点添加到groupList中
 						groupList.add(awardMap);
-						commissionRateMin=commissionRateMin.add(new BigDecimal("0.1"));
+						commissionRateMin=commissionRateMin.add(new BigDecimal("0.001"));
 					}
 					if(null!=lottery.getMap()) {
 						lottery.getMap().put("awardList", groupList);
