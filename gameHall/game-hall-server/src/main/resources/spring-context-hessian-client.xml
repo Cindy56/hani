@@ -65,5 +65,10 @@
 	<bean id="systemServiceFacade" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
         <property name="serviceUrl" value="${game.manager.url}/systemServiceFacade"/>  
         <property name="serviceInterface" value="com.game.modules.sys.service.SystemServiceFacade"/>  
-    </bean>    
+    </bean> 
+    
+     <bean id="receiveBankNoService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/receiveBankNoService"/>  
+        <property name="serviceInterface" value="com.game.modules.finance.service.ReceiveBankNoService"/>  
+    </bean>  
 </beans>  

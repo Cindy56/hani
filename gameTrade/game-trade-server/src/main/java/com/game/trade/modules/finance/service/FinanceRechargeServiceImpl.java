@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.game.common.persistence.Page;
 import com.game.common.service.CrudService;
 import com.game.modules.finance.entity.FinanceRecharge;
+
 import com.game.modules.finance.service.FinanceRechargeService;
 import com.game.trade.modules.finance.dao.FinanceRechargeDao;
 
@@ -45,5 +46,11 @@ public class FinanceRechargeServiceImpl
 	public void delete(FinanceRecharge financeRecharge) {
 		super.delete(financeRecharge);
 	}
+
+
+
+
+	
+
 	
 }

@@ -61,6 +61,10 @@
         <property name="service" ref="financeRechargeService"></property>  
         <property name="serviceInterface" value="com.game.modules.finance.service.FinanceRechargeService"></property>  
     </bean>   
+    <bean name="/receiveBankNoService" class="org.springframework.remoting.caucho.HessianServiceExporter">  
+        <property name="service" ref="receiveBankNoService"></property>  
+        <property name="serviceInterface" value="com.game.modules.finance.service.ReceiveBankNoService"></property>  
+    </bean>   
     
     <!-- contract -->
 	<bean name="/contractService" class="org.springframework.remoting.caucho.HessianServiceExporter">  

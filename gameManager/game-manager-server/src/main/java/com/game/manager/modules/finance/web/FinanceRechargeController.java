@@ -24,6 +24,7 @@ import com.game.common.web.BaseController;
 import com.game.modules.finance.entity.FinanceRecharge;
 import com.game.modules.finance.entity.FinanceTradeDetail;
 import com.game.modules.finance.service.FinanceRechargeService;
+import com.game.modules.member.entity.MemberAccount;
 import com.game.modules.member.service.MemberAccountService;
 
 /**
@@ -77,11 +78,23 @@ public class FinanceRechargeController extends BaseController {
 	@RequestMapping(value = "/audit")
 	public String audit(FinanceRecharge financeRecharge, Model model) {
 		model.addAttribute("financeRecharge", financeRecharge);
+		//如果订单是取消状态 或者 支付完成状态 则不执行以下逻辑
+		if("1".equals(financeRecharge.getStatus()) || "4".equals(financeRecharge.getStatus())
+				|| "5".equals(financeRecharge.getStatus())) {
+			return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list";
+		}
+		//根据id查询除financeRecharge实体
+		financeRecharge = financeRechargeService.get(financeRecharge.getId());
+		//获取user_id
+		String userId = financeRecharge.getUser().getId();
+		//通过user_id获取member_account的id
+		MemberAccount memberAccount = memberAccountService.getByUserId(userId);
+		String memberAccountId = memberAccount.getId();
 		//改变订单状态
-		financeRecharge.setStatus("1");
+		financeRecharge.setStatus("4");
 		financeRechargeService.save(financeRecharge);
 		//改变余额
-		memberAccountService.plusAmount(financeRecharge.getUser().getId(),financeRecharge.getRechargeAmount());
+		memberAccountService.plusAmount(memberAccountId,financeRecharge.getRechargeAmount());
 		return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list"; 
 	}
 	
@@ -96,8 +109,12 @@ public class FinanceRechargeController extends BaseController {
 	@RequestMapping(value = "/close")
 	public String close(FinanceRecharge financeRecharge, Model model) {
 		model.addAttribute("financeRecharge", financeRecharge);
+		//如果订单是支付完成状态则不执行以下逻辑
+		if("4".equals(financeRecharge.getStatus()) || "5".equals(financeRecharge.getStatus())) {
+			return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list";
+		}
 		//改变订单状态
-		financeRecharge.setStatus("0");
+		financeRecharge.setStatus("1");
 		financeRechargeService.save(financeRecharge);
 		return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list"; 
 	}

@@ -132,7 +132,7 @@
 					<fmt:formatDate value="${financeRecharge.auditDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${fns:getDictLabel(financeRecharge.status, 'yes_no', '')}
+					${fns:getDictLabel(financeRecharge.status, 'recharge_status', '')}
 					<%-- ${financeRecharge.status} --%>
 				</td>
 				<td>

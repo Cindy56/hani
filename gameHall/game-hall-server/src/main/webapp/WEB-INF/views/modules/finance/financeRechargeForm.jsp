@@ -28,9 +28,9 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/finance/financeRecharge/">账户充值列表</a></li>
-		<li class="active"><a href="${ctx}/finance/financeRecharge/form?id=${financeRecharge.id}">账户充值<shiro:hasPermission name="trade:financeRecharge:edit">${not empty financeRecharge.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="trade:financeRecharge:edit"></shiro:lacksPermission></a></li>
+		<li class="active"><a href="${ctx}/finance/financeRecharge/rechargeForm">账户充值<shiro:hasPermission name="trade:financeRecharge:edit">${not empty financeRecharge.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="trade:financeRecharge:edit"></shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="financeRecharge" action="${ctx}/finance/financeRecharge/form" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="financeRecharge"  action="${ctx}/finance/financeRecharge/form" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 <%-- 		<div class="control-group">
@@ -40,6 +40,33 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div> --%>
+	
+				
+		<c:forEach items="${list}" var="receiveBankNo">
+			<div class="control-group">
+			<label class="control-label">收款人：</label>
+			<div class="controls">
+				${receiveBankNo.userName}
+			</div>
+		    </div> 
+			
+			<div class="control-group">
+			<label class="control-label">银行名称：</label>
+			<div class="controls">
+				${receiveBankNo.bankNo}
+			</div>
+		    </div> 
+		    
+		    <div class="control-group">
+			<label class="control-label">银行卡号：</label>
+			<div class="controls">
+				${receiveBankNo.bankCardNo}
+			</div>
+		    </div> 
+			</c:forEach>
+	
+		
+
 		
 		<div class="control-group">
 			<label class="control-label">用户名：</label>
@@ -86,14 +113,16 @@
 		<div class="control-group">
 			<label class="control-label">充值银行名称：</label>
 			<div class="controls">
-				<form:input path="bankName" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+				<form:input path="bankName" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font></span>
 			</div>
 		</div>
 		
 		<div class="control-group">
 			<label class="control-label">充值银行卡号：</label>
 			<div class="controls">
-				<form:input path="bankCardNo" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+				<form:input path="bankCardNo" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		
@@ -171,7 +200,7 @@
 		
 		<div class="form-actions">
 			<%-- <shiro:hasPermission name="trade:financeRecharge:edit"> --%>
-			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>
+			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />
 		<%-- 	&nbsp;</shiro:hasPermission> --%>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
