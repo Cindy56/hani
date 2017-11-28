@@ -17,6 +17,9 @@ import com.api.BetServiceApi;
 import com.entity.ResultData;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.hall.modules.sys.utils.UserUtils;
+import com.game.modules.finance.entity.FinanceTradeDetail;
+import com.game.modules.finance.service.FinanceTradeDetailService;
 import com.game.modules.lottery.entity.GameError;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
@@ -51,6 +54,8 @@ public class LotteryAddBetService implements BetServiceApi {
 	@Autowired
 	private LotteryOpenTodayService myOpenToday;
 
+	@Autowired
+	private FinanceTradeDetailService financeTradeDetailService;
 
 
 	public String test1() {
@@ -120,7 +125,7 @@ public class LotteryAddBetService implements BetServiceApi {
 
 	@Transactional(readOnly = false)
 	@Override
-	public ResultData addBet(List<LotteryOrder> lsBetData) { // TODO
+	public int addBet(LotteryOrder betData) { // TODO
 
 		System.out.println("service_addbet here");
 
@@ -136,79 +141,33 @@ public class LotteryAddBetService implements BetServiceApi {
 		// -------------------------------------
 		// myServiceClient.addBet(betData);
 
-		ResultData rd = ResultData.ResultDataOK();
-
-		if (lsBetData == null) {
-			LOG.debug("投注信息为空");
-			return rd;
-		}
-
-		for (int i = 0; i < lsBetData.size(); i++) { // 前置校验 LotteryOrder betData =
-			LotteryOrder betData = lsBetData.get(i);
-
-		
-			if (betData.getBetIssueNo().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeIssuseNo);
-				rd.setMessage(GameError.errIssuseNo);
-				return rd;
-			}
-
-			if (betData.getPlayModeMoneyType().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingModel);
-				rd.setMessage(GameError.errBettingModel);
-				return rd;
-			}
-
-			if (betData.getBetAmount().compareTo(new BigDecimal(0)) <= 0) {
-				rd.setErrorCode(GameError.errCodeBettingMoney);
-				rd.setMessage(GameError.errBettingMoney);
-				return rd;
-			}
-
-			// 订单编号应该在此处生成
-			if (betData.getOrderNo() != null && betData.getOrderNo().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeOrderNo);
-				rd.setMessage(GameError.errOrderNo);
-				return rd;
-			}
-
-		
-			if (betData.getLotteryCode().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeLotteryCode);
-				rd.setMessage(GameError.errLotteryCode);
-				return rd;
-			}
-
-			if (betData.getBetDetail() != null && betData.getBetDetail().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBetDetial);
-				rd.setMessage(GameError.errBetDetial);
-				return rd;
-			}
-
-			/*
-			 * LotteryOrder bet1 = new LotteryOrder(); User user = new User();
-			 * bet1.setUser(user); String lotteryCode = "CQSSC";
-			 * bet1.setLotteryCode(lotteryCode); BigDecimal betAmount = new BigDecimal(100);
-			 * bet1.setBetAmount(betAmount); String betIssueNo = "20171117";
-			 * bet1.setBetIssueNo(betIssueNo); String betType = "";
-			 * bet1.setBetType(betType); User currentUser = null;
-			 * bet1.setCurrentUser(currentUser); String id = ""; bet1.setId(id); String
-			 * orderSource = "0"; bet1.setOrderSource(orderSource); String orderType = "1";
-			 * bet1.setOrderType(orderType); String playModeCommissionRate = "0";
-			 * bet1.setPlayModeCommissionRate(playModeCommissionRate); String playModeMoney
-			 * = "1960"; bet1.setPlayModeMoney(playModeMoney); String playModeMoneyType =
-			 * "0"; bet1.setPlayModeMoneyType(playModeMoneyType);
-			 */
-
 			// 生成订单
 			myOrder.insert(betData);
 
 			// 会员账户扣款
 			String thisAccountId = betData.getId();
-			myAccountCharge.AccountChargeAmount(thisAccountId, betData.getBetAmount());
-		}
+			myAccountCharge.accountChargeAmount(thisAccountId, betData.getBetAmount());
+			
+			
+			//帐变
+			FinanceTradeDetail trade = new FinanceTradeDetail();
 
-		return rd;
+			User user = UserUtils.getUser();
+			trade.setUser(user);
+		    trade.setUserName(user.getName());
+		    trade.setAccountId(user.getId());
+		    trade.setOrgId(user.getCompany().getCode());
+		    trade.setBusiNo(betData.getOrderNo());
+		    trade.setTradeType("0");
+		    trade.setAmount( betData.getBetAmount());
+		  
+		    trade.getUser().setId("sys");
+			
+			financeTradeDetailService.save(trade);
+			
+		
+
+		return 0;
 	}
 
 	@Override
