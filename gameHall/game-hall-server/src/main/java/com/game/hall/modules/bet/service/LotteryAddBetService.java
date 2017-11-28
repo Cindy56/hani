@@ -151,8 +151,8 @@ public class LotteryAddBetService implements BetServiceApi {
 			
 			//帐变
 			FinanceTradeDetail trade = new FinanceTradeDetail();
-
-			User user = UserUtils.getUser();
+				
+			User user = betData.getUser();
 			trade.setUser(user);
 		    trade.setUserName(user.getName());
 		    trade.setAccountId(user.getId());

@@ -2003,6 +2003,11 @@ public enum SscService implements LotteryService {
 
 		MemberPlayConfig memCfg = myMemberPlayConfigService.getMemberPlayConfigByUserId(lotteryOrder.getUser().getId());
 
+		if(memCfg==null)
+		{
+			System.out.println("userid = null ==> " +lotteryOrder.getUser().getId());
+			return GameError.errCodeMember;
+		}
 		String jsPlayCfg = memCfg.getPlayConfig();
 		// LotteryPlayConfig lotPlayCfg = (LotteryPlayConfig)
 		// JsonMapper.fromJsonString(jsPlayCfg,
@@ -2016,10 +2021,10 @@ public enum SscService implements LotteryService {
 				.collect(Collectors.toList());
 
 		if (lsPlayCfg == null || lsPlayCfg.size() <= 0)
-			return 1;
+			return GameError.errCodeplayCode;
 		LotteryPlayConfig lotPlayCfg = lsPlayCfg.get(0);
 		if (lotPlayCfg == null)
-			return 1;
+			return GameError.errCodeplayCode;
 
 		// 倍数限制
 

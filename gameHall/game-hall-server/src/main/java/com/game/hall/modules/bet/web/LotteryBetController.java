@@ -4,7 +4,6 @@
 package com.game.hall.modules.bet.web;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -21,17 +20,15 @@ import com.game.common.mapper.JsonMapper;
 import com.game.hall.modules.bet.service.LotteryAddBetService;
 import com.game.hall.modules.bet.service.OrderUtils;
 import com.game.hall.modules.sys.utils.UserUtils;
-import com.game.modules.finance.entity.FinanceTradeDetail;
 import com.game.modules.lottery.entity.GameError;
 import com.game.modules.lottery.service.LotteryCalculateService;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
-import com.game.modules.member.entity.MemberAccount;
 import com.game.modules.member.service.MemberAccountService;
 import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.User;
-import com.test.testLotteryBetController;
+import com.game.modules.sys.service.SystemServiceFacade;
 
 /**
  * 投注
@@ -61,6 +58,9 @@ public class LotteryBetController {
 
 	@Autowired
 	MemberAccountService memberAccountService;
+	
+	@Autowired
+	SystemServiceFacade systemServiceFacade;
 
 	@ResponseBody
 	@RequestMapping(value = "/addbet", method = RequestMethod.POST)
@@ -88,7 +88,7 @@ public class LotteryBetController {
 			LotteryOrder lotOrder = lsBetData.get(i);
 			lotOrder.setOrderNo(OrderUtils.getOrderNo());
 
-			User user = RandomMember.getMember(memberAccountService);
+			User user = RandomMember.getMember(memberAccountService,systemServiceFacade);
 
 			lotOrder.setUser(user);
 			lotOrder.setCurrentUser(user);

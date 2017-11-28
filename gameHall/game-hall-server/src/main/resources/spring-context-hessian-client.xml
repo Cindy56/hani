@@ -52,7 +52,6 @@
         <property name="serviceUrl" value="${game.trade.url}/financeRechargeService"/>  
         <property name="serviceInterface" value="com.game.modules.finance.service.FinanceRechargeService"/>  
     </bean>    
-<<<<<<< HEAD
 
 	<bean id="financeTradeDetailService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
         <property name="serviceUrl" value="${game.trade.url}/financeTradeDetailService"/>  
@@ -62,11 +61,9 @@
     
     
     
-=======
   	<!-- system:user and role -->
 	<bean id="systemServiceFacade" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
         <property name="serviceUrl" value="${game.manager.url}/systemServiceFacade"/>  
         <property name="serviceInterface" value="com.game.modules.sys.service.SystemServiceFacade"/>  
     </bean>    
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 </beans>  
