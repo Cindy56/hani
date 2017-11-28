@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.trade.modules.finance.dao.ReceiveBankNoDao">
+	<sql id="receiveBankNoColumns">
+		a.id AS "id",
+		a.bank_no AS "bankNo",
+		a.bank_card_no AS "bankCardNo",
+		a.user_name AS "userName",
+		a.create_time AS "createTime",
+		a.status AS "status"
+	</sql>
+	
+	<sql id="receiveBankNoJoins">
+	</sql>
+    
+	<select id="get" resultType="ReceiveBankNo">
+		SELECT 
+			<include refid="receiveBankNoColumns"/>
+		FROM receive_bank_no a
+		<include refid="receiveBankNoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ReceiveBankNo">
+		SELECT 
+			<include refid="receiveBankNoColumns"/>
+		FROM receive_bank_no a
+		<include refid="receiveBankNoJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ReceiveBankNo">
+		SELECT 
+			<include refid="receiveBankNoColumns"/>
+		FROM receive_bank_no a
+		<include refid="receiveBankNoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO receive_bank_no(
+			id,
+			bank_no,
+			bank_card_no,
+			user_name,
+			create_time,
+			status
+		) VALUES (
+			#{id},
+			#{bankNo},
+			#{bankCardNo},
+			#{userName},
+			#{createTime},
+			#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE receive_bank_no SET 	
+			bank_no = #{bankNo},
+			bank_card_no = #{bankCardNo},
+			user_name = #{userName},
+			create_time = #{createTime},
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM receive_bank_no
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
