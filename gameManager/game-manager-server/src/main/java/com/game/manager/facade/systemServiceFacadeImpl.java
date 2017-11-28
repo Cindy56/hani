@@ -20,6 +20,10 @@ public class systemServiceFacadeImpl implements SystemServiceFacade {
 		this.systemService.saveUser(user);
 		return user;
 	}
+	@Override
+	public User getUserById(String userId) {
+		return this.systemService.getUser(userId);
+	}
 
 	@Override
 	public Role getRole(String id) {

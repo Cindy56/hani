@@ -23,6 +23,6 @@ public interface AccountChargeDao extends CrudDao<AccountChargeDao> {
 	 * @param id
 	 * @param blance
 	 */
-	public void AccountChargeAmount(@Param("accountId")String id, @Param("blance")BigDecimal blance);
+	public void accountChargeAmount(@Param("accountId")String id, @Param("blance")BigDecimal blance);
 
 }

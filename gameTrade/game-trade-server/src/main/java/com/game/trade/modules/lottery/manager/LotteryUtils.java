@@ -15,6 +15,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.game.modules.order.entity.LotteryOrder;
+import com.game.trade.model.OpenLottery;
+import com.game.trade.model.Star5;
+import com.game.trade.util.Combination;
 
 /**
  * 算奖工具类
@@ -102,33 +105,6 @@ public class LotteryUtils {
     }
 
     /**
-     * 时时彩2星直选和值 判断是否中奖
-     * @param openNum 开奖号码
-     * @param betNum 投注号码
-     * @return 中奖返回true
-     * @author Terry
-     */
-    public static boolean checkWinSsc2XingZhiXuanHeZhi(String openNum, String betNum) {
-        // 参数不合法，返回false
-        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
-            return false;
-        }
-
-        // 转换开奖号码为Integer类型集合
-        String[] openNums = openNum.split(",");
-        List<Integer> openNumsList = Arrays.asList(openNums).stream().map(Integer::valueOf).collect(Collectors.toList());
-
-        // 计算出开奖号码的和值
-        String openSum = openNumsList.stream().reduce(0, (sum, sum1) -> sum + sum1).toString();
-
-        // 如果投注和值中包含开奖号码和值即为中奖
-        if (StringUtils.contains(betNum, openSum)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 时时彩3星组选3 判断是否中奖
      * @param openNum 开奖号码
      * @param betNum 投注号码
@@ -194,7 +170,7 @@ public class LotteryUtils {
      * @return 开奖返回true
      * @author Jerry
      */
-    public static boolean checkWinSsc3XingHunHeZuXuan(String openNum, String betNum) {
+    public static boolean checkWinSsc3XingZuXuanHun(String openNum, String betNum) {
         // 参数不合法，返回false
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
@@ -254,7 +230,7 @@ public class LotteryUtils {
      * @return 中奖返回true
      * @author Jerry
      */
-    public static boolean checkWinSsc3XingZuxuanHeZhi(String openNum, String betNum) {
+    public static boolean checkWinSsc3XingZuXuanHeZhi(String openNum, String betNum) {
         // 参数不合法，返回false
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
@@ -286,13 +262,13 @@ public class LotteryUtils {
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
         }
-        String[] betNumArr = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
-        List<String> betNumList = Arrays.asList(betNumArr);
-        // 开奖号码截取前三位 进行比较
+        // 计算开奖和值
         String[] openNums = openNum.split(",");
         List<Integer> openNumsList = Arrays.asList(openNums).stream().map(Integer::valueOf).collect(Collectors.toList());
         String openSum = openNumsList.stream().reduce(0, (sum, sum1) -> sum + sum1).toString();
         // 截取最后一位比较
+        String[] betNumArr = betNum.split(",");
+        List<String> betNumList = Arrays.asList(betNumArr);
         String subOpenSum = openSum.substring(openSum.length() - 1);
         if (betNumList.contains(subOpenSum)) {
             return true;
@@ -301,13 +277,13 @@ public class LotteryUtils {
     }
 
     /**
-     * 时时彩前3直选和值：前3直选和值 所选数值等于开奖号码百位、十位、个位三个数字相加之和即中奖
+     * 时时彩直选和值
      * @param openNum 开奖号码
      * @param betNum 投注号码
      * @return 中奖返回true
      * @author Jerry
      */
-    public static boolean checkWinSsc3XingZhiXuanHeZhi(String openNum, String betNum) {
+    public static boolean checkWinSscZhiXuanHe(String openNum, String betNum) {
         // 参数不合法，返回false
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
@@ -739,7 +715,7 @@ public class LotteryUtils {
     /**
      * 时时彩大一帆风顺 判断是否中奖
      * @param openNum 开奖号码，五个位以逗号隔开
-     * @param betNum 投注号码，至少五个号码，以逗号隔开
+     * @param betNum 投注号码，多个号码以逗号隔开
      * @return 中奖返回true
      * @author Terry
      */
@@ -920,25 +896,6 @@ public class LotteryUtils {
             if (StringUtils.contains(betNumList[i], openNums[i])) {
                 count++;
             }
-        }
-        return count;
-    }
-
-    /**
-     * 时时彩三星组三 计算中奖注数
-     * @param betDetail 投注内容
-     * @return 返回注单实际投注注数
-     * @author Terry
-     */
-    public static int winCountSsc3XingZu3(String openNum, String betNum) {
-        int count = 0;
-        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
-            return count;
-        }
-        openNum = formatNumber(openNum.split(","));
-        Set<String> betSet = ssc3XinZuXuan3(betNum);
-        if (betSet.contains(openNum)) {
-            count++;
         }
         return count;
     }
@@ -1261,4 +1218,120 @@ public class LotteryUtils {
 	        combinationSelect(dataList, i + 1, resultList, resultIndex + 1);  
 	    }  
 	}  
+	
+	
+	public static int calBetNum5XingZhiXuanDanShi(String bet) {
+		// TODO Auto-generated method stub
+
+		String[] betNumList = bet.split(",");
+
+		return betNumList.length;
+
+	}
+	
+	public static int calBetNum5XingZhiXuanFuShi(String bet)
+	{
+		String[] betNumList = bet.split(",");
+		int count = 0;
+		for (String string : betNumList) {
+			count *= string.length();
+		}
+
+		return count;
+		
+	}
+	
+	public static int calBetNum5XingZhiXuanHeZhi(String bet) {
+		// TODO Auto-generated method stub
+
+		String[] betNumList = bet.split(",");
+
+		return betNumList.length;
+
+	}
+	
+	
+	public static int calBetNum5XingZuXuan120(String bet) {
+		
+
+		String[] betNumList = bet.split(",");
+
+		List<String> lsBets = Arrays.asList(betNumList);
+
+		List<Integer> lsIntBets = lsBets.stream().map(Integer::valueOf).collect(Collectors.toList());
+
+		// get combination
+		ArrayList<Integer> t = new ArrayList<Integer>();
+		ArrayList<ArrayList<Integer>> arrCombs = Combination.Combination(lsIntBets, lsIntBets.size(), 5, t);
+
+		OpenLottery ol = new OpenLottery();
+		return arrCombs.size();
+		
+	}
+
+	public static int calBetNum5XingZuXuan60(String betDetail) {
+		// TODO Auto-generated method stub
+		
+
+		String[] betNumList = betDetail.split(",");
+
+		List<Star5> lsStar5 = new ArrayList<Star5>();
+
+		int a0 = 0;
+		int a1 = 0;
+		int a2 = 0;
+		int a3 = 0;
+		int a4 = 0;
+
+		// double No array
+		List<Integer> doubleNo = Arrays.asList(betNumList[0].split("")).stream().map(Integer::valueOf)
+				.collect(Collectors.toList());
+
+		// single No array
+		List<Integer> singleNo = Arrays.asList(betNumList[1].split("")).stream().map(Integer::valueOf)
+				.collect(Collectors.toList());
+
+		// single No array => combination N,3
+		ArrayList<Integer> t = new ArrayList<Integer>();
+		ArrayList<ArrayList<Integer>> arr = Combination.Combination(singleNo, singleNo.size(), 3, t);
+
+		for (int idb = 0; idb < doubleNo.size(); idb++) {
+
+			a0 = a1 = doubleNo.get(idb);
+
+			for (int isingle = 0; isingle < arr.size(); isingle++) {
+
+				a2 = arr.get(isingle).get(0);
+				a3 = arr.get(isingle).get(1);
+				a4 = arr.get(isingle).get(2);
+
+				int arrAN[] = new int[5];
+				arrAN[0] = a0;
+				arrAN[1] = a1;
+				arrAN[2] = a2;
+				arrAN[3] = a3;
+				arrAN[4] = a4;
+
+				Arrays.sort(arrAN);
+
+				Star5 s5 = new Star5(arrAN);
+
+				lsStar5.add(s5);
+			}
+
+		}
+
+		return lsStar5.size();
+		
+	}
+
+	public static int calBetNum5XingZuXuan30(String betDetail) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	
+	
+	
 }

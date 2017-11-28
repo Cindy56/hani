@@ -85,6 +85,12 @@ public class GameError {
 	public static final Integer errCodePlayModeCommissionRate = 114;
 	public static final String errPlayModeCommissionRate = "返点比例不正确";
 
-	 
+	public static final Integer errCodeOrderNo = 115;
+	public static final String errOrderNo = "订单号无效";
 
+	public static final Integer errCodeplayCode = 116;
+	public static final String errplayCode = "没有配置这个玩法";
+	
+	public static final Integer errCodeMember = 117;
+	public static final String errMember = "没有这个用户";
 }

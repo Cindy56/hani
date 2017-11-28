@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.service.CrudService;
 import com.game.common.utils.DateUtils;
@@ -37,6 +38,7 @@ import com.game.modules.lottery.entity.LotteryTypeTime;
 import com.game.modules.lottery.service.LotteryTimeNumService;
 import com.game.modules.sys.entity.Dict;
 import com.game.trade.modules.lottery.dao.LotteryTimeNumDao;
+import com.game.trade.modules.lottery.manager.LotteryCodeConstants;
 import com.game.trade.modules.lottery.manager.TimeTaskService;
 
 /**
@@ -119,17 +121,33 @@ public class LotteryTimeNumServiceImpl
 		LocalDate tempDate = startDate;
 		
 		LocalDate endDatex = endDate.plusDays(1);
-		
-		
+		int plusDays =0;
+		LocalDateTime endDateXj = null;
+		if(LotteryCodeConstants.SSC_XJ.equals(timeTask.getLotteryCode())){
+			plusDays=1;
+		}
 		//循环天
 		while (!tempDate.isAfter(endDatex)) {
+			String lotteryIssueNo = DateUtils.formatDate(Date.from(tempDate.atStartOfDay(ZoneId.systemDefault()).toInstant()),"yyyyMMdd");
+			if(!tempDate.isEqual(endDatex)) {//过滤最后一期
+				List<LotteryTimeNum> existList = lotteryTimeNumDao.queryByLikeLotteryCodeIssueNo(timeTask.getLotteryCode(), lotteryIssueNo);
+				if(CollectionUtils.isNotEmpty(existList)) {//判断当天是否生成开奖计划，如生成 则覆盖
+					//存在，先删除表数据 在删除定时任务
+					lotteryTimeNumDao.batchDel(timeTask.getLotteryCode(), lotteryIssueNo);
+					for (LotteryTimeNum lotteryTimeNum : existList) {
+						timeTaskService.deleteJob(timeTask.getLotteryCode()+":"+lotteryTimeNum.getLotteryIssueNo());
+					}
+				}
+			}
+			
 			//为每个菜种生成一天的时刻明细,
 			int issueNO = 1;
 			for (LotteryTypeTime lotteryTypeTime : lotteryTypeTimeList) {
 				//开始时间  startTime
 				LocalDateTime startTime = tempDate.atTime(LocalTime.parse(lotteryTypeTime.getStartTime()));//每日开售时间
 				//截至时间 endTime
-				LocalDateTime endTime = tempDate.atTime(LocalTime.parse(lotteryTypeTime.getEndTime()));//每日开售时间
+				endDateXj = tempDate.atTime(LocalTime.parse(lotteryTypeTime.getEndTime()));
+				LocalDateTime endTime = tempDate.plusDays(plusDays).atTime(LocalTime.parse(lotteryTypeTime.getEndTime()));//每日开售时间
 				//每期总时间 5分钟/10分钟
 				int periodTotalTime = lotteryTypeTime.getPeriodTotalTime();
 				//封单时间
@@ -147,7 +165,7 @@ public class LotteryTimeNumServiceImpl
 					// ==========================生成时刻明细
 					LotteryTimeNum lotteryTimeNum =new LotteryTimeNum();
 					lotteryTimeNum.preInsert();
-					lotteryTimeNum.setLotteryIssueNo(DateUtils.formatDate(Date.from(betStartTime.atZone(ZoneId.systemDefault()).toInstant()),"yyyyMMdd")+String.format("%03d", issueNO));//期数
+					lotteryTimeNum.setLotteryIssueNo(lotteryIssueNo+String.format("%03d", issueNO));//期数
 					lotteryTimeNum.setLotteryCode(timeTask.getLotteryCode());
 					lotteryTimeNum.setBetStartDate(Date.from(betStartTime.atZone(ZoneId.systemDefault()).toInstant()));//开始时间
 					lotteryTimeNum.setBetEndDate(Date.from(betEndTime.atZone(ZoneId.systemDefault()).toInstant()));//截至时间
@@ -166,6 +184,10 @@ public class LotteryTimeNumServiceImpl
 		LotteryTimeNum current = null;//当前期号
 		LotteryTimeNum next = null;//下一下期号
 		Date convertEndDate = Date.from(endDatex.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		if(LotteryCodeConstants.SSC_XJ.equals(timeTask.getLotteryCode())){
+			convertEndDate = DateUtils.LocalDateTimeToUdate(endDateXj);
+		}
+		//Date convertEndDate =endDatex.atTime(time);
 		List<LotteryTimeNum> list = new ArrayList<LotteryTimeNum>();
 		//记录下一期 期号 、 封单时间 
 		for (Iterator<LotteryTimeNum> iterator = lotteryTimeNumList.iterator(); iterator.hasNext();) {
@@ -179,17 +201,18 @@ public class LotteryTimeNumServiceImpl
 				//第一次 进来 生成下一期 期号
 				next =  iterator.next();  
 			}
-			if(!next.getBetEndDate().after(convertEndDate)) {
+			if(next.getBetEndDate().getTime() <= convertEndDate.getTime()) {
 				lotteryTimeNum.setNextIssueNo(next.getLotteryIssueNo());
 				lotteryTimeNum.setNextHaltDate(next.getBetHaltDate());
 				list.add(lotteryTimeNum);
 			}
-			if(next.getBetEndDate().after(convertEndDate)) {
+			if(next.getBetEndDate().getTime() > convertEndDate.getTime()) {
 				lotteryTimeNum.setNextIssueNo(next.getLotteryIssueNo());
 				lotteryTimeNum.setNextHaltDate(next.getBetHaltDate());
 				list.add(lotteryTimeNum);
 				break;
 			}
+			
 		}
 		Calendar cal = Calendar.getInstance();
 		//生成定时任务
@@ -198,7 +221,7 @@ public class LotteryTimeNumServiceImpl
 			task.setLotteryCode(c.getLotteryCode());
 			task.setLotteryIssueNo(c.getLotteryIssueNo());
 			cal.setTime(c.getBetEndDate());
-			cal.add(Calendar.SECOND, 40);
+			cal.add(Calendar.SECOND, Integer.parseInt(Global.getConfig("game.ssc.second")));
 			//延迟40s 
 			task.setRunAtTime(cal.getTime());
 			timeTaskList.add(task);
@@ -297,8 +320,7 @@ public class LotteryTimeNumServiceImpl
 	
 	
     public static void main(String[] args) throws ParseException {
-    
-    	
+    	System.out.println(200001<=200000);
 	}
 	
 }

@@ -24,7 +24,7 @@ public interface BetServiceApi {
 	 * @param betData
 	 * @return
 	 */
-	public ResultData addBet(List<LotteryOrder> betData);
+	public int addBet(LotteryOrder betData);
 
 	/**
 	 * 历史开奖

@@ -81,7 +81,7 @@ public class LotteryBetService2Test {
 		LotteryOrder order = getOrder();
 		lsBetData.add(order);
 
-		myBetService.addBet(lsBetData);
+	//	myBetService.addBet(lsBetData);
 
 	}
 
