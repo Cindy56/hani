@@ -116,7 +116,7 @@
 				<%-- <td><fmt:formatDate value="${financeRecharge.thirdPayDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td> --%>
 				<%-- <td>${financeRecharge.auditUserName}</td> --%>
 				<%-- <td><fmt:formatDate value="${financeRecharge.auditDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td> --%>
-				<td>${financeRecharge.status}</td>
+				<td>${fns:getDictLabel(financeRecharge.status, 'recharge_status', '')}</td>
 				<%-- <td><fmt:formatDate value="${financeRecharge.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td> --%>
 				<%-- <shiro:hasPermission name="trade:financeRecharge:edit"> --%>
 					<td><a href="${ctx}/finance/financeRecharge/delete?id=${financeRecharge.id}">撤销</a>
