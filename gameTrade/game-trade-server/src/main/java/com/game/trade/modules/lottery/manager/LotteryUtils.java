@@ -105,33 +105,6 @@ public class LotteryUtils {
     }
 
     /**
-     * 时时彩2星直选和值 判断是否中奖
-     * @param openNum 开奖号码
-     * @param betNum 投注号码
-     * @return 中奖返回true
-     * @author Terry
-     */
-    public static boolean checkWinSsc2XingZhiXuanHeZhi(String openNum, String betNum) {
-        // 参数不合法，返回false
-        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
-            return false;
-        }
-
-        // 转换开奖号码为Integer类型集合
-        String[] openNums = openNum.split(",");
-        List<Integer> openNumsList = Arrays.asList(openNums).stream().map(Integer::valueOf).collect(Collectors.toList());
-
-        // 计算出开奖号码的和值
-        String openSum = openNumsList.stream().reduce(0, (sum, sum1) -> sum + sum1).toString();
-
-        // 如果投注和值中包含开奖号码和值即为中奖
-        if (StringUtils.contains(betNum, openSum)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 时时彩3星组选3 判断是否中奖
      * @param openNum 开奖号码
      * @param betNum 投注号码
@@ -197,7 +170,7 @@ public class LotteryUtils {
      * @return 开奖返回true
      * @author Jerry
      */
-    public static boolean checkWinSsc3XingHunHeZuXuan(String openNum, String betNum) {
+    public static boolean checkWinSsc3XingZuXuanHun(String openNum, String betNum) {
         // 参数不合法，返回false
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
@@ -257,7 +230,7 @@ public class LotteryUtils {
      * @return 中奖返回true
      * @author Jerry
      */
-    public static boolean checkWinSsc3XingZuxuanHeZhi(String openNum, String betNum) {
+    public static boolean checkWinSsc3XingZuXuanHeZhi(String openNum, String betNum) {
         // 参数不合法，返回false
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
@@ -289,13 +262,13 @@ public class LotteryUtils {
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
         }
-        String[] betNumArr = betNum.contains(",") ? betNum.trim().split(",") : betNum.trim().split(" ");
-        List<String> betNumList = Arrays.asList(betNumArr);
-        // 开奖号码截取前三位 进行比较
+        // 计算开奖和值
         String[] openNums = openNum.split(",");
         List<Integer> openNumsList = Arrays.asList(openNums).stream().map(Integer::valueOf).collect(Collectors.toList());
         String openSum = openNumsList.stream().reduce(0, (sum, sum1) -> sum + sum1).toString();
         // 截取最后一位比较
+        String[] betNumArr = betNum.split(",");
+        List<String> betNumList = Arrays.asList(betNumArr);
         String subOpenSum = openSum.substring(openSum.length() - 1);
         if (betNumList.contains(subOpenSum)) {
             return true;
@@ -304,13 +277,13 @@ public class LotteryUtils {
     }
 
     /**
-     * 时时彩前3直选和值：前3直选和值 所选数值等于开奖号码百位、十位、个位三个数字相加之和即中奖
+     * 时时彩直选和值
      * @param openNum 开奖号码
      * @param betNum 投注号码
      * @return 中奖返回true
      * @author Jerry
      */
-    public static boolean checkWinSsc3XingZhiXuanHeZhi(String openNum, String betNum) {
+    public static boolean checkWinSscZhiXuanHe(String openNum, String betNum) {
         // 参数不合法，返回false
         if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
             return false;
@@ -742,7 +715,7 @@ public class LotteryUtils {
     /**
      * 时时彩大一帆风顺 判断是否中奖
      * @param openNum 开奖号码，五个位以逗号隔开
-     * @param betNum 投注号码，至少五个号码，以逗号隔开
+     * @param betNum 投注号码，多个号码以逗号隔开
      * @return 中奖返回true
      * @author Terry
      */
@@ -923,25 +896,6 @@ public class LotteryUtils {
             if (StringUtils.contains(betNumList[i], openNums[i])) {
                 count++;
             }
-        }
-        return count;
-    }
-
-    /**
-     * 时时彩三星组三 计算中奖注数
-     * @param betDetail 投注内容
-     * @return 返回注单实际投注注数
-     * @author Terry
-     */
-    public static int winCountSsc3XingZu3(String openNum, String betNum) {
-        int count = 0;
-        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
-            return count;
-        }
-        openNum = formatNumber(openNum.split(","));
-        Set<String> betSet = ssc3XinZuXuan3(betNum);
-        if (betSet.contains(openNum)) {
-            count++;
         }
         return count;
     }
