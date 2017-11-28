@@ -32,6 +32,8 @@ public class LotteryBonusService {
 	@Autowired
 	private FinanceTradeDetailServiceImpl financeTradeDetailService;
 	
+	@Autowired
+	private LotteryCommissionService lotteryCommissionService;
 	
 	/**
 	 * 根据期号查询等待派奖的订单,查数据库，
@@ -49,6 +51,18 @@ public class LotteryBonusService {
 		for (LotteryOrder lotteryOrder : orderList) {
 			this.calculateOrderBonus(lotteryOrder);
 		}
+        new Thread() {
+        	@Override
+        	public void run() {
+        		try {
+					Thread.sleep(3000);
+					 //返水服务
+					lotteryCommissionService.calculateOrderCommissionFromDB(lotteryCode,betIssueNo);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+        	}
+        }.run();
 		
 		return;
 	}
@@ -74,6 +88,9 @@ public class LotteryBonusService {
 	private void calculateOrderBonus(LotteryOrder lotteryOrder) {
 //		//计算注单中奖金额
 		BigDecimal bonus = this.lotteryCalculateService.calculateOrderBonus(lotteryOrder);
+		if(null == bonus) {
+			bonus = BigDecimal.ZERO;
+		}
 		lotteryOrder.setWinAmount(bonus);
 		lotteryOrder.setStatus(bonus.intValue() > 0 ? "1" : "2");//注单状态：		0等待开奖		1已中奖		2未中奖		3已撤单
 		//更新注单中奖状态和中奖金额
