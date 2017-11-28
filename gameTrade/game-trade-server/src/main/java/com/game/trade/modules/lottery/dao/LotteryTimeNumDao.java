@@ -78,6 +78,22 @@ public interface LotteryTimeNumDao extends CrudDao<LotteryTimeNum> {
 	 */
 	public LotteryTimeNum queryByLotteryCodeIssueNo(@Param("lotteryCode") String lotteryCode,@Param("lotteryIssueNo") String lotteryIssueNo);
 	
+	/**
+	 *  根据日期 yyyymmdd 查询时刻明细 
+	 *   * @param lotteryCode 彩种
+	 * @param dateTime 20171127
+	 * @return
+	 */
+	public  List<LotteryTimeNum> queryByLikeLotteryCodeIssueNo(@Param("lotteryCode") String lotteryCode,@Param("dateTime") String dateTime);
+	
+	/**
+	 *  根据日期 yyyymmdd 批量删除
+	 *   * @param lotteryCode 彩种
+	 * @param dateTime 20171127
+	 * @return
+	 */
+	public  void batchDel(@Param("lotteryCode") String lotteryCode,@Param("dateTime") String dateTime);
+	
 	
 	
 }
