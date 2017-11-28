@@ -20,7 +20,7 @@ public class GameError {
 		errInfo.put(errCodeCountInvalid,errCountInvalid );
 		errInfo.put(errCodeBettingCount,errBettingCountInvalid );
 		errInfo.put(errCodeIssuseNo,errIssuseNo );
-		errInfo.put(errCodeOkay,errOkay );
+		errInfo.put(errCodeplayCode,errplayCode );
 		errInfo.put(errCodeOkay,errOkay );
 		errInfo.put(errCodeOkay,errOkay );
 		errInfo.put(errCodeOkay,errOkay );
