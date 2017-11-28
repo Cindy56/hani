@@ -17,6 +17,12 @@ public interface SystemServiceFacade{
 	//-- User Service --//
 	/** 保存用户 */
 	public User saveUser(User user);
+	/**
+	 * 根据登录名获取用户
+	 * @param loginName
+	 * @return
+	 */
+	public User getUserById(String userId);
 	
 	//-- Role Service --//
 	/** 根据主键查找role */

@@ -52,4 +52,9 @@
         <property name="serviceUrl" value="${game.trade.url}/financeRechargeService"/>  
         <property name="serviceInterface" value="com.game.modules.finance.service.FinanceRechargeService"/>  
     </bean>    
+  	<!-- system:user and role -->
+	<bean id="systemServiceFacade" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.manager.url}/systemServiceFacade"/>  
+        <property name="serviceInterface" value="com.game.modules.sys.service.SystemServiceFacade"/>  
+    </bean>    
 </beans>  

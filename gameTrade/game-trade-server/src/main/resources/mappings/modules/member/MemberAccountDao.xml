@@ -178,7 +178,7 @@
 		UPDATE member_account tt
 		SET tt.blance = tt.blance - #{amount}
 		WHERE tt.id = #{accountId}
-		and tt.blance - #{amount} >= 0
+		and tt.blance >= #{amount}
 	</update>	
 	
 	<select id="findMemberId" resultType="MemberAccount">
