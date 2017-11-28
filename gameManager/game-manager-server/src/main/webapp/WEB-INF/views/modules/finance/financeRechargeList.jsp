@@ -89,13 +89,14 @@
 				<th>审核日期</th>
 				<th>状态</th>
 				<th>创建者</th>
-				<shiro:hasPermission name="trade:financeRecharge:edit"><th>操作</th></shiro:hasPermission>
+				<th>操作</th>
+				<%-- <shiro:hasPermission name="trade:financeRecharge:edit"><th>操作</th></shiro:hasPermission> --%>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="financeRecharge">
 			<tr>
-				<td><a href="${ctx}/finance/financeRecharge/form?id=${financeRecharge.id}">
+				<td><%-- <a href="${ctx}/finance/financeRecharge/form?id=${financeRecharge.id}"> --%>
 					${financeRecharge.userName}
 				</a></td>
 				<td>${financeRecharge.orgId}</td>
@@ -131,14 +132,19 @@
 					<fmt:formatDate value="${financeRecharge.auditDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${financeRecharge.status}
+					${fns:getDictLabel(financeRecharge.status, 'yes_no', '')}
+					<%-- ${financeRecharge.status} --%>
 				</td>
 				<td>
 					<fmt:formatDate value="${financeRecharge.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<shiro:hasPermission name="trade:financeRecharge:edit">
+			<%-- 	<shiro:hasPermission name="trade:financeRecharge:edit">
 					<td><a href="${ctx}/finance/financeRecharge/audit?id=${financeRecharge.id}">审核</a>
-				</td></shiro:hasPermission>
+				</td></shiro:hasPermission> --%>
+				<td>
+				<a href="${ctx}/finance/financeRecharge/close?id=${financeRecharge.id}">关闭订单</a>
+				<a href="${ctx}/finance/financeRecharge/audit?id=${financeRecharge.id}">完成订单</a>
+				</td>
 			</tr>
 		</c:forEach>
 		</tbody>

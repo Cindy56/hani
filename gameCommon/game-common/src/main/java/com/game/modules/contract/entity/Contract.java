@@ -53,7 +53,6 @@ public class Contract extends DataEntity<Contract> {
 		super(id);
 	}
 
-	@NotNull(message="机构id不能为空")
 	public Office getOffice() {
 		return office;
 	}
