@@ -225,7 +225,7 @@
 		where   (select q.parent_agent_ids from member_account q where q.id = #{id} ) REGEXP a.id 
 	</select>
 	
-	<select id="getByUserId">
+	<select id="getByUserId" resultType="MemberAccount">
 		SELECT 
 		<include refid="memberAccountColumns"/>
 		FROM member_account a, sys_user b
