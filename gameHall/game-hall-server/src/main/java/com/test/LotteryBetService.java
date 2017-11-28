@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.game.hall.modules.bet.dao.AccountChargeDao;
-import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.hall.modules.order.dao.LotteryOrderDao;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.User;
 

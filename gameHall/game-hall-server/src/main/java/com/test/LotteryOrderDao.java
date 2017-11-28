@@ -34,7 +34,7 @@ public class LotteryOrderDao extends AbstractJUnit4SpringContextTests {
 	private MockMvc mockMvc;
 
 	@Mock
-	private com.game.hall.modules.bet.dao.LotteryOrderDao myOrderDao;
+	private com.game.hall.modules.order.dao.LotteryOrderDao myOrderDao;
 
 	@InjectMocks
 	private com.game.hall.modules.bet.service.LotteryAddBetService myAddBetService;

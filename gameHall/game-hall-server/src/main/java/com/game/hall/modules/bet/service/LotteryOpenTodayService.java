@@ -13,7 +13,7 @@ import com.api.BetServiceApi;
 import com.entity.ResultData;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
 import com.game.hall.modules.bet.dao.LotteryOpenTodayDao;
-import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.hall.modules.order.dao.LotteryOrderDao;
 import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.entity.LotteryTimeNum;
 import com.game.modules.lottery.entity.LotteryType;
