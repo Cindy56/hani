@@ -17,4 +17,11 @@ public interface LotteryNumDrawService {
 	 * @return
 	 */
 	OpenCaiResult drawLotteryNum(String lotteryCode, String issueNo) throws LotteryNumDrawException;
+	
+	/**
+	 * 根据彩种 获取开奖号码  最新一期
+	 * @param lotteryCode 彩种
+	 * @return
+	 */
+	OpenCaiResult drawLotteryNum(String lotteryCode) throws LotteryNumDrawException;
 }

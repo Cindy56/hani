@@ -1360,21 +1360,25 @@ public enum SscService implements LotteryService {
 		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
-				return 1;
+				return 801;
 			}
 			// 2、数据格式校验，
 			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
 			String betNumber = lotteryOrder.getBetDetail();
-			String formatRegex = "^\\d{0,9},\\d{0,9},\\d{0,9},\\d{0,9},\\d{0,9}$";
+			String formatRegex = "^\\d{0,10},\\d{0,10},\\d{0,10},\\d{0,10},\\d{0,10}$";
 
 			if (!betNumber.matches(formatRegex)) {
-				return 1;
+				return GameError.errCodeBetDetial;
 			}
 
 			String[] arrSubBet = betNumber.split(",");
-			for (int j = 0; j < arrSubBet.length; j++) {
-				CheckString.hasSameLetter(arrSubBet[j]);
-			}
+			List<String> lsSubBet = Arrays.asList(arrSubBet);
+			/*for (int j = 0; j < arrSubBet.length; j++) {
+				CheckString.hasSameNum(ls)hasSameLetter(arrSubBet[j]);
+			}*/
+			Boolean isSameNum = CheckString.hasSameNum(lsSubBet);
+			if(isSameNum)
+				return GameError.errCodeBetDetial;
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
 			int betNum = LotteryUtils.calBetNum5XingZhiXuanFuShi(lotteryOrder.getBetDetail());

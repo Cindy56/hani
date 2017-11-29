@@ -8,4 +8,6 @@ public class LotteryCodeConstants {
 	public static final String SSC_TJ="SSC_TJ";
 	//新疆时时彩
 	public static final String SSC_XJ="SSC_XJ";
+	//北京PK10
+	public static final String PK10_BJ="PK10_BJ";
 }

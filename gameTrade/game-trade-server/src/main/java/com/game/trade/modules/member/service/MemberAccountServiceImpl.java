@@ -65,8 +65,9 @@ public class MemberAccountServiceImpl
 	 * @param amount
 	 */
 	@Transactional(readOnly = false)
-	public void plusAmount(String accountId, BigDecimal amount) {
-		 this.memberAccountDao.plusAmount(accountId, amount);
+	public boolean plusAmount(String accountId, BigDecimal amount) {
+		int plusAmountNum = this.memberAccountDao.plusAmount(accountId, amount);
+		return plusAmountNum == 1 ? true : false;
 	}
 	
 	/**
@@ -75,8 +76,9 @@ public class MemberAccountServiceImpl
 	 * @param amount
 	 */
 	@Transactional(readOnly = false)
-	public void minusAmount(String accountId, BigDecimal amount) {
-		this.memberAccountDao.minusAmount(accountId, amount);
+	public boolean minusAmount(String accountId, BigDecimal amount) {
+		int minusAmountNum = this.memberAccountDao.minusAmount(accountId, amount);
+		return minusAmountNum == 1 ? true : false;
 	}
 	
 	/**

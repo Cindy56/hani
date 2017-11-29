@@ -10,6 +10,7 @@ import org.quartz.SchedulerException;
 import com.game.common.persistence.Page;
 import com.game.modules.lottery.dto.TimeTask;
 import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.lottery.exception.LotteryNumDrawException;
 import com.game.modules.sys.entity.Dict;
 
 /**
@@ -33,7 +34,7 @@ public interface LotteryTimeNumService{
 	
 	public void updateLotteryNum(String lotteryNum,String lotteryCode,String lotteryIssueNo,String status,String openDate);
 	
-    public  void  generatePlanTime (TimeTask timeTask) throws SchedulerException;
+    public  void  generatePlanTime (TimeTask timeTask) throws SchedulerException, LotteryNumDrawException;
   
 	/**
 	 * 获取当前期号

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.game.common.utils.IdGen;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.model.OpenLottery;
 import com.game.trade.model.Star5;
@@ -1232,9 +1233,11 @@ public class LotteryUtils {
 	public static int calBetNum5XingZhiXuanFuShi(String bet)
 	{
 		String[] betNumList = bet.split(",");
-		int count = 0;
-		for (String string : betNumList) {
-			count *= string.length();
+		
+		int count = betNumList[0].length();
+		
+		for (int i = 1; i < betNumList.length; i++) {
+			count *= betNumList[i].length();
 		}
 
 		return count;
@@ -1331,6 +1334,9 @@ public class LotteryUtils {
 	}
 
 
+	public static String genOrderNo() {
+		return String.valueOf(IdGen.randomLong());
+	}
 	
 	
 	
