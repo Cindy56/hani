@@ -3,6 +3,7 @@
  */
 package com.game.manager.modules.sys.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +83,26 @@ public class DictUtils {
         return dictList;
     }
 
+    /**
+     * 根据多个type 组装 数据返回
+     * @param type
+     * @param args
+     * @return
+     */
+    public static List<Dict> getDictAssemblyList(String type,String... args) {
+    	if(null == type) {
+    		return null;
+    	}
+    	List<Dict> dictList =new ArrayList<Dict>();
+    	dictList.addAll(getDictList(type));
+    	if(args.length != 0) {
+    		for (int i = 0; i < args.length; i++) {
+    			dictList.addAll(getDictList(args[i]));
+			}
+    	}
+        return dictList;
+    }
+    
     /**
      * 返回字典列表（JSON）
      * @param type

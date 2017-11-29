@@ -39,7 +39,7 @@
 			<div class="controls">
 				<form:select path="lotteryCode" class="input-xlarge required">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('SSC')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${dictLis}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>

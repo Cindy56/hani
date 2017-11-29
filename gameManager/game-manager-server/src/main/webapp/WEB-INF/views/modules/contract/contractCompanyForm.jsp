@@ -8,7 +8,7 @@
 		$(document).ready(function() {
 			$("input[name='orgName']").focus();
 			$("#inputForm").validate({
-				debug:true,
+				//debug:true,
 				rules: {
 					userName: {
 						remote: {
@@ -16,6 +16,9 @@
 							data:{
 								loginName:function(){
 									return $("input[name='userName']").val(); 
+								},
+								oldLoginName:function(){
+									return "${contract.userName}";
 								}
 							}
 						}
@@ -34,7 +37,7 @@
 					});
 					if(flag){
 						loading('正在提交，请稍等...');
-						//form.submit();	
+						form.submit();	
 					}else{
 						alert("分红设置有误，请修改后提交！");
 					}
@@ -118,13 +121,13 @@
 			</div>
 		</div> --%>
 		<!-- ----------------------------------------------- -->
-		<table style="width: 100%;">
+		<table style="width: 80%;">
 			<tr>
 				<td>
 					<div class="control-group">
 						<label class="control-label">公司名称：</label>
 						<div class="controls">
-							<form:input path="orgName" htmlEscape="false" maxlength="20" class="input-xlarge required" placeholder="请输入公司名称"  value="456789"/>
+							<form:input path="orgName" htmlEscape="false" maxlength="20" class="input-xlarge required" placeholder="请输入公司名称"  value=""/>
 							<span class="help-inline"><font color="red">*</font> </span>
 						</div>
 					</div>
@@ -133,7 +136,7 @@
 				<%-- <div class="control-group">
 					<label class="control-label">公司编码：</label>
 					<div class="controls">
-						<form:input path="office.code" htmlEscape="false" maxlength="10" minlength="3" class="input-xlarge required" placeholder="请输入公司编码（仅支持大小写字母）" value="456789"/>
+						<form:input path="office.code" htmlEscape="false" maxlength="10" minlength="3" class="input-xlarge required" placeholder="请输入公司编码（仅支持大小写字母）" value=""/>
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div> --%>
@@ -141,7 +144,7 @@
 					<div class="control-group">
 						<label class="control-label">登录名称：</label>
 						<div class="controls">
-							<form:input path="userName" htmlEscape="false" maxlength="8" class="input-xlarge required" placeholder="请输入登录名称" value="456789"/>
+							<form:input path="userName" htmlEscape="false" maxlength="8" class="input-xlarge required" placeholder="请输入登录名称" value=""/>
 							<span class="help-inline"><font color="red">*</font> </span>
 						</div>
 					</div>
@@ -185,18 +188,18 @@
 			<form:input id="newPassword" path="user.password" type="hide" class="hide"/>
 			<form:input path="secPassword" type="hide" class="hide"/>
 		</c:if>
-		
+		<c:if test="${empty contract.id}">
 		<tr><td>
 		<div class="control-group">
 				<label class="control-label">邮箱：</label>
 				<div class="controls">
-					<form:input path="user.email" htmlEscape="false" maxlength="100" placeholder="请输入邮箱" class="input-xlarge email" value="456789@qq.com"/>
+					<form:input path="user.email" htmlEscape="false" maxlength="100" placeholder="请输入邮箱" class="input-xlarge email" value=""/>
 				</div>
 			</div></td><td>
 			<div class="control-group">
 				<label class="control-label">电话：</label>
 				<div class="controls">
-					<form:input path="user.phone" htmlEscape="false" maxlength="100" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入电话" value="456789"/>
+					<form:input path="user.phone" htmlEscape="false" maxlength="100" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入电话" value=""/>
 				</div>
 			</div></td>
 		</tr>
@@ -205,7 +208,7 @@
 			<div class="control-group">
 				<label class="control-label">qq号码：</label>
 				<div class="controls">
-					<form:input path="qqNo" htmlEscape="false" maxlength="50" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入QQ号码" value="456789"/>
+					<form:input path="qqNo" htmlEscape="false" maxlength="50" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入QQ号码" value=""/>
 				</div>
 			</div>
 			</td>
@@ -213,11 +216,12 @@
 			<div class="control-group">
 				<label class="control-label">手机号码：</label>
 				<div class="controls">
-					<form:input path="mobileNo" htmlEscape="false" maxlength="50"  onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入手机号码" value="456789"/>
+					<form:input path="mobileNo" htmlEscape="false" maxlength="50"  onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="input-xlarge " placeholder="请输入手机号码" value=""/>
 				</div>
 			</div>
 			</td>
 		</tr>
+		</c:if>
 		<%-- <div class="control-group">
 			<label class="control-label">账户id：</label>
 			<div class="controls">
@@ -249,7 +253,7 @@
 				<div class="control-group">
 					<label class="control-label">保底服务费（元/月）：</label>
 					<div class="controls">
-						<form:input path="rentAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入平台租金（单位：元/月）" onkeyup="value=value.replace(/[^\d]/g,'') " value="456789" min="0"/>
+						<form:input path="rentAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入平台租金（单位：元/月）" onkeyup="value=value.replace(/[^\d]/g,'') " value="" min="0"/>
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
@@ -260,7 +264,7 @@
 			<div class="control-group">
 				<label class="control-label">开户费（元）：</label>
 				<div class="controls">
-					<form:input path="openAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入开户费（单位：元）" onkeyup="value=value.replace(/[^\d]/g,'') " value="456789" min="0"/>
+					<form:input path="openAmount" htmlEscape="false" class="input-xlarge required" placeholder="请输入开户费（单位：元）" onkeyup="value=value.replace(/[^\d]/g,'') " value="" min="0"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
@@ -269,7 +273,7 @@
 			<div class="control-group">
 				<label class="control-label">签约周期（年）：</label>
 				<div class="controls">
-					<form:input path="contractTime" htmlEscape="false" maxlength="4" class="input-xlarge required" placeholder="请输入签约周期（单位：年）" onkeyup="value=value.replace(/[^\d]/g,'') " value="4" min="0"/>
+					<form:input path="contractTime" htmlEscape="false" maxlength="4" class="input-xlarge required" placeholder="请输入签约周期（单位：年）" onkeyup="value=value.replace(/[^\d]/g,'') " value="" min="0"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
@@ -293,28 +297,29 @@
 			<div class="control-group">
 				<label class="control-label">分红设置：</label>
 				<div class="controls">
-					<table id="contentTable" class="table table-striped table-bordered table-condensed" ><!-- style="width: 45rem;" -->
+					<table id="contentTable" class="table table-striped table-bordered table-condensed" style="width: 45rem;"><!-- style="width: 45rem;" -->
 						<thead>
 							<tr>
 								<th class="hide"></th>
-								<th></th>
+								<th style="width: 6rem;"></th>
 								<th>金额（单位：万）</th>
 								<th>金额（单位：万）</th>
 								<th>分红比例（单位：%）</th>
 								<shiro:hasPermission name="contract:company:contract:edit"><!-- <th width="10">&nbsp;</th> --></shiro:hasPermission>
 							</tr>
 						</thead>
-						<tbody id="contractConfigList">
+						<tbody id="contractConfigList" >
 						</tbody>
 						<shiro:hasPermission name="contract:company:contract:edit"><tfoot>
 							<tr><td colspan="5"><a href="javascript:" onclick="addRow('#contractConfigList', contractConfigRowIdx, contractConfigTpl);contractConfigRowIdx = contractConfigRowIdx + 1;" class="btn" id="xz">新增</a></td></tr>
 						</tfoot></shiro:hasPermission>
-					</table><!-- contractConfigTpl -->
+					</table><!-- contractConfigTpl --> 
 					<script type="text/template" id="contractConfigTpl">//<!--
 						<tr id="contractConfigList{{idx}}">
 							<td class="hide">
 								<input id="contractConfigList{{idx}}_id" name="contractConfigList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
 								<input id="contractConfigList{{idx}}_delFlag" name="contractConfigList[{{idx}}].delFlag" type="hidden" value="0"/>
+								<input id="contractConfigList{{idx}}_contractId_id" name="contractConfigList[{{idx}}].contractId.id" type="hidden" value="{{row.contractId.id}}"/>
 								<input name="submitFlag" type="hidden" value="true"/>
 							</td>
 							<td>
@@ -327,7 +332,7 @@
 								<input id="contractConfigList{{idx}}_rangeEnd" name="contractConfigList[{{idx}}].rangeEnd" type="number" value="{{row.rangeEnd}}" class="input-small required" onchange="checkMoneyB(this)" min="0"/>
 							</td>
 							<td>
-								<input id="contractConfigList{{idx}}_beniftRate" name="contractConfigList[{{idx}}].beniftRate" type="number" value="{{row.beniftRate}}" class="input-small required" max=""/>
+								<input id="contractConfigList{{idx}}_beniftRate" name="contractConfigList[{{idx}}].beniftRate" type="number" value="{{row.beniftRate}}" class="input-small required" min="0" max="100" />
 							</td>
 							<shiro:hasPermission name="contract:company:contract:edit"><td class="text-center" width="10">
 								{{#delBtn}}<span class="close" onclick="delRow(this, '#contractConfigList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
@@ -349,9 +354,21 @@
 						function checkMoneyA(e){
 							var tr=$(e).parent().next("td").find("input");
 							if(tr.val()){
-								//alert(parseInt(tr.val())>parseInt($(e).val()));
 								if(parseInt(tr.val())<=parseInt($(e).val())){
-									alert("需小于截至金额！");
+									alert("需小于截至金额："+parseInt(tr.val()));
+									$(e).focus();
+									$(e).parent().parent().find("input[name=submitFlag]").val("false");
+								}else{
+									$(e).parent().parent().find("input[name=submitFlag]").val("true");
+								}
+							}
+							var prevTr=$(e).parent().parent().prev("tr");
+							var td=prevTr.find("td")[3];
+							var st=$(td).find("input").val();
+							if(st){
+								if(parseInt($(e).val())<parseInt(st)){
+									alert("需要大于金额："+st);
+									$(e).focus();
 									$(e).parent().parent().find("input[name=submitFlag]").val("false");
 								}else{
 									$(e).parent().parent().find("input[name=submitFlag]").val("true");
@@ -361,26 +378,26 @@
 						function checkMoneyB(e){
 							var tr=$(e).parent().prev("td").find("input");
 							if(tr.val()){
-								//alert(parseInt(tr.val())<parseInt($(e).val()));
 								if(parseInt(tr.val())>=parseInt($(e).val())){
-									//if($(e).next("label")){
-										/* $(e).next("label").text("需大于起始金额！");
-										$(e).next("label").show(); */
-									//}else{
-										//$(e).after("<label for='"+$(e).attr("id")+"' class='error'>需大于起始金额！</label>");
-									//}
-									 /*$(e).next("label").show(); */
-									alert("需大于起始金额！");
+									alert("需大于起始金额："+parseInt(tr.val()));
+									$(e).focus();
 									$(e).parent().parent().find("input[name=submitFlag]").val("false");
 								}else{
 									$(e).parent().parent().find("input[name=submitFlag]").val("true");
 								}
 							}
-							/* var prevTr=$(e).parent().parent().prev("tr");
-							if(prevTr){
-								var findTd=prevTr.find("td").eq(2);
-								alert(findTd);
-							} */
+							var prevTr=$(e).parent().parent().next("tr");
+							var td=prevTr.find("td")[2];
+							var st=$(td).find("input").val();
+							if(st){
+								if(parseInt($(e).val())>parseInt(st)){
+									alert("需要小于金额："+st);
+									$(e).focus();
+									$(e).parent().parent().find("input[name=submitFlag]").val("false");
+								}else{
+									$(e).parent().parent().find("input[name=submitFlag]").val("true");
+								}
+							}
 						}
 					</script>
 				</div>

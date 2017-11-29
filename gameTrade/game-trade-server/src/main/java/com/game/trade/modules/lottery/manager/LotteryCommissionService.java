@@ -132,10 +132,10 @@ public class LotteryCommissionService {
 	
 	private void saveTradeDetail (MemberAccount memberAccount ,LotteryOrder lotteryOrder,BigDecimal amount,String tradeType) {
 		FinanceTradeDetail  trade = new FinanceTradeDetail();
-		trade.setUser(memberAccount.getUser());
-		trade.setUserName(memberAccount.getUser().getName());
-		trade.setAccountId(memberAccount.getId());
-		trade.setOrgId(memberAccount.getOrgId().getId());
+		trade.setUser(lotteryOrder.getUser());
+		trade.setUserName(lotteryOrder.getUser().getName());
+		trade.setAccountId(lotteryOrder.getAccountId());
+		trade.setOrgId(lotteryOrder.getOrgId());
 		trade.setBusiNo(lotteryOrder.getOrderNo());
 		trade.setTradeType(tradeType);
 		trade.setAmount(amount);

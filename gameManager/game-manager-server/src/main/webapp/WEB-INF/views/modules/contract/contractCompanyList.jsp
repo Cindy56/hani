@@ -80,11 +80,11 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>机构id</th>
+				<!-- <th>机构id</th> -->
 				<th>机构名称</th>
-				<th>用户id</th>
+				<!-- <th>用户id</th> -->
 				<th>用户登录名称</th>
-				<th>账户id</th>
+				<!-- <th>账户id</th> -->
 				<th>类型</th>
 				<th>分红模式</th>
 				<th>分红周期</th>
@@ -100,21 +100,21 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="contract">
 			<tr>
-				<td><a href="${ctx}/contract/contractCompany/form?id=${contract.id}">
+				<%-- <td><a href="${ctx}/contract/contractCompany/form?id=${contract.id}">
 					${contract.office.id}
-				</a></td>
+				</a></td> --%>
 				<td>
 					${contract.orgName}
 				</td>
-				<td>
+				<%-- <td>
 					${contract.user.id}
-				</td>
+				</td> --%>
 				<td>
 					${contract.userName}
 				</td>
-				<td>
+				<%-- <td>
 					${contract.accountId}
-				</td>
+				</td> --%>
 				<td>
 					${fns:getDictLabel(contract.openType, 'open_account_type', '')}
 				</td>
@@ -131,7 +131,7 @@
 					${contract.openAmount}
 				</td>
 				<td>
-					${contract.contractTime}
+					${contract.contractTime}年
 				</td>
 				<td>
 					${contract.remark}

@@ -30,6 +30,18 @@ public class LotteryTimeNum extends DataEntity<LotteryTimeNum> {
 	private String nextIssueNo;		// 下期期号
 	private Date nextHaltDate;		// 下期封单时间
 	
+	private String lotteryCodeName;		//非数据库字段  --- 彩票名称
+	
+	
+	
+	public String getLotteryCodeName() {
+		return lotteryCodeName;
+	}
+
+	public void setLotteryCodeName(String lotteryCodeName) {
+		this.lotteryCodeName = lotteryCodeName;
+	}
+
 	public LotteryTimeNum() {
 		super();
 	}

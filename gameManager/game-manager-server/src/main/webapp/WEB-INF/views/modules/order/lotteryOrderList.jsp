@@ -66,17 +66,31 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+<<<<<<< HEAD
+				<!-- <th>id</th> -->
+=======
+>>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 				<th>订单编号</th>
 				<th>用户名</th>
+<<<<<<< HEAD
+				<!-- <th>user_id</th> -->
+				<th>机构id</th>
+				<th>lottery_code</th>
+=======
 				<th>机构</th>
 				<th>彩种</th>
+>>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 				<th>投注期号</th>
+<<<<<<< HEAD
+				<!-- <th>账户id</th> -->
+=======
+>>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 				<th>投注类型：</th>
 				<th>投注内容</th>
 				<th>投注金额</th>
 				<th>投注倍数</th>
 				<th>奖金模式</th>
-				<th>佣金比例</th>
+				<th>返点比例</th>
 				<th>玩法模式</th>
 				<th>注单来源</th>
 				<th>注单类型</th>
@@ -90,12 +104,24 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="lotteryOrder">
 			<tr>
+<<<<<<< HEAD
+				<%-- <td><a href="${ctx}/order/lotteryOrder/form?id=${lotteryOrder.id}">
+					${lotteryOrder.id}
+				</a></td> --%>
+=======
+>>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 				<td>
 					${lotteryOrder.orderNo}
 				</td>
 				<td>
 					${lotteryOrder.user.name}
 				</td>
+<<<<<<< HEAD
+				<%-- <td>
+					${lotteryOrder.user.id}
+				</td> --%>
+=======
+>>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 				<td>
 					${lotteryOrder.orgId}
 				</td>
@@ -105,6 +131,12 @@
 				<td>
 					${lotteryOrder.betIssueNo}
 				</td>
+<<<<<<< HEAD
+				<%-- <td>
+					${lotteryOrder.accountId}
+				</td> --%>
+=======
+>>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 				<td>
 					${lotteryOrder.betType}
 				</td>

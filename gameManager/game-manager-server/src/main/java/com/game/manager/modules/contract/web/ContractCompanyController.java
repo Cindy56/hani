@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,15 +21,11 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
-import com.game.manager.modules.sys.service.OfficeService;
 import com.game.manager.modules.sys.service.SystemService;
 import com.game.manager.modules.sys.utils.UserUtils;
 import com.game.modules.contract.entity.Contract;
 import com.game.modules.contract.service.ContractService;
-import com.game.modules.member.service.MemberAccountService;
 import com.game.modules.sys.entity.User;
-import com.game.modules.sys.service.SystemServiceFacade;
-import com.game.modules.todo.service.TodoTaskService;
 
 /**
  * 开设分公司Controller
@@ -37,25 +35,11 @@ import com.game.modules.todo.service.TodoTaskService;
 @Controller
 @RequestMapping(value = "${adminPath}/contract/contractCompany")
 public class ContractCompanyController extends BaseController {
+	
+	private static Logger logger = LoggerFactory.getLogger(ContractCompanyController.class);
 
 	@Autowired
 	private ContractService contractService;
-	
-	@Autowired
-	private SystemService systemService;
-	
-	@Autowired
-	private OfficeService officeService;
-	
-	@Autowired
-	private MemberAccountService memberAccountService;
-	
-	@Autowired
-	private TodoTaskService todoTaskService;
-	
-	@Autowired
-	private SystemServiceFacade systemServiceFacade;
-	
 	
 	@ModelAttribute
 	public Contract get(@RequestParam(required=false) String id) {
@@ -89,21 +73,29 @@ public class ContractCompanyController extends BaseController {
 	public String save(Contract contract, Model model, RedirectAttributes redirectAttributes) {
 		
 		String userLoginName=contract.getUserName();
-		if(null!=systemService.getUserByLoginName(userLoginName)) {
+		/*if(null!=systemService.getUserByLoginName(userLoginName)) {
 			addMessage(redirectAttributes, "登录名称已存在！");
 			return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
-		}
+		}*/
 		
 		if (!beanValidator(model, contract)){
 			return form(contract, model);
 		}
 		contract.setCurrentUser(UserUtils.getUser());
-		contract.setSecPassword(SystemService.entryptPassword(contract.getSecPassword()));
 		User user=contract.getUser();
-		user.setPassword(SystemService.entryptPassword(user.getPassword()));
+		if(StringUtils.isBlank(contract.getId())) {
+			contract.setSecPassword(SystemService.entryptPassword(contract.getSecPassword()));
+			user.setPassword(SystemService.entryptPassword(user.getPassword()));
+		}
 		contract.setUser(user);
 		//保存公司信息
-		contractService.save(contract);
+		try {
+			contractService.save(contract);
+		} catch (Exception e) {
+			logger.info("公司开户保存异常："+e);
+			addMessage(redirectAttributes, "保存公司失败，请稍后再试！");
+			return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
+		}
 		addMessage(redirectAttributes, "保存公司成功");
 		return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
 	}
@@ -117,7 +109,7 @@ public class ContractCompanyController extends BaseController {
 	}
 	
 	
-	@RequestMapping(value = "checkCompanyName")
+	/*@RequestMapping(value = "checkCompanyName")
 	public String checkCompanyName(String oldCompanyName, String companyName) {
 		if (companyName !=null && companyName.equals(oldCompanyName)) {
 			return "true";
@@ -125,6 +117,6 @@ public class ContractCompanyController extends BaseController {
 			return "true";
 		}
 		return "false";
-	}
+	}*/
 
 }

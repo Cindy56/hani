@@ -303,13 +303,19 @@ public class MemberAccountAddController extends BaseController {
 		user.setCurrentUser(UserUtils.getUser());
 		systemService.saveUser(user);
 		
-		memberAccount.setParentAgentId(seesionUser.getId());
-		memberAccount.setParentAgentIds(seesionUser.getId()+","+user.getId());
-		memberAccount.setOrgId(new Office());
+		MemberAccount sessionMember = memberAccountService.getByUserId(seesionUser.getId());
+		String sessionParentIds = "";
+		String sessionMemberId = "";
+		if(null!=sessionMember) {
+			sessionParentIds=sessionMember.getParentAgentIds();
+			sessionMemberId=sessionMember.getId();
+		}
+		memberAccount.setParentAgentId(sessionMemberId);
+		memberAccount.setParentAgentIds(sessionParentIds+sessionMemberId+",");
 		memberAccount.setBlance("0");
 		memberAccount.setBlanceFrozen("0");
 		memberAccount.setStatus("0");
-		memberAccount.setOrgId(user.getOffice());
+		memberAccount.setOrgId(seesionUser.getOffice());
 		memberAccount.setUser(user);
 		memberAccount.setSecPassword(SystemService.entryptPassword(memberAccount.getSecPassword()));
 		

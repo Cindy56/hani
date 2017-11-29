@@ -41,9 +41,6 @@ public class Contract extends DataEntity<Contract> {
 	private String secPassword;	//安全密码
 	
 	private List<ContractConfig> contractConfigList = Lists.newArrayList();		// 子表列表
-//	private List<ContractConfig> contractConfigList	;// 子表列表
-	
-	
 	
 	public Contract() {
 		super();
