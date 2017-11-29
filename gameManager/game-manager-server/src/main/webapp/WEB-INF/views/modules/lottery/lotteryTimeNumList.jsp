@@ -29,7 +29,7 @@
 			<li><label>彩票代码：</label>
 				<form:select path="lotteryCode" class="input-medium">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('SSC')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${dictLis}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<li><label>开奖期号：</label>
@@ -71,7 +71,8 @@
 		<c:forEach items="${page.list}" var="lotteryTimeNum">
 			<tr>
 				<td>
-					${fns:getDictLabel(lotteryTimeNum.lotteryCode, 'SSC', '')}
+					
+					${lotteryTimeNum.lotteryCodeName}
 				</td>
 				<td>
 					${lotteryTimeNum.lotteryIssueNo}

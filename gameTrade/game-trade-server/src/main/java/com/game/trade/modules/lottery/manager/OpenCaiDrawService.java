@@ -1,5 +1,8 @@
 package com.game.trade.modules.lottery.manager;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import com.game.modules.lottery.exception.LotteryNumDrawException;
 
 @Service
 public class OpenCaiDrawService implements  LotteryNumDrawService{
+	private static final Logger logger = LoggerFactory.getLogger(TimeTaskService.class);
+
 //	@Autowired @Qualifier("restTemplate")  
 //	@Autowired
 //	private  RestTemplate restTemplate;
@@ -29,11 +34,13 @@ public class OpenCaiDrawService implements  LotteryNumDrawService{
 //		req.setFormat("json");
 		String url = null;
 		if(LotteryCodeConstants.SSC_CQ.equals(lotteryCode)){
-			 url = Global.getConfig("game.ssccq.url");
+			 url = Global.getConfig("open.ssccq.url");
 		}else if(LotteryCodeConstants.SSC_TJ.equals(lotteryCode)){
-			 url = Global.getConfig("game.ssctj.url");
+			 url = Global.getConfig("open.ssctj.url");
 		}else if(LotteryCodeConstants.SSC_XJ.equals(lotteryCode)) {
-			 url = Global.getConfig("game.sscxj.url");
+			 url = Global.getConfig("open.sscxj.url");
+		}else if(LotteryCodeConstants.PK10_BJ.equals(lotteryCode)) {
+			 url = Global.getConfig("open.sscbjpk.url");
 		}
 		RestTemplate restTemplate = new RestTemplate();
 //		RestTemplate restTemplate =  SpringContextHolder.getBean("restTemplate");
@@ -54,7 +61,38 @@ public class OpenCaiDrawService implements  LotteryNumDrawService{
 			
 			return null;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("[拉奖接口异常] url： {},错误信息：{}",url,e.getMessage());
+			throw new LotteryNumDrawException(e.getCause());
+		}
+	}
+
+	@Override
+	public OpenCaiResult drawLotteryNum(String lotteryCode) throws LotteryNumDrawException {
+		String url = null;
+		RestTemplate restTemplate = new RestTemplate();
+		if(LotteryCodeConstants.SSC_CQ.equals(lotteryCode)){
+			 url = Global.getConfig("open.ssccq.url");
+		}else if(LotteryCodeConstants.SSC_TJ.equals(lotteryCode)){
+			 url = Global.getConfig("open.ssctj.url");
+		}else if(LotteryCodeConstants.SSC_XJ.equals(lotteryCode)) {
+			 url = Global.getConfig("open.sscxj.url");
+		}else if(LotteryCodeConstants.PK10_BJ.equals(lotteryCode)) {
+			 url = Global.getConfig("open.sscbjpk.url");
+		}
+		try {
+			ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+			if(StringUtils.isEmpty(response.getBody())) {
+				throw new LotteryNumDrawException();
+			}
+			OpenCaiResp resp =	JsonMapper.getInstance().fromJson(response.getBody(), OpenCaiResp.class);
+			if(null != resp) {
+				if(CollectionUtils.isNotEmpty(resp.getData())) {
+					return resp.getData().get(0);
+				}
+			}
+			return null;
+		} catch (Exception e) {
+			logger.error("[拉奖接口异常] url： {},错误信息：{}",url,e.getMessage());
 			throw new LotteryNumDrawException(e.getCause());
 		}
 	}
