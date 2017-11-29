@@ -49,7 +49,6 @@
             <tr>
                 <th>彩种名称</th>
                 <th>彩种类型</th>
-                <th>所属公司</th>
                 <th>是否自动开奖</th>
                 <th>是否启用</th>
                 <th>开奖周期(分钟)</th>
@@ -66,9 +65,6 @@
                 </a></td>
                 <td>
                     ${fns:getDictLabelForList('lottery_category', lotteryType.parentCode, '')}
-                </td>
-                <td>
-                    ${lotteryType.companyId}
                 </td>
                 <td>
                     ${fns:getDictLabel(lotteryType.isAuto, 'yes_no', '')}

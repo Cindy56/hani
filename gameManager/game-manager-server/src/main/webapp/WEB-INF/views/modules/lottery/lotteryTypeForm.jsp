@@ -102,24 +102,6 @@
             </div>
         </div>
 
-        <%-- 所属公司 --%>
-        <div class="control-group">
-            <label class="control-label">所属公司：</label>
-            <div class="controls">
-				<c:choose>
-					<c:when test="${lotteryType.companyId != null}">  
-               		<sys:treeselect id="companyId" name="companyId" value="${lotteryType.companyId}" labelName="${lotteryType.companyId}" labelValue="${lotteryType.currentUser.company.name}"
-                   title="所属公司" url="/sys/office/treeData?type=1" cssClass="required"/>
-					</c:when>
-					<c:otherwise> 
-               		<sys:treeselect id="companyId" name="companyId" value="" labelName="" labelValue=""
-                   title="所属公司" url="/sys/office/treeData?type=1" cssClass="required"/>
-					</c:otherwise>
-				</c:choose>
-				<span class="help-inline"><font color="red">*</font></span>
-            </div>
-        </div>
-
         <%-- 彩种名称 --%>
         <div class="control-group">
             <label class="control-label">彩种名称：</label>
@@ -266,6 +248,8 @@
                             }
                             // 新数据直接覆盖
                             $("#code").html(tmpStr);
+                            // 清空原值选择
+                            $(".select2-chosen").get(1).innerHTML = '-- 请选择 --';
                         }
                     }
                 }
