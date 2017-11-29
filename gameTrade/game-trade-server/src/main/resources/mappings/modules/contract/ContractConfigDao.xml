@@ -4,7 +4,7 @@
     
 	<sql id="contractConfigColumns">
 		a.id AS "id",
-		a.contract_id AS "contractId",
+		a.contract_id AS "contractId.id",
 		a.range_start/10000 AS "rangeStart",
 		a.range_end/10000 AS "rangeEnd",
 		a.benift_rate*100 AS "beniftRate",

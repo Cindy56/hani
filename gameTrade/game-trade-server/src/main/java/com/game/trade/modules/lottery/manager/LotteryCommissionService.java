@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.game.common.mapper.JsonMapper;
 import com.game.modules.finance.entity.FinanceTradeDetail;
+import com.game.modules.finance.service.FinanceTradeDetailService.FinanceTradeDetailType;
 import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.member.entity.MemberAccount;
 import com.game.modules.member.entity.MemberPlayConfig;
@@ -21,6 +22,7 @@ import com.game.trade.modules.finance.service.FinanceTradeDetailServiceImpl;
 import com.game.trade.modules.member.service.MemberAccountServiceImpl;
 import com.game.trade.modules.member.service.MemberPlayConfigServiceImpl;
 import com.game.trade.modules.order.service.LotteryOrderServiceImpl;
+import com.google.common.collect.Lists;
 
 /**
  * 返水服务，佣金服务
@@ -89,6 +91,7 @@ public class LotteryCommissionService {
 		});
 		//计算返点
 		JsonMapper jsonMapper = JsonMapper.getInstance();
+		List<FinanceTradeDetail> tradeList = Lists.newArrayList();
 		memberList.stream().forEach(memberAccount->{
 			if(lotteryOrder.getAccountId().equals(memberAccount.getId())) {
 				//计算本人返点
@@ -96,7 +99,7 @@ public class LotteryCommissionService {
 				//给上级加钱
 				memberAccountService.plusAmount(memberAccount.getId(),currentAmount);
 				//生成账变
-				saveTradeDetail(memberAccount,lotteryOrder,currentAmount,"5");
+				tradeList.add(saveTradeDetail(memberAccount,lotteryOrder,currentAmount,FinanceTradeDetailType.BET_DEDUCTIONS));
 			}else {
 				if(memberAccountMap.containsKey(memberAccount.getParentAgentId())) {
 					//计算上级返点
@@ -124,25 +127,26 @@ public class LotteryCommissionService {
 					//给上级加钱
 					memberAccountService.plusAmount(memberAccount.getParentAgentId(),parentAmount);
 					//生成账变
-					saveTradeDetail(memberAccountMap.get(memberAccount.getParentAgentId()),lotteryOrder,parentAmount,"5");
+					tradeList.add(saveTradeDetail(memberAccountMap.get(memberAccount.getParentAgentId()),lotteryOrder,parentAmount,FinanceTradeDetailType.BET_REBATES_SUBORDINATE));
 				}
 			}
 		});
+		if(tradeList.size() > 0) {
+			financeTradeDetailService.batchTrade(tradeList);
+		}
 	}
 	
-	private void saveTradeDetail (MemberAccount memberAccount ,LotteryOrder lotteryOrder,BigDecimal amount,String tradeType) {
+	private FinanceTradeDetail saveTradeDetail (MemberAccount memberAccount ,LotteryOrder lotteryOrder,BigDecimal amount,FinanceTradeDetailType betDeductions) {
 		FinanceTradeDetail  trade = new FinanceTradeDetail();
-		trade.setUser(memberAccount.getUser());
-		trade.setUserName(memberAccount.getUser().getName());
+		trade.setUser(lotteryOrder.getUser());
+		trade.setUserName(lotteryOrder.getUser().getName());
 		trade.setAccountId(memberAccount.getId());
-		trade.setOrgId(memberAccount.getOrgId().getId());
+		trade.setOrgId(lotteryOrder.getOrgId());
 		trade.setBusiNo(lotteryOrder.getOrderNo());
-		trade.setTradeType(tradeType);
+		trade.setTradeType(betDeductions.getCode());
 		trade.setAmount(amount);
-		//trade.setAccountBlanceBefore(accountBlanceBefore);
-		//trade.setAccountBlanceAfter(accountBlanceAfter);
 		trade.getUser().setId("sys");
-		this.financeTradeDetailService.save(trade);
+		return trade;
 	}
 	public static void main(String[] args) {
 		//查询该订单所有上级代理账户

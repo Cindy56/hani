@@ -16,8 +16,16 @@ import com.game.modules.order.entity.LotteryOrder;
  */
 public interface FinanceTradeDetailService {
 	enum FinanceTradeDetailType {
-		xxxxxx("0", "xxxx");
-		
+		BET_DEDUCTIONS("0", "投注扣款"),
+		AFTER_NO_DEDUCTIONS("1", "追号扣款"),
+		CHIPPED_DEDUCTIONS("2", "合买扣款"),
+		BET_DEVOTE("3", "投注撤单"),
+		BONUS_TO_SEND("4", "奖金派送"),
+		BET_REBATES("5", "投注返点"),
+		ACTIVITIES_GIFT("6", "活动礼金"),
+		AFTER_NO("7", "追号停止"),
+		BET_REBATES_SUBORDINATE("8", "下级投注返点")
+		;
 		private String code;
 		private String name;
 		private FinanceTradeDetailType(String code, String name) {

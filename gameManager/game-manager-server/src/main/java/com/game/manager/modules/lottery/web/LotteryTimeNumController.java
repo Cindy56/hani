@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,13 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
+import com.game.manager.modules.sys.utils.DictUtils;
 import com.game.manager.modules.sys.utils.UserUtils;
 import com.game.modules.lottery.dto.TimeTask;
 import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.lottery.exception.LotteryNumDrawException;
 import com.game.modules.lottery.service.LotteryTimeNumService;
+import com.game.modules.sys.entity.Dict;
 
 /**
  * 开奖时刻和开奖结果Controller
@@ -56,7 +60,10 @@ public class LotteryTimeNumController extends BaseController {
 	@RequiresPermissions("lottery:lotteryTimeNum:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(LotteryTimeNum lotteryTimeNum, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<LotteryTimeNum> page = lotteryTimeNumService.findPage(new Page<LotteryTimeNum>(request, response), lotteryTimeNum); 
+		Page<LotteryTimeNum> page = lotteryTimeNumService.findPage(new Page<LotteryTimeNum>(request, response), lotteryTimeNum);
+		List<Dict> dictList = DictUtils.getDictAssemblyList("SSC","PK10","11X5","K3");
+		model.addAttribute("dictLis", dictList);
+		setLotteyCodeName(page, dictList);
 		model.addAttribute("page", page);
 		return "modules/lottery/lotteryTimeNumList";
 	}
@@ -64,25 +71,43 @@ public class LotteryTimeNumController extends BaseController {
 	@RequestMapping(value ="batchView")
 	public String batchView(LotteryTimeNum lotteryTimeNum, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<LotteryTimeNum> page = null;
+		List<Dict> dictList = DictUtils.getDictAssemblyList("SSC","PK10","11X5","K3");
 		if(StringUtils.isNoneBlank(lotteryTimeNum.getLotteryCode())) {
 			page = lotteryTimeNumService.findPage(new Page<LotteryTimeNum>(request, response), lotteryTimeNum); 
+			setLotteyCodeName(page, dictList);
 		}
+		model.addAttribute("dictLis", dictList);
 		model.addAttribute("page", page);
 		return "modules/lottery/lotteryBatchTimeNumList";
 	}
 
-
+	private void setLotteyCodeName(Page<LotteryTimeNum> page,List<Dict> dictList) {
+		if(page != null) {
+			if(CollectionUtils.isNotEmpty(page.getList())){
+				if(CollectionUtils.isNotEmpty(dictList)) {
+					page.getList().stream().forEach(c->{
+						dictList.stream().forEach(q->{
+							if(c.getLotteryCode().equals(q.getValue())) {
+								c.setLotteryCodeName(q.getLabel());
+							}
+						});
+					});
+				}
+			}
+		}
+	}
 	
 	@RequiresPermissions("lottery:lotteryTimeNum:view")
 	@RequestMapping(value = "form")
 	public String form(LotteryTimeNum lotteryTimeNum, Model model) {
 		model.addAttribute("lotteryTimeNum", lotteryTimeNum);
+		model.addAttribute("dictLis", DictUtils.getDictAssemblyList("SSC","PK10","11X5","K3"));
 		return "modules/lottery/lotteryTimeNumForm";
 	}
 
 	@RequiresPermissions("lottery:lotteryTimeNum:edit")
 	@RequestMapping(value = "save")
-	public String save(TimeTask timeTaskDTO, Model model, RedirectAttributes redirectAttributes) throws SchedulerException {
+	public String save(TimeTask timeTaskDTO, Model model, RedirectAttributes redirectAttributes) throws SchedulerException, LotteryNumDrawException {
 		timeTaskDTO.setCreateBy(UserUtils.getUser());
 		lotteryTimeNumService.generatePlanTime(timeTaskDTO);
 		addMessage(redirectAttributes,"生成计划时刻成功！");

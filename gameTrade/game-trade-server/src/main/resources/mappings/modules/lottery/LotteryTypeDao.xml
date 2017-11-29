@@ -7,7 +7,7 @@
         a.id AS "id",
         a.parent_code AS "parentCode",
         a.code AS "code",
-        a.company_id AS "companyId",
+        <!-- a.company_id AS "companyId", -->
         a.name AS "name",
         a.is_auto AS "isAuto",
         a.is_enable AS "isEnable",

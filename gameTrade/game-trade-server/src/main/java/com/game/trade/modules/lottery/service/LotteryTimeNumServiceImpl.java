@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,15 +32,20 @@ import com.game.common.persistence.Page;
 import com.game.common.service.CrudService;
 import com.game.common.utils.DateUtils;
 import com.game.common.utils.StringUtils;
+import com.game.modules.finance.entity.FinanceTradeDetail;
+import com.game.modules.lottery.dto.OpenCaiResult;
 import com.game.modules.lottery.dto.TimeTask;
 import com.game.modules.lottery.entity.LotteryTimeNum;
 import com.game.modules.lottery.entity.LotteryType;
 import com.game.modules.lottery.entity.LotteryTypeTime;
+import com.game.modules.lottery.exception.LotteryNumDrawException;
 import com.game.modules.lottery.service.LotteryTimeNumService;
 import com.game.modules.sys.entity.Dict;
 import com.game.trade.modules.lottery.dao.LotteryTimeNumDao;
 import com.game.trade.modules.lottery.manager.LotteryCodeConstants;
+import com.game.trade.modules.lottery.manager.OpenCaiDrawService;
 import com.game.trade.modules.lottery.manager.TimeTaskService;
+import com.google.common.collect.Lists;
 
 /**
  * 开奖时刻和开奖结果Service
@@ -58,6 +64,10 @@ public class LotteryTimeNumServiceImpl
 	
 	@Autowired
     private LotteryTimeNumDao lotteryTimeNumDao;
+	
+	@Autowired
+    private OpenCaiDrawService openCaiDrawService;
+	
 	
 //	@Autowired
 //    private LotteryTypeTimeService lotteryTypeTimeService;
@@ -102,7 +112,7 @@ public class LotteryTimeNumServiceImpl
 	
 	
 	@Transactional(readOnly = false)
-    public  void  generatePlanTime (TimeTask timeTask) throws SchedulerException {
+    public  void  generatePlanTime (TimeTask timeTask) throws SchedulerException, LotteryNumDrawException {
 		//TODO:返回一个数组
 		LotteryType lotteryType = lotteryTypeService.getByCode(timeTask.getLotteryCode());
 		if(null == lotteryType) {
@@ -123,19 +133,34 @@ public class LotteryTimeNumServiceImpl
 		LocalDate endDatex = endDate.plusDays(1);
 		int plusDays =0;
 		LocalDateTime endDateXj = null;
+		Integer no = 0;
 		if(LotteryCodeConstants.SSC_XJ.equals(timeTask.getLotteryCode())){
 			plusDays=1;
+		}else if(LotteryCodeConstants.PK10_BJ.equals(timeTask.getLotteryCode())) {
+			no = Integer.parseInt("653317");//数据库取
 		}
 		//循环天
 		while (!tempDate.isAfter(endDatex)) {
-			String lotteryIssueNo = DateUtils.formatDate(Date.from(tempDate.atStartOfDay(ZoneId.systemDefault()).toInstant()),"yyyyMMdd");
+			String lotteryIssueNo = null;
+			String temp = null;
+			if(LotteryCodeConstants.PK10_BJ.equals(timeTask.getLotteryCode())) {
+				temp = DateUtils.formatDate(Date.from(tempDate.atTime(LocalTime.parse("02:00")).atZone(ZoneId.systemDefault()).toInstant()),"yyyy-MM-dd HH:mm:ss");
+			}else {
+				 lotteryIssueNo = DateUtils.formatDate(Date.from(tempDate.atStartOfDay(ZoneId.systemDefault()).toInstant()),"yyyyMMdd");
+				 temp = DateUtils.formatDate(Date.from(tempDate.atStartOfDay(ZoneId.systemDefault()).toInstant()),"yyyy-MM-dd");
+			}
 			if(!tempDate.isEqual(endDatex)) {//过滤最后一期
-				List<LotteryTimeNum> existList = lotteryTimeNumDao.queryByLikeLotteryCodeIssueNo(timeTask.getLotteryCode(), lotteryIssueNo);
+				List<LotteryTimeNum> existList = lotteryTimeNumDao.queryByLikeLotteryBetDate(timeTask.getLotteryCode(), 
+						DateUtils.formatDate(Date.from(tempDate.atStartOfDay(ZoneId.systemDefault()).toInstant()),"yyyy-MM-dd"),
+						temp
+						);
 				if(CollectionUtils.isNotEmpty(existList)) {//判断当天是否生成开奖计划，如生成 则覆盖
 					//存在，先删除表数据 在删除定时任务
-					lotteryTimeNumDao.batchDel(timeTask.getLotteryCode(), lotteryIssueNo);
+					/*lotteryTimeNumDao.batchDel(timeTask.getLotteryCode(), 
+							DateUtils.formatDate(Date.from(tempDate.atStartOfDay(ZoneId.systemDefault()).toInstant()),"yyyy-MM-dd"),
+							temp);*/
 					for (LotteryTimeNum lotteryTimeNum : existList) {
-						timeTaskService.deleteJob(timeTask.getLotteryCode()+":"+lotteryTimeNum.getLotteryIssueNo());
+						//timeTaskService.deleteJob(timeTask.getLotteryCode()+":"+lotteryTimeNum.getLotteryIssueNo());
 					}
 				}
 			}
@@ -165,7 +190,12 @@ public class LotteryTimeNumServiceImpl
 					// ==========================生成时刻明细
 					LotteryTimeNum lotteryTimeNum =new LotteryTimeNum();
 					lotteryTimeNum.preInsert();
-					lotteryTimeNum.setLotteryIssueNo(lotteryIssueNo+String.format("%03d", issueNO));//期数
+					if(LotteryCodeConstants.PK10_BJ.equals(timeTask.getLotteryCode())) {
+						lotteryTimeNum.setLotteryIssueNo(no+"");
+						no++;
+					}else {
+						lotteryTimeNum.setLotteryIssueNo(lotteryIssueNo+String.format("%03d", issueNO));//期数
+					}
 					lotteryTimeNum.setLotteryCode(timeTask.getLotteryCode());
 					lotteryTimeNum.setBetStartDate(Date.from(betStartTime.atZone(ZoneId.systemDefault()).toInstant()));//开始时间
 					lotteryTimeNum.setBetEndDate(Date.from(betEndTime.atZone(ZoneId.systemDefault()).toInstant()));//截至时间
@@ -176,6 +206,7 @@ public class LotteryTimeNumServiceImpl
 					lotteryTimeNumList.add(lotteryTimeNum);
 					//递增旗号
 					issueNO++;
+					
 				}				
 			}
 			tempDate = tempDate.plusDays(1);
@@ -231,7 +262,7 @@ public class LotteryTimeNumServiceImpl
 			//保存开奖时刻信息
     		lotteryTimeNumDao.batchTimeNum(list);
     		//保存timetaskList
-    		timeTaskService.addJobs(timeTaskList);
+    	//	timeTaskService.addJobs(timeTaskList);
 		}
     }
   
@@ -320,7 +351,17 @@ public class LotteryTimeNumServiceImpl
 	
 	
     public static void main(String[] args) throws ParseException {
-    	System.out.println(200001<=200000);
+    	/*Calendar cal = Calendar.getInstance();
+    	BigDecimal i =new BigDecimal(1).divide(new BigDecimal(1000),0,BigDecimal.ROUND_CEILING);
+    	Calendar cal2 = Calendar.getInstance();
+    	cal.setTime(new Date());
+    	cal2.setTime(DateUtils.parseDate("2017-11-29 13:48:50"));
+    	Date nowDate = new Date();
+//    	System.out.println(cal.get(Calendar.MINUTE));
+    	System.out.println(i);*/
+    	
+
+		
 	}
 	
 }

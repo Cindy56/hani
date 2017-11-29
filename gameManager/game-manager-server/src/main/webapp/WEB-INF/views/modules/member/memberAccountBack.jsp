@@ -278,6 +278,7 @@
 					<a href="javascript:void(0);" onclick="$(this).next('div').toggle();"><div style="">${repeatMap.key}:</div></a>
 						<div style="display: block;margin-left: 20px">
 							<c:forEach items="${repeatMap.value}" var="LotteryPlayConfig">
+								<span>
 									<input type="hidden" name="playList[${index}].lotteryCode.isNewRecord" value="${LotteryPlayConfig.lotteryCode.isNewRecord}"/>
 									<input type="hidden" name="playList[${index}].lotteryCode.name" value="${repeatMap.key}"/>
 									<input type="hidden" name="playList[${index}].lotteryCode.code" value="${LotteryPlayConfig.lotteryCode.code}"/>
@@ -295,6 +296,7 @@
 										</c:forEach>
 									</select> 
 									<c:set var="index" value="${index+1}" />  
+								</span>
 							</c:forEach>
 						</div>
 					<br>

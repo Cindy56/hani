@@ -3,14 +3,8 @@
  */
 package com.game.manager.modules.member.web;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +31,6 @@ import com.game.modules.member.entity.MemberAccountOpenDto;
 import com.game.modules.member.entity.MemberPlayConfig;
 import com.game.modules.member.service.MemberAccountService;
 import com.game.modules.member.service.MemberPlayConfigService;
-import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.Role;
 import com.game.modules.sys.entity.User;
 
@@ -100,69 +93,8 @@ public class MemberAccountAddController extends BaseController {
 		User seesionUser = UserUtils.getUser();
 		//当前登录用户id
 		String seesionUserId=seesionUser.getId();
-		//查询当前登录用户的玩法配置
-		MemberPlayConfig memberPlayConfig=memberPlayConfigService.getMemberPlayConfigByUserId(seesionUserId);
-		//找出所有彩种
-		Map<String, List<LotteryPlayConfig>> repeatMap=new HashMap<>();
+		Map<String, List<LotteryPlayConfig>> repeatMap = memberPlayConfigService.getPlayConfigByUserId(seesionUserId);
 		
-		if(null!=memberPlayConfig&&StringUtils.isNotBlank(memberPlayConfig.getPlayConfig())) {
-			
-			String playConfig=memberPlayConfig.getPlayConfig();
-			//包含当前登录用户的玩法配置
-			JsonMapper jsonMapper = JsonMapper.getInstance();
-			List<LotteryPlayConfig> playConfigList  =  jsonMapper.fromJson(playConfig, jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class));
-			for (LotteryPlayConfig lottery : playConfigList) {
-				if(repeatMap.containsKey(lottery.getLotteryCode().getName())) {
-					List repList = repeatMap.get(lottery.getLotteryCode().getName());
-					repList.add(lottery);
-				}else {
-					List<LotteryPlayConfig> list1 = new ArrayList<>();
-					list1.add(lottery);
-					repeatMap.put(lottery.getLotteryCode().getName(), list1);
-				}
-			}
-			Set<Entry<String, List<LotteryPlayConfig>>> setEntry = repeatMap.entrySet();
-			for (Entry<String, List<LotteryPlayConfig>> entry : setEntry) {
-				List<LotteryPlayConfig> repeatList=entry.getValue();
-				
-				for (LotteryPlayConfig lottery : repeatList) {
-					//循环每种玩法
-					//中奖几率
-					BigDecimal winningProbability=new BigDecimal(lottery.getWinningProbability());
-					//最大返水
-					BigDecimal commissionRateMax=lottery.getCommissionRateMax();
-					//最小返水
-					BigDecimal commissionRateMin=lottery.getCommissionRateMin();
-					//每种玩法的list
-					List<Map> groupList=new ArrayList<Map>();
-					
-					while (commissionRateMax.compareTo(commissionRateMin)>=0) {
-						//循环算出玩法的奖金与返点
-						BigDecimal awardMoney=new BigDecimal(2).divide(winningProbability,3).multiply(new BigDecimal(1).subtract(commissionRateMin));
-						DecimalFormat dfFormat = new DecimalFormat("0.000"); 
-						String Money=dfFormat.format(awardMoney);
-						
-						Map<String, Object> awardMap=new HashMap<String, Object>();
-						//奖金
-						//awardMap.put("awardMoney", awardMoney);
-						awardMap.put("awardMoney", Money);
-						//返点百分比
-						awardMap.put("commissionRate", commissionRateMin);
-						//.multiply(new BigDecimal(100))
-						//把每种返点添加到groupList中
-						groupList.add(awardMap);
-						commissionRateMin=commissionRateMin.add(new BigDecimal("0.001"));
-					}
-					if(null!=lottery.getMap()) {
-						lottery.getMap().put("awardList", groupList);
-					}else {
-						lottery.setMap(new HashMap());
-						lottery.getMap().put("awardList", groupList);
-					}
-					
-				}
-			}
-		}
 		////////////
 		
 		
@@ -303,13 +235,19 @@ public class MemberAccountAddController extends BaseController {
 		user.setCurrentUser(UserUtils.getUser());
 		systemService.saveUser(user);
 		
-		memberAccount.setParentAgentId(seesionUser.getId());
-		memberAccount.setParentAgentIds(seesionUser.getId()+","+user.getId());
-		memberAccount.setOrgId(new Office());
+		MemberAccount sessionMember = memberAccountService.getByUserId(seesionUser.getId());
+		String sessionParentIds = "";
+		String sessionMemberId = "";
+		if(null!=sessionMember) {
+			sessionParentIds=sessionMember.getParentAgentIds();
+			sessionMemberId=sessionMember.getId();
+		}
+		memberAccount.setParentAgentId(sessionMemberId);
+		memberAccount.setParentAgentIds(sessionParentIds+sessionMemberId+",");
 		memberAccount.setBlance("0");
 		memberAccount.setBlanceFrozen("0");
 		memberAccount.setStatus("0");
-		memberAccount.setOrgId(user.getOffice());
+		memberAccount.setOrgId(seesionUser.getOffice());
 		memberAccount.setUser(user);
 		memberAccount.setSecPassword(SystemService.entryptPassword(memberAccount.getSecPassword()));
 		

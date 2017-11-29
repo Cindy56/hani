@@ -3,12 +3,15 @@
  */
 package com.game.modules.contract.entity;
 
+import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.sys.entity.Office;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import com.game.modules.sys.entity.User;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.Lists;
 
 import com.game.common.persistence.DataEntity;
@@ -35,15 +38,15 @@ public class Contract extends DataEntity<Contract> {
 	private String remark;		// 备注
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
+	private String status;		//状态：0审核中，1审核通过，2审核不通过，3开启，4冻结
 	
 	private String qqNo;	//qq号码
 	private String mobileNo;	//手机号码
 	private String secPassword;	//安全密码
+	private Map<String, List<LotteryPlayConfig>> map;//返点信息
+	private List<LotteryPlayConfig> playList;
 	
 	private List<ContractConfig> contractConfigList = Lists.newArrayList();		// 子表列表
-//	private List<ContractConfig> contractConfigList	;// 子表列表
-	
-	
 	
 	public Contract() {
 		super();
@@ -205,6 +208,30 @@ public class Contract extends DataEntity<Contract> {
 	}
 	public void setSecPassword(String secPassword) {
 		this.secPassword = secPassword;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Map<String, List<LotteryPlayConfig>> getMap() {
+		return map;
+	}
+
+	public void setMap(Map<String, List<LotteryPlayConfig>> map) {
+		this.map = map;
+	}
+
+	public List<LotteryPlayConfig> getPlayList() {
+		return playList;
+	}
+
+	public void setPlayList(List<LotteryPlayConfig> playList) {
+		this.playList = playList;
 	}
 	
 }

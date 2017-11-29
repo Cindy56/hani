@@ -4,6 +4,7 @@
 package com.game.modules.lottery.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.validator.constraints.Length;
@@ -76,13 +77,13 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
     /**
      * 返点信息
      */
-    private Map map;
+    private Map<String,List<Map<String, Object>>> map;
 
-    public Map getMap() {
+    public Map<String,List<Map<String, Object>>> getMap() {
         return map;
     }
 
-    public void setMap(Map map) {
+    public void setMap(Map<String,List<Map<String, Object>>> map) {
         this.map = map;
     }
 

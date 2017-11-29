@@ -20,7 +20,8 @@
 		a.create_by AS "createBy.id",
 		a.update_date AS "updateDate",
 		a.update_by AS "updateBy.id",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		a.status as "status"
 	</sql>
 	
 	<sql id="contractJoins">
@@ -29,9 +30,15 @@
 	<select id="get" resultType="Contract">
 		SELECT 
 			<include refid="contractColumns"/>
-		FROM contract a
+			,b.qq_no as "qqNo",
+			b.mobile_no as "mobile_no",
+			c.phone as "user.phone",
+			c.email as "user.email"
+		FROM contract a,member_account b,sys_user c
 		<include refid="contractJoins"/>
 		WHERE a.id = #{id}
+		and a.user_id=b.user_id
+		and b.user_id=c.id
 	</select>
 	
 	<select id="findList" resultType="Contract">
@@ -165,7 +172,10 @@
 			open_amount = #{openAmount},
 			contract_time = #{contractTime},
 			remark = #{remark},
-			del_flag = #{delFlag}
+			del_flag = #{delFlag},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			status = #{status}
 		WHERE id = #{id}
 	</update>
 	
