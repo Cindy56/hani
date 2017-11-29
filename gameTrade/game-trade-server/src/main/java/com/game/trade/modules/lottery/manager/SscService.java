@@ -2034,13 +2034,13 @@ public enum SscService implements LotteryService {
 			return GameError.errCodeBetRate;
 
 		BigDecimal winningProbabilityCfg = new BigDecimal(lotPlayCfg.getWinningProbability());
-		BigDecimal CommissionRateMaxCfg = lotPlayCfg.getCommissionRateMax().multiply(new BigDecimal("0.01"));
-		BigDecimal CommissionRateMinCfg = lotPlayCfg.getCommissionRateMin().multiply(new BigDecimal("0.01"));
+		BigDecimal CommissionRateMaxCfg = lotPlayCfg.getCommissionRateMax();
+		BigDecimal CommissionRateMinCfg = lotPlayCfg.getCommissionRateMin();
 
 		// 根据中奖概率和返水范围计算奖金组和返点
 		BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());// 奖金模式
 		playModeMoney.setScale(2);
-		BigDecimal playModeCommissionRate = lotteryOrder.getPlayModeCommissionRate().multiply(new BigDecimal("0.01"));// 奖金模式返水比例
+		BigDecimal playModeCommissionRate = lotteryOrder.getPlayModeCommissionRate();// 奖金模式返水比例
 		BigDecimal winAmount = lotteryOrder.getWinAmount();// 中奖金额
 
 		// 校验奖金模式是否在范围内
@@ -2062,7 +2062,7 @@ public enum SscService implements LotteryService {
 
 		// 校验返水比例，奖金组是否符合规则
 		// 个人投注返点 = 个人最高奖金组 - 投注时奖金组 / 2000 × 投注金额
-		BigDecimal playModeCommissionRateCfg = playModeMoneyMin.subtract(playModeMoney).divide(new BigDecimal("2000"));
+		BigDecimal playModeCommissionRateCfg = (playModeMoneyMin.subtract(playModeMoney)).divide(new BigDecimal("2")).multiply(winningProbability);
 
 		// 校验返点，是否正确
 		if (playModeCommissionRate.compareTo(playModeCommissionRateCfg) != 0)

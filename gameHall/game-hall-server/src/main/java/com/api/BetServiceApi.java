@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.entity.ResultData;
 import com.game.modules.order.entity.LotteryOrder;
+import com.game.modules.sys.entity.User;
 
 /**
  * 投注服务
@@ -62,6 +63,8 @@ public interface BetServiceApi {
 	 * @return
 	 */
 	public ResultData getOrders(String userId, String lotteryName, int num);
+
+
 
 	
 	

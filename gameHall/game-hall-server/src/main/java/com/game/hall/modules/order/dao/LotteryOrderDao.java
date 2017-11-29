@@ -1,7 +1,7 @@
 /**
  * 今日开奖
  */
-package com.game.hall.modules.bet.dao;
+package com.game.hall.modules.order.dao;
 
 import java.util.Date;
 import java.util.List;

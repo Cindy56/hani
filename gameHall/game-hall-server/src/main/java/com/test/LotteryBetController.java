@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.entity.ResultData;
-import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.hall.modules.order.dao.LotteryOrderDao;
 import com.game.modules.lottery.service.LotteryCalculateService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.Office;

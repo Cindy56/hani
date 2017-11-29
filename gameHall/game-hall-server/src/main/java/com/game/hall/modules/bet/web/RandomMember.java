@@ -18,7 +18,7 @@ public class RandomMember {
 
 		Random rand = new Random();
 
-		int i = rand.nextInt(5);
+		int i = rand.nextInt(members.size());
 		
 		String userId = members.get(i).getUser().getId();
 

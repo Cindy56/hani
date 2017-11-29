@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.api.BetServiceApi;
 import com.entity.ResultData;
 import com.game.hall.modules.bet.dao.AccountChargeDao;
-import com.game.hall.modules.bet.dao.LotteryOrderDao;
+import com.game.hall.modules.order.dao.LotteryOrderDao;
 import com.game.hall.modules.sys.utils.UserUtils;
 import com.game.modules.finance.entity.FinanceTradeDetail;
 import com.game.modules.finance.service.FinanceTradeDetailService;
@@ -125,7 +125,7 @@ public class LotteryAddBetService implements BetServiceApi {
 
 	@Transactional(readOnly = false)
 	@Override
-	public int addBet(LotteryOrder betData) { // TODO
+	public int addBet(LotteryOrder betData ) { // TODO
 
 		System.out.println("service_addbet here");
 
@@ -156,7 +156,11 @@ public class LotteryAddBetService implements BetServiceApi {
 			trade.setUser(user);
 		    trade.setUserName(user.getName());
 		    trade.setAccountId(user.getId());
-		    trade.setOrgId(user.getCompany().getCode());
+		    if( user.getCompany().getCode() == null )
+		    	trade.setOrgId("ORGID");
+		    else
+		    	trade.setOrgId(user.getCompany().getCode());
+			    	
 		    trade.setBusiNo(betData.getOrderNo());
 		    trade.setTradeType("0");
 		    trade.setAmount( betData.getBetAmount());
