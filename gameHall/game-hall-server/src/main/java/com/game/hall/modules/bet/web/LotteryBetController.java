@@ -4,12 +4,17 @@
 package com.game.hall.modules.bet.web;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,15 +22,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.entity.ResultData;
 import com.game.common.mapper.JsonMapper;
+import com.game.common.utils.IdGen;
 import com.game.hall.modules.bet.service.LotteryAddBetService;
 import com.game.hall.modules.bet.service.OrderUtils;
 import com.game.hall.modules.sys.utils.UserUtils;
+import com.game.modules.finance.entity.FinanceTradeDetail;
+import com.game.modules.finance.service.FinanceTradeDetailService;
+import com.game.modules.finance.service.FinanceTradeDetailService.FinanceTradeDetailType;
 import com.game.modules.lottery.entity.GameError;
 import com.game.modules.lottery.service.LotteryCalculateService;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
+import com.game.modules.lottery.service.LotteryTimeNumService;
+import com.game.modules.member.entity.MemberAccount;
 import com.game.modules.member.service.MemberAccountService;
 import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
+import com.game.modules.order.service.LotteryOrderService;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.User;
 import com.game.modules.sys.service.SystemServiceFacade;
@@ -61,6 +73,94 @@ public class LotteryBetController {
 	
 	@Autowired
 	SystemServiceFacade systemServiceFacade;
+	
+	@Autowired
+	private LotteryTimeNumService lotteryTimeNumService;
+	@Autowired
+	private LotteryOrderService lotteryOrderService;
+	@Autowired
+	private FinanceTradeDetailService financeTradeDetailService;
+	
+	
+	public String genOrderNo() {
+		return String.valueOf(IdGen.randomLong());
+	}
+	
+	public static void main(String[] args) {
+		Random rand = new Random();
+		StringBuilder betNumber = new StringBuilder();
+		betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
+		
+		System.out.println(betNumber.toString());
+	}
+	
+	@RequiresPermissions("finance:financeRecharge:view")
+	@RequestMapping(value = {"testAddBet"})
+	public LotteryOrder testAddBet(LotteryOrder lotteryOrder, Model model) {
+		//=================模拟生成order
+		LotteryOrder testOrder = new LotteryOrder();
+		User currentUser = UserUtils.getUser();
+		testOrder.setCurrentUser(currentUser);
+		testOrder.setOrderNo(genOrderNo());//订单编号
+		testOrder.setUser(currentUser);
+		testOrder.setOrgId(UserUtils.getUser().getOffice().getId());
+		testOrder.setLotteryCode("SSC_CQ");
+		testOrder.setBetIssueNo(lotteryTimeNumService.findCurrentIssueNo("SSC_CQ").getLotteryIssueNo());
+		MemberAccount currentAccount = memberAccountService.getByUserId(currentUser.getId());
+		testOrder.setAccountId(currentAccount.getId());
+		testOrder.setBetType("SSC_5XING_ZHIXUNDAN");
+		
+		Random rand = new Random();
+		StringBuilder betNumber = new StringBuilder();
+		betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
+		testOrder.setBetDetail(betNumber.toString());
+		testOrder.setBetAmount(new BigDecimal(4));
+		testOrder.setBetRate(2);
+		testOrder.setPlayModeMoney(190000);
+		testOrder.setPlayModeCommissionRate(new BigDecimal(0.03));
+		testOrder.setPlayModeMoneyType("0");
+		testOrder.setOrderSource("1");
+		testOrder.setOrderType("1");
+		testOrder.setSchemaId("xxxxxxxxxx");
+		testOrder.setWinAmount(new BigDecimal(0));
+		testOrder.setWithdrawAmount(new BigDecimal(0));
+		testOrder.setStatus("0");
+		
+		//=================调用check
+		int result = this.lotteryCalculateService.checkOrder(testOrder);
+		//=================入库
+		if(result != 0) {
+			return null;
+		}
+		
+		this.lotteryOrderService.save(testOrder);
+		//=================扣钱
+		boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(), testOrder.getBetAmount());
+		if(BooleanUtils.isFalse(minusAmountResult)) {
+			//TODO:扣款失败，返回异常提示
+			
+		}
+		//=================生成流水,挪到返水服务里
+		//生成扣款账变流水,入库
+		FinanceTradeDetail  trade = new FinanceTradeDetail();
+		trade.setUser(testOrder.getUser());
+		trade.setUserName(testOrder.getUser().getName());
+		trade.setAccountId(testOrder.getAccountId());
+		trade.setOrgId(testOrder.getOrgId());
+		trade.setBusiNo(testOrder.getOrderNo());
+		trade.setTradeType("0");//投注扣款
+		trade.setAmount(testOrder.getBetAmount());
+//		trade.setAccountBlanceBefore(accountBlanceBefore);
+//		trade.setAccountBlanceAfter(accountBlanceAfter);
+		trade.getUser().setId("robot");
+		
+		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder), FinanceTradeDetailType.xxxxxx);
+		
+//		this.financeTradeDetailService.save(trade);
+		
+		return lotteryOrder;
+	}
+	
 
 	@ResponseBody
 	@RequestMapping(value = "/addbet", method = RequestMethod.POST)
