@@ -86,6 +86,7 @@ public class FinanceTradeDetailServiceImpl
 	 *  批量插入账变流水
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public void batchGenFinanceTradeDetail(List<LotteryOrder> lotteryOrderList, FinanceTradeDetailType type) {
 		if(CollectionUtils.isEmpty(lotteryOrderList) || null == type) {
 			return;
