@@ -86,16 +86,9 @@ public class LotteryBetController {
 		return String.valueOf(IdGen.randomLong());
 	}
 	
-	public static void main(String[] args) {
-		Random rand = new Random();
-		StringBuilder betNumber = new StringBuilder();
-		betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
-		
-		System.out.println(betNumber.toString());
-	}
-	
-	@RequiresPermissions("finance:financeRecharge:view")
+//	@RequiresPermissions("finance:financeRecharge:view")
 	@RequestMapping(value = {"testAddBet"})
+	@ResponseBody
 	public LotteryOrder testAddBet(LotteryOrder lotteryOrder, Model model) {
 		//=================模拟生成order
 		LotteryOrder testOrder = new LotteryOrder();
@@ -108,7 +101,7 @@ public class LotteryBetController {
 		testOrder.setBetIssueNo(lotteryTimeNumService.findCurrentIssueNo("SSC_CQ").getLotteryIssueNo());
 		MemberAccount currentAccount = memberAccountService.getByUserId(currentUser.getId());
 		testOrder.setAccountId(currentAccount.getId());
-		testOrder.setBetType("SSC_5XING_ZHIXUNDAN");
+		testOrder.setBetType("SSC_5XING_ZHIXUANDAN");
 		
 		Random rand = new Random();
 		StringBuilder betNumber = new StringBuilder();
@@ -129,9 +122,9 @@ public class LotteryBetController {
 		//=================调用check
 		int result = this.lotteryCalculateService.checkOrder(testOrder);
 		//=================入库
-		if(result != 0) {
-			return null;
-		}
+//		if(result != 0) {
+//			return null;
+//		}
 		
 		this.lotteryOrderService.save(testOrder);
 		//=================扣钱
@@ -141,22 +134,7 @@ public class LotteryBetController {
 			
 		}
 		//=================生成流水,挪到返水服务里
-		//生成扣款账变流水,入库
-		FinanceTradeDetail  trade = new FinanceTradeDetail();
-		trade.setUser(testOrder.getUser());
-		trade.setUserName(testOrder.getUser().getName());
-		trade.setAccountId(testOrder.getAccountId());
-		trade.setOrgId(testOrder.getOrgId());
-		trade.setBusiNo(testOrder.getOrderNo());
-		trade.setTradeType("0");//投注扣款
-		trade.setAmount(testOrder.getBetAmount());
-//		trade.setAccountBlanceBefore(accountBlanceBefore);
-//		trade.setAccountBlanceAfter(accountBlanceAfter);
-		trade.getUser().setId("robot");
-		
-		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder), FinanceTradeDetailType.xxxxxx);
-		
-//		this.financeTradeDetailService.save(trade);
+		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder), FinanceTradeDetailType.BET_DEDUCTIONS);
 		
 		return lotteryOrder;
 	}
