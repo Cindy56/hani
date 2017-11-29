@@ -27,9 +27,12 @@ public class ShortID {
 
 		for (int i = 0; i < 100000; i++) {
 
-			int n = random.nextInt();
-//			String s = Integer.toHexString(n);
-			//String s = Integer.toString(n);
+			int n = random.nextInt((int) 2E10);
+			// String s = Integer.toHexString(n);
+			// String s = Integer.toString(n);
+
+			if (n < 0)
+				continue;
 
 			if (poolStrings.contains(n)) {
 				System.out.println("errLine=35, now size =" + poolStrings.size());
