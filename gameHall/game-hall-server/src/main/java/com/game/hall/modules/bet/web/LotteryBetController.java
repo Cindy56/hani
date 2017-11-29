@@ -178,6 +178,8 @@ public class LotteryBetController {
 		// betData.add(getOrder());
 		System.out.println("1");
 
+		User user = RandomMember.getMember(memberAccountService,systemServiceFacade);
+
 		int ret = 0;
 
 		// 前置校验
@@ -186,9 +188,9 @@ public class LotteryBetController {
 		for (int i = 0; i < lsBetData.size(); i++) {
 
 			LotteryOrder lotOrder = lsBetData.get(i);
+			lotOrder.setAccountId(memberAccountService.getByUserId(user.getId()).getId());
 			lotOrder.setOrderNo(OrderUtils.getOrderNo());
 
-			User user = RandomMember.getMember(memberAccountService,systemServiceFacade);
 
 			lotOrder.setUser(user);
 			lotOrder.setCurrentUser(user);
