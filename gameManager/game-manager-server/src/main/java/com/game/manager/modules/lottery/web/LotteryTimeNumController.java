@@ -63,7 +63,25 @@ public class LotteryTimeNumController extends BaseController {
 		Page<LotteryTimeNum> page = lotteryTimeNumService.findPage(new Page<LotteryTimeNum>(request, response), lotteryTimeNum);
 		List<Dict> dictList = DictUtils.getDictAssemblyList("SSC","PK10","11X5","K3");
 		model.addAttribute("dictLis", dictList);
-		
+		setLotteyCodeName(page, dictList);
+		model.addAttribute("page", page);
+		return "modules/lottery/lotteryTimeNumList";
+	}
+	
+	@RequestMapping(value ="batchView")
+	public String batchView(LotteryTimeNum lotteryTimeNum, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<LotteryTimeNum> page = null;
+		List<Dict> dictList = DictUtils.getDictAssemblyList("SSC","PK10","11X5","K3");
+		if(StringUtils.isNoneBlank(lotteryTimeNum.getLotteryCode())) {
+			page = lotteryTimeNumService.findPage(new Page<LotteryTimeNum>(request, response), lotteryTimeNum); 
+			setLotteyCodeName(page, dictList);
+		}
+		model.addAttribute("dictLis", dictList);
+		model.addAttribute("page", page);
+		return "modules/lottery/lotteryBatchTimeNumList";
+	}
+
+	private void setLotteyCodeName(Page<LotteryTimeNum> page,List<Dict> dictList) {
 		if(page != null) {
 			if(CollectionUtils.isNotEmpty(page.getList())){
 				if(CollectionUtils.isNotEmpty(dictList)) {
@@ -77,21 +95,7 @@ public class LotteryTimeNumController extends BaseController {
 				}
 			}
 		}
-		model.addAttribute("page", page);
-		return "modules/lottery/lotteryTimeNumList";
 	}
-	
-	@RequestMapping(value ="batchView")
-	public String batchView(LotteryTimeNum lotteryTimeNum, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<LotteryTimeNum> page = null;
-		if(StringUtils.isNoneBlank(lotteryTimeNum.getLotteryCode())) {
-			page = lotteryTimeNumService.findPage(new Page<LotteryTimeNum>(request, response), lotteryTimeNum); 
-		}
-		model.addAttribute("page", page);
-		return "modules/lottery/lotteryBatchTimeNumList";
-	}
-
-
 	
 	@RequiresPermissions("lottery:lotteryTimeNum:view")
 	@RequestMapping(value = "form")

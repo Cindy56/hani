@@ -32,6 +32,7 @@ import com.game.common.persistence.Page;
 import com.game.common.service.CrudService;
 import com.game.common.utils.DateUtils;
 import com.game.common.utils.StringUtils;
+import com.game.modules.finance.entity.FinanceTradeDetail;
 import com.game.modules.lottery.dto.OpenCaiResult;
 import com.game.modules.lottery.dto.TimeTask;
 import com.game.modules.lottery.entity.LotteryTimeNum;
@@ -44,6 +45,7 @@ import com.game.trade.modules.lottery.dao.LotteryTimeNumDao;
 import com.game.trade.modules.lottery.manager.LotteryCodeConstants;
 import com.game.trade.modules.lottery.manager.OpenCaiDrawService;
 import com.game.trade.modules.lottery.manager.TimeTaskService;
+import com.google.common.collect.Lists;
 
 /**
  * 开奖时刻和开奖结果Service
@@ -356,13 +358,17 @@ public class LotteryTimeNumServiceImpl
 	
 	
     public static void main(String[] args) throws ParseException {
-    	Calendar cal = Calendar.getInstance();
+    	/*Calendar cal = Calendar.getInstance();
+    	BigDecimal i =new BigDecimal(1).divide(new BigDecimal(1000),0,BigDecimal.ROUND_CEILING);
     	Calendar cal2 = Calendar.getInstance();
     	cal.setTime(new Date());
     	cal2.setTime(DateUtils.parseDate("2017-11-29 13:48:50"));
     	Date nowDate = new Date();
 //    	System.out.println(cal.get(Calendar.MINUTE));
-    	System.out.println(nowDate.getMinutes());
+    	System.out.println(i);*/
+    	
+
+		
 	}
 	
 }

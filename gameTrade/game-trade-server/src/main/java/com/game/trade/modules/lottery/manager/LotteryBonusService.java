@@ -106,24 +106,8 @@ public class LotteryBonusService {
 				this.memberAccountService.plusAmount(lotteryOrder.getAccountId(), bonus);
 				
 				winLotteryOrderList.add(lotteryOrder);
-//				//生成中奖账变流水,入库
-//				FinanceTradeDetail  trade = new FinanceTradeDetail();
-//				trade.setUser(lotteryOrder.getUser());
-//				trade.setUserName(lotteryOrder.getUser().getName());
-//				trade.setAccountId(lotteryOrder.getAccountId());
-//				trade.setOrgId(lotteryOrder.getOrgId());
-//				trade.setBusiNo(lotteryOrder.getOrderNo());
-//				trade.setTradeType("4");
-//				trade.setAmount(bonus);
-////				trade.setAccountBlanceBefore(accountBlanceBefore);
-////				trade.setAccountBlanceAfter(accountBlanceAfter);
-//				trade.getUser().setId("robot");
-//				this.financeTradeDetailService.save(trade);
 			}
 		}
-		
-		
-		this.financeTradeDetailService.batchGenFinanceTradeDetail(winLotteryOrderList, FinanceTradeDetailType.xxxxxx);
-		return;
+		this.financeTradeDetailService.batchGenFinanceTradeDetail(winLotteryOrderList, FinanceTradeDetailType.BONUS_TO_SEND);
 	}
 }

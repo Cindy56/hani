@@ -3,8 +3,11 @@
  */
 package com.game.trade.modules.finance.service;
 
+import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +16,10 @@ import com.game.common.persistence.Page;
 import com.game.common.service.CrudService;
 import com.game.modules.finance.entity.FinanceTradeDetail;
 import com.game.modules.finance.service.FinanceTradeDetailService;
+import com.game.modules.member.entity.MemberAccount;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.modules.finance.dao.FinanceTradeDetailDao;
+import com.google.common.collect.Lists;
 
 /**
  * 账变流水Service
@@ -57,17 +62,59 @@ public class FinanceTradeDetailServiceImpl
 	 */
 	@Transactional(readOnly = false)
 	public void batchTrade(List<FinanceTradeDetail> list) {
-		list.stream().forEach(c->{
-			c.preInsert();
-		});
-		financeTradeDetailDao.batchTrade(list);
+		List<FinanceTradeDetail> delList = Lists.newArrayList();
+		//计算出批量次数
+		BigDecimal count =new BigDecimal(list.size()).divide(new BigDecimal(1000),0,BigDecimal.ROUND_CEILING);	
+		Iterator<FinanceTradeDetail> iter = list.iterator();
+		for (int j = 0; j < count.intValue(); j++) {
+			delList.clear();
+			for (int i = 0; i < 1000; i++) {
+				if(iter.hasNext()) {
+					FinanceTradeDetail financeTradeDetail = iter.next();
+					financeTradeDetail.preInsert();
+					delList.add(financeTradeDetail);
+				}
+			}
+			if(delList.size() > 0) {
+				financeTradeDetailDao.batchTrade(delList);
+			}
+		}
 	}
-	
+	/**
+	 *  批量插入账变流水
+	 */
 	@Override
 	public void batchGenFinanceTradeDetail(List<LotteryOrder> lotteryOrderList, FinanceTradeDetailType type) {
-		// TODO Auto-generated method stub
-		
-		//page 1000
-		
+		if(CollectionUtils.isEmpty(lotteryOrderList) || null == type) {
+			return;
+		}
+		List<FinanceTradeDetail> delList = Lists.newArrayList();
+		lotteryOrderList.stream().forEach(c->{
+			switch (type) {
+				case BET_DEDUCTIONS:
+					delList.add(saveTradeDetail(c,c.getBetAmount(), type.getCode()));
+					break;
+				case BONUS_TO_SEND:
+					delList.add(saveTradeDetail(c,c.getWinAmount(), type.getCode()));
+					break;
+				default:
+					break;
+			}
+		});
+		if(delList.size() > 0) {
+			batchTrade(delList);
+		}
+	}
+	private FinanceTradeDetail saveTradeDetail (LotteryOrder lotteryOrder,BigDecimal amount,String tradeType) {
+		FinanceTradeDetail  trade = new FinanceTradeDetail();
+		trade.setUser(lotteryOrder.getUser());
+		trade.setUserName(lotteryOrder.getUser().getName());
+		trade.setAccountId(lotteryOrder.getAccountId());
+		trade.setOrgId(lotteryOrder.getOrgId());
+		trade.setBusiNo(lotteryOrder.getOrderNo());
+		trade.setTradeType(tradeType);
+		trade.setAmount(amount);
+		trade.getUser().setId("sys");
+		return trade;
 	}
 }
