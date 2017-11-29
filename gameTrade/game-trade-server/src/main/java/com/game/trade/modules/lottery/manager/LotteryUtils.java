@@ -1232,9 +1232,11 @@ public class LotteryUtils {
 	public static int calBetNum5XingZhiXuanFuShi(String bet)
 	{
 		String[] betNumList = bet.split(",");
-		int count = 0;
-		for (String string : betNumList) {
-			count *= string.length();
+		
+		int count = betNumList[0].length();
+		
+		for (int i = 1; i < betNumList.length; i++) {
+			count *= betNumList[i].length();
 		}
 
 		return count;

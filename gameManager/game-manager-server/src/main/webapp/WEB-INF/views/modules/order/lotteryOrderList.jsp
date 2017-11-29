@@ -66,20 +66,20 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>id</th>
+				<!-- <th>id</th> -->
 				<th>订单编号</th>
 				<th>用户名</th>
-				<th>user_id</th>
+				<!-- <th>user_id</th> -->
 				<th>机构id</th>
 				<th>lottery_code</th>
 				<th>投注期号</th>
-				<th>账户id</th>
+				<!-- <th>账户id</th> -->
 				<th>投注类型：</th>
 				<th>投注内容</th>
 				<th>投注金额</th>
 				<th>投注倍数</th>
 				<th>奖金模式</th>
-				<th>佣金比例</th>
+				<th>返点比例</th>
 				<th>玩法模式</th>
 				<th>注单来源</th>
 				<th>注单类型</th>
@@ -94,18 +94,18 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="lotteryOrder">
 			<tr>
-				<td><a href="${ctx}/order/lotteryOrder/form?id=${lotteryOrder.id}">
+				<%-- <td><a href="${ctx}/order/lotteryOrder/form?id=${lotteryOrder.id}">
 					${lotteryOrder.id}
-				</a></td>
+				</a></td> --%>
 				<td>
 					${lotteryOrder.orderNo}
 				</td>
 				<td>
 					${lotteryOrder.user.name}
 				</td>
-				<td>
+				<%-- <td>
 					${lotteryOrder.user.id}
-				</td>
+				</td> --%>
 				<td>
 					${lotteryOrder.orgId}
 				</td>
@@ -115,9 +115,9 @@
 				<td>
 					${lotteryOrder.betIssueNo}
 				</td>
-				<td>
+				<%-- <td>
 					${lotteryOrder.accountId}
-				</td>
+				</td> --%>
 				<td>
 					${lotteryOrder.betType}
 				</td>
