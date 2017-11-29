@@ -187,6 +187,7 @@
 		<c:if test="${not empty contract.id}">
 			<form:input id="newPassword" path="user.password" type="hide" class="hide"/>
 			<form:input path="secPassword" type="hide" class="hide"/>
+			<form:input path="status" type="hide" class="hide"/>
 		</c:if>
 		<c:if test="${empty contract.id}">
 		<tr><td>
@@ -332,7 +333,7 @@
 								<input id="contractConfigList{{idx}}_rangeEnd" name="contractConfigList[{{idx}}].rangeEnd" type="number" value="{{row.rangeEnd}}" class="input-small required" onchange="checkMoneyB(this)" min="0"/>
 							</td>
 							<td>
-								<input id="contractConfigList{{idx}}_beniftRate" name="contractConfigList[{{idx}}].beniftRate" type="number" value="{{row.beniftRate}}" class="input-small required" min="0" max="100" />
+								<input id="contractConfigList{{idx}}_beniftRate" name="contractConfigList[{{idx}}].beniftRate" type="number" value="{{row.beniftRate}}" class="input-small required" min="0" maxlength="4" onkeyup="if(isNaN(value))execCommand('undo');if(this.value>100){this.value=100}"/>
 							</td>
 							<shiro:hasPermission name="contract:company:contract:edit"><td class="text-center" width="10">
 								{{#delBtn}}<span class="close" onclick="delRow(this, '#contractConfigList{{idx}}')" title="删除">&times;</span>{{/delBtn}}

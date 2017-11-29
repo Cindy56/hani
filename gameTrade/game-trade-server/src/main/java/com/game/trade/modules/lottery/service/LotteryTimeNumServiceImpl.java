@@ -137,14 +137,7 @@ public class LotteryTimeNumServiceImpl
 		if(LotteryCodeConstants.SSC_XJ.equals(timeTask.getLotteryCode())){
 			plusDays=1;
 		}else if(LotteryCodeConstants.PK10_BJ.equals(timeTask.getLotteryCode())) {
-			OpenCaiResult result = openCaiDrawService.drawLotteryNum(timeTask.getLotteryCode());
-			if(null == result) {
-				return;
-			}	
-			/*Date openDate = DateUtils.parseDate(result.getOpentime());
-			//openDate.
-			Date nowDate = new Date();*/
-			no = Integer.parseInt(result.getExpect());
+			no = Integer.parseInt("653317");//数据库取
 		}
 		//循环天
 		while (!tempDate.isAfter(endDatex)) {
@@ -163,11 +156,11 @@ public class LotteryTimeNumServiceImpl
 						);
 				if(CollectionUtils.isNotEmpty(existList)) {//判断当天是否生成开奖计划，如生成 则覆盖
 					//存在，先删除表数据 在删除定时任务
-					lotteryTimeNumDao.batchDel(timeTask.getLotteryCode(), 
+					/*lotteryTimeNumDao.batchDel(timeTask.getLotteryCode(), 
 							DateUtils.formatDate(Date.from(tempDate.atStartOfDay(ZoneId.systemDefault()).toInstant()),"yyyy-MM-dd"),
-							temp);
+							temp);*/
 					for (LotteryTimeNum lotteryTimeNum : existList) {
-						timeTaskService.deleteJob(timeTask.getLotteryCode()+":"+lotteryTimeNum.getLotteryIssueNo());
+						//timeTaskService.deleteJob(timeTask.getLotteryCode()+":"+lotteryTimeNum.getLotteryIssueNo());
 					}
 				}
 			}
@@ -269,7 +262,7 @@ public class LotteryTimeNumServiceImpl
 			//保存开奖时刻信息
     		lotteryTimeNumDao.batchTimeNum(list);
     		//保存timetaskList
-    		timeTaskService.addJobs(timeTaskList);
+    	//	timeTaskService.addJobs(timeTaskList);
 		}
     }
   
