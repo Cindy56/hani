@@ -6,8 +6,10 @@
     <meta name="decorator" content="default"/>
     <script type="text/javascript">
         $(document).ready(function() {
+            // 表单校验
             $("#inputForm").validate({
                 submitHandler: function(form){
+                    $(".lotteryCode").val($("#code").val());
                     loading('正在提交，请稍等...');
                     form.submit();
                 },
@@ -27,6 +29,7 @@
                 }
             });
         });
+        // 添加一行开奖方案输入框
         function addRow(list, idx, tpl, row){
             $(list).append(Mustache.render(tpl, {
                 idx: idx, delBtn: true, row: row
@@ -43,8 +46,14 @@
                 }
             });
         }
+        // 删除一行开奖方案输入框
         function delRow(obj, prefix){
-            var id = $(prefix+"_id");
+            var caseCount = $("#lotteryTypeTimeList").children().length;
+            // 最后一行不允许删除
+            if (caseCount == 1) {
+                return;
+            }
+            var id = $(prefix + "_id");
             var delFlag = $(prefix+"_delFlag");
             if (id.val() == ""){
                 $(obj).parent().parent().remove();
@@ -97,9 +106,17 @@
         <div class="control-group">
             <label class="control-label">所属公司：</label>
             <div class="controls">
-                <sys:treeselect id="companyId" name="companyId" value="${lotteryType.companyId}" labelName="${lotteryType.currentUser.company.name}" labelValue="${lotteryType.currentUser.company.name}"
-                    title="所属公司" url="/sys/office/treeData?type=1" cssClass="required"/>
-                <span class="help-inline"><font color="red">*</font></span>
+				<c:choose>
+					<c:when test="${lotteryType.companyId != null}">  
+               		<sys:treeselect id="companyId" name="companyId" value="${lotteryType.companyId}" labelName="${lotteryType.companyId}" labelValue="${lotteryType.currentUser.company.name}"
+                   title="所属公司" url="/sys/office/treeData?type=1" cssClass="required"/>
+					</c:when>
+					<c:otherwise> 
+               		<sys:treeselect id="companyId" name="companyId" value="" labelName="" labelValue=""
+                   title="所属公司" url="/sys/office/treeData?type=1" cssClass="required"/>
+					</c:otherwise>
+				</c:choose>
+				<span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>
 
@@ -134,7 +151,7 @@
         <div class="control-group">
             <label class="control-label">每日开奖期数：</label>
             <div class="controls">
-                <form:input path="times" htmlEscape="false" maxlength="6" class="input-xlarge required"/>
+                <form:input path="times" type="number" min="0" htmlEscape="false" maxlength="6" class="input-xlarge required"/>
                 <span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>
@@ -143,7 +160,7 @@
         <div class="control-group">
             <label class="control-label">每期投注最高金额：</label>
             <div class="controls">
-                <form:input path="amountMaxBet" htmlEscape="false" class="input-xlarge "/>
+                <form:input path="amountMaxBet" type="number" min="0" htmlEscape="false" class="input-xlarge "/>
             </div>
         </div>
 
@@ -151,15 +168,26 @@
         <div class="control-group">
             <label class="control-label">开奖方案：</label>
             <div class="controls">
-                    <table id="contentTable" style="max-width: 50%;" class="table table-striped table-bordered table-condensed">
+                    <table id="contentTable" style="max-width: 40%;" class="table table-striped table-bordered table-condensed">
                         <thead>
                             <tr>
                                 <th class="hide"></th>
-                                <th>彩票代码</th>
-                                <th>开始时间</th>
-                                <th>截止时间</th>
-                                <th>开奖周期时间</th>
-                                <th>每期封单时间</th>
+                                <th>
+                                	开始时间
+                                	<span class="help-inline"><font color="red">*</font></span>
+                                </th>
+                                <th>
+                                	截止时间
+                                	<span class="help-inline"><font color="red">*</font></span>
+                                </th>
+                                <th>
+                                	开奖周期时间
+                                	<span class="help-inline"><font color="red">*</font></span>
+                                </th>
+                                <th>
+                                	每期封单时间
+                                	<span class="help-inline"><font color="red">*</font></span>
+                                </th>
                                 <shiro:hasPermission name="lottery:lotteryType:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
                             </tr>
                         </thead>
@@ -169,15 +197,13 @@
                             <tr><td colspan="7"><a href="javascript:" onclick="addRow('#lotteryTypeTimeList', lotteryTypeTimeRowIdx, lotteryTypeTimeTpl);lotteryTypeTimeRowIdx = lotteryTypeTimeRowIdx + 1;" class="btn">新增方案</a></td></tr>
                         </tfoot></shiro:hasPermission>
                     </table>
-
+					<%-- 开奖方案输入框生成模板 --%>
                     <script type="text/template" id="lotteryTypeTimeTpl">//<!--
                         <tr id="lotteryTypeTimeList{{idx}}">
                             <td class="hide">
                                 <input id="lotteryTypeTimeList{{idx}}_id" name="lotteryTypeTimeList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
                                 <input id="lotteryTypeTimeList{{idx}}_delFlag" name="lotteryTypeTimeList[{{idx}}].delFlag" type="hidden" value="0"/>
-                            </td>
-                            <td>
-                                <input id="lotteryTypeTimeList{{idx}}_lotteryCode" name="lotteryTypeTimeList[{{idx}}].lotteryCode" type="text" value="{{row.lotteryCode}}" maxlength="50" class="input-small required"/>
+								<input name="lotteryTypeTimeList[{{idx}}].lotteryCode" class="lotteryCode" type="hidden" />
                             </td>
                             <td>
                                 <input id="lotteryTypeTimeList{{idx}}_startTime" name="lotteryTypeTimeList[{{idx}}].startTime" type="text" value="{{row.startTime}}" maxlength="10" onclick="WdatePicker({dateFmt:'HH:mm'})" class="input-small required"/>
@@ -196,7 +222,7 @@
                             </td></shiro:hasPermission>
                         </tr>//-->
                     </script>
-
+					<%-- 用于进入页面时生成方案展示，如果是新增，默认一条方案新增输入框 --%>
                     <script type="text/javascript">
                         var lotteryTypeTimeRowIdx = 0, lotteryTypeTimeTpl = $("#lotteryTypeTimeTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
                         $(document).ready(function() {
@@ -204,6 +230,10 @@
                             for (var i=0; i<data.length; i++){
                                 addRow('#lotteryTypeTimeList', lotteryTypeTimeRowIdx, lotteryTypeTimeTpl, data[i]);
                                 lotteryTypeTimeRowIdx = lotteryTypeTimeRowIdx + 1;
+                            }
+                            // 如果进入页面没有方案数据（新增），默认显示一条方案新增输入框
+                            if (0 == data.length) {
+                                addRow('#lotteryTypeTimeList', lotteryTypeTimeRowIdx, lotteryTypeTimeTpl, "");
                             }
                         });
                     </script>
@@ -216,6 +246,7 @@
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
         </div>
     </form:form>
+    <%-- 彩种类型于彩种代码级联事件 --%>
     <script type="text/javascript">
         $("#parentCode").change(function() {
             $.ajax({
