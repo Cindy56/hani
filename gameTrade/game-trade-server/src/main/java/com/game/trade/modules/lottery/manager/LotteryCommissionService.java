@@ -127,7 +127,7 @@ public class LotteryCommissionService {
 					//给上级加钱
 					memberAccountService.plusAmount(memberAccount.getParentAgentId(),parentAmount);
 					//生成账变
-					tradeList.add(saveTradeDetail(memberAccountMap.get(memberAccount.getParentAgentId()),lotteryOrder,parentAmount,FinanceTradeDetailType.BET_DEDUCTIONS));
+					tradeList.add(saveTradeDetail(memberAccountMap.get(memberAccount.getParentAgentId()),lotteryOrder,parentAmount,FinanceTradeDetailType.BET_REBATES_SUBORDINATE));
 				}
 			}
 		});

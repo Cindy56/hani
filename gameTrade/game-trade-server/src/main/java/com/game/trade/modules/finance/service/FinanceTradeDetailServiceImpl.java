@@ -58,21 +58,23 @@ public class FinanceTradeDetailServiceImpl
 	
 	/**
 	 * 批量插入账变流水
-	 * @param list
+	 * @param financeTradeDetaillist
 	 */
 	@Transactional(readOnly = false)
-	public void batchTrade(List<FinanceTradeDetail> list) {
-		List<FinanceTradeDetail> delList = Lists.newArrayList();
+	public void batchTrade(List<FinanceTradeDetail> financeTradeDetaillist) {
 		//计算出批量次数
-		BigDecimal count =new BigDecimal(list.size()).divide(new BigDecimal(1000),0,BigDecimal.ROUND_CEILING);	
-		Iterator<FinanceTradeDetail> iter = list.iterator();
-		for (int j = 0; j < count.intValue(); j++) {
-			delList.clear();
-			for (int i = 0; i < 1000; i++) {
+		Iterator<FinanceTradeDetail> iter = financeTradeDetaillist.iterator();
+		int pageSize = 1000;
+		int pageCount =  new BigDecimal(financeTradeDetaillist.size()).divide(new BigDecimal(1000),0,BigDecimal.ROUND_CEILING).intValue();
+		for (int j = 0; j < pageCount; j++) {
+			List<FinanceTradeDetail> delList = Lists.newArrayList();
+			for (int i = 0; i < pageSize; i++) {
 				if(iter.hasNext()) {
 					FinanceTradeDetail financeTradeDetail = iter.next();
 					financeTradeDetail.preInsert();
 					delList.add(financeTradeDetail);
+				} else {
+					break;
 				}
 			}
 			if(delList.size() > 0) {
@@ -89,32 +91,33 @@ public class FinanceTradeDetailServiceImpl
 			return;
 		}
 		List<FinanceTradeDetail> delList = Lists.newArrayList();
-		lotteryOrderList.stream().forEach(c->{
+		lotteryOrderList.stream().forEach(lotteryOrder->{
+			FinanceTradeDetail  financeTrade = new FinanceTradeDetail();
+			financeTrade.setUser(lotteryOrder.getUser());
+			financeTrade.setUserName(lotteryOrder.getUser().getName());
+			financeTrade.setAccountId(lotteryOrder.getAccountId());
+			financeTrade.setOrgId(lotteryOrder.getOrgId());
+			financeTrade.setBusiNo(lotteryOrder.getOrderNo());
+			financeTrade.getUser().setId("sys");
+			
 			switch (type) {
 				case BET_DEDUCTIONS:
-					delList.add(saveTradeDetail(c,c.getBetAmount(), type.getCode()));
+					financeTrade.setTradeType(type.getCode());
+					financeTrade.setAmount(lotteryOrder.getBetAmount());
 					break;
 				case BONUS_TO_SEND:
-					delList.add(saveTradeDetail(c,c.getWinAmount(), type.getCode()));
+					financeTrade.setTradeType(type.getCode());
+					financeTrade.setAmount(lotteryOrder.getWinAmount());
 					break;
 				default:
 					break;
 			}
+			
+			delList.add(financeTrade);
 		});
-		if(delList.size() > 0) {
-			batchTrade(delList);
+		
+		if(CollectionUtils.isNotEmpty(delList)) {
+			this.batchTrade(delList);
 		}
-	}
-	private FinanceTradeDetail saveTradeDetail (LotteryOrder lotteryOrder,BigDecimal amount,String tradeType) {
-		FinanceTradeDetail  trade = new FinanceTradeDetail();
-		trade.setUser(lotteryOrder.getUser());
-		trade.setUserName(lotteryOrder.getUser().getName());
-		trade.setAccountId(lotteryOrder.getAccountId());
-		trade.setOrgId(lotteryOrder.getOrgId());
-		trade.setBusiNo(lotteryOrder.getOrderNo());
-		trade.setTradeType(tradeType);
-		trade.setAmount(amount);
-		trade.getUser().setId("sys");
-		return trade;
 	}
 }

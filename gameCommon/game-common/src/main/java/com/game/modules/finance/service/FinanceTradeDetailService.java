@@ -23,7 +23,8 @@ public interface FinanceTradeDetailService {
 		BONUS_TO_SEND("4", "奖金派送"),
 		BET_REBATES("5", "投注返点"),
 		ACTIVITIES_GIFT("6", "活动礼金"),
-		AFTER_NO("7", "追号停止")
+		AFTER_NO("7", "追号停止"),
+		BET_REBATES_SUBORDINATE("8", "下级投注返点")
 		;
 		private String code;
 		private String name;
