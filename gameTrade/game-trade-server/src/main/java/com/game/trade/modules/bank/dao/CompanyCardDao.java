@@ -1,18 +1,18 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.game.trade.modules.finance.dao;
+package com.game.trade.modules.bank.dao;
 
 import com.game.common.persistence.CrudDao;
 import com.game.common.persistence.annotation.MyBatisDao;
-import com.game.modules.finance.entity.ReceiveBankNo;
+import com.game.modules.bank.entity.CompanyCard;
 
 /**
- * 收款人银行卡管理DAO接口
+ * 银行卡管理DAO接口
  * @author David
- * @version 2017-11-28
+ * @version 2017-11-29
  */
 @MyBatisDao
-public interface ReceiveBankNoDao extends CrudDao<ReceiveBankNo> {
+public interface CompanyCardDao extends CrudDao<CompanyCard> {
 	
 }

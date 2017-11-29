@@ -22,10 +22,10 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
+import com.game.modules.bank.entity.CompanyCard;
+import com.game.modules.bank.service.CompanyCardService;
 import com.game.modules.finance.entity.FinanceRecharge;
-import com.game.modules.finance.entity.ReceiveBankNo;
 import com.game.modules.finance.service.FinanceRechargeService;
-import com.game.modules.finance.service.ReceiveBankNoService;
 import com.game.modules.sys.entity.User;
 
 /**
@@ -41,7 +41,7 @@ public class FinanceRechargeController extends BaseController {
 	@Autowired
 	private FinanceRechargeService financeRechargeService;
 	@Autowired
-	private ReceiveBankNoService receiveBankNoService;
+	CompanyCardService companyCardService;
 	@ModelAttribute
 	public FinanceRecharge get(@RequestParam(required=false) String id) {
 		FinanceRecharge entity = null;
@@ -53,7 +53,7 @@ public class FinanceRechargeController extends BaseController {
 		}
 		return entity;
 	}
-	
+
 	/**
 	 * 数据权限测试：查看本部门，查看下级，查看本人
 	 * @param financeRecharge
@@ -77,7 +77,7 @@ public class FinanceRechargeController extends BaseController {
 		
 		//充值表单提交 产生一条充值记录 状态支付中
 		User user = new User();
-		user.setId("00ff432e9e77424e82a6e4752a6f4c37");
+		user.setId("cb587fdc02ba4395aaa653b03ded304c");
 		financeRecharge.setUser(user);
 		financeRecharge.setOrgId("机构名字");
 		financeRecharge.setRechargeNo("充值单编号");
@@ -94,10 +94,16 @@ public class FinanceRechargeController extends BaseController {
 	}
 	
 	
-
+	/**
+	 * 
+	 * 银行卡充值页面
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "rechargeForm")
 	public String rechargeForm(Model model) {
-		List<ReceiveBankNo> list = receiveBankNoService.findList(new ReceiveBankNo());
+		//弹出银行卡选择页面
+		List<CompanyCard> list = companyCardService.findList(new CompanyCard());
 		model.addAttribute("list", list);
 		return "modules/finance/financeRechargeForm";
 	}

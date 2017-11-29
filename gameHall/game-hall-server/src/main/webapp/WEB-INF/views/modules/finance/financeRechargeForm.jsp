@@ -42,30 +42,40 @@
 		</div> --%>
 	
 				
-		<c:forEach items="${list}" var="receiveBankNo">
+	<%-- 	<c:forEach items="${list}" var="companyCard">
 			<div class="control-group">
 			<label class="control-label">收款人：</label>
 			<div class="controls">
-				${receiveBankNo.userName}
+				${companyCard.bankCardHolder}
 			</div>
 		    </div> 
 			
 			<div class="control-group">
 			<label class="control-label">银行名称：</label>
 			<div class="controls">
-				${receiveBankNo.bankNo}
+				${companyCard.bankBranchName}
 			</div>
 		    </div> 
 		    
 		    <div class="control-group">
 			<label class="control-label">银行卡号：</label>
 			<div class="controls">
-				${receiveBankNo.bankCardNo}
+				${companyCard.bankCardNo}
 			</div>
 		    </div> 
+			</c:forEach> --%>
+			
+		<div class="control-group">
+		<label class="control-label">收款人银行卡信息：</label>
+		<div class="controls">
+		<select >
+			<c:forEach items="${list}" var="companyCard">
+				<option value="${companyCard.bankCardHolder}">收款人:${companyCard.bankCardHolder} &nbsp;&nbsp;&nbsp;银行名称:
+				${companyCard.bankBranchName}&nbsp;&nbsp;&nbsp;银行卡号：${companyCard.bankCardNo}</option>
 			</c:forEach>
-	
-		
+		</select>
+		</div>
+		</div>
 
 		
 		<div class="control-group">

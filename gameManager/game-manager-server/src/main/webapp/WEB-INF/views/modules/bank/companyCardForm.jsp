@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>收款人信息管理管理</title>
+	<title>银行卡管理管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,51 +27,58 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/finance/receiveBankNo/">收款人信息管理列表</a></li>
-		<li class="active"><a href="${ctx}/finance/receiveBankNo/form?id=${receiveBankNo.id}">收款人信息管理<shiro:hasPermission name="finance:receiveBankNo:edit">${not empty receiveBankNo.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="finance:receiveBankNo:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/bank/companyCard/">银行卡管理列表</a></li>
+		<li class="active"><a href="${ctx}/bank/companyCard/bankform">银行卡管理<shiro:hasPermission name="bank:companyCard:edit">${not empty companyCard.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="bank:companyCard:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="receiveBankNo" action="${ctx}/finance/receiveBankNo/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="companyCard" action="${ctx}/bank/companyCard/form" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">bank_no：</label>
+			<label class="control-label">公司id：</label>
 			<div class="controls">
-				<form:input path="bankNo" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<form:input path="companyId" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+
 		<div class="control-group">
-			<label class="control-label">bank_card_no：</label>
+			<label class="control-label">银行卡号：</label>
 			<div class="controls">
 				<form:input path="bankCardNo" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">user_name：</label>
+			<label class="control-label">银行卡持有人：</label>
 			<div class="controls">
-				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<form:input path="bankCardHolder" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">create_time：</label>
+			<label class="control-label">开户行省份：</label>
 			<div class="controls">
-				<input name="createTime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
-					value="<fmt:formatDate value="${receiveBankNo.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+				<form:input path="bankBranchProvince" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">status：</label>
+			<label class="control-label">开户行城市：</label>
 			<div class="controls">
-				<form:input path="status" htmlEscape="false" maxlength="1" class="input-xlarge required"/>
+				<form:input path="bankBranchCity" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">开户行（支行）名称：</label>
+			<div class="controls">
+				<form:input path="bankBranchName" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+
 		<div class="form-actions">
-			<shiro:hasPermission name="finance:receiveBankNo:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
