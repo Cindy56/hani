@@ -66,14 +66,11 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>id</th>
 				<th>订单编号</th>
 				<th>用户名</th>
-				<th>user_id</th>
-				<th>机构id</th>
-				<th>lottery_code</th>
+				<th>机构</th>
+				<th>彩种</th>
 				<th>投注期号</th>
-				<th>账户id</th>
 				<th>投注类型：</th>
 				<th>投注内容</th>
 				<th>投注金额</th>
@@ -86,25 +83,18 @@
 				<th>中奖金额</th>
 				<th>撤单金额</th>
 				<th>注单状态</th>
-				<th>create_date</th>
-				<th>del_flag</th>
+				<th>创建日期</th>
 				<shiro:hasPermission name="order:lotteryOrder:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="lotteryOrder">
 			<tr>
-				<td><a href="${ctx}/order/lotteryOrder/form?id=${lotteryOrder.id}">
-					${lotteryOrder.id}
-				</a></td>
 				<td>
 					${lotteryOrder.orderNo}
 				</td>
 				<td>
 					${lotteryOrder.user.name}
-				</td>
-				<td>
-					${lotteryOrder.user.id}
 				</td>
 				<td>
 					${lotteryOrder.orgId}
@@ -116,13 +106,10 @@
 					${lotteryOrder.betIssueNo}
 				</td>
 				<td>
-					${lotteryOrder.accountId}
-				</td>
-				<td>
 					${lotteryOrder.betType}
 				</td>
 				<td>
-					………………
+					${lotteryOrder.betDetail}
 				</td>
 				<td>
 					${lotteryOrder.betAmount}
