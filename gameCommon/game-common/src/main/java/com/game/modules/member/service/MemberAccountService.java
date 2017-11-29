@@ -36,14 +36,14 @@ public interface MemberAccountService {
 	 * @param memberAccount
 	 * @param amount
 	 */
-	public void plusAmount(String accountId, BigDecimal amount);
+	public boolean plusAmount(String accountId, BigDecimal amount);
 	
 	/**
 	 * 扣减会员账户金额
 	 * @param memberAccount
 	 * @param amount
 	 */
-	public void minusAmount(String accountId, BigDecimal amount);
+	public boolean minusAmount(String accountId, BigDecimal amount);
 	
 	/**
 	 * 根据 多个 会员ID 查询 会员信息

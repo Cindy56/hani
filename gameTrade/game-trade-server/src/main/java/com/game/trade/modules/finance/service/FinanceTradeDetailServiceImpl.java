@@ -13,6 +13,7 @@ import com.game.common.persistence.Page;
 import com.game.common.service.CrudService;
 import com.game.modules.finance.entity.FinanceTradeDetail;
 import com.game.modules.finance.service.FinanceTradeDetailService;
+import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.modules.finance.dao.FinanceTradeDetailDao;
 
 /**
@@ -62,4 +63,11 @@ public class FinanceTradeDetailServiceImpl
 		financeTradeDetailDao.batchTrade(list);
 	}
 	
+	@Override
+	public void batchGenFinanceTradeDetail(List<LotteryOrder> lotteryOrderList, FinanceTradeDetailType type) {
+		// TODO Auto-generated method stub
+		
+		//page 1000
+		
+	}
 }

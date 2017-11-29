@@ -35,13 +35,13 @@ public interface MemberAccountDao extends CrudDao<MemberAccount> {
 	 * @param memberAccount
 	 * @param amount
 	 */
-	public void plusAmount(@Param("accountId")String accountId, @Param("amount")BigDecimal amount);
+	public int plusAmount(@Param("accountId")String accountId, @Param("amount")BigDecimal amount);
 	/**
 	 * 扣减会员账户金额
 	 * @param memberAccount
 	 * @param amount
 	 */
-	public void minusAmount(@Param("accountId")String accountId, @Param("amount")BigDecimal amount);
+	public int minusAmount(@Param("accountId")String accountId, @Param("amount")BigDecimal amount);
 	
 	/**
 	* 根据 会员ID 查询  所有上级会员信息（包括当前会员ID）

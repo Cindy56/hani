@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.game.common.utils.IdGen;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.model.OpenLottery;
 import com.game.trade.model.Star5;
@@ -1333,6 +1334,9 @@ public class LotteryUtils {
 	}
 
 
+	public static String genOrderNo() {
+		return String.valueOf(IdGen.randomLong());
+	}
 	
 	
 	
