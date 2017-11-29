@@ -37,6 +37,10 @@ import com.game.modules.sys.entity.User;
 public class ContractCompanyController extends BaseController {
 	
 	private static Logger logger = LoggerFactory.getLogger(ContractCompanyController.class);
+	
+	//公司状态
+	private static final String NORMAL = "3";//正常
+	private static final String FREEZE = "4";//冻结
 
 	@Autowired
 	private ContractService contractService;
@@ -118,5 +122,21 @@ public class ContractCompanyController extends BaseController {
 		}
 		return "false";
 	}*/
+	@RequiresPermissions("contract:company:contract:edit")
+	@RequestMapping(value = "updateStatus")
+	public String updateStatus(Contract contract, RedirectAttributes redirectAttributes) {
+		String status=contract.getStatus();
+		String message="公司审核中，暂时不能操作";
+		if(NORMAL.equals(status)) {
+			contract.setStatus(FREEZE);
+			message="公司冻结成功";
+		}else if(FREEZE.equals(status)) {
+			contract.setStatus(NORMAL);
+			message="公司启用成功";
+		}
+		contractService.save(contract);
+		addMessage(redirectAttributes,message);
+		return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
+	}
 
 }

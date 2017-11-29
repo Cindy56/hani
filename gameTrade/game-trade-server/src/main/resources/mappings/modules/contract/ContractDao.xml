@@ -20,7 +20,8 @@
 		a.create_by AS "createBy.id",
 		a.update_date AS "updateDate",
 		a.update_by AS "updateBy.id",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		a.status as "status"
 	</sql>
 	
 	<sql id="contractJoins">
@@ -173,7 +174,8 @@
 			remark = #{remark},
 			del_flag = #{delFlag},
 			update_date = #{updateDate},
-			update_by = #{updateBy.id}
+			update_by = #{updateBy.id},
+			status = #{status}
 		WHERE id = #{id}
 	</update>
 	
