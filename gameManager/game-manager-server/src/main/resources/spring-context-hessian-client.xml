@@ -53,6 +53,12 @@
         <property name="serviceInterface" value="com.game.modules.finance.service.FinanceRechargeService"/>  
     </bean>
     
+   <!--  bank -->
+   	<bean id="companyCardService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.trade.url}/companyCardService"/>  
+        <property name="serviceInterface" value="com.game.modules.bank.service.CompanyCardService"/>  
+    </bean>
+    
     <!-- contract -->
 	<bean id="contractService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
         <property name="serviceUrl" value="${game.trade.url}/contractService"/>  
