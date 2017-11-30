@@ -3,6 +3,7 @@
  */
 package com.game.hall.modules.finance.web;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -16,17 +17,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
-import com.game.hall.modules.sys.utils.UserUtils;
+import com.game.modules.bank.entity.CompanyCard;
+import com.game.modules.bank.service.CompanyCardService;
 import com.game.modules.finance.entity.FinanceRecharge;
-import com.game.modules.finance.entity.ReceiveBankNo;
 import com.game.modules.finance.service.FinanceRechargeService;
-import com.game.modules.finance.service.ReceiveBankNoService;
 import com.game.modules.sys.entity.User;
 
 /**
@@ -42,7 +47,7 @@ public class FinanceRechargeController extends BaseController {
 	@Autowired
 	private FinanceRechargeService financeRechargeService;
 	@Autowired
-	private ReceiveBankNoService receiveBankNoService;
+	CompanyCardService companyCardService;
 	@ModelAttribute
 	public FinanceRecharge get(@RequestParam(required=false) String id) {
 		FinanceRecharge entity = null;
@@ -54,7 +59,7 @@ public class FinanceRechargeController extends BaseController {
 		}
 		return entity;
 	}
-	
+
 	/**
 	 * 数据权限测试：查看本部门，查看下级，查看本人
 	 * @param financeRecharge
@@ -77,31 +82,62 @@ public class FinanceRechargeController extends BaseController {
 		//TODO:相关验证		
 		
 		//充值表单提交 产生一条充值记录 状态支付中
-		User currentUser = UserUtils.getUser();
-//		user.setId("00ff432e9e77424e82a6e4752a6f4c37");
-		financeRecharge.setUser(currentUser);
-		financeRecharge.setCompanyId(currentUser.getCompany().getId());
-		financeRecharge.setOfficeId(currentUser.getOffice().getId());
+		User user = new User();
+		user.setId("cb587fdc02ba4395aaa653b03ded304c");
+		financeRecharge.setUser(user);
+		financeRecharge.setOfficeId("机构名字");
 		financeRecharge.setRechargeNo("充值单编号");
 		financeRecharge.setRechargeDate(new Date());
 		financeRecharge.setPaymentChannelId("工商银行");
 		financeRecharge.setStatus("0");
-		//随机产生6位数附言
-		financeRecharge.setValidateCode(String.valueOf((int)((Math.random()*9+1)*100000)));
+	
 		financeRechargeService.save(financeRecharge);
-
+		
 		model.addAttribute("financeRecharge", financeRecharge);
 		//return "modules/finance/financeRechargeForm";
 		return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list"; 
 	}
 	
 	
-
+	@RequiresPermissions("finance:financeRecharge:edit")
+	@RequestMapping(value = "confirmForm")
+	public String confirmForm(FinanceRecharge financeRecharge, Model model,HttpServletRequest req) {
+		//随机产生6位数附言
+		financeRecharge.setValidateCode(String.valueOf((int)((Math.random()*9+1)*100000)));
+		CompanyCard companyCard =new CompanyCard();
+		int i = 0;
+		i = Integer.parseInt(req.getParameter("bankSelect"));
+		if(i == 1) {
+			companyCard.setBankCode("001");
+		}else if(i == 2) {
+			companyCard.setBankCode("002");
+		}else if(i == 3) {
+			companyCard.setBankCode("003");
+		}else if(i == 4) {
+			companyCard.setBankCode("004");
+		}
+		
+		List<CompanyCard> list = companyCardService.findListByBankCode(companyCard);
+		CompanyCard card = list.get((int)(Math.random()*list.size()));
+		model.addAttribute("card",card);
+		return "modules/finance/financeRechargeForm";
+	}
+	
+	
+	/**
+	 * 
+	 * 银行卡充值页面
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "rechargeForm")
 	public String rechargeForm(Model model) {
-		List<ReceiveBankNo> list = receiveBankNoService.findList(new ReceiveBankNo());
-		model.addAttribute("list", list);
-		return "modules/finance/financeRechargeForm";
+		//弹出银行卡选择页面
+/*		List<CompanyCard> list = companyCardService.findList(new CompanyCard());
+		model.addAttribute("list", list);*/
+		
+		//return "modules/finance/financeRechargeForm";
+		return "modules/finance/selectBank";
 	}
 	
 	
@@ -122,11 +158,47 @@ public class FinanceRechargeController extends BaseController {
 /*	@RequiresPermissions("trade:financeRecharge:edit")*/
 	@RequestMapping(value = "delete")
 	public String delete(FinanceRecharge financeRecharge, RedirectAttributes redirectAttributes) {
-		financeRechargeService.delete(financeRecharge);
-		addMessage(redirectAttributes, "撤销充值成功");
+
+		if("0".equals(financeRecharge.getStatus()) || "1".equals(financeRecharge.getStatus())) {
+			financeRechargeService.delete(financeRecharge);
+			addMessage(redirectAttributes, "撤销充值成功");
+		}else {
+			addMessage(redirectAttributes, "打款已经到账,撤销失败");
+		}
+		
 		return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list"; 
 	}	
 	
-
-
+	
+	@ResponseBody
+	@RequestMapping(value = "bankSelect")
+	public String bankSelect(HttpServletRequest res,HttpServletResponse re) throws IOException {
+		String bankSelect = res.getParameter("bankSelect");
+		if("1".equals(bankSelect)) {
+			//工商银行 代码为001
+		//	List<CompanyCard> list = companyCardService.findList(new CompanyCard());
+			
+		//	List<CompanyCard> list = companyCardService.findListByBankCode(new CompanyCard());
+		//	CompanyCard companyCard =new CompanyCard();
+		//	companyCard.setBankCode("001");
+		//	List<CompanyCard> list = companyCardService.findList(companyCard);
+			
+			
+			CompanyCard companyCard =new CompanyCard();
+			companyCard.setBankCode("001");
+			List<CompanyCard> list = companyCardService.findListByBankCode(companyCard);			
+			ObjectMapper objectMapper = new ObjectMapper();  
+			String s = objectMapper.writeValueAsString(list);
+			re.getWriter().write(s);
+			
+		}else if("2".equals(bankSelect)) {
+			
+		}else if("3".equals(bankSelect)) {
+			
+		}else {
+			
+		}
+		return null;
+	}	
+	
 }

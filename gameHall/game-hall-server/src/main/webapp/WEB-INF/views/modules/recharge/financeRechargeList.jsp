@@ -32,7 +32,7 @@
 				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>公司id：</label>
-				<form:input path="orgId" htmlEscape="false" maxlength="50" class="input-medium"/>
+				<form:input path="companyId" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>充值单编号：</label>
 				<form:input path="rechargeNo" htmlEscape="false" maxlength="50" class="input-medium"/>
@@ -81,7 +81,7 @@
 					${financeRecharge.userName}
 				</td>
 				<td>
-					${financeRecharge.orgId}
+					${financeRecharge.companyId}
 				</td>
 				<td>
 					${financeRecharge.rechargeNo}

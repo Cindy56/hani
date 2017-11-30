@@ -50,7 +50,7 @@
 		<div class="control-group">
 			<label class="control-label">公司id：</label>
 			<div class="controls">
-				<form:input path="orgId" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<form:input path="companyId" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

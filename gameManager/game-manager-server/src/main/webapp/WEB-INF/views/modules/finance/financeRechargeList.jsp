@@ -28,7 +28,7 @@
 				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>公司名称：</label>
-				<form:input path="orgId" htmlEscape="false" maxlength="50" class="input-medium"/>
+				<form:input path="companyId" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>充值单编号：</label>
 				<form:input path="rechargeNo" htmlEscape="false" maxlength="50" class="input-medium"/>
@@ -99,7 +99,7 @@
 				<td><%-- <a href="${ctx}/finance/financeRecharge/form?id=${financeRecharge.id}"> --%>
 					${financeRecharge.userName}
 				</a></td>
-				<td>${financeRecharge.orgId}</td>
+				<td>${financeRecharge.companyId}</td>
 				<td>${financeRecharge.rechargeNo}</td>
 				<td>
 					${financeRecharge.bankName}

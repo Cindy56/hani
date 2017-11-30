@@ -58,7 +58,11 @@
         <property name="serviceInterface" value="com.game.modules.finance.service.FinanceTradeDetailService"/>  
     </bean>    
     
-    
+    <!-- bank -->
+    	<bean id="companyCardService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
+        <property name="serviceUrl" value="${game.manager.url}/companyCardServicee"/>  
+        <property name="serviceInterface" value="com.game.modules.bank.service.CompanyCardService"/>  
+    </bean> 
     
     
   	<!-- system:user and role -->
@@ -67,8 +71,8 @@
         <property name="serviceInterface" value="com.game.modules.sys.service.SystemServiceFacade"/>  
     </bean> 
     
-     <bean id="receiveBankNoService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">  
-        <property name="serviceUrl" value="${game.trade.url}/receiveBankNoService"/>  
-        <property name="serviceInterface" value="com.game.modules.finance.service.ReceiveBankNoService"/>  
-    </bean>  
+    
+    
+    
+ 
 </beans>  
