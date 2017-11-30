@@ -25,7 +25,7 @@ public class Contract extends DataEntity<Contract> {
 	
 	private static final long serialVersionUID = 2068384035681508128L;
 	private String companyId;	// 归属公司
-	private String orgName;		// 机构名称
+	private String companyName;		// 机构名称
 	private User user;		// 用户id
 	private String userName;		// 用户登录名称
 	private String accountId;		// 账户id
@@ -66,12 +66,12 @@ public class Contract extends DataEntity<Contract> {
 	}
 	
 	@Length(min=1, max=50, message="机构名称长度必须介于 1 和 50 之间")
-	public String getOrgName() {
-		return orgName;
+	public String getCompanyName() {
+		return companyName;
 	}
 
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 	
 	@NotNull(message="用户id不能为空")
