@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.game.common.config.Global;
@@ -103,9 +104,11 @@ public class FinanceRechargeController extends BaseController {
 	@RequestMapping(value = "rechargeForm")
 	public String rechargeForm(Model model) {
 		//弹出银行卡选择页面
-		List<CompanyCard> list = companyCardService.findList(new CompanyCard());
-		model.addAttribute("list", list);
-		return "modules/finance/financeRechargeForm";
+/*		List<CompanyCard> list = companyCardService.findList(new CompanyCard());
+		model.addAttribute("list", list);*/
+		
+		//return "modules/finance/financeRechargeForm";
+		return "modules/finance/selectBank";
 	}
 	
 	
@@ -131,6 +134,13 @@ public class FinanceRechargeController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list"; 
 	}	
 	
-
-
+	
+	@ResponseBody
+	@RequestMapping(value = "ajax11")
+	public String ajax11(HttpServletRequest res) {
+		System.out.println("========================");
+		System.out.println(res.getParameter("bankSelect"));
+		return null;
+	}	
+	
 }

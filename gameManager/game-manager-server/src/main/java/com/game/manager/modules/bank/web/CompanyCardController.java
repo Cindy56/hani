@@ -97,5 +97,16 @@ public class CompanyCardController extends BaseController {
 		addMessage(redirectAttributes, "删除银行卡管理成功");
 		return "redirect:"+Global.getAdminPath()+"/bank/companyCard/?repage";
 	}
+	
+	@RequiresPermissions("bank:companyCard:edit")
+	@RequestMapping(value = "disable")
+	public String disable(CompanyCard companyCard, RedirectAttributes redirectAttributes) {
+		//禁用银行卡
+		companyCard.setStatus("2");
+		companyCardService.save(companyCard);
+		//companyCardService.disable(companyCard);
+		addMessage(redirectAttributes, "禁用银行卡管理成功");
+		return "redirect:"+Global.getAdminPath()+"/bank/companyCard/?repage";
+	}
 
 }

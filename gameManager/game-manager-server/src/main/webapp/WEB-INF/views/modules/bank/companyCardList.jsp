@@ -99,8 +99,8 @@
 				</td>
 				<td>
     				<a href="${ctx}/bank/companyCard/form?id=${companyCard.id}">激活</a>
-					<a href="${ctx}/bank/companyCard/delete?id=${companyCard.id}" onclick="return confirmx('确认要删除该银行卡管理吗？', this.href)">禁用</a>
-					<a href="${ctx}/bank/companyCard/delete?id=${companyCard.id}" onclick="return confirmx('确认要删除该银行卡管理吗？', this.href)">删除</a>
+					<a href="${ctx}/bank/companyCard/disable?id=${companyCard.id}" onclick="return confirmx('确认要禁用该银行卡吗？', this.href)">禁用</a>
+					<a href="${ctx}/bank/companyCard/delete?id=${companyCard.id}" onclick="return confirmx('确认要删除该银行卡吗？', this.href)">删除</a>
 				</td>
 			</tr>
 		</c:forEach>
