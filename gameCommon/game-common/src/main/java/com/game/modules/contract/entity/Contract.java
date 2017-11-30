@@ -17,7 +17,7 @@ import com.google.common.collect.Lists;
 import com.game.common.persistence.DataEntity;
 
 /**
- * 开设分公司Entity
+ * 开设分公司/代理Entity
  * @author freeman
  * @version 2017-11-22
  */

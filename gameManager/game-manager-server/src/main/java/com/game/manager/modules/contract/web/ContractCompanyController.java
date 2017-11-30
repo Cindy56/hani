@@ -60,6 +60,8 @@ public class ContractCompanyController extends BaseController {
 	@RequiresPermissions("contract:company:contract:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Contract contract, HttpServletRequest request, HttpServletResponse response, Model model) {
+		//只查询开户类型为公司的数据
+		contract.setOpenType("1");
 		Page<Contract> page = contractService.findPage(new Page<Contract>(request, response), contract); 
 		model.addAttribute("page", page);
 		return "modules/contract/contractCompanyList";
@@ -92,14 +94,7 @@ public class ContractCompanyController extends BaseController {
 			user.setPassword(SystemService.entryptPassword(user.getPassword()));
 		}
 		contract.setUser(user);
-		//保存公司信息
-		try {
-			contractService.save(contract);
-		} catch (Exception e) {
-			logger.info("公司开户保存异常："+e);
-			addMessage(redirectAttributes, "保存公司失败，请稍后再试！");
-			return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
-		}
+		
 		addMessage(redirectAttributes, "保存公司成功");
 		return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
 	}

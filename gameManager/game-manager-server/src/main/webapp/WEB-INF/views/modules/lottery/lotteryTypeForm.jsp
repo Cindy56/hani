@@ -9,7 +9,9 @@
             // 表单校验
             $("#inputForm").validate({
                 submitHandler: function(form){
+                    // 提交前给隐藏的节点赋值
                     $(".lotteryCode").val($("#code").val());
+                    $("#name").val($("span.select2-chosen").get(1).innerHTML);
                     loading('正在提交，请稍等...');
                     form.submit();
                 },
@@ -92,7 +94,7 @@
 
         <%-- 彩种代码 --%>
         <div class="control-group">
-            <label class="control-label">彩种代码：</label>
+            <label class="control-label">彩种名称：</label>
             <div class="controls">
                 <form:select id="code" path="code" class="input-xlarge required">
                     <form:option value="" label="-- 请选择 --"/>
@@ -103,12 +105,8 @@
         </div>
 
         <%-- 彩种名称 --%>
-        <div class="control-group">
-            <label class="control-label">彩种名称：</label>
-            <div class="controls">
-                <form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-                <span class="help-inline"><font color="red">*</font> </span>
-            </div>
+        <div hidden="true">
+        	<form:input id="name" path="name"/>
         </div>
 
         <%-- 是否自动开奖 --%>
