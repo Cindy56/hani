@@ -17,5 +17,9 @@ public interface CompanyCardService {
 	public CompanyCard save(CompanyCard companyCard);
 	
 	public void delete(CompanyCard companyCard);
+
+	public List<CompanyCard> findListByBankCode(CompanyCard companyCard);
+
+
 	
 }

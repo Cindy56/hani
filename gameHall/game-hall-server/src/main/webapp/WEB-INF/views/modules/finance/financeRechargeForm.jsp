@@ -65,18 +65,18 @@
 		    </div> 
 			</c:forEach> --%>
 			
-		<div class="control-group">
+<%-- 		<div class="control-group">
 		<label class="control-label">收款人银行卡信息：</label>
 		<div class="controls">
 		<select >
 			<c:forEach items="${list}" var="companyCard">
 				<option value="${companyCard.bankCardHolder}">收款人:${companyCard.bankCardHolder} &nbsp;&nbsp;&nbsp;银行名称:
-				${companyCard.bankBranchName}&nbsp;&nbsp;&nbsp;银行卡号：${companyCard.bankCardNo}</option>
+				${companyCard.bankBranchName}&nbsp;&nbsp;银行卡号：${companyCard.bankCardNo}</option>
 			</c:forEach>
 		</select>
 		</div>
 		</div>
-
+ --%>
 		
 		<div class="control-group">
 			<label class="control-label">用户名：</label>
@@ -85,6 +85,8 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div> 
+		
+	
 		
 <%-- 		<div class="control-group">
 			<label class="control-label">公司id：</label>
@@ -206,6 +208,41 @@
 				<form:input path="status" htmlEscape="false" maxlength="1" class="input-xlarge "/>
 			</div>
 		</div> --%>
+		<div class="control-group">
+			<label class="control-label">收款人：</label>
+			<div class="controls">
+				<input id="receive" value="${card.bankCardHolder}" htmlEscape="false"/>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">收款人银行：</label>
+			<div class="controls">
+				<input id="receiveBank" value="${card.bankBranchName}" htmlEscape="false"/>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">收款人账号：</label>
+			<div class="controls"> 
+				<input id="receiveNo" value="${card.bankCardNo}" htmlEscape="false"/>
+			</div>
+		</div>
+		
+<!-- 		<div class="control-group">
+			<label class="control-label">验证码：</label>
+			<div class="controls">
+				<input id="code" htmlEscape="false"/>
+			</div>
+		</div> -->
+		
+	  <div class="control-group">
+			<label class="control-label">验证码：</label>
+			<div class="controls">
+				<form:input path="validateCode" htmlEscape="false" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
 		
 		
 		<div class="form-actions">

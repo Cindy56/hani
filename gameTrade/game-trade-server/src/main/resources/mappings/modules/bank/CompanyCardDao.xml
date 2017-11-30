@@ -143,4 +143,52 @@
 		WHERE id = #{id}
 	</update>
 	
+	<select id="findListByBankCode" resultType="CompanyCard">
+		SELECT 
+			<include refid="companyCardColumns"/>
+		FROM company_card a
+		<include refid="companyCardJoins"/>
+		<where>
+			a.bank_code = #{bankCode}
+			AND
+			a.status = "1"
+			AND
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<!-- a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="companyId != null and companyId != ''">
+				AND a.company_id = #{companyId}
+			</if>
+			<if test="bankCardNo != null and bankCardNo != ''">
+				AND a.bank_card_no = #{bankCardNo}
+			</if>
+			<if test="bankCardHolder != null and bankCardHolder != ''">
+				AND a.bank_card_holder = #{bankCardHolder}
+			</if>
+			<if test="bankBranchProvince != null and bankBranchProvince != ''">
+				AND a.bank_branch_province = #{bankBranchProvince}
+			</if>
+			<if test="bankBranchCity != null and bankBranchCity != ''">
+				AND a.bank_branch_city = #{bankBranchCity}
+			</if>
+			<if test="bankBranchName != null and bankBranchName != ''">
+				AND a.bank_branch_name = #{bankBranchName}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if> -->
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	
 </mapper>

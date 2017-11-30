@@ -3,6 +3,8 @@
  */
 package com.game.trade.modules.bank.dao;
 
+import java.util.List;
+
 import com.game.common.persistence.CrudDao;
 import com.game.common.persistence.annotation.MyBatisDao;
 import com.game.modules.bank.entity.CompanyCard;
@@ -15,4 +17,5 @@ import com.game.modules.bank.entity.CompanyCard;
 @MyBatisDao
 public interface CompanyCardDao extends CrudDao<CompanyCard> {
 	
+	public List<CompanyCard> findListByBankCode(CompanyCard companyCard);
 }

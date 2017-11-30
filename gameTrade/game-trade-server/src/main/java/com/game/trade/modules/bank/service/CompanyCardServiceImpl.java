@@ -5,6 +5,7 @@ package com.game.trade.modules.bank.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,8 @@ import com.game.trade.modules.bank.dao.CompanyCardDao;
 @Service("companyCardService")
 @Transactional(readOnly = true)
 public class CompanyCardServiceImpl extends CrudService<CompanyCardDao, CompanyCard> implements CompanyCardService{
-
+	@Autowired
+	private CompanyCardDao companyCardDao;
 	public CompanyCard get(String id) {
 		return super.get(id);
 	}
@@ -43,6 +45,12 @@ public class CompanyCardServiceImpl extends CrudService<CompanyCardDao, CompanyC
 	@Transactional(readOnly = false)
 	public void delete(CompanyCard companyCard) {
 		super.delete(companyCard);
+	}
+
+	@Override
+	public List<CompanyCard> findListByBankCode(CompanyCard companyCard) {
+		return companyCardDao.findListByBankCode(companyCard);
+
 	}
 	
 }
