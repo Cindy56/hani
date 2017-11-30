@@ -6,60 +6,12 @@
 			"code": "SSC_CQ",
 			"name": "重庆时时彩"
 		},
-		"playCode": "SSC_DAN1_ZHIXUAN",
-		"name": "haha",
+		"playCode": "SSC_5XING_ZHIXUANDAN",
+		"name": "时时彩5星直选单式",
 		"playType": "x",
-		"winningProbability": "0.001",
-		"commissionRateMax": "1.5",
-		"commissionRateMin": "1.1",
-		"betRateLimit": "10000",
-		"isEnable": "1"
-	},
-	{
-		"isNewRecord": true,
-		"lotteryCode": {
-			"isNewRecord": true,
-			"code": "SSC_XJ",
-			"name": "新疆时时彩"
-		},
-		"playCode": "SSC_DAN1_ZHIXUAN",
-		"name": "看看",
-		"playType": "x",
-		"winningProbability": "0.001",
-		"commissionRateMax": "1.5",
-		"commissionRateMin": "0.9",
-		"betRateLimit": "10000",
-		"isEnable": "1"
-	},
-	{
-		"isNewRecord": true,
-		"lotteryCode": {
-			"isNewRecord": true,
-			"code": "SSC_HLJ",
-			"name": "HLJ时时彩"
-		},
-		"playCode": "SSC_DAN1_ZHIXUAN",
-		"name": "尽快看",
-		"playType": "x",
-		"winningProbability": "0.001",
-		"commissionRateMax": "1.5",
-		"commissionRateMin": "0.8",
-		"betRateLimit": "10000",
-		"isEnable": "1"
-	},
-	{
-		"isNewRecord": true,
-		"lotteryCode": {
-			"isNewRecord": true,
-			"code": "SSC_FLB",
-			"name": "菲律宾时时彩"
-		},
-		"playCode": "SSC_DAN1_ZHIXUAN",
-		"name": "啊啊啊",
-		"playType": "x",
-		"winningProbability": "0.001",
-		"commissionRateMax": "1.5",
-		"commissionRateMin": "0.8",
+		"winningProbability": "0.00001",
+		"commissionRateMax": "0.15",
+		"commissionRateMin": "0.022",
 		"betRateLimit": "10000",
 		"isEnable": "1"
 	},
@@ -70,12 +22,92 @@
 			"code": "SSC_CQ",
 			"name": "重庆时时彩"
 		},
-		"playCode": "SSC_DAN1_ZHIXUAN",
-		"name": "林俊杰",
+		"playCode": "SSC_CQ_QSZX2",
+		"name": "前三组选",
+		"playType": "x",
+		"winningProbability": "0.006",
+		"commissionRateMax": "0.15",
+		"commissionRateMin": "0.022",
+		"betRateLimit": "10000",
+		"isEnable": "1"
+	},
+	{
+		"isNewRecord": true,
+		"lotteryCode": {
+			"isNewRecord": true,
+			"code": "SSC_CQ",
+			"name": "重庆时时彩"
+		},
+		"playCode": "SSC_CQ_QEZX",
+		"name": "前二直选",
+		"playType": "x",
+		"winningProbability": "0.009",
+		"commissionRateMax": "0.15",
+		"commissionRateMin": "0.022",
+		"betRateLimit": "10000",
+		"isEnable": "1"
+	},
+	{
+		"isNewRecord": true,
+		"lotteryCode": {
+			"isNewRecord": true,
+			"code": "SSC_CQ",
+			"name": "重庆时时彩"
+		},
+		"playCode": "SSC_CQ_QEZX2",
+		"name": "前二组选",
+		"playType": "x",
+		"winningProbability": "0.018",
+		"commissionRateMax": "0.15",
+		"commissionRateMin": "0.022",
+		"betRateLimit": "10000",
+		"isEnable": "1"
+	},
+	{
+		"isNewRecord": true,
+		"lotteryCode": {
+			"isNewRecord": true,
+			"code": "SSC_CQ",
+			"name": "重庆时时彩"
+		},
+		"playCode": "SSC_CQ_QS",
+		"name": "前三",
+		"playType": "x",
+		"winningProbability": "0.09",
+		"commissionRateMax": "0.15",
+		"commissionRateMin": "0.022",
+		"betRateLimit": "10000",
+		"isEnable": "1"
+	},
+	{
+		"isNewRecord": true,
+		"lotteryCode": {
+			"isNewRecord": true,
+			"code": "SSC_CQ",
+			"name": "重庆时时彩"
+		},
+		"playCode": "SSC_5_ZHIXUANFUSHI",
+		"name": "5星复式",
 		"playType": "x",
 		"winningProbability": "0.001",
-		"commissionRateMax": "1.5",
-		"commissionRateMin": "0.9",
+		"commissionRateMax": "0.15",
+		"commissionRateMin": "0.022",
+		"betRateLimit": "10000",
+		"isEnable": "1"
+	},
+	{
+		"isNewRecord": true,
+		"lotteryCode": {
+			"isNewRecord": true,
+			"code": "SSC_CQ",
+			"name": "重庆时时彩"
+		},
+		"playCode": "SSC_5_ZHIXUANDANSHI",
+		"name": "5星单式",
+		"playType": "x",
+		"winningProbability": "0.002",
+		"commissionRateMax": "0.15",
+		"commissionRateMin": "0.022",
 		"betRateLimit": "10000",
 		"isEnable": "1"
 	}
