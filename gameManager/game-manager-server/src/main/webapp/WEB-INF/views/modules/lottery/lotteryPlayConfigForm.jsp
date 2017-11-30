@@ -8,9 +8,11 @@
         $(document).ready(function() {
             $("#inputForm").validate({
                 submitHandler: function(form){
-                    // 提交前把玩法名称赋上值
+                    // 提交前给隐藏的节点赋值
+                    $("input.lotteryCode").val($("#code").val());
+                    $("input.playCode").val($("#playCode").val());
                     $("#name").val($("span.select2-chosen").get(1).innerHTML);
-                    
+
                     loading('正在提交，请稍等...');
                     form.submit();
                 },
@@ -25,6 +27,44 @@
                 }
             });
         });
+        // 添加一行开奖方案输入框
+        function addRow(list, idx, tpl, row){
+            $(list).append(Mustache.render(tpl, {
+                idx: idx, delBtn: true, row: row
+            }));
+            $(list+idx).find("select").each(function(){
+                $(this).val($(this).attr("data-value"));
+            });
+            $(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
+                var ss = $(this).attr("data-value").split(',');
+                for (var i=0; i<ss.length; i++){
+                    if($(this).val() == ss[i]){
+                        $(this).attr("checked","checked");
+                    }
+                }
+            });
+        }
+        // 删除一行开奖方案输入框
+        function delRow(obj, prefix){
+            var caseCount = $("#lotteryPlayMultList").children().length;
+            // 最后2行不允许删除，多奖金，至少2中概率
+            if (caseCount == 2) {
+                return;
+            }
+            var id = $(prefix + "_id");
+            var delFlag = $(prefix+"_delFlag");
+            if (id.val() == ""){
+                $(obj).parent().parent().remove();
+            }else if(delFlag.val() == "0"){
+                delFlag.val("1");
+                $(obj).html("&divide;").attr("title", "撤销删除");
+                $(obj).parent().parent().addClass("error");
+            }else if(delFlag.val() == "1"){
+                delFlag.val("0");
+                $(obj).html("&times;").attr("title", "删除");
+                $(obj).parent().parent().removeClass("error");
+            }
+        }
     </script>
 </head>
 <body>
@@ -69,8 +109,7 @@
         <div class="control-group">
             <label class="control-label">玩法模式：</label>
             <div class="controls">
-                <form:select path="playType" class="input-xlarge required">
-                    <form:option value="" label="-- 请选择 --"/>
+                <form:select path="playType" class="input-xlarge required" onchange="hideOrShow();">
                     <form:options items="${fns:getDictList('play_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
                 <span class="help-inline"><font color="red">*</font> </span>
@@ -78,11 +117,73 @@
         </div>
 
         <%-- 中奖概率 --%>
-        <div class="control-group">
+        <div id="winningProbabilityDiv" class="control-group">
             <label class="control-label">中奖概率：</label>
             <div class="controls">
                 <form:input path="winningProbability" type="number" max="1" step="0.00001" min="0" htmlEscape="false" maxlength="10" class="input-xlarge required" placeholder="请输入玩法中奖概率..."/>
                 <span class="help-inline"><font color="red">*</font> </span>
+            </div>
+        </div>
+
+        <%-- 多奖金、多概率 --%>
+        <div id="lotteryPlayMultDiv" hidden="true" class="control-group">
+            <label class="control-label">多奖金设置：</label>
+            <div class="controls">
+                <table id="contentTable" style="max-width: 50%;" class="table table-striped table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="hide"></th>
+                            <th>
+                            	奖金键值
+                            	<span class="help-inline"><font color="red">*</font></span>
+                            </th>
+                            <th>
+                            	中奖概率
+                            	<span class="help-inline"><font color="red">*</font></span>
+                            </th>
+                            <th>
+                            	奖金说明
+                            	<span class="help-inline"><font color="red">*</font></span>
+                            </th>
+                            <th>
+                            	投注示例
+                            	<span class="help-inline"><font color="red">*</font></span>
+                            </th>
+                            <shiro:hasPermission name="lottery:lotteryPlayConfig:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
+                        </tr>
+                    </thead>
+                    <tbody id="lotteryPlayMultList">
+                    </tbody>
+                    <shiro:hasPermission name="lottery:lotteryPlayConfig:edit"><tfoot>
+                        <tr><td colspan="7"><a onclick="addRow('#lotteryPlayMultList', lotteryPlayMultRowIdx, lotteryPlayMultTpl);lotteryPlayMultRowIdx++;" class="btn">新增概率</a></td></tr>
+                    </tfoot></shiro:hasPermission>
+                </table>
+				<%-- 开奖方案输入框生成模板 --%>
+                <script type="text/template" id="lotteryPlayMultTpl">//<!--
+                    <tr id="lotteryPlayMultList{{idx}}">
+                        <td class="hide">
+                            <input id="lotteryPlayMultList{{idx}}_id" name="lotteryPlayMultList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
+                            <input id="lotteryPlayMultList{{idx}}_delFlag" name="lotteryPlayMultList[{{idx}}].delFlag" type="hidden" value="0"/>
+							<input name="lotteryPlayMultList[{{idx}}].lotteryCode" class="lotteryCode" type="hidden" />
+							<input name="lotteryPlayMultList[{{idx}}].playCode" class="playCode" type="hidden" />
+                        </td>
+                        <td>
+                            <input id="lotteryPlayMultList{{idx}}_number" name="lotteryPlayMultList[{{idx}}].number" type="text" value="{{row.number}}" maxlength="10" class="input-small required"/>
+                        </td>
+                        <td>
+                            <input id="lotteryPlayMultList{{idx}}_winningProbability" name="lotteryPlayMultList[{{idx}}].winningProbability" type="number" max="1" step="0.00001" min="0" maxlength="10" value="{{row.winningProbability}}" class="input-small required"/>
+                        </td>
+                        <td>
+                            <input id="lotteryPlayMultList{{idx}}_explain" name="lotteryPlayMultList[{{idx}}].explain" type="text" min="0" value="{{row.explain}}" maxlength="4000" class="input-large required"/>
+                        </td>
+                        <td>
+                            <input id="lotteryPlayMultList{{idx}}_example" name="lotteryPlayMultList[{{idx}}].example" type="text" min="0" value="{{row.example}}" maxlength="4000" class="input-large required"/>
+                        </td>
+                        <shiro:hasPermission name="lottery:lotteryPlayConfig:edit"><td class="text-center" width="10">
+                            {{#delBtn}}<span class="close" onclick="delRow(this, '#lotteryPlayMultList{{idx}}')" title="删除">&times;</span>{{/delBtn}}</td>
+						</shiro:hasPermission>
+                    </tr>//-->
+                </script>
             </div>
         </div>
 
@@ -149,8 +250,43 @@
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
         </div>
     </form:form>
-    <%-- 彩种类型于彩种代码级联事件 --%>
     <script type="text/javascript">
+	    /*
+	     * 用于进入页面时生成多奖金数据展示，如果是新增，默认两条多奖金新增输入框
+	     */
+	    var lotteryPlayMultRowIdx = 0, lotteryPlayMultTpl = $("#lotteryPlayMultTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+	    $(document).ready(function() {
+	        var data = ${lotteryPlayConfig.lotteryPlayMult};
+	        for (var i=0; i<data.length; i++){
+	            addRow('#lotteryPlayMultList', lotteryPlayMultRowIdx, lotteryPlayMultTpl, data[i]);
+	            lotteryPlayMultRowIdx++;
+	        }
+	        // 如果进入页面没有数据（新增），默认显示两条新增输入框
+	        if (0 == data.length) {
+	            addRow('#lotteryPlayMultList', lotteryPlayMultRowIdx++, lotteryPlayMultTpl, "");
+	            addRow('#lotteryPlayMultList', lotteryPlayMultRowIdx, lotteryPlayMultTpl, "");
+	        }
+	        
+	        // 根据选择的玩法模式，决定中奖概率的录入方式
+	        hideOrShow();
+	    });
+	    
+	    /*
+	     * 玩法概率录入方式切换
+	     */
+	    function hideOrShow() {
+	        if ("1" == $("#playType").val()) {
+	            $("#winningProbabilityDiv").hide();
+	            $("#lotteryPlayMultDiv").show();
+	        } else {
+	            $("#winningProbabilityDiv").show();
+	            $("#lotteryPlayMultDiv").hide();
+	        }
+	    }
+	    
+	    /*
+	     * 彩种类型于彩种代码级联事件
+	     */
         $("#lotteryCode").change(function() {
             $.ajax({
                 type: "post",

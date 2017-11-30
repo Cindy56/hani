@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.Length;
 import com.game.common.persistence.DataEntity;
 
 /**
- * 彩种基本信息管理Entity
+ * 玩法基本信息管理Entity
  * @author Terry
  * @version 2017-11-15
  */
@@ -44,6 +44,11 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
 	 * 中奖概率
 	 */
 	private String winningProbability;
+
+	/**
+	 * 多奖金模式下存储多概率数据，json格式，大字段
+	 */
+	private String lotteryPlayMult;
 
 	/**
 	 * 返水级别
@@ -83,6 +88,11 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
 	 * 返点信息
 	 */
 	private Map<String, List<Map<String, Object>>> map;
+
+	/**
+	 * 玩法多奖金数据页面封装数据
+	 */
+	private List<lotteryPlayMult> lotteryPlayMultList;
 
 	public Map<String, List<Map<String, Object>>> getMap() {
 		return map;
@@ -148,6 +158,14 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
 		this.winningProbability = winningProbability;
 	}
 
+	public String getLotteryPlayMult() {
+		return lotteryPlayMult;
+	}
+
+	public void setLotteryPlayMult(String lotteryPlayMult) {
+		this.lotteryPlayMult = lotteryPlayMult;
+	}
+
 	public BigDecimal getCommissionRateMax() {
 		return commissionRateMax;
 	}
@@ -205,5 +223,13 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
 
 	public void setExample(String example) {
 		this.example = example;
+	}
+
+	public List<lotteryPlayMult> getLotteryPlayMultList() {
+		return lotteryPlayMultList;
+	}
+
+	public void setLotteryPlayMultList(List<lotteryPlayMult> lotteryPlayMultList) {
+		this.lotteryPlayMultList = lotteryPlayMultList;
 	}
 }

@@ -5,6 +5,7 @@ package com.game.manager.modules.lottery.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +26,6 @@ import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
 import com.game.manager.modules.sys.utils.DictUtils;
 import com.game.manager.modules.sys.utils.UserUtils;
-import com.game.modules.lottery.constant.LotteryConstants;
 import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.entity.LotteryType;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
@@ -107,6 +107,15 @@ public class LotteryPlayConfigController extends BaseController {
 		// 查询玩法列表
 		Page<LotteryPlayConfig> page = lotteryPlayConfigService.findPage(new Page<LotteryPlayConfig>(request, response),
 				lotteryPlayConfig);
+		// 转换多奖金数据
+		for (LotteryPlayConfig playConfig : page.getList()) {
+			String playMult = playConfig.getLotteryPlayMult();
+			if (StringUtils.isNotBlank(playMult)) {
+				JsonMapper jsonMapper = JsonMapper.getInstance();
+				playConfig.setLotteryPlayMultList(jsonMapper.fromJson(playMult,
+						jsonMapper.createCollectionType(List.class, LotteryPlayConfig.class)));
+			}
+		}
 		model.addAttribute("page", page);
 		return "modules/lottery/lotteryPlayConfigList";
 	}
@@ -122,8 +131,7 @@ public class LotteryPlayConfigController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(LotteryPlayConfig lotteryPlayConfig, Model model) {
 		// 查询彩种数据传递到页面
-		LotteryType lotteryType = new LotteryType();
-		model.addAttribute("lotteryTypeList", lotteryTypeService.findList(lotteryType));
+		model.addAttribute("lotteryTypeList", lotteryTypeService.findList(new LotteryType()));
 		// 已知玩法数据传递到页面
 		model.addAttribute("lotteryPlayConfig", lotteryPlayConfig);
 		return "modules/lottery/lotteryPlayConfigForm";
@@ -143,9 +151,12 @@ public class LotteryPlayConfigController extends BaseController {
 		if (!beanValidator(model, lotteryPlayConfig)) {
 			return form(lotteryPlayConfig, model);
 		}
+		// 设置用户信息、多奖金数据
 		lotteryPlayConfig.setCurrentUser(UserUtils.getUser());
+		lotteryPlayConfig.setLotteryPlayMult(JsonMapper.toJsonString(lotteryPlayConfig.getLotteryPlayMultList()));
+
 		lotteryPlayConfigService.save(lotteryPlayConfig);
-		addMessage(redirectAttributes, LotteryConstants.SAVE_SUCCESS);
+		addMessage(redirectAttributes, "保存玩法信息成功");
 		return "redirect:" + Global.getAdminPath() + "/lottery/lotteryPlayConfig/?repage";
 	}
 
@@ -161,7 +172,7 @@ public class LotteryPlayConfigController extends BaseController {
 	public String delete(LotteryPlayConfig lotteryPlayConfig, RedirectAttributes redirectAttributes) {
 		lotteryPlayConfig.setCurrentUser(UserUtils.getUser());
 		lotteryPlayConfigService.delete(lotteryPlayConfig);
-		addMessage(redirectAttributes, LotteryConstants.REMOVE_SUCCESS);
+		addMessage(redirectAttributes, "删除玩法信息成功");
 		return "redirect:" + Global.getAdminPath() + "/lottery/lotteryPlayConfig/?repage";
 	}
 
