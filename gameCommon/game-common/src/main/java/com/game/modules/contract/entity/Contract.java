@@ -24,7 +24,8 @@ import com.game.common.persistence.DataEntity;
 public class Contract extends DataEntity<Contract> {
 	
 	private static final long serialVersionUID = 2068384035681508128L;
-	private String companyId;	// 归属公司
+	private String companyId;	// 归属公司id
+	private String officeId;	// 归属部門id
 	private String companyName;		// 机构名称
 	private User user;		// 用户id
 	private String userName;		// 用户登录名称
@@ -234,5 +235,13 @@ public class Contract extends DataEntity<Contract> {
 	public void setPlayList(List<LotteryPlayConfig> playList) {
 		this.playList = playList;
 	}
+	public String getOfficeId() {
+		return officeId;
+	}
+
+	public void setOfficeId(String officeId) {
+		this.officeId = officeId;
+	}
+
 	
 }

@@ -127,7 +127,7 @@
 					<div class="control-group">
 						<label class="control-label">公司名称：</label>
 						<div class="controls">
-							<form:input path="orgName" htmlEscape="false" maxlength="20" class="input-xlarge required" placeholder="请输入公司名称"  value=""/>
+							<form:input path="companyName" htmlEscape="false" maxlength="20" class="input-xlarge required" placeholder="请输入公司名称"  value=""/>
 							<span class="help-inline"><font color="red">*</font> </span>
 						</div>
 					</div>
