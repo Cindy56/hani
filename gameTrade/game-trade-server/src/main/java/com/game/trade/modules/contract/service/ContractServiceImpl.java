@@ -111,13 +111,13 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			List<Office> officeList=officeServiceFacade.findOfficesByParentId(company.getParentId()+","+company.getId());
 			//复制模板公司数据插入数据库
 			company.setId(null);
-			company.setName(contract.getOrgName());
+			company.setName(contract.getCompanyName());
 			company.setCode(officeCode);
 			company=officeServiceFacade.save(company);
 			contract.setCompanyId(company.getId());
 			
 			companyRole.setId(null);
-			companyRole.setName(contract.getOrgName()+companyRole.getName());
+			companyRole.setName(contract.getCompanyName()+companyRole.getName());
 //vitnon			companyRole.setEnname(contract.getOffice().getCode()+companyRole.getEnname());
 			//设置股东角色隶属部门
 			companyRole.setOffice(company);
@@ -129,7 +129,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 				//查询机构下的所有角色
 				List<Role> mubanList = this.systemServiceFacade.findRoleByOfficeId(office.getId());
 				office.setId(null);
-				office.setName(contract.getOrgName()+office.getName());
+				office.setName(contract.getCompanyName()+office.getName());
 				office.setParent(company);
 				office.setParentIds(company.getParentId()+","+company.getId());
 				office.setCode(officeCode+"00"+codeCount++);
@@ -138,7 +138,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 				for (Role role : mubanList) {
 					//复制角色,保存角色
 					role.setId(null);
-					role.setName(contract.getOrgName()+role.getName());
+					role.setName(contract.getCompanyName()+role.getName());
 //vitnon					role.setEnname(contract.getOffice().getCode()+role.getEnname());
 					//设置角色隶属部门
 					role.setOffice(office);
@@ -202,7 +202,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 				todo.setTitle("代理开户提醒");	//任务标题
 			}*/
 			todo.setTitle("公司开户提醒");	//任务标题
-			todo.setContent(contract.getOrgName()+"开户");	//任务正文
+			todo.setContent(contract.getCompanyName()+"开户");	//任务正文
 			todo.setType("1"); 	//任务类型
 			todo.setStatus("1"); 	//任务状态
 			todo.setSenderId(contract.getUser()); 	//申请者
@@ -369,7 +369,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			//保存代办任务
 			TodoTask todo=new TodoTask();
 			todo.setTitle("代理开户提醒");	//任务标题
-			todo.setContent(contract.getOrgName()+"开户");	//任务正文
+			todo.setContent(contract.getCompanyName()+"开户");	//任务正文
 			todo.setType("1"); 	//任务类型
 			todo.setStatus("1"); 	//任务状态
 			todo.setSenderId(contract.getUser()); 	//申请者
