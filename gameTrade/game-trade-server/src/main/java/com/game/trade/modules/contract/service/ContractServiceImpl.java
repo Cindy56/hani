@@ -118,7 +118,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			
 			companyRole.setId(null);
 			companyRole.setName(contract.getCompanyName()+companyRole.getName());
-//vitnon			companyRole.setEnname(contract.getOffice().getCode()+companyRole.getEnname());
+			companyRole.setEnname(officeCode+companyRole.getEnname());
 			//设置股东角色隶属部门
 			companyRole.setOffice(company);
 			companyRole.setCurrentUser(contract.getCurrentUser());
@@ -139,7 +139,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 					//复制角色,保存角色
 					role.setId(null);
 					role.setName(contract.getCompanyName()+role.getName());
-//vitnon					role.setEnname(contract.getOffice().getCode()+role.getEnname());
+					role.setEnname(officeCode+role.getEnname());
 					//设置角色隶属部门
 					role.setOffice(office);
 					role.setCurrentUser(contract.getCurrentUser());
