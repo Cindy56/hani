@@ -19,135 +19,121 @@ public class LotteryType extends DataEntity<LotteryType> {
 	private static final long serialVersionUID = 3677821608048480817L;
 
 	/**
-     * 彩种类型
-     */
-    private String parentCode;
+	 * 彩种类型
+	 */
+	private String parentCode;
 
-    /**
-     * 彩种代码
-     */
-    private String code;
+	/**
+	 * 彩种代码
+	 */
+	private String code;
 
-    /**
-     * 公司ID
-     */
-    private String companyId;
+	/**
+	 * 彩种名称
+	 */
+	private String name;
 
-    /**
-     * 彩种名称
-     */
-    private String name;
+	/**
+	 * 是否自动开奖
+	 */
+	private String isAuto;
 
-    /**
-     * 是否自动开奖
-     */
-    private String isAuto;
+	/**
+	 * 是否启用
+	 */
+	private String isEnable;
 
-    /**
-     * 是否启用
-     */
-    private String isEnable;
+	/**
+	 * 每日开奖期数
+	 */
+	private String times;
 
-    /**
-     * 每日开奖期数
-     */
-    private String times;
+	/**
+	 * 每期投注最高金额
+	 */
+	private String amountMaxBet;
 
-    /**
-     * 每期投注最高金额
-     */
-    private String amountMaxBet;
+	/**
+	 * 子表列表
+	 */
+	private List<LotteryTypeTime> lotteryTypeTimeList = Lists.newArrayList();
 
-    /**
-     * 子表列表
-     */
-    private List<LotteryTypeTime> lotteryTypeTimeList = Lists.newArrayList();
+	public LotteryType() {
+		super();
+	}
 
-    public LotteryType() {
-        super();
-    }
+	public LotteryType(String id) {
+		super(id);
+	}
 
-    public LotteryType(String id) {
-        super(id);
-    }
+	@Length(min = 1, max = 50, message = "彩种类型长度必须介于 1 和 50 之间")
+	public String getParentCode() {
+		return parentCode;
+	}
 
-    @Length(min = 1, max = 50, message = "彩种类型长度必须介于 1 和 50 之间")
-    public String getParentCode() {
-        return parentCode;
-    }
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
+	}
 
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
-    }
+	@Length(min = 1, max = 50, message = "彩种代码长度必须介于 1 和 50 之间")
+	public String getCode() {
+		return code;
+	}
 
-    @Length(min = 1, max = 50, message = "彩种代码长度必须介于 1 和 50 之间")
-    public String getCode() {
-        return code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	@Length(min = 1, max = 50, message = "彩种名称长度必须介于 1 和 50 之间")
+	public String getName() {
+		return name;
+	}
 
-    @Length(min = 1, max = 50, message = "公司ID长度必须介于 1 和 50 之间")
-    public String getCompanyId() {
-        return companyId;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
-    }
+	@Length(min = 1, max = 1, message = "是否自动开奖长度必须介于 1 和 1 之间")
+	public String getIsAuto() {
+		return isAuto;
+	}
 
-    @Length(min = 1, max = 50, message = "彩种名称长度必须介于 1 和 50 之间")
-    public String getName() {
-        return name;
-    }
+	public void setIsAuto(String isAuto) {
+		this.isAuto = isAuto;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Length(min = 1, max = 1, message = "是否启用长度必须介于 1 和 1 之间")
+	public String getIsEnable() {
+		return isEnable;
+	}
 
-    @Length(min = 1, max = 1, message = "是否自动开奖长度必须介于 1 和 1 之间")
-    public String getIsAuto() {
-        return isAuto;
-    }
+	public void setIsEnable(String isEnable) {
+		this.isEnable = isEnable;
+	}
 
-    public void setIsAuto(String isAuto) {
-        this.isAuto = isAuto;
-    }
+	@Length(min = 1, max = 6, message = "每日开奖期数长度必须介于 1 和 6 之间")
+	public String getTimes() {
+		return times;
+	}
 
-    @Length(min = 1, max = 1, message = "是否启用长度必须介于 1 和 1 之间")
-    public String getIsEnable() {
-        return isEnable;
-    }
+	public void setTimes(String times) {
+		this.times = times;
+	}
 
-    public void setIsEnable(String isEnable) {
-        this.isEnable = isEnable;
-    }
+	public String getAmountMaxBet() {
+		return amountMaxBet;
+	}
 
-    @Length(min = 1, max = 6, message = "每日开奖期数长度必须介于 1 和 6 之间")
-    public String getTimes() {
-        return times;
-    }
+	public void setAmountMaxBet(String amountMaxBet) {
+		this.amountMaxBet = amountMaxBet;
+	}
 
-    public void setTimes(String times) {
-        this.times = times;
-    }
+	public List<LotteryTypeTime> getLotteryTypeTimeList() {
+		return lotteryTypeTimeList;
+	}
 
-    public String getAmountMaxBet() {
-        return amountMaxBet;
-    }
-
-    public void setAmountMaxBet(String amountMaxBet) {
-        this.amountMaxBet = amountMaxBet;
-    }
-
-    public List<LotteryTypeTime> getLotteryTypeTimeList() {
-        return lotteryTypeTimeList;
-    }
-
-    public void setLotteryTypeTimeList(List<LotteryTypeTime> lotteryTypeTimeList) {
-        this.lotteryTypeTimeList = lotteryTypeTimeList;
-    }
+	public void setLotteryTypeTimeList(List<LotteryTypeTime> lotteryTypeTimeList) {
+		this.lotteryTypeTimeList = lotteryTypeTimeList;
+	}
 
 }

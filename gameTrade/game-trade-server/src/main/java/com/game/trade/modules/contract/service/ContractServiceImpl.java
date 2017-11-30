@@ -188,6 +188,8 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			contract.setUser(user);
 			//开户类型：1公司，2代理
 			contract.setOpenType("1");
+			//设置公司状态为审核中
+			contract.setStatus("0");
 		}
 		super.save(contract);
 		for (ContractConfig contractConfig : contract.getContractConfigList()){

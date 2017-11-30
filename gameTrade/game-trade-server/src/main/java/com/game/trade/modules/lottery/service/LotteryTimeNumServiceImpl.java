@@ -137,14 +137,7 @@ public class LotteryTimeNumServiceImpl
 		if(LotteryCodeConstants.SSC_XJ.equals(timeTask.getLotteryCode())){
 			plusDays=1;
 		}else if(LotteryCodeConstants.PK10_BJ.equals(timeTask.getLotteryCode())) {
-			OpenCaiResult result = openCaiDrawService.drawLotteryNum(timeTask.getLotteryCode());
-			if(null == result) {
-				return;
-			}	
-			/*Date openDate = DateUtils.parseDate(result.getOpentime());
-			//openDate.
-			Date nowDate = new Date();*/
-			no = Integer.parseInt(result.getExpect());
+			no = Integer.parseInt("653317");//数据库取
 		}
 		//循环天
 		while (!tempDate.isAfter(endDatex)) {

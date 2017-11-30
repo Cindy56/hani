@@ -94,6 +94,7 @@
 				<th>备注</th>
 				<th>创建时间</th>
 				<th>更新时间</th>
+				<th>状态</th>
 				<shiro:hasPermission name="contract:company:contract:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -124,13 +125,13 @@
 				<td>
 					${fns:getDictLabel(contract.benefitCycle, 'contract_period', '')}
 				</td>
-				<td>
+				<td style="text-align: right;">
 					${contract.rentAmount}
 				</td>
-				<td>
+				<td style="text-align: right;">
 					${contract.openAmount}
 				</td>
-				<td>
+				<td style="text-align: right;">
 					${contract.contractTime}年
 				</td>
 				<td>
@@ -142,9 +143,16 @@
 				<td>
 					<fmt:formatDate value="${contract.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
+				<td>
+					${fns:getDictLabel(contract.status, 'contract_status', '')}
+				</td>
 				<shiro:hasPermission name="contract:company:contract:edit"><td>
     				<a href="${ctx}/contract/contractCompany/form?id=${contract.id}">修改</a>
 					<a href="${ctx}/contract/contractCompany/delete?id=${contract.id}" onclick="return confirmx('确认要删除该公司吗？', this.href)">删除</a>
+					
+					<c:if test="${contract.status eq '3' || contract.status eq '4'}">
+						<a href="${ctx}/contract/contractCompany/updateStatus?id=${contract.id}" onclick="return confirmx('确认要${contract.status eq '3'?'冻结':contract.status eq '4'?'启用':''}该公司吗？', this.href)">${contract.status eq '3'?'冻结':contract.status eq '4'?'启用':''}</a>
+					</c:if>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

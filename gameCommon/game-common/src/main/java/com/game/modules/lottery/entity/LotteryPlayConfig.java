@@ -4,6 +4,7 @@
 package com.game.modules.lottery.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.validator.constraints.Length;
@@ -17,180 +18,192 @@ import com.game.common.persistence.DataEntity;
  */
 public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 彩票代码 父类
-     */
-    private LotteryType lotteryCode;
+	/**
+	 * 彩票代码 父类
+	 */
+	private LotteryType lotteryCode;
 
-    /**
-     * 玩法代码
-     */
-    private String playCode;
+	/**
+	 * 玩法代码
+	 */
+	private String playCode;
 
-    /**
-     * 玩法名称
-     */
-    private String name;
+	/**
+	 * 玩法名称
+	 */
+	private String name;
 
-    /**
-     * 玩法模式
-     */
-    private String playType;
+	/**
+	 * 玩法模式
+	 */
+	private String playType;
 
-    /**
-     * 中奖概率
-     */
-    private String winningProbability;
+	/**
+	 * 中奖概率
+	 */
+	private String winningProbability;
 
-    /**
-     * 返水级别
-     */
-    private BigDecimal commissionRateMax;
+	/**
+	 * 返水级别
+	 */
+	private BigDecimal commissionRateMax;
 
-    /**
-     * 最低返水级别
-     */
-    private BigDecimal commissionRateMin;
+	/**
+	 * 最低返水级别
+	 */
+	private BigDecimal commissionRateMin;
 
-    /**
-     * 单人单期投注倍数限制 
-     */
-    private int betRateLimit;
+	/**
+	 * 单注金额
+	 */
+	private Integer betUnit;
 
-    /**
-     * 是否启用
-     */
-    private String isEnable;
+	/**
+	 * 单人单期投注倍数限制
+	 */
+	private Integer betRateLimit;
 
-    /**
-     * 玩法说明
-     */
-    private String explain;
+	/**
+	 * 是否启用
+	 */
+	private String isEnable;
 
-    /**
-     * 玩法示例
-     */
-    private String example;
-    /**
-     * 返点信息
-     */
-    private Map map;
+	/**
+	 * 玩法说明
+	 */
+	private String explain;
 
-    public Map getMap() {
-        return map;
-    }
+	/**
+	 * 玩法示例
+	 */
+	private String example;
+	/**
+	 * 返点信息
+	 */
+	private Map<String, List<Map<String, Object>>> map;
 
-    public void setMap(Map map) {
-        this.map = map;
-    }
+	public Map<String, List<Map<String, Object>>> getMap() {
+		return map;
+	}
 
-    public LotteryPlayConfig() {
-        super();
-    }
+	public void setMap(Map<String, List<Map<String, Object>>> map) {
+		this.map = map;
+	}
 
-    public LotteryPlayConfig(String id) {
-        super(id);
-    }
+	public LotteryPlayConfig() {
+		super();
+	}
 
-    public LotteryPlayConfig(LotteryType lotteryCode) {
-        this.lotteryCode = lotteryCode;
-    }
+	public LotteryPlayConfig(String id) {
+		super(id);
+	}
 
-    public LotteryType getLotteryCode() {
-        return lotteryCode;
-    }
+	public LotteryPlayConfig(LotteryType lotteryCode) {
+		this.lotteryCode = lotteryCode;
+	}
 
-    public void setLotteryCode(LotteryType lotteryCode) {
-        this.lotteryCode = lotteryCode;
-    }
+	public LotteryType getLotteryCode() {
+		return lotteryCode;
+	}
 
-    @Length(min = 1, max = 50, message = "玩法代码长度必须介于 1 和 50 之间")
-    public String getPlayCode() {
-        return playCode;
-    }
+	public void setLotteryCode(LotteryType lotteryCode) {
+		this.lotteryCode = lotteryCode;
+	}
 
-    public void setPlayCode(String playCode) {
-        this.playCode = playCode;
-    }
+	@Length(min = 1, max = 50, message = "玩法代码长度必须介于 1 和 50 之间")
+	public String getPlayCode() {
+		return playCode;
+	}
 
-    @Length(min = 1, max = 50, message = "玩法名称长度必须介于 1 和 50 之间")
-    public String getName() {
-        return name;
-    }
+	public void setPlayCode(String playCode) {
+		this.playCode = playCode;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Length(min = 1, max = 50, message = "玩法名称长度必须介于 1 和 50 之间")
+	public String getName() {
+		return name;
+	}
 
-    @Length(min = 1, max = 1, message = "玩法模式长度必须介于 1 和 1 之间")
-    public String getPlayType() {
-        return playType;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setPlayType(String playType) {
-        this.playType = playType;
-    }
+	@Length(min = 1, max = 1, message = "玩法模式长度必须介于 1 和 1 之间")
+	public String getPlayType() {
+		return playType;
+	}
 
-    @Length(min = 0, max = 10, message = "中奖概率长度必须介于 0 和 10 之间")
-    public String getWinningProbability() {
-        return winningProbability;
-    }
+	public void setPlayType(String playType) {
+		this.playType = playType;
+	}
 
-    public void setWinningProbability(String winningProbability) {
-        this.winningProbability = winningProbability;
-    }
+	@Length(min = 0, max = 10, message = "中奖概率长度必须介于 0 和 10 之间")
+	public String getWinningProbability() {
+		return winningProbability;
+	}
 
-    public BigDecimal getCommissionRateMax() {
-        return commissionRateMax;
-    }
+	public void setWinningProbability(String winningProbability) {
+		this.winningProbability = winningProbability;
+	}
 
-    public void setCommissionRateMax(BigDecimal commissionRateMax) {
-        this.commissionRateMax = commissionRateMax;
-    }
+	public BigDecimal getCommissionRateMax() {
+		return commissionRateMax;
+	}
 
-    public BigDecimal getCommissionRateMin() {
-        return commissionRateMin;
-    }
+	public void setCommissionRateMax(BigDecimal commissionRateMax) {
+		this.commissionRateMax = commissionRateMax;
+	}
 
-    public void setCommissionRateMin(BigDecimal commissionRateMin) {
-        this.commissionRateMin = commissionRateMin;
-    }
+	public BigDecimal getCommissionRateMin() {
+		return commissionRateMin;
+	}
 
-    @Length(min = 0, max = 6, message = "单人单期投注倍数限制长度必须介于 0 和 6 之间")
-    public int getBetRateLimit() {
-        return betRateLimit;
-    }
+	public void setCommissionRateMin(BigDecimal commissionRateMin) {
+		this.commissionRateMin = commissionRateMin;
+	}
 
-    public void setBetRateLimit(int betRateLimit) {
-        this.betRateLimit = betRateLimit;
-    }
+	public Integer getBetUnit() {
+		return betUnit;
+	}
 
-    @Length(min = 0, max = 1, message = "是否启用长度必须介于 0 和 1 之间")
-    public String getIsEnable() {
-        return isEnable;
-    }
+	public void setBetUnit(Integer betUnit) {
+		this.betUnit = betUnit;
+	}
 
-    public void setIsEnable(String isEnable) {
-        this.isEnable = isEnable;
-    }
+	public Integer getBetRateLimit() {
+		return betRateLimit;
+	}
 
-    @Length(min = 0, max = 5000, message = "玩法说明长度必须介于 0 和 5000 之间")
-    public String getExplain() {
-        return explain;
-    }
+	public void setBetRateLimit(Integer betRateLimit) {
+		this.betRateLimit = betRateLimit;
+	}
 
-    public void setExplain(String explain) {
-        this.explain = explain;
-    }
+	@Length(min = 0, max = 1, message = "是否启用长度必须介于 0 和 1 之间")
+	public String getIsEnable() {
+		return isEnable;
+	}
 
-    @Length(min = 0, max = 5000, message = "玩法实例长度必须介于 0 和 5000 之间")
-    public String getExample() {
-        return example;
-    }
+	public void setIsEnable(String isEnable) {
+		this.isEnable = isEnable;
+	}
 
-    public void setExample(String example) {
-        this.example = example;
-    }
+	@Length(min = 0, max = 5000, message = "玩法说明长度必须介于 0 和 5000 之间")
+	public String getExplain() {
+		return explain;
+	}
+
+	public void setExplain(String explain) {
+		this.explain = explain;
+	}
+
+	@Length(min = 0, max = 5000, message = "玩法实例长度必须介于 0 和 5000 之间")
+	public String getExample() {
+		return example;
+	}
+
+	public void setExample(String example) {
+		this.example = example;
+	}
 }
