@@ -107,7 +107,7 @@
 					${lotteryOrder.user.id}
 				</td> --%>
 				<td>
-					${lotteryOrder.orgName}
+					${lotteryOrder.companyId}
 				</td>
 				<td>					
 					${fns:getDictLabel(lotteryOrder.lotteryCode, 'SSC', '')}
