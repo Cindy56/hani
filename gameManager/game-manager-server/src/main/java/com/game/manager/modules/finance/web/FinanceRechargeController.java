@@ -110,9 +110,9 @@ public class FinanceRechargeController extends BaseController {
 	public String close(FinanceRecharge financeRecharge, Model model) {
 		model.addAttribute("financeRecharge", financeRecharge);
 		//如果订单是支付完成状态则不执行以下逻辑
-		if("4".equals(financeRecharge.getStatus()) || "5".equals(financeRecharge.getStatus())) {
+	/*	if("4".equals(financeRecharge.getStatus()) || "5".equals(financeRecharge.getStatus())) {
 			return "redirect:"+Global.getAdminPath()+"/finance/financeRecharge/list";
-		}
+		}*/
 		//改变订单状态
 		financeRecharge.setStatus("1");
 		financeRechargeService.save(financeRecharge);
