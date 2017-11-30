@@ -5,8 +5,7 @@
 	<sql id="contractColumns">
 		a.id AS "id",
 		a.company_id AS "companyId",	
-		a.office_id AS "officeId",		
-		a.org_name AS "orgName",
+		a.company_name AS "companyName",
 		a.user_id AS "user.id",
 		a.user_name AS "userName",
 		a.account_id AS "accountId",
@@ -133,7 +132,8 @@
 			create_by,
 			update_date,
 			update_by,
-			del_flag
+			del_flag,
+			status
 		) VALUES (
 			#{id},
 			#{companyId},
@@ -152,7 +152,8 @@
 			#{createBy.id},
 			#{updateDate},
 			#{updateBy.id},
-			#{delFlag}
+			#{delFlag},
+			#{status}
 		)
 	</insert>
 	

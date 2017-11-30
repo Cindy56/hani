@@ -84,6 +84,7 @@
 			status,
 			create_date,
 			create_by,
+			update_date,
 			update_by,
 			del_flag
 		) VALUES (
@@ -96,6 +97,7 @@
 			#{status},
 			#{createDate},
 			#{createBy.id},
+			#{updateDate},
 			#{updateBy.id},
 			#{delFlag}
 		)
