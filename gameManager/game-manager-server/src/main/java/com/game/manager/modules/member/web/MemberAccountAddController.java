@@ -3,6 +3,7 @@
  */
 package com.game.manager.modules.member.web;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -244,7 +245,7 @@ public class MemberAccountAddController extends BaseController {
 		}
 		memberAccount.setParentAgentId(sessionMemberId);
 		memberAccount.setParentAgentIds(sessionParentIds+sessionMemberId+",");
-		memberAccount.setBlance("0");
+		memberAccount.setBlance(new BigDecimal(0));
 		memberAccount.setBlanceFrozen("0");
 		memberAccount.setStatus("0");
 		memberAccount.setOrgId(seesionUser.getOffice());

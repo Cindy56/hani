@@ -170,7 +170,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			memberAccount.setParentAgentId(seesionUser.getId());
 			memberAccount.setParentAgentIds(seesionUser.getId()+","+user.getId());
 			memberAccount.setOrgId(company);
-			memberAccount.setBlance("0");
+			memberAccount.setBlance(new BigDecimal(0));
 			memberAccount.setBlanceFrozen("0");
 			memberAccount.setStatus("0");
 			memberAccount.setUser(user);
@@ -330,7 +330,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			memberAccount.setParentAgentId(seesionUser.getId());
 			memberAccount.setParentAgentIds(seesionUser.getId()+","+user.getId());
 			memberAccount.setOrgId(userOffice);
-			memberAccount.setBlance("0");
+			memberAccount.setBlance(new BigDecimal(0));
 			memberAccount.setBlanceFrozen("0");
 			memberAccount.setStatus("0");
 			memberAccount.setUser(user);
