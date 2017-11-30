@@ -114,11 +114,11 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			company.setName(contract.getOrgName());
 			company.setCode(officeCode);
 			company=officeServiceFacade.save(company);
-			contract.setOffice(company);
+			contract.setCompanyId(company.getId());
 			
 			companyRole.setId(null);
 			companyRole.setName(contract.getOrgName()+companyRole.getName());
-			companyRole.setEnname(contract.getOffice().getCode()+companyRole.getEnname());
+//vitnon			companyRole.setEnname(contract.getOffice().getCode()+companyRole.getEnname());
 			//设置股东角色隶属部门
 			companyRole.setOffice(company);
 			companyRole.setCurrentUser(contract.getCurrentUser());
@@ -139,7 +139,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 					//复制角色,保存角色
 					role.setId(null);
 					role.setName(contract.getOrgName()+role.getName());
-					role.setEnname(contract.getOffice().getCode()+role.getEnname());
+//vitnon					role.setEnname(contract.getOffice().getCode()+role.getEnname());
 					//设置角色隶属部门
 					role.setOffice(office);
 					role.setCurrentUser(contract.getCurrentUser());
@@ -169,7 +169,8 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			User seesionUser = contract.getCurrentUser();
 			memberAccount.setParentAgentId(seesionUser.getId());
 			memberAccount.setParentAgentIds(seesionUser.getId()+","+user.getId());
-			memberAccount.setOrgId(company);
+			memberAccount.setCompanyId(seesionUser.getCompany().getId());
+			memberAccount.setOfficeId(seesionUser.getOffice().getId());
 			memberAccount.setBlance(new BigDecimal(0));
 			memberAccount.setBlanceFrozen("0");
 			memberAccount.setStatus("0");
@@ -186,7 +187,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			memberAccountService.save(memberAccount);
 			
 			contract.setAccountId(memberAccount.getId());
-			contract.setOffice(company);
+			contract.setCompanyId(seesionUser.getCompany().getId());
 			contract.setUser(user);
 			
 			//设置公司状态为审核中
@@ -329,7 +330,8 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			User seesionUser = contract.getCurrentUser();
 			memberAccount.setParentAgentId(seesionUser.getId());
 			memberAccount.setParentAgentIds(seesionUser.getId()+","+user.getId());
-			memberAccount.setOrgId(userOffice);
+			memberAccount.setCompanyId(seesionUser.getCompany().getId());
+			memberAccount.setOfficeId(seesionUser.getOffice().getId());
 			memberAccount.setBlance(new BigDecimal(0));
 			memberAccount.setBlanceFrozen("0");
 			memberAccount.setStatus("0");
@@ -357,7 +359,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			memberPlayConfigService.save(memberPlayConfig);
 			
 			contract.setAccountId(memberAccount.getId());
-			contract.setOffice(userOffice);
+			contract.setCompanyId(seesionUser.getCompany().getId());
 			contract.setUser(user);
 			
 			//设置代理状态为审核中

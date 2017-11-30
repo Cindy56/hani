@@ -25,4 +25,6 @@ public interface ContractService {
 	public Contract save(Contract contract);
 	
 	public void delete(Contract contract);
+	
+	public Contract saveAgent(Contract contract);
 }

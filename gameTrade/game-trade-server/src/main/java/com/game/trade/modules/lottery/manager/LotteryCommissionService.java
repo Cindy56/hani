@@ -141,7 +141,8 @@ public class LotteryCommissionService {
 		trade.setUser(lotteryOrder.getUser());
 		trade.setUserName(lotteryOrder.getUser().getName());
 		trade.setAccountId(memberAccount.getId());
-		trade.setOrgId(lotteryOrder.getOrgId());
+		trade.setCompanyId(lotteryOrder.getCompanyId());
+		trade.setOfficeId(lotteryOrder.getOfficeId());
 		trade.setBusiNo(lotteryOrder.getOrderNo());
 		trade.setTradeType(betDeductions.getCode());
 		trade.setAmount(amount);

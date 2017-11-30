@@ -248,7 +248,8 @@ public class MemberAccountAddController extends BaseController {
 		memberAccount.setBlance(new BigDecimal(0));
 		memberAccount.setBlanceFrozen("0");
 		memberAccount.setStatus("0");
-		memberAccount.setOrgId(seesionUser.getOffice());
+		memberAccount.setCompanyId(seesionUser.getCompany().getId());
+		memberAccount.setOfficeId(seesionUser.getOffice().getId());
 		memberAccount.setUser(user);
 		memberAccount.setSecPassword(SystemService.entryptPassword(memberAccount.getSecPassword()));
 		

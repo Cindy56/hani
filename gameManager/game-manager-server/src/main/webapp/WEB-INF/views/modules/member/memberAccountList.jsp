@@ -76,7 +76,7 @@
 					${memberAccount.parentAgentId}
 				</td>
 				<td>
-					${memberAccount.orgId.id}
+					${memberAccount.companyId}
 				</td>
 				<td>
 					${fns:getDictLabel(memberAccount.accountType, 'member_type', '')}

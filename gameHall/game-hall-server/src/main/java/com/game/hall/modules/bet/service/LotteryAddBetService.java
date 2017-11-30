@@ -156,10 +156,8 @@ public class LotteryAddBetService implements BetServiceApi {
 			trade.setUser(user);
 		    trade.setUserName(user.getName());
 		    trade.setAccountId(user.getId());
-		    if( user.getCompany().getCode() == null )
-		    	trade.setOrgId("ORGID");
-		    else
-		    	trade.setOrgId(user.getCompany().getCode());
+		    trade.setCompanyId(user.getCompany().getId());
+		    trade.setOfficeId(user.getOffice().getId());
 			    	
 		    trade.setBusiNo(betData.getOrderNo());
 		    trade.setTradeType("0");

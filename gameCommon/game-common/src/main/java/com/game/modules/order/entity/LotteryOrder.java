@@ -22,7 +22,8 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 	private static final long serialVersionUID = -2322667557847732292L;
 	private String orderNo;		// 订单编号
 	private User user;		// user_id
-	private String orgId;		// 机构id
+	private String companyId;	// 归属公司
+	private String officeId;	// 归属部门
 	private String lotteryCode;		// lottery_code
 	private String betIssueNo;		// 投注期号
 	private String accountId;		// 账户id
@@ -68,13 +69,21 @@ public class LotteryOrder extends DataEntity<LotteryOrder> {
 		this.user = user;
 	}
 	
-	@Length(min=1, max=50, message="机构id长度必须介于 1 和 50 之间")
-	public String getOrgId() {
-		return orgId;
+	@Length(min=1, max=50, message="归属公司id长度必须介于 1 和 50 之间")
+	public String getCompanyId() {
+		return companyId;
 	}
 
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}	
+	@Length(min=1, max=50, message="归属部门id长度必须介于 1 和 50 之间")
+	public String getOfficeId() {
+		return officeId;
+	}
+
+	public void setOfficeId(String officeId) {
+		this.officeId = officeId;
 	}
 	
 	@Length(min=1, max=50, message="lottery_code长度必须介于 1 和 50 之间")

@@ -21,7 +21,8 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 	private String parentAgentId;		// 上级代理账号id
 	private String parentAgentIds;		// 所有上级代理账号id  逗号分割
 	private User user;		// 用户表主键id
-	private Office orgId;		// 机构id，盘口id
+	private String companyId;	// 归属公司
+	private String officeId;	// 归属部门	
 	private String accountType;		// 会员类型：
 	private String secPassword;		// 安全密码
 	private String bankCode;		// 开户行
@@ -69,12 +70,21 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.user = user;
 	}
 	
-	public Office getOrgId() {
-		return orgId;
+	@Length(min=1, max=50, message="归属公司id长度必须介于 1 和 50 之间")
+	public String getCompanyId() {
+		return companyId;
 	}
 
-	public void setOrgId(Office orgId) {
-		this.orgId = orgId;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}	
+	@Length(min=1, max=50, message="归属部门id长度必须介于 1 和 50 之间")
+	public String getOfficeId() {
+		return officeId;
+	}
+
+	public void setOfficeId(String officeId) {
+		this.officeId = officeId;
 	}
 	
 	@Length(min=0, max=1, message="会员类型：长度必须介于 0 和 1 之间")

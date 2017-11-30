@@ -135,7 +135,8 @@ public class MemberAccountController extends BaseController {
 			//设置账户对应的user表主键
 			memberAccount.setUser(user);
 			//设置账户对应的机构（登录账号同机构）
-			memberAccount.setOrgId(seesionUser.getOffice());
+			memberAccount.setCompanyId(seesionUser.getCompany().getId());
+			memberAccount.setOfficeId(seesionUser.getOffice().getId());
 			//安全码MD5加密
 			String secPassword = SystemService.entryptPassword(memberAccount.getSecPassword());
 			memberAccount.setSecPassword(secPassword);

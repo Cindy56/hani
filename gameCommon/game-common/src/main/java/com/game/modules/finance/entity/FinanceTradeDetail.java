@@ -22,7 +22,8 @@ public class FinanceTradeDetail extends DataEntity<FinanceTradeDetail> {
 	private User user;		// 用户id
 	private String userName;		// 用户名称
 	private String accountId;		// 账号id
-	private String orgId;
+	private String companyId;	// 归属公司
+	private String officeId;	// 归属部门
 	private String busiNo;		// 业务编号，一个编号对应多条明细：如果类型为投注，就为注单编号，一个注单在派奖后，生成奖金、本人返水，多个上级返水如果是充值，就是充值单编号如果是提现，就为提现记录编号
 	private String tradeType;		// 账变交易类型：
 	private BigDecimal amount;		// 账变金额
@@ -30,17 +31,6 @@ public class FinanceTradeDetail extends DataEntity<FinanceTradeDetail> {
 	private BigDecimal accountBlanceAfter;		// 账变后金额
 	private Date beginCreateDate;		// 开始 create_date
 	private Date endCreateDate;		// 结束 create_date
-	
-	
-	
-	
-	public String getOrgId() {
-		return orgId;
-	}
-
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
 
 	public FinanceTradeDetail() {
 		super();
@@ -76,6 +66,22 @@ public class FinanceTradeDetail extends DataEntity<FinanceTradeDetail> {
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
+	@Length(min=1, max=50, message="归属公司id长度必须介于 1 和 50 之间")
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}	
+	@Length(min=1, max=50, message="归属部门id长度必须介于 1 和 50 之间")
+	public String getOfficeId() {
+		return officeId;
+	}
+
+	public void setOfficeId(String officeId) {
+		this.officeId = officeId;
+	}		
 	
 	@Length(min=1, max=50, message="业务编号，长度必须介于 1 和 50 之间")
 	public String getBusiNo() {

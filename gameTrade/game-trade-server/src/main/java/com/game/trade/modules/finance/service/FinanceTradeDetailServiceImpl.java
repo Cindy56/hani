@@ -97,7 +97,8 @@ public class FinanceTradeDetailServiceImpl
 			financeTrade.setUser(lotteryOrder.getUser());
 			financeTrade.setUserName(lotteryOrder.getUser().getName());
 			financeTrade.setAccountId(lotteryOrder.getAccountId());
-			financeTrade.setOrgId(lotteryOrder.getOrgId());
+			financeTrade.setCompanyId(lotteryOrder.getCompanyId());
+			financeTrade.setOfficeId(lotteryOrder.getOfficeId());
 			financeTrade.setBusiNo(lotteryOrder.getOrderNo());
 			financeTrade.getUser().setId("sys");
 			

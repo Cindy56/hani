@@ -6,7 +6,8 @@
 		a.id AS "id",
 		a.user_id AS "user.id",
 		a.user_name AS "userName",
-		a.org_id AS "orgId",
+		a.company_id AS "companyId",	
+		a.office_id AS "officeId",
 		a.recharge_no AS "rechargeNo",
 		a.payment_channel_id AS "paymentChannelId",
 		a.bank_code AS "bankCode",
@@ -55,11 +56,14 @@
 					<if test="dbName == 'mssql'">'%'+#{userName}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{userName},'%')</if>
 			</if>
-			<if test="orgId != null and orgId != ''">
-				AND a.org_id LIKE 
-					<if test="dbName == 'oracle'">'%'||#{orgId}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{orgId}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{orgId},'%')</if>
+			<if test="companyId != null and companyId != ''">
+				AND a.company_id = #{companyId} 
+			</if>
+			<if test="officeId != null and officeId != ''">
+				AND a.office_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{officeId}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{officeId}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{officeId},'%')</if>
 			</if>
 			<if test="rechargeNo != null and rechargeNo != ''">
 				AND a.recharge_no LIKE 
@@ -122,7 +126,8 @@
 			id,
 			user_id,
 			user_name,
-			org_id,
+			company_id,
+			office_id,
 			recharge_no,
 			payment_channel_id,
 			bank_code,
@@ -146,7 +151,8 @@
 			#{id},
 			#{user.id},
 			#{userName},
-			#{orgId},
+			#{companyId},
+			#{officeId},
 			#{rechargeNo},
 			#{paymentChannelId},
 			#{bankCode},
@@ -173,7 +179,8 @@
 		UPDATE finance_recharge SET 	
 			user_id = #{user.id},
 			user_name = #{userName},
-			org_id = #{orgId},
+			company_id = #{companyId},
+			office_id = #{officeId},
 			recharge_no = #{rechargeNo},
 			payment_channel_id = #{paymentChannelId},
 			bank_code = #{bankCode},

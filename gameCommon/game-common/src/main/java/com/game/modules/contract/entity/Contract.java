@@ -24,7 +24,7 @@ import com.game.common.persistence.DataEntity;
 public class Contract extends DataEntity<Contract> {
 	
 	private static final long serialVersionUID = 2068384035681508128L;
-	private Office office;		// 机构id
+	private String companyId;	// 归属公司
 	private String orgName;		// 机构名称
 	private User user;		// 用户id
 	private String userName;		// 用户登录名称
@@ -56,12 +56,13 @@ public class Contract extends DataEntity<Contract> {
 		super(id);
 	}
 
-	public Office getOffice() {
-		return office;
+	@Length(min=1, max=50, message="归属公司id长度必须介于 1 和 50 之间")
+	public String getCompanyId() {
+		return companyId;
 	}
 
-	public void setOffice(Office office) {
-		this.office = office;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
 	
 	@Length(min=1, max=50, message="机构名称长度必须介于 1 和 50 之间")

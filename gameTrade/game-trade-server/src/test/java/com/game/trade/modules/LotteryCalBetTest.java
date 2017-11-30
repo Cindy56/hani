@@ -115,7 +115,8 @@ public class LotteryCalBetTest extends AbstractJUnit4SpringContextTests {
 		bet1.preInsert();
 		// bet1.setUserId("userId");
 		// bet1.setUserName("userName");
-		bet1.setOrgId("orgId");
+		bet1.setCompanyId("orgId");
+		bet1.setOfficeId("orgId");
 
 		bet1.setAccountId("034f37416db44fa4a8ab05d98da6fa7d");
 		String lotteryCode = "SSC_CQ";

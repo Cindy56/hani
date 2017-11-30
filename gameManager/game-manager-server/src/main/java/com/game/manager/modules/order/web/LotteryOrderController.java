@@ -69,10 +69,6 @@ public class LotteryOrderController extends BaseController {
 		if (!beanValidator(model, lotteryOrder)){
 			return form(lotteryOrder, model);
 		}
-		lotteryOrder.setUser(UserUtils.getUser());//just4testing
-		lotteryOrder.setOrgId("2");//just4testing
-		lotteryOrder.setAccountId("2");//just4testing
-		
 		lotteryOrderService.save(lotteryOrder);
 		addMessage(redirectAttributes, "保存订单明细成功");
 		return "redirect:"+Global.getAdminPath()+"/order/lotteryOrder/?repage";

@@ -66,25 +66,15 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-<<<<<<< HEAD
 				<!-- <th>id</th> -->
-=======
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
+
 				<th>订单编号</th>
 				<th>用户名</th>
-<<<<<<< HEAD
 				<!-- <th>user_id</th> -->
 				<th>机构id</th>
-				<th>lottery_code</th>
-=======
-				<th>机构</th>
-				<th>彩种</th>
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
+				<th>彩票名称</th>
 				<th>投注期号</th>
-<<<<<<< HEAD
 				<!-- <th>账户id</th> -->
-=======
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 				<th>投注类型：</th>
 				<th>投注内容</th>
 				<th>投注金额</th>
@@ -104,41 +94,32 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="lotteryOrder">
 			<tr>
-<<<<<<< HEAD
 				<%-- <td><a href="${ctx}/order/lotteryOrder/form?id=${lotteryOrder.id}">
 					${lotteryOrder.id}
 				</a></td> --%>
-=======
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 				<td>
 					${lotteryOrder.orderNo}
 				</td>
 				<td>
 					${lotteryOrder.user.name}
 				</td>
-<<<<<<< HEAD
 				<%-- <td>
 					${lotteryOrder.user.id}
 				</td> --%>
-=======
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
 				<td>
-					${lotteryOrder.orgId}
+					${lotteryOrder.orgName}
 				</td>
-				<td>
-					${lotteryOrder.lotteryCode}
+				<td>					
+					${fns:getDictLabel(lotteryOrder.lotteryCode, 'SSC', '')}
 				</td>
 				<td>
 					${lotteryOrder.betIssueNo}
 				</td>
-<<<<<<< HEAD
 				<%-- <td>
 					${lotteryOrder.accountId}
 				</td> --%>
-=======
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core
-				<td>
-					${lotteryOrder.betType}
+				<td>					
+					${fns:getDictLabel(lotteryOrder.betType, 'lottery_play_code', '')}
 				</td>
 				<td>
 					${lotteryOrder.betDetail}
@@ -155,14 +136,14 @@
 				<td>
 					${lotteryOrder.playModeCommissionRate}
 				</td>
-				<td>
-					${lotteryOrder.playModeMoneyType}
+				<td>					
+					${fns:getDictLabel(lotteryOrder.playModeMoneyType, 'play_type', '')}
 				</td>
-				<td>
-					${lotteryOrder.orderSource}
+				<td>					
+					${fns:getDictLabel(lotteryOrder.orderSource, 'order_source', '')}
 				</td>
-				<td>
-					${lotteryOrder.orderType}
+				<td>					
+					${fns:getDictLabel(lotteryOrder.orderType, 'order_type', '')}
 				</td>
 				<td>
 					${lotteryOrder.winAmount}
@@ -170,8 +151,8 @@
 				<td>
 					${lotteryOrder.withdrawAmount}
 				</td>
-				<td>
-					${lotteryOrder.status}
+				<td>					
+					${fns:getDictLabel(lotteryOrder.status, 'order_status', '')}
 				</td>
 				<td>
 					<fmt:formatDate value="${lotteryOrder.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -179,10 +160,7 @@
 				<td>
 					${fns:getDictLabel(lotteryOrder.delFlag, 'del_flag', '')}
 				</td>
-				<shiro:hasPermission name="order:lotteryOrder:edit"><td>
-    				<a href="${ctx}/order/lotteryOrder/form?id=${lotteryOrder.id}">修改</a>
-					<a href="${ctx}/order/lotteryOrder/delete?id=${lotteryOrder.id}" onclick="return confirmx('确认要删除该订单明细吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
+				
 			</tr>
 		</c:forEach>
 		</tbody>

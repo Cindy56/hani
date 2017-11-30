@@ -22,6 +22,7 @@ import com.game.common.config.Global;
 import com.game.common.persistence.Page;
 import com.game.common.utils.StringUtils;
 import com.game.common.web.BaseController;
+import com.game.hall.modules.sys.utils.UserUtils;
 import com.game.modules.finance.entity.FinanceRecharge;
 import com.game.modules.finance.entity.ReceiveBankNo;
 import com.game.modules.finance.service.FinanceRechargeService;
@@ -76,10 +77,11 @@ public class FinanceRechargeController extends BaseController {
 		//TODO:相关验证		
 		
 		//充值表单提交 产生一条充值记录 状态支付中
-		User user = new User();
-		user.setId("00ff432e9e77424e82a6e4752a6f4c37");
-		financeRecharge.setUser(user);
-		financeRecharge.setOrgId("机构名字");
+		User currentUser = UserUtils.getUser();
+//		user.setId("00ff432e9e77424e82a6e4752a6f4c37");
+		financeRecharge.setUser(currentUser);
+		financeRecharge.setCompanyId(currentUser.getCompany().getId());
+		financeRecharge.setOfficeId(currentUser.getOffice().getId());
 		financeRecharge.setRechargeNo("充值单编号");
 		financeRecharge.setRechargeDate(new Date());
 		financeRecharge.setPaymentChannelId("工商银行");

@@ -105,7 +105,7 @@
 					${contract.office.id}
 				</a></td> --%>
 				<td>
-					${contract.orgName}
+					${contract.companyName}
 				</td>
 				<%-- <td>
 					${contract.user.id}

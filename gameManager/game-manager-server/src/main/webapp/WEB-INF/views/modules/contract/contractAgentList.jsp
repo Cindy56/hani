@@ -95,10 +95,10 @@
 		<c:forEach items="${page.list}" var="contract">
 			<tr>
 				<td><a href="${ctx}/contract/contractAgent/form?id=${contract.id}">
-					${contract.office.id}
+					${contract.companyId}
 				</a></td>
 				<td>
-					${contract.orgName}
+					${contract.companyName}
 				</td>
 				<td>
 					${contract.user.id}

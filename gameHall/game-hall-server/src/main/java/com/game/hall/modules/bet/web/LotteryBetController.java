@@ -113,7 +113,9 @@ public class LotteryBetController {
 		testOrder.setCurrentUser(currentUser);
 		testOrder.setOrderNo(genOrderNo());// 订单编号
 		testOrder.setUser(currentUser);
-		testOrder.setOrgId(currentUser.getOffice().getId());
+		
+		testOrder.setCompanyId(currentUser.getCompany().getId());
+		testOrder.setOfficeId(currentUser.getOffice().getId());
 		testOrder.setLotteryCode("SSC_CQ");
 		testOrder.setBetIssueNo(lotteryTimeNumService.findCurrentIssueNo("SSC_CQ").getLotteryIssueNo());
 		MemberAccount currentAccount = memberAccountService.getByUserId(currentUser.getId());
@@ -128,11 +130,11 @@ public class LotteryBetController {
 
 		String playCode = testLotteryBetController.getInstance().getRandmonPlayCode(randNum);
 
-		String betDetail = testLotteryBetController.getInstance().getRandmonBetDetail(randNum);
+//		String betDetail = testLotteryBetController.getInstance().getRandmonBetDetail(randNum);
 
 		testOrder.setBetType("SSC_5XING_ZHIXUANDAN");
 
-		testOrder.setBetDetail(betDetail);
+		testOrder.setBetDetail("");
 
 		testOrder.setBetAmount(new BigDecimal(4));
 		testOrder.setBetRate(2);
@@ -162,7 +164,8 @@ public class LotteryBetController {
 
 		}
 		// =================生成流水,挪到返水服务里
-		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder), FinanceTradeDetailType.BET_DEDUCTIONS);
+		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder),
+				FinanceTradeDetailType.BET_DEDUCTIONS);
 
 		return lotteryOrder;
 	}
@@ -171,74 +174,57 @@ public class LotteryBetController {
 	@RequestMapping(value = "/addbet", method = RequestMethod.GET)
 	public ResultData addBet(String jsbetData) {
 
-		// testLotteryBetController test = new testLotteryBetController();
-		// test.setMylotteryPlayConfigService(mylotteryPlayConfigService);
-		// test.setMyMemberPlayConfigService(myMemberPlayConfigService);
-		// List<LotteryOrder> lstest = test.testLotteryBetControllerMethodaddBet();
-
 		// =================模拟生成order
-		LotteryOrder testOrder = new LotteryOrder();
+		String betIssueNo = lotteryTimeNumService.findCurrentIssueNo("SSC_CQ").getLotteryIssueNo();
+
+		LotteryOrder testOrder = testLotteryBetController.getInstance().getRandmonOrder(betIssueNo);
+
+		// ================设置用户，生成订单号
+		testOrder.preInsert();
 		User currentUser = UserUtils.getUser();
+		//testOrder.setId(id);
 		testOrder.setCurrentUser(currentUser);
-		testOrder.setOrderNo(genOrderNo());// 订单编号
+		testOrder.setOrderNo(genOrderNo());//
 		testOrder.setUser(currentUser);
-		testOrder.setOrgId("");
-		testOrder.setLotteryCode("SSC_CQ");
-		testOrder.setBetIssueNo(lotteryTimeNumService.findCurrentIssueNo("SSC_CQ").getLotteryIssueNo());
+		testOrder.setCompanyId(currentUser.getCompany().getId());
+		testOrder.setOfficeId(currentUser.getOffice().getId());
+
 		MemberAccount currentAccount = memberAccountService.getByUserId(currentUser.getId());
 		testOrder.setAccountId(currentAccount.getId());
-		testOrder.setBetType("SSC_5XING_ZHIXUNDAN");
 
-		Random rand = new Random();
-		StringBuilder betNumber = new StringBuilder();
-		betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10))
-				.append(rand.nextInt(10));
-		testOrder.setBetDetail(betNumber.toString());
-		testOrder.setBetAmount(new BigDecimal(4));
-		testOrder.setBetRate(2);
-		testOrder.setPlayModeMoney(190000);
-		testOrder.setPlayModeCommissionRate(new BigDecimal(0.03));
-		testOrder.setPlayModeMoneyType("0");
-		testOrder.setOrderSource("1");
-		testOrder.setOrderType("1");
-		testOrder.setSchemaId("xxxxxxxxxx");
-		testOrder.setWinAmount(new BigDecimal(0));
-		testOrder.setWithdrawAmount(new BigDecimal(0));
-		testOrder.setStatus("0");
+		List<LotteryOrder> lsOrders = new ArrayList<>();
+		lsOrders.add(testOrder);
 
-		List<LotteryOrder> lsBetData = new ArrayList<>();
-		lsBetData.add(testOrder);
-		// (List<LotteryOrder>) JsonMapper.getInstance().fromJson(jsbetData,
-		// JsonMapper.getInstance().createCollectionType(List.class,
-		// LotteryOrder.class));
-
-		// List<LotteryOrder> betData = lstest;
-		// betData.add(getOrder());
 		System.out.println("1");
-
-		// User user = RandomMember.getMember(memberAccountService,systemServiceFacade);
 
 		int ret = 0;
 
-		// 前置校验
 		ResultData rd = ResultData.ResultDataOK();
 
-		for (int i = 0; i < lsBetData.size(); i++) {
+		for (int i = 0; i < lsOrders.size(); i++) {
 
-			LotteryOrder lotOrder = lsBetData.get(i);
+			LotteryOrder lotOrder = lsOrders.get(i);
 			lotOrder.setAccountId(memberAccountService.getByUserId(currentUser.getId()).getId());
 			lotOrder.setOrderNo(OrderUtils.getOrderNo());
 
-			// lotOrder.setUser(user);
-			// lotOrder.setCurrentUser(user);
-			// lotOrder.preInsert();
-
+			// =============================前置校验 List<LotteryOrder> lsOrders
 			ret = this.lotteryCalculateService.checkOrder(lotOrder);
 			if (ret != 0) {
 				rd.setErrorCode(ret);
 				rd.setMessage(GameError.getInstance().findErrorString(ret));
 				return rd;
 			}
+
+			// =============================save and deduct and Statement detail
+			// List<LotteryOrder> lsOrders
+			int bRet = lotteryAddBetService.addBet(lotOrder);
+
+			if (bRet != 0) {
+				rd.setErrorCode(bRet);
+				rd.setMessage(GameError.getInstance().findErrorString(bRet));
+				return rd;
+			}
+
 		}
 
 		System.out.println("2");
@@ -254,77 +240,7 @@ public class LotteryBetController {
 
 		rd = ResultData.ResultDataOK();
 
-		if (lsBetData == null) {
-			LOG.debug("投注信息为空");
-			return rd;
-		}
-
-		for (int i = 0; i < lsBetData.size(); i++) { // 前置校验 LotteryOrder betData =
-			LotteryOrder betData = lsBetData.get(i);
-
-			if (betData.getBetIssueNo().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeIssuseNo);
-				rd.setMessage(GameError.errIssuseNo);
-				return rd;
-			}
-
-			if (betData.getPlayModeMoneyType().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBettingModel);
-				rd.setMessage(GameError.errBettingModel);
-				return rd;
-			}
-
-			if (betData.getBetAmount().compareTo(new BigDecimal(0)) <= 0) {
-				rd.setErrorCode(GameError.errCodeBettingMoney);
-				rd.setMessage(GameError.errBettingMoney);
-				return rd;
-			}
-
-			// 订单编号应该在此处生成
-			if (betData.getOrderNo() != null && betData.getOrderNo().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeOrderNo);
-				rd.setMessage(GameError.errOrderNo);
-				return rd;
-			}
-
-			if (betData.getLotteryCode().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeLotteryCode);
-				rd.setMessage(GameError.errLotteryCode);
-				return rd;
-			}
-
-			if (betData.getBetDetail() != null && betData.getBetDetail().isEmpty()) {
-				rd.setErrorCode(GameError.errCodeBetDetial);
-				rd.setMessage(GameError.errBetDetial);
-				return rd;
-			}
-
-			/*
-			 * LotteryOrder bet1 = new LotteryOrder(); User user = new User();
-			 * bet1.setUser(user); String lotteryCode = "CQSSC";
-			 * bet1.setLotteryCode(lotteryCode); BigDecimal betAmount = new BigDecimal(100);
-			 * bet1.setBetAmount(betAmount); String betIssueNo = "20171117";
-			 * bet1.setBetIssueNo(betIssueNo); String betType = "";
-			 * bet1.setBetType(betType); User currentUser = null;
-			 * bet1.setCurrentUser(currentUser); String id = ""; bet1.setId(id); String
-			 * orderSource = "0"; bet1.setOrderSource(orderSource); String orderType = "1";
-			 * bet1.setOrderType(orderType); String playModeCommissionRate = "0";
-			 * bet1.setPlayModeCommissionRate(playModeCommissionRate); String playModeMoney
-			 * = "1960"; bet1.setPlayModeMoney(playModeMoney); String playModeMoneyType =
-			 * "0"; bet1.setPlayModeMoneyType(playModeMoneyType);
-			 */
-
-			int bRet = lotteryAddBetService.addBet(betData);
-
-			if (bRet != 0) {
-				return rd;
-			}
-
-		}
-
 		return rd;
-
-		// System.out.println();
 
 	}
 
@@ -421,7 +337,8 @@ public class LotteryBetController {
 		bet1.preInsert();
 		// bet1.setUserId("userId");
 		// bet1.setUserName("userName");
-		bet1.setOrgId("orgId");
+		bet1.setCompanyId("orgId");
+		bet1.setOfficeId("orgId");
 
 		bet1.setAccountId("034f37416db44fa4a8ab05d98da6fa7d");
 		String lotteryCode = "SSC_CQ";

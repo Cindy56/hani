@@ -23,7 +23,8 @@ public class FinanceRecharge extends DataEntity<FinanceRecharge> {
 	private static final long serialVersionUID = 1L;
 	private User user;		// 用户id
 	private String userName;		// 用户名
-	private String orgId;		// 公司id
+	private String companyId;	// 归属公司
+	private String officeId;	// 归属部门	
 	private String rechargeNo;		// 充值单编号
 	private String paymentChannelId;		// 充值通道外键
 	private String bankCode;		// 充值银行代码
@@ -69,13 +70,21 @@ public class FinanceRecharge extends DataEntity<FinanceRecharge> {
 		this.userName = userName;
 	}
 	
-	@Length(min=1, max=50, message="公司id长度必须介于 1 和 50 之间")
-	public String getOrgId() {
-		return orgId;
+	@Length(min=1, max=50, message="归属公司id长度必须介于 1 和 50 之间")
+	public String getCompanyId() {
+		return companyId;
 	}
 
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}	
+	@Length(min=1, max=50, message="归属部门id长度必须介于 1 和 50 之间")
+	public String getOfficeId() {
+		return officeId;
+	}
+
+	public void setOfficeId(String officeId) {
+		this.officeId = officeId;
 	}
 	
 	@Length(min=1, max=50, message="充值单编号长度必须介于 1 和 50 之间")
