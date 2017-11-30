@@ -99,7 +99,7 @@ public class LotteryCommissionService {
 				//给上级加钱
 				memberAccountService.plusAmount(memberAccount.getId(),currentAmount);
 				//生成账变
-				tradeList.add(saveTradeDetail(memberAccount,lotteryOrder,currentAmount,FinanceTradeDetailType.BET_DEDUCTIONS));
+				tradeList.add(saveTradeDetail(memberAccount,lotteryOrder,currentAmount,FinanceTradeDetailType.BET_REBATES));
 			}else {
 				if(memberAccountMap.containsKey(memberAccount.getParentAgentId())) {
 					//计算上级返点
