@@ -1,31 +1,154 @@
 package com.test;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
-import com.game.modules.member.entity.MemberPlayConfig;
 import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.User;
 
-
 @Service
-public class testLotteryBetController  {
+public class testLotteryBetController {
 
+	public static Map<Integer, String> mapPlayCode = new HashedMap();
+
+	private testLotteryBetController() {
+		mapPlayCode.put(0, "SSC_5XING_ZHIXUANFU");
+		mapPlayCode.put(1, "SSC_5XING_ZHIXUANDAN");
+
+	}
+
+	public static testLotteryBetController getInstance() {
+
+		return new testLotteryBetController();
+	}
 
 	@Autowired
 	LotteryPlayConfigService mylotteryPlayConfigService;
-	
+
 	@Autowired
 	MemberPlayConfigService myMemberPlayConfigService;
+
+	public int getRandmonNum() {
+
+		SecureRandom random = new SecureRandom();
+
+		int j = random.nextInt(2);
+
+		return j;
+	}
+
+	public void fun() {
+
+		int randNum = getRandmonNum();
+
+		String playCode = getRandmonPlayCode(randNum);
+
+		String betDetail = getRandmonBetDetail(randNum);
+		
+		
+	}
+
+	public String getRandmonPlayCode(int j) {
+
+		return mapPlayCode.get(j);
+	}
+
+	public String getRandmonBetDetail(int j) {
+
 	
+		SecureRandom rand = new SecureRandom();
+
+		String playCode = mapPlayCode.get(j);
+		
+		if(playCode == "SSC_5XING_ZHIXUANFU")
+		{//复试
+			StringBuilder betNumber = new StringBuilder();
+			
+			//个
+			int n1 = rand.nextInt(9);
+			for (int i = 0; i <= n1; i++) {
+				betNumber.append( rand.nextInt(10) );
+			}
+			
+			betNumber.append( "," );
+			
+			//十
+			
+			int n2 = rand.nextInt(9);
+			for (int i = 0; i <= n2; i++) {
+				betNumber.append( rand.nextInt(10) );
+			}
+			
+			betNumber.append( "," );
+			
+			
+			//百
+
+			int n3 = rand.nextInt(9);
+			for (int i = 0; i <= n3; i++) {
+				betNumber.append( rand.nextInt(10) );
+			}
+			
+			betNumber.append( "," );
+			
+			//千
+			int n4 = rand.nextInt(9);
+			for (int i = 0; i <= n4; i++) {
+				betNumber.append( rand.nextInt(10) );
+			}
+			
+			betNumber.append( "," );
+			
+			//万
+			
+			int n5 = rand.nextInt(9);
+			for (int i = 0; i <= n5; i++) {
+				betNumber.append( rand.nextInt(10) );
+			}
+			
+			return betNumber.toString();
+		}
+		
+		
+		if(playCode == "SSC_5XING_ZHIXUANDAN")
+		{//单式
+			StringBuilder betNumber = new StringBuilder();
+			
+			//个
+			int n1 = rand.nextInt(100);
+			for (int i = 0; i <= n1; i++) {
+				betNumber.append( rand.nextInt(10) );
+				betNumber.append( rand.nextInt(10) );
+				betNumber.append( rand.nextInt(10) );
+				betNumber.append( rand.nextInt(10) );
+				betNumber.append( rand.nextInt(10) );
+				betNumber.append( "," );
+			}
+			
+			betNumber.append( rand.nextInt(10) );
+			betNumber.append( rand.nextInt(10) );
+			betNumber.append( rand.nextInt(10) );
+			betNumber.append( rand.nextInt(10) );
+			betNumber.append( rand.nextInt(10) );
+			
+			return betNumber.toString();
+			
+		}
+		
+		return "something error";
+		
+	}
+
 	/**
 	 * @return the myMemberPlayConfigService
 	 */
@@ -34,7 +157,8 @@ public class testLotteryBetController  {
 	}
 
 	/**
-	 * @param myMemberPlayConfigService the myMemberPlayConfigService to set
+	 * @param myMemberPlayConfigService
+	 *            the myMemberPlayConfigService to set
 	 */
 	public void setMyMemberPlayConfigService(MemberPlayConfigService myMemberPlayConfigService) {
 		this.myMemberPlayConfigService = myMemberPlayConfigService;
@@ -48,7 +172,8 @@ public class testLotteryBetController  {
 	}
 
 	/**
-	 * @param mylotteryPlayConfigService the mylotteryPlayConfigService to set
+	 * @param mylotteryPlayConfigService
+	 *            the mylotteryPlayConfigService to set
 	 */
 	public void setMylotteryPlayConfigService(LotteryPlayConfigService mylotteryPlayConfigService) {
 		this.mylotteryPlayConfigService = mylotteryPlayConfigService;
@@ -87,7 +212,6 @@ public class testLotteryBetController  {
 		 * statuschar(1) NOT NULL注单状态： 0等待开奖 1已中奖 2未中奖 3已撤单
 		 */
 
-
 		User user = new User();
 		user.setId("a4fff2ed9be246268fb742d9c684dba0");// 用户ID
 		user.setName("00username");// 用户名
@@ -95,9 +219,8 @@ public class testLotteryBetController  {
 		company.setCode("code");// 组织编号
 		user.setCompany(company);
 
-		
 		LotteryOrder bet1 = new LotteryOrder();
-		
+
 		bet1.setCurrentUser(user);
 		bet1.setUser(user);
 		bet1.preInsert();
@@ -129,7 +252,7 @@ public class testLotteryBetController  {
 		String playModeMoneyType = "0";
 		bet1.setPlayModeMoneyType(playModeMoneyType);
 
-		//bet1.setOrderNum("10000001");
+		// bet1.setOrderNum("10000001");
 		bet1.setBetDetail("detail");
 		bet1.setBetRate(1);
 		bet1.setStatus("0");
@@ -143,59 +266,51 @@ public class testLotteryBetController  {
 
 	public List<LotteryOrder> testLotteryBetControllerMethodaddBet() {
 
-		
-		//获得user
+		// 获得user
 		User user = new User();
 		user.setId("00user");// 用户ID
 		user.setName("00username");// 用户名
 		Office company = new Office();
 		company.setCode("code");// 组织编号
 		user.setCompany(company);
-		
-	//	LotteryPlayConfig lotteryPlayConfig = new LotteryPlayConfig();
-	//	lotteryPlayConfig.setCurrentUser(user);
-		
-		
-		//user获得玩法配置
-		//MemberPlayConfig memberPlayConfig = myMemberPlayConfigService.getMemberPlayConfigByUserId("1");
-		
-		
-		
-		//选择玩法，投注号，玩法模式，倍数，奖金组，返点
+
+		// LotteryPlayConfig lotteryPlayConfig = new LotteryPlayConfig();
+		// lotteryPlayConfig.setCurrentUser(user);
+
+		// user获得玩法配置
+		// MemberPlayConfig memberPlayConfig =
+		// myMemberPlayConfigService.getMemberPlayConfigByUserId("1");
+
+		// 选择玩法，投注号，玩法模式，倍数，奖金组，返点
 		LotteryOrder bet1 = getOrder();
 		String betType = "SSC_5_ZHIXUANDANSHI";
-		bet1.setBetType(betType );
-		
-		//String betDetail = "0123,123,123,123,123";//直选复式
-		String betDetail = "01234,12345,12345,12345,12345";//直选单式
-		
+		bet1.setBetType(betType);
+
+		// String betDetail = "0123,123,123,123,123";//直选复式
+		String betDetail = "01234,12345,12345,12345,12345";// 直选单式
+
 		bet1.setBetIssueNo("20171127068");
-		bet1.setBetDetail(betDetail );
-		
+		bet1.setBetDetail(betDetail);
+
 		String playModeMoneyType = "0";
-		bet1.setPlayModeMoneyType(playModeMoneyType );
-		
+		bet1.setPlayModeMoneyType(playModeMoneyType);
+
 		bet1.setBetRate(1);
-		
+
 		bet1.setPlayModeMoney(1900);
 		BigDecimal playModeCommissionRate = new BigDecimal("2.8");
-		bet1.setPlayModeCommissionRate(playModeCommissionRate );
-		
+		bet1.setPlayModeCommissionRate(playModeCommissionRate);
+
 		BigDecimal betAmount = new BigDecimal("10");
-		bet1.setBetAmount(betAmount );
-		//投注
-		
-	
+		bet1.setBetAmount(betAmount);
+		// 投注
+
 		List<LotteryOrder> lsbet = new ArrayList<LotteryOrder>();
 
-
-	
 		lsbet.add(bet1);
-		
-		return lsbet;
-		
-	}
 
-	
+		return lsbet;
+
+	}
 
 }

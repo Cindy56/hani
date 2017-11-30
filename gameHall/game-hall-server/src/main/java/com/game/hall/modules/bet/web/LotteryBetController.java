@@ -4,6 +4,7 @@
 package com.game.hall.modules.bet.web;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +41,7 @@ import com.game.modules.order.service.LotteryOrderService;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.User;
 import com.game.modules.sys.service.SystemServiceFacade;
+import com.test.testLotteryBetController;
 
 /**
  * 投注
@@ -69,52 +71,69 @@ public class LotteryBetController {
 
 	@Autowired
 	MemberAccountService memberAccountService;
-	
+
 	@Autowired
 	SystemServiceFacade systemServiceFacade;
-	
+
 	@Autowired
 	private LotteryTimeNumService lotteryTimeNumService;
 	@Autowired
 	private LotteryOrderService lotteryOrderService;
 	@Autowired
 	private FinanceTradeDetailService financeTradeDetailService;
-	
-	
+
 	public String genOrderNo() {
 		return String.valueOf(IdGen.randomLong());
 	}
-	
 
 	public static void main(String[] args) {
 		Random rand = new Random();
-		StringBuilder betNumber = new StringBuilder();
-		betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
-		
-		System.out.println(betNumber.toString());
+		// StringBuilder betNumber = new StringBuilder();
+		// betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
+
+		SecureRandom random = new SecureRandom();
+
+		for (int i = 0; i < 10000; i++) {
+			int j = random.nextInt(2);
+
+			if (j < 0)
+				System.out.println(j);
+		}
+
+		System.out.println("end");
 	}
-	
-//	@RequiresPermissions("finance:financeRecharge:view")
-	@RequestMapping(value = {"testAddBet"})
+
+	// @RequiresPermissions("finance:financeRecharge:view")
+	@RequestMapping(value = { "testAddBet" })
 	@ResponseBody
 	public LotteryOrder testAddBet(LotteryOrder lotteryOrder, Model model) {
-		//=================模拟生成order
+		// =================模拟生成order
 		LotteryOrder testOrder = new LotteryOrder();
 		User currentUser = UserUtils.getUser();
 		testOrder.setCurrentUser(currentUser);
-		testOrder.setOrderNo(genOrderNo());//订单编号
+		testOrder.setOrderNo(genOrderNo());// 订单编号
 		testOrder.setUser(currentUser);
-		testOrder.setOrgId(UserUtils.getUser().getOffice().getId());
+		testOrder.setOrgId(currentUser.getOffice().getId());
 		testOrder.setLotteryCode("SSC_CQ");
 		testOrder.setBetIssueNo(lotteryTimeNumService.findCurrentIssueNo("SSC_CQ").getLotteryIssueNo());
 		MemberAccount currentAccount = memberAccountService.getByUserId(currentUser.getId());
 		testOrder.setAccountId(currentAccount.getId());
+
+		// Random rand = new Random();
+
+		// StringBuilder betNumber = new StringBuilder();
+		// betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
+
+		int randNum = testLotteryBetController.getInstance().getRandmonNum();
+
+		String playCode = testLotteryBetController.getInstance().getRandmonPlayCode(randNum);
+
+		String betDetail = testLotteryBetController.getInstance().getRandmonBetDetail(randNum);
+
 		testOrder.setBetType("SSC_5XING_ZHIXUANDAN");
-		
-		Random rand = new Random();
-		StringBuilder betNumber = new StringBuilder();
-		betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
-		testOrder.setBetDetail(betNumber.toString());
+
+		testOrder.setBetDetail(betDetail);
+
 		testOrder.setBetAmount(new BigDecimal(4));
 		testOrder.setBetRate(2);
 		testOrder.setPlayModeMoney(190000);
@@ -126,27 +145,27 @@ public class LotteryBetController {
 		testOrder.setWinAmount(new BigDecimal(0));
 		testOrder.setWithdrawAmount(new BigDecimal(0));
 		testOrder.setStatus("0");
-		
-		//=================调用check
+
+		// =================调用check
 		int result = this.lotteryCalculateService.checkOrder(testOrder);
-		//=================入库
-//		if(result != 0) {
-//			return null;
-//		}
-		
+		// =================入库
+		// if(result != 0) {
+		// return null;
+		// }
+
 		this.lotteryOrderService.save(testOrder);
-		//=================扣钱
-		boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(), testOrder.getBetAmount());
-		if(BooleanUtils.isFalse(minusAmountResult)) {
-			//TODO:扣款失败，返回异常提示
-			
+		// =================扣钱
+		boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(),
+				testOrder.getBetAmount());
+		if (BooleanUtils.isFalse(minusAmountResult)) {
+			// TODO:扣款失败，返回异常提示
+
 		}
-		//=================生成流水,挪到返水服务里
+		// =================生成流水,挪到返水服务里
 		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder), FinanceTradeDetailType.BET_DEDUCTIONS);
-		
+
 		return lotteryOrder;
 	}
-	
 
 	@ResponseBody
 	@RequestMapping(value = "/addbet", method = RequestMethod.GET)
@@ -157,12 +176,11 @@ public class LotteryBetController {
 		// test.setMyMemberPlayConfigService(myMemberPlayConfigService);
 		// List<LotteryOrder> lstest = test.testLotteryBetControllerMethodaddBet();
 
-		
-		//=================模拟生成order
+		// =================模拟生成order
 		LotteryOrder testOrder = new LotteryOrder();
 		User currentUser = UserUtils.getUser();
 		testOrder.setCurrentUser(currentUser);
-		testOrder.setOrderNo(genOrderNo());//订单编号
+		testOrder.setOrderNo(genOrderNo());// 订单编号
 		testOrder.setUser(currentUser);
 		testOrder.setOrgId("");
 		testOrder.setLotteryCode("SSC_CQ");
@@ -170,10 +188,11 @@ public class LotteryBetController {
 		MemberAccount currentAccount = memberAccountService.getByUserId(currentUser.getId());
 		testOrder.setAccountId(currentAccount.getId());
 		testOrder.setBetType("SSC_5XING_ZHIXUNDAN");
-		
+
 		Random rand = new Random();
 		StringBuilder betNumber = new StringBuilder();
-		betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
+		betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10))
+				.append(rand.nextInt(10));
 		testOrder.setBetDetail(betNumber.toString());
 		testOrder.setBetAmount(new BigDecimal(4));
 		testOrder.setBetRate(2);
@@ -186,17 +205,18 @@ public class LotteryBetController {
 		testOrder.setWinAmount(new BigDecimal(0));
 		testOrder.setWithdrawAmount(new BigDecimal(0));
 		testOrder.setStatus("0");
-		
-		
+
 		List<LotteryOrder> lsBetData = new ArrayList<>();
 		lsBetData.add(testOrder);
-				//(List<LotteryOrder>) JsonMapper.getInstance().fromJson(jsbetData,				JsonMapper.getInstance().createCollectionType(List.class, LotteryOrder.class));
+		// (List<LotteryOrder>) JsonMapper.getInstance().fromJson(jsbetData,
+		// JsonMapper.getInstance().createCollectionType(List.class,
+		// LotteryOrder.class));
 
 		// List<LotteryOrder> betData = lstest;
 		// betData.add(getOrder());
 		System.out.println("1");
 
-		//User user = RandomMember.getMember(memberAccountService,systemServiceFacade);
+		// User user = RandomMember.getMember(memberAccountService,systemServiceFacade);
 
 		int ret = 0;
 
@@ -209,10 +229,9 @@ public class LotteryBetController {
 			lotOrder.setAccountId(memberAccountService.getByUserId(currentUser.getId()).getId());
 			lotOrder.setOrderNo(OrderUtils.getOrderNo());
 
-
-//			lotOrder.setUser(user);
-//			lotOrder.setCurrentUser(user);
-//			lotOrder.preInsert();
+			// lotOrder.setUser(user);
+			// lotOrder.setCurrentUser(user);
+			// lotOrder.preInsert();
 
 			ret = this.lotteryCalculateService.checkOrder(lotOrder);
 			if (ret != 0) {
