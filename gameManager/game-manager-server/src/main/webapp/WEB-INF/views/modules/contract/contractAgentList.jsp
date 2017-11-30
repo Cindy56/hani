@@ -74,11 +74,11 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>机构id</th>
+				<!-- <th>机构id</th> -->
 				<th>机构名称</th>
-				<th>用户id</th>
+				<!-- <th>用户id</th> -->
 				<th>用户登录名称</th>
-				<th>账户id</th>
+				<!-- <th>账户id</th> -->
 				<th>类型</th>
 				<th>分红模式</th>
 				<th>分红周期</th>
@@ -88,27 +88,28 @@
 				<th>备注</th>
 				<th>创建时间</th>
 				<th>更新时间</th>
+				<th>状态</th>
 				<shiro:hasPermission name="contract:agent:contract:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="contract">
 			<tr>
-				<td><a href="${ctx}/contract/contractAgent/form?id=${contract.id}">
+				<%-- <td><a href="${ctx}/contract/contractAgent/form?id=${contract.id}">
 					${contract.companyId}
-				</a></td>
+				</a></td> --%>
 				<td>
 					${contract.companyName}
 				</td>
-				<td>
+				<%-- <td>
 					${contract.user.id}
-				</td>
+				</td> --%>
 				<td>
 					${contract.userName}
 				</td>
-				<td>
+				<%-- <td>
 					${contract.accountId}
-				</td>
+				</td> --%>
 				<td>
 					${contract.openType}
 				</td>
@@ -136,9 +137,15 @@
 				<td>
 					<fmt:formatDate value="${contract.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
+				<td>
+					${fns:getDictLabel(contract.status, 'contract_status', '')}
+				</td>
 				<shiro:hasPermission name="contract:agent:contract:edit"><td>
     				<a href="${ctx}/contract/contractAgent/form?id=${contract.id}">修改</a>
 					<a href="${ctx}/contract/contractAgent/delete?id=${contract.id}" onclick="return confirmx('确认要删除该代理吗？', this.href)">删除</a>
+					<c:if test="${contract.status eq '3' || contract.status eq '4'}">
+						<a href="${ctx}/contract/contractCompany/updateStatus?id=${contract.id}" onclick="return confirmx('确认要${contract.status eq '3'?'冻结':contract.status eq '4'?'启用':''}该公司吗？', this.href)">${contract.status eq '3'?'冻结':contract.status eq '4'?'启用':''}</a>
+					</c:if>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
