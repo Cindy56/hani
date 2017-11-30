@@ -8,6 +8,9 @@
         $(document).ready(function() {
             $("#inputForm").validate({
                 submitHandler: function(form){
+                    // 提交前把玩法名称赋上值
+                    $("#name").val($("span.select2-chosen").get(1).innerHTML);
+                    
                     loading('正在提交，请稍等...');
                     form.submit();
                 },
@@ -35,7 +38,7 @@
 
         <%-- 彩种代码 --%>
         <div class="control-group">
-            <label class="control-label">彩种代码：</label>
+            <label class="control-label">所属彩种：</label>
             <div class="controls">
                 <form:select id="lotteryCode" path="lotteryCode.code" class="input-xlarge required">
                     <form:option value="" label="-- 请选择 --"/>
@@ -45,9 +48,9 @@
             </div>
         </div>
 
-        <%-- 玩法代码 --%>
+        <%-- 玩法编号 --%>
         <div class="control-group">
-            <label class="control-label">玩法代码：</label>
+            <label class="control-label">玩法名称：</label>
             <div class="controls">
                 <form:select path="playCode" class="input-xlarge required">
                     <form:option value="" label="-- 请选择 --"/>
@@ -58,12 +61,8 @@
         </div>
 
         <%-- 玩法名称 --%>
-        <div class="control-group">
-            <label class="control-label">玩法名称：</label>
-            <div class="controls">
-                <form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required" placeholder="请输入长度为1-50的玩法名称..."/>
-                <span class="help-inline"><font color="red">*</font> </span>
-            </div>
+        <div hidden="true">
+            <form:input id="name" path="name"/>
         </div>
 
         <%-- 玩法模式 --%>
@@ -82,7 +81,7 @@
         <div class="control-group">
             <label class="control-label">中奖概率：</label>
             <div class="controls">
-                <form:input path="winningProbability" htmlEscape="false" maxlength="10" class="input-xlarge required" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-10的小数形式中奖概率..."/>
+                <form:input path="winningProbability" type="number" max="1" step="0.00001" min="0" htmlEscape="false" maxlength="10" class="input-xlarge required" placeholder="请输入玩法中奖概率..."/>
                 <span class="help-inline"><font color="red">*</font> </span>
             </div>
         </div>
@@ -91,7 +90,7 @@
         <div class="control-group">
             <label class="control-label">最高抽水：</label>
             <div class="controls">
-                <form:input path="commissionRateMax" htmlEscape="false" maxlength="6" class="input-xlarge" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-6的小数形式返水级别..."/>
+                <form:input path="commissionRateMax" type="number" max="1" step="0.005" min="0" htmlEscape="false" maxlength="6" class="input-xlarge" placeholder="请输入最高抽水..."/>
             </div>
         </div>
 
@@ -99,7 +98,15 @@
         <div class="control-group">
             <label class="control-label">最低抽水：</label>
             <div class="controls">
-                <form:input path="commissionRateMin" htmlEscape="false" maxlength="6" class="input-xlarge" onchange="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="请输入长度为1-6的小数形式最低返水级别..."/>
+                <form:input path="commissionRateMin" type="number" max="1" step="0.005" min="0" htmlEscape="false" maxlength="6" class="input-xlarge" placeholder="请输入最低抽水..."/>
+            </div>
+        </div>
+
+        <%-- 单注金额 --%>
+        <div class="control-group">
+            <label class="control-label">单注金额：</label>
+            <div class="controls">
+                <form:input path="betUnit" type="number" min="0" htmlEscape="false" maxlength="6" class="input-xlarge" placeholder="请输入单注金额..."/>
             </div>
         </div>
 
@@ -107,7 +114,7 @@
         <div class="control-group">
             <label class="control-label">单人单期投注倍数限制：</label>
             <div class="controls">
-                <form:input path="betRateLimit" htmlEscape="false" maxlength="6" class="input-xlarge" placeholder="请输入单人单期投注倍数限制..."/>
+                <form:input path="betRateLimit" type="number" min="0" htmlEscape="false" maxlength="6" class="input-xlarge" placeholder="请输入单人单期投注倍数限制..."/>
             </div>
         </div>
 
@@ -124,7 +131,7 @@
         <div class="control-group">
             <label class="control-label">玩法说明：</label>
             <div class="controls">
-                <form:textarea path="explain" htmlEscape="false" rows="4" maxlength="5000" class="input-xxlarge" placeholder="请输入字数5000以内的玩法说明..."/>
+                <form:textarea path="explain" htmlEscape="false" rows="4" maxlength="5000" class="input-xxlarge" placeholder="请输入玩法说明..."/>
             </div>
         </div>
 
@@ -132,7 +139,7 @@
         <div class="control-group">
             <label class="control-label">玩法示例：</label>
             <div class="controls">
-                <form:textarea path="example" htmlEscape="false" rows="4" maxlength="5000" class="input-xxlarge" placeholder="请输入字数5000以内的玩法示例..."/>
+                <form:textarea path="example" htmlEscape="false" rows="4" maxlength="5000" class="input-xxlarge" placeholder="请输入玩法示例..."/>
             </div>
         </div>
 
@@ -142,5 +149,44 @@
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
         </div>
     </form:form>
+    <%-- 彩种类型于彩种代码级联事件 --%>
+    <script type="text/javascript">
+        $("#lotteryCode").change(function() {
+            $.ajax({
+                type: "post",
+                async: false,
+                url: ctx+"/lottery/lotteryPlayConfig/findPlayCode",
+                dataType: "json",
+                data: "lotterytype="+this.value,
+                success: function(data) {
+                    // 如果相应数据不为空则继续解析
+                    if (data) {
+                        var playCode = data.lotteryPlayCode;
+                        var isCon = false;
+                        var tmpStr = "<option>-- 请选择 --</option>";
+                        var orgiValue = $("span.select2-chosen").get(1).innerHTML; 
+                        if (playCode && playCode.length != 0) {
+                            for (var i = 0;i < playCode.length; i++) {
+                                var tmpValue = playCode[i].label;
+                                // 如果变更的玩法里还有原来的玩法，依然选中
+                                if (tmpValue == orgiValue) {
+                                    isCon = true;
+                                    orgiValue = playCode[i].value;
+                                }
+                                tmpStr += "<option value='" + playCode[i].value + "'>" + tmpValue + "</option>";
+                            }
+                            // 新数据直接覆盖
+                        } else {
+                            $("span.select2-chosen").get(1).innerHTML = '-- 请选择 --';
+                        }
+                        $("#playCode").html(tmpStr);
+                        if (isCon) {
+                            $("#playCode").val(orgiValue);
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

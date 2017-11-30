@@ -153,6 +153,14 @@
     <example>${fns:getDictLabelForList(type, value, defauleValue)}</example>  
   </function>
   
+  <function>
+    <description>获取字典对象列表并以指定前缀过滤</description>
+    <name>getDictLabelForStartWith</name>
+    <function-class>com.game.manager.modules.sys.utils.DictUtils</function-class>
+    <function-signature>java.util.List getDictLabelForStartWith(java.lang.String, java.lang.String)</function-signature>
+    <example>${getDictLabelForStartWith(type, key)}</example>  
+  </function>
+  
   <!-- Encodes -->
   <function>
     <description>URL编码</description>

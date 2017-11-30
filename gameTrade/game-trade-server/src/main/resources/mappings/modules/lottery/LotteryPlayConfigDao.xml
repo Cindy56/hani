@@ -13,6 +13,7 @@
         a.winning_probability AS "winningProbability",
         a.commission_rate_max AS "commissionRateMax",
         a.commission_rate_min AS "commissionRateMin",
+        a.bet_unit AS "betUnit",
         a.bet_rate_limit AS "betRateLimit",
         a.is_enable AS "isEnable",
         a.explain AS "explain",
@@ -102,6 +103,7 @@
             `winning_probability`,
             `commission_rate_max`,
             `commission_rate_min`,
+            `bet_unit`,
             `bet_rate_limit`,
             `is_enable`,
             `explain`,
@@ -120,6 +122,7 @@
             #{winningProbability},
             #{commissionRateMax},
             #{commissionRateMin},
+            #{betUnit},
             #{betRateLimit},
             #{isEnable},
             #{explain},
@@ -135,19 +138,20 @@
     <!-- 更新已存在数据 -->
     <update id="update">
         UPDATE lottery_play_config SET     
-            lottery_code = #{lotteryCode.code},
-            play_code = #{playCode},
-            name = #{name},
-            play_type = #{playType},
-            winning_probability = #{winningProbability},
-            commission_rate_max = #{commissionRateMax},
-            commission_rate_min = #{commissionRateMin},
-            bet_rate_limit = #{betRateLimit},
-            is_enable = #{isEnable},
-            explain = #{explain},
-            example = #{example},
-            update_date = #{updateDate},
-            update_by = #{updateBy.id}
+            `lottery_code` = #{lotteryCode.code},
+            `play_code` = #{playCode},
+            `name` = #{name},
+            `play_type` = #{playType},
+            `winning_probability` = #{winningProbability},
+            `commission_rate_max` = #{commissionRateMax},
+            `commission_rate_min` = #{commissionRateMin},
+            `bet_unit` = #{betUnit},
+            `bet_rate_limit` = #{betRateLimit},
+            `is_enable` = #{isEnable},
+            `explain` = #{explain},
+            `example` = #{example},
+            `update_date` = #{updateDate},
+            `update_by` = #{updateBy.id}
         WHERE id = #{id}
     </update>
 
