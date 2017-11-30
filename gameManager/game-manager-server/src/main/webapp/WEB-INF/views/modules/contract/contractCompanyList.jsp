@@ -25,21 +25,21 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>机构id：</label>
+			<%-- <li><label>机构id：</label>
 				<form:input path="office.id" htmlEscape="false" maxlength="50" class="input-medium"/>
-			</li>
-			<li><label>机构名称：</label>
+			</li> --%>
+			<%-- <li><label>机构名称：</label>
 				<form:input path="orgName" htmlEscape="false" maxlength="50" class="input-medium"/>
-			</li>
-			<li><label>用户id：</label>
+			</li> --%>
+			<%-- <li><label>用户id：</label>
 				<form:input path="user.id" htmlEscape="false" maxlength="50" class="input-medium"/>
-			</li>
+			</li> --%>
 			<li><label>用户登录名称：</label>
 				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
-			<li><label>账户id：</label>
+			<%-- <li><label>账户id：</label>
 				<form:input path="accountId" htmlEscape="false" maxlength="50" class="input-medium"/>
-			</li>
+			</li> --%>
 			<%-- <li><label>类型：</label>
 				<form:input path="openType" htmlEscape="false" maxlength="1" class="input-medium"/>
 			</li> --%>
