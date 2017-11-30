@@ -85,6 +85,7 @@
 			create_date,
 			create_by,
 			update_by,
+			update_date,
 			del_flag
 		) VALUES (
 			#{id},
@@ -97,6 +98,7 @@
 			#{createDate},
 			#{createBy.id},
 			#{updateBy.id},
+			#{updateDate},
 			#{delFlag}
 		)
 	</insert>

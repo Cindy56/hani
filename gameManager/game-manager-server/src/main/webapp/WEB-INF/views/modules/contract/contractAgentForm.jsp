@@ -8,9 +8,38 @@
 		$(document).ready(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
+				rules: {
+					userName: {
+						remote: {
+							url:"${ctx}/sys/user/checkLoginName",
+							data:{
+								loginName:function(){
+									return $("input[name='userName']").val(); 
+								},
+								oldLoginName:function(){
+									return "${contract.userName}";
+								}
+							}
+						}
+					}
+				},
+				messages: {
+					userName: {remote: "登录名已存在"},
+				}, 
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
+					var flag=true;
+					var submitFlag=$("input[name='submitFlag']");
+					submitFlag.each(function(index,obj){
+						if($(obj).val()=="false"){
+							flag=false;
+						}
+					});
+					if(flag){
+						loading('正在提交，请稍等...');
+						form.submit();	
+					}else{
+						alert("分红设置有误，请修改后提交！");
+					}
 				},
 				errorContainer: "#messageBox",
 				errorPlacement: function(error, element) {
