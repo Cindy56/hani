@@ -93,13 +93,7 @@ public class ContractCompanyController extends BaseController {
 		}
 		contract.setUser(user);
 		//保存公司信息
-		try {
-			contractService.save(contract);
-		} catch (Exception e) {
-			logger.info("公司开户保存异常："+e);
-			addMessage(redirectAttributes, "保存公司失败，请稍后再试！");
-			return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
-		}
+		contractService.save(contract);
 		addMessage(redirectAttributes, "保存公司成功");
 		return "redirect:"+Global.getAdminPath()+"/contract/contractCompany/?repage";
 	}

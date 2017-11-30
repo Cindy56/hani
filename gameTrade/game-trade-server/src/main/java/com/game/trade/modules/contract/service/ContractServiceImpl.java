@@ -196,11 +196,6 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			contract.setOpenType("1");
 			//保存代办任务
 			TodoTask todo=new TodoTask();
-			/*if(COMPANY.equals(contract.getOpenType())) {
-				todo.setTitle("公司开户提醒");	//任务标题
-			}else if(AGENT.equals(contract.getOpenType())){
-				todo.setTitle("代理开户提醒");	//任务标题
-			}*/
 			todo.setTitle("公司开户提醒");	//任务标题
 			todo.setContent(contract.getCompanyName()+"开户");	//任务正文
 			todo.setType("1"); 	//任务类型
@@ -209,7 +204,6 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			todo.setReceiverId(contract.getCurrentUser());	//处理者
 			todo.setCurrentUser(contract.getCurrentUser());
 			todoTaskService.save(todo);
-			
 		}
 		super.save(contract);
 		for (ContractConfig contractConfig : contract.getContractConfigList()){
