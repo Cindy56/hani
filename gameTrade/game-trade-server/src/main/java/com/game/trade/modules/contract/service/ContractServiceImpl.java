@@ -13,14 +13,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.game.common.mapper.JsonMapper;
 import com.game.common.persistence.Page;
 import com.game.common.service.CrudService;
 import com.game.common.utils.StringUtils;
 import com.game.modules.contract.entity.Contract;
 import com.game.modules.contract.entity.ContractConfig;
 import com.game.modules.contract.service.ContractService;
+import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.member.entity.MemberAccount;
+import com.game.modules.member.entity.MemberPlayConfig;
 import com.game.modules.member.service.MemberAccountService;
+import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.Role;
 import com.game.modules.sys.entity.User;
@@ -59,7 +63,15 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 	private MemberAccountService memberAccountService;
 	
 	@Autowired
+	private MemberPlayConfigService memberPlayConfigService;
+	
+	@Autowired
 	private TodoTaskService todoTaskService;
+	
+	//开户类型1公司，2代理
+	private static final String COMPANY ="1";
+	private static final String AGENT ="2";
+	
 	
 	public Contract get(String id) {
 		Contract contract = super.get(id);
@@ -75,6 +87,10 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		return super.findPage(page, contract);
 	}
 	
+	
+	/**
+	 * 保存公司
+	 */
 	@Transactional(readOnly = false)
 	public Contract save(Contract contract) {
 		
@@ -140,15 +156,13 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			user.setName(contract.getUserName());
 			user.setNo("");
 			
-			
-			//保存的公司的机构为新建的公司模板
-			contract.setOffice(company);
-			
 			//保存用户信息
 			user.getRoleList().add(companyRole);
 			user.setCurrentUser(contract.getCurrentUser());
 			user = systemServiceFacade.saveUser(user);
 			systemServiceFacade.assignUserToRole(companyRole,user);
+			company.setPrimaryPerson(user);
+			company=officeServiceFacade.save(company);
 			
 			MemberAccount memberAccount=new MemberAccount();
 			//获取当前用户信息 
@@ -161,7 +175,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			memberAccount.setStatus("0");
 			memberAccount.setUser(user);
 			//会员类型为股东
-			memberAccount.setAccountType("3");
+			memberAccount.setAccountType("1");
 			memberAccount.setQqNo(contract.getQqNo());
 			memberAccount.setMobileNo(contract.getMobileNo());
 			memberAccount.setSecPassword(contract.getSecPassword());
@@ -171,25 +185,30 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			memberAccount.setCurrentUser(contract.getCurrentUser());
 			memberAccountService.save(memberAccount);
 			
+			contract.setAccountId(memberAccount.getId());
+			contract.setOffice(company);
+			contract.setUser(user);
 			
+			//设置公司状态为审核中
+			contract.setStatus("0");
+			//1公司开户，2代理开户
+			contract.setOpenType("1");
 			//保存代办任务
 			TodoTask todo=new TodoTask();
+			/*if(COMPANY.equals(contract.getOpenType())) {
+				todo.setTitle("公司开户提醒");	//任务标题
+			}else if(AGENT.equals(contract.getOpenType())){
+				todo.setTitle("代理开户提醒");	//任务标题
+			}*/
 			todo.setTitle("公司开户提醒");	//任务标题
 			todo.setContent(contract.getOrgName()+"开户");	//任务正文
 			todo.setType("1"); 	//任务类型
 			todo.setStatus("1"); 	//任务状态
-			todo.setSenderId(user); 	//申请者
-			todo.setReceiverId(seesionUser);	//处理者
+			todo.setSenderId(contract.getUser()); 	//申请者
+			todo.setReceiverId(contract.getCurrentUser());	//处理者
+			todo.setCurrentUser(contract.getCurrentUser());
 			todoTaskService.save(todo);
 			
-			
-			contract.setAccountId(memberAccount.getId());
-			contract.setOffice(company);
-			contract.setUser(user);
-			//开户类型：1公司，2代理
-			contract.setOpenType("1");
-			//设置公司状态为审核中
-			contract.setStatus("0");
 		}
 		super.save(contract);
 		for (ContractConfig contractConfig : contract.getContractConfigList()){
@@ -250,26 +269,147 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 	    String strTime=time.toString();
 	  
 	    return returnStr+strTime.substring(strTime.length()-5,strTime.length());
-	}  
-	
-	public static void main(String[] args) {
-		/*int i=0;
-		while (i<100) {
-			String math=getFixLenthString(10);
-			System.out.println(math);
-			i++;
-		}*//*
-		BigDecimal a= new BigDecimal(12).divide(new BigDecimal(100), 4,RoundingMode.HALF_UP);
-		System.out.println(a);*/
-		int i=0;
-		while (i<100) {
-			/*Long time=new Date().getTime();
-		    String strTime=time.toString();
-		    System.out.println(strTime);
-		    System.out.println(strTime.substring(strTime.length()-5,strTime.length()));*/
-			i++;
-			//System.out.println(getFixLenthString(5));
-		}
 	}
+
+	/**
+	 * 保存代理
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public Contract saveAgent(Contract contract) {
+		//this.save(contract);
+		//保存用户信息
+		if(StringUtils.isBlank(contract.getId())) {
+			User user=contract.getUser();
+			
+			String userName=contract.getUserName();
+			
+			user.setLoginName(userName);
+			
+			User sessionUser=contract.getCurrentUser();
+			//根据当前userid查询会员信息
+			MemberAccount sessionMember=memberAccountService.getByUserId(sessionUser.getId());
+			
+			//当前登录用户机构
+			Office userOffice=officeServiceFacade.get(sessionUser.getOffice().getId());
+			
+			//代理下的角色
+			Role agentRole = this.systemServiceFacade.findRoleByOfficeId(userOffice.getId()).get(0);
+			
+				/*//查询机构下面所有机构部门
+				List<Office> officeList=officeServiceFacade.findOfficesByParentId(userOffice.getParentId()+","+userOffice.getId());
+				Office agentOffice=null;
+				Role agentRole=null;
+				for (Office office : officeList) {
+					//查找公司下面的代理部门
+					if(-1 != office.getName().indexOf("代理")) {
+						agentOffice=office;
+						//代理下的角色
+						agentRole = this.systemServiceFacade.findRoleByOfficeId(office.getId()).get(0);
+					}
+				}*/
+				//用户的部门为新建的公司模板
+			user.setOffice(userOffice);
+			
+			//用户公司
+			user.setCompany(sessionUser.getOffice());
+			
+			//用户姓名
+			user.setName(contract.getUserName());
+			user.setNo("");
+			
+			//保存用户信息
+			user.getRoleList().add(agentRole);
+			user.setCurrentUser(contract.getCurrentUser());
+			user = systemServiceFacade.saveUser(user);
+			systemServiceFacade.assignUserToRole(agentRole,user);
+			
+			MemberAccount memberAccount=new MemberAccount();
+			//获取当前用户信息 
+			User seesionUser = contract.getCurrentUser();
+			memberAccount.setParentAgentId(seesionUser.getId());
+			memberAccount.setParentAgentIds(seesionUser.getId()+","+user.getId());
+			memberAccount.setOrgId(userOffice);
+			memberAccount.setBlance("0");
+			memberAccount.setBlanceFrozen("0");
+			memberAccount.setStatus("0");
+			memberAccount.setUser(user);
+			//会员类型为代理
+			memberAccount.setAccountType("2");
+			memberAccount.setQqNo(contract.getQqNo());
+			memberAccount.setMobileNo(contract.getMobileNo());
+			memberAccount.setSecPassword(contract.getSecPassword());
+			//账户状态1正常，2冻结
+			memberAccount.setStatus("1");
+			//保存会员信息
+			memberAccount.setCurrentUser(contract.getCurrentUser());
+			memberAccountService.save(memberAccount);
+			
+			//保存代理返点配置信息
+			List<LotteryPlayConfig> playConfigList = contract.getPlayList();
+			String playConfig = JsonMapper.toJsonString(playConfigList);
+			MemberPlayConfig memberPlayConfig=new MemberPlayConfig();
+			memberPlayConfig.setUser(user);
+			memberPlayConfig.setAccountId(memberAccount.getId());
+			memberPlayConfig.setPlayConfig(playConfig);
+			memberPlayConfig.setUserName(contract.getUser().getName());
+			memberPlayConfig.setCurrentUser(contract.getCurrentUser());
+			memberPlayConfigService.save(memberPlayConfig);
+			
+			contract.setAccountId(memberAccount.getId());
+			contract.setOffice(userOffice);
+			contract.setUser(user);
+			
+			//设置代理状态为审核中
+			contract.setStatus("0");
+			//1公司开户，2代理开户
+			contract.setOpenType("2");
+			//保存代办任务
+			TodoTask todo=new TodoTask();
+			todo.setTitle("代理开户提醒");	//任务标题
+			todo.setContent(contract.getOrgName()+"开户");	//任务正文
+			todo.setType("1"); 	//任务类型
+			todo.setStatus("1"); 	//任务状态
+			todo.setSenderId(contract.getUser()); 	//申请者
+			todo.setReceiverId(contract.getCurrentUser());	//处理者
+			todo.setCurrentUser(contract.getCurrentUser());
+			todoTaskService.save(todo);
+			
+		}
+		super.save(contract);
+		for (ContractConfig contractConfig : contract.getContractConfigList()){
+			if (contractConfig.getId() == null){
+				continue;
+			}
+			if (ContractConfig.DEL_FLAG_NORMAL.equals(contractConfig.getDelFlag())){
+				if (StringUtils.isBlank(contractConfig.getId())){
+					contractConfig.setContractId(contract);
+					contractConfig.setCurrentUser(contract.getCurrentUser());
+					contractConfig.preInsert();
+					//将页面上的分红百分比转换为小数
+					BigDecimal beniftRate = contractConfig.getBeniftRate().divide(new BigDecimal(100),4,RoundingMode.HALF_UP);
+					//将页面上万元转换为元
+					contractConfig.setRangeStart(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
+					contractConfig.setRangeEnd(contractConfig.getRangeEnd().multiply(new BigDecimal(10000)));
+					contractConfig.setBeniftRate(beniftRate);
+					contractConfigDao.insert(contractConfig);
+				}else{
+					contractConfig.setCurrentUser(contract.getCurrentUser());
+					contractConfig.preUpdate();
+					//将页面上的分红百分比转换为小数
+					BigDecimal beniftRate = contractConfig.getBeniftRate().divide(new BigDecimal(100),4,RoundingMode.HALF_UP);
+					//将页面上万元转换为元
+					contractConfig.setRangeStart(contractConfig.getRangeStart().multiply(new BigDecimal(10000)));
+					contractConfig.setRangeEnd(contractConfig.getRangeEnd().multiply(new BigDecimal(10000)));
+					contractConfig.setBeniftRate(beniftRate);
+					contractConfigDao.update(contractConfig);
+				}
+			}else{
+				contractConfig.setCurrentUser(contract.getCurrentUser());
+				contractConfigDao.delete(contractConfig);
+			}
+		}
+		return contract;
+	} 
 	
 }

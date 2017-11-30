@@ -3,6 +3,7 @@
  */
 package com.game.manager.modules.member.web;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -140,7 +141,7 @@ public class MemberAccountController extends BaseController {
 			memberAccount.setSecPassword(secPassword);
 
 			//设置默认金额
-			memberAccount.setBlance("0");
+			memberAccount.setBlance(new BigDecimal(0));
 			//设置默认冻结金额
 			memberAccount.setBlanceFrozen("0");
 			//验证安全码长度

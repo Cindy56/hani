@@ -237,7 +237,7 @@ public class MemberAccountAddController extends BaseController {
 		
 		MemberAccount sessionMember = memberAccountService.getByUserId(seesionUser.getId());
 		String sessionParentIds = "";
-		String sessionMemberId = "";
+		String sessionMemberId = "0";
 		if(null!=sessionMember) {
 			sessionParentIds=sessionMember.getParentAgentIds();
 			sessionMemberId=sessionMember.getId();
@@ -263,7 +263,6 @@ public class MemberAccountAddController extends BaseController {
 		memberPlayConfig.setAccountId(memberAccount.getId());
 		memberPlayConfig.setPlayConfig(JsonMapper.toJsonString(playConfigList));
 		memberPlayConfig.setUserName(user.getName());
-		memberPlayConfig.setAccountId(memberAccount.getId());
 		memberPlayConfig.setCurrentUser(UserUtils.getUser());
 		memberPlayConfigService.save(memberPlayConfig);
 		addMessage(redirectAttributes, "保存会员信息成功");

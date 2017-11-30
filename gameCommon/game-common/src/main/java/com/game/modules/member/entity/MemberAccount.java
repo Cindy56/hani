@@ -3,6 +3,8 @@
  */
 package com.game.modules.member.entity;
 
+import java.math.BigDecimal;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.game.common.persistence.DataEntity;
@@ -30,7 +32,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 	private String bankBranchName;		// 开户行全称
 	private String qqNo;		// qq号码
 	private String mobileNo;		// 手机号码
-	private String blance;		// 账户余额
+	private BigDecimal blance;		// 账户余额
 	private String blanceFrozen;		// 冻结金额
 	private String status;		// 状态
 	
@@ -165,11 +167,11 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.mobileNo = mobileNo;
 	}
 	
-	public String getBlance() {
+	public BigDecimal getBlance() {
 		return blance;
 	}
 
-	public void setBlance(String blance) {
+	public void setBlance(BigDecimal blance) {
 		this.blance = blance;
 	}
 	
