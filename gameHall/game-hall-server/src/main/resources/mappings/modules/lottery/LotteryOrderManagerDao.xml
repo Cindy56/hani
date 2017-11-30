@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.hall.modules.bet.dao.LotteryOrderManagerDao">
+	<update id="testInOrder">
+		INSERT INTO lottery_order(
+			id,
+			order_no,
+			user_name,
+			user_id,
+			org_id,
+			lottery_code,
+			bet_issue_no,
+			account_id,
+			bet_type,
+			bet_detail,
+			bet_amount,
+			bet_rate,
+			play_mode_money,
+			play_mode_commission_rate,
+			play_mode_money_type,
+			order_source,
+			order_type,
+			schema_id,
+			win_amount,
+			withdraw_amount,
+			status,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{order.id},
+			#{order.orderNo},
+			#{order.user.name},
+			#{order.user.id},
+			#{order.orgId},
+			#{order.lotteryCode},
+			#{order.betIssueNo},
+			#{order.accountId},
+			#{order.betType},
+			#{order.betDetail},
+			#{order.betAmount},
+			#{order.betRate},
+			#{order.playModeMoney},
+			#{order.playModeCommissionRate},
+			#{order.playModeMoneyType},
+			#{order.orderSource},
+			#{order.orderType},
+			#{order.schemaId},
+			#{order.winAmount},
+			#{order.withdrawAmount},
+			#{order.status},
+			#{order.createDate},
+			#{order.createBy.id},
+			#{order.updateDate},
+			#{order.updateBy.id},
+			#{order.delFlag}
+		);	
+		
+		UPDATE member_account
+		SET blance = blance - #{account.blance}
+		WHERE id = #{account.id} and blance >= #{account.blance};
+		
+		INSERT INTO finance_trade_detail(
+			id,
+			user_id,
+			user_name,
+			account_id,
+			org_id,
+			busi_no,
+			trade_type,
+			amount,
+			account_blance_before,
+			account_blance_after,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{trade.id},
+			#{trade.user.id},
+			#{trade.userName},
+			#{trade.accountId},
+			#{trade.orgId},
+			#{trade.busiNo},
+			#{trade.tradeType},
+			#{trade.amount},
+			#{trade.accountBlanceBefore},
+			#{trade.accountBlanceAfter},
+			#{trade.createDate},
+			#{trade.createBy.id},
+			#{trade.updateDate},
+			#{trade.updateBy.id},
+			#{trade.delFlag}
+		);
+	
+	</update>    
+</mapper>
