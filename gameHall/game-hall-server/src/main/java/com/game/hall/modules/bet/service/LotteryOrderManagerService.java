@@ -16,12 +16,13 @@ public class LotteryOrderManagerService {
 	private LotteryOrderManagerDao lotteryOrderManagerDao;
 	
 	@Transactional(readOnly = false)
-	public boolean testInOrder(LotteryOrder lotteryOrder) {
-/*		FinanceTradeDetail  trade = new FinanceTradeDetail();
+	public boolean testInOrder(LotteryOrder lotteryOrder) throws Exception {
+		FinanceTradeDetail  trade = new FinanceTradeDetail();
 		trade.setUser(lotteryOrder.getUser());
-		trade.setUserName(lotteryOrder.getUser().getName());
+		trade.setUserName(lotteryOrder.getUser().getLoginName());
 		trade.setAccountId(lotteryOrder.getAccountId());
-		trade.setOrgId(lotteryOrder.getOrgId());
+		trade.setCompanyId(lotteryOrder.getCompanyId());
+		trade.setOfficeId(lotteryOrder.getCompanyId());
 		trade.setBusiNo(lotteryOrder.getOrderNo());
 //		trade.getUser().setId("sys");
 		trade.setTradeType("0");
@@ -33,8 +34,17 @@ public class LotteryOrderManagerService {
 		
 		lotteryOrder.preInsert();
 		trade.preInsert();
-		int rows = this.lotteryOrderManagerDao.testInOrder(lotteryOrder, account, trade);
-		System.out.println(rows);*/
+//		int rows = this.lotteryOrderManagerDao.testInOrder(lotteryOrder, account, trade);
+//		System.out.println(rows);
+		
+		//========================================测试本地事务：扣款，保存注单，生成帐变
+		int minusAmountNum = this.lotteryOrderManagerDao.minusAmount(account);
+		if(minusAmountNum != 1) {
+			throw new Exception("余额不足，下单失败");
+		}
+		this.lotteryOrderManagerDao.createLotteryOrder(lotteryOrder);
+		this.lotteryOrderManagerDao.createFinanceTradeDetail(trade);
+		
 		return true;
 	}
 

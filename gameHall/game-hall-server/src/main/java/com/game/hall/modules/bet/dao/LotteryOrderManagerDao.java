@@ -9,5 +9,8 @@ import com.game.modules.order.entity.LotteryOrder;
 
 @MyBatisDao
 public interface LotteryOrderManagerDao {
-	public int testInOrder(@Param("order")LotteryOrder order, @Param("account")MemberAccount account, @Param("trade")FinanceTradeDetail trade);
+//	public int testInOrder(@Param("order")LotteryOrder order, @Param("account")MemberAccount account, @Param("trade")FinanceTradeDetail trade);
+	public int minusAmount(@Param("account")MemberAccount account); 
+	public int createLotteryOrder(@Param("order")LotteryOrder lotteryOrder); 
+	public int createFinanceTradeDetail(@Param("trade")FinanceTradeDetail  trade); 
 }

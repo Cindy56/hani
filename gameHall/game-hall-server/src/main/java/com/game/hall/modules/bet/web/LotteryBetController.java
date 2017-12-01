@@ -6,11 +6,9 @@ package com.game.hall.modules.bet.web;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.entity.ResultData;
 import com.game.common.utils.IdGen;
 import com.game.hall.modules.bet.service.LotteryAddBetService;
+import com.game.hall.modules.bet.service.LotteryOrderManagerService;
 import com.game.hall.modules.bet.service.OrderUtils;
 import com.game.hall.modules.sys.utils.UserUtils;
-import com.game.modules.finance.entity.FinanceTradeDetail;
 import com.game.modules.finance.service.FinanceTradeDetailService;
-import com.game.modules.finance.service.FinanceTradeDetailService.FinanceTradeDetailType;
 import com.game.modules.lottery.entity.GameError;
 import com.game.modules.lottery.service.LotteryCalculateService;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
@@ -81,6 +78,8 @@ public class LotteryBetController {
 	private LotteryOrderService lotteryOrderService;
 	@Autowired
 	private FinanceTradeDetailService financeTradeDetailService;
+	@Autowired
+	private LotteryOrderManagerService lotteryOrderManagerService;
 
 	public String genOrderNo() {
 		return String.valueOf(IdGen.randomLong());
@@ -106,7 +105,8 @@ public class LotteryBetController {
 	// @RequiresPermissions("finance:financeRecharge:view")
 	@RequestMapping(value = { "testAddBet" })
 	@ResponseBody
-	public LotteryOrder testAddBet(LotteryOrder lotteryOrder, Model model) {
+	public LotteryOrder testAddBet(LotteryOrder lotteryOrder, Model model) throws Exception {
+		long startTime = System.currentTimeMillis();
 		// =================模拟生成order
 		LotteryOrder testOrder = new LotteryOrder();
 		User currentUser = UserUtils.getUser();
@@ -151,22 +151,23 @@ public class LotteryBetController {
 		// =================调用check
 		int result = this.lotteryCalculateService.checkOrder(testOrder);
 		// =================入库
-		// if(result != 0) {
-		// return null;
-		// }
-
+//		 if(result != 0) {
+//			 return null;
+//		 }
+/*
 		this.lotteryOrderService.save(testOrder);
 		// =================扣钱
-		boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(),
-				testOrder.getBetAmount());
+		boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(), testOrder.getBetAmount());
 		if (BooleanUtils.isFalse(minusAmountResult)) {
 			// TODO:扣款失败，返回异常提示
 
 		}
 		// =================生成流水,挪到返水服务里
-		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder),
-				FinanceTradeDetailType.BET_DEDUCTIONS);
-
+		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder), FinanceTradeDetailType.BET_DEDUCTIONS);
+*/
+		
+		this.lotteryOrderManagerService.testInOrder(testOrder);
+		System.out.println("====================bet order lost time:" + (System.currentTimeMillis() - startTime));
 		return lotteryOrder;
 	}
 

@@ -101,8 +101,8 @@
 				<th>业务编号</th>
 				<th>账变交易类型</th>
 				<th>账变金额</th>
-				<th>账变前金额</th>
-				<th>账变后金额</th>
+<!-- 				<th>账变前金额</th>
+				<th>账变后金额</th> -->
 				<th>创建时间</th>
 			</tr>
 		</thead>
@@ -130,12 +130,12 @@
 					</c:choose>
 				</td>
 				
-				<td style="text-align:right">
+<%-- 				<td style="text-align:right">
 					${financeTradeDetail.accountBlanceBefore}
 				</td>
 				<td style="text-align:right">
 					${financeTradeDetail.accountBlanceAfter}
-				</td>
+				</td> --%>
 				<td>
 					<fmt:formatDate value="${financeTradeDetail.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
