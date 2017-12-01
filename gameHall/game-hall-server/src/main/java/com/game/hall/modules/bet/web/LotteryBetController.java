@@ -27,6 +27,7 @@ import com.game.hall.modules.bet.service.OrderUtils;
 import com.game.hall.modules.sys.utils.UserUtils;
 import com.game.modules.finance.service.FinanceTradeDetailService;
 import com.game.modules.lottery.entity.GameError;
+import com.game.modules.lottery.entity.ResponseMsgData;
 import com.game.modules.lottery.service.LotteryCalculateService;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
 import com.game.modules.lottery.service.LotteryTimeNumService;
@@ -105,7 +106,7 @@ public class LotteryBetController {
 	// @RequiresPermissions("finance:financeRecharge:view")
 	@RequestMapping(value = { "testAddBet" })
 	@ResponseBody
-	public LotteryOrder testAddBet(LotteryOrder lotteryOrder, Model model) throws Exception {
+	public ResultData testAddBet(LotteryOrder lotteryOrder, Model model) throws Exception {
 		long startTime = System.currentTimeMillis();
 		// =================模拟生成order
 		LotteryOrder testOrder = new LotteryOrder();
@@ -149,15 +150,15 @@ public class LotteryBetController {
 		testOrder.setStatus("0");
 
 		// =================调用check
-		int result = this.lotteryCalculateService.checkOrder(testOrder);
+		ResponseMsgData result = this.lotteryCalculateService.checkOrder(testOrder);
 		// =================入库
-//		 if(result != 0) {
-//			 return null;
-//		 }
-/*
+		 if(!result.getIsSucceed()) {
+			 return ResultData.error(result.getMsg());
+		 }
+
 		this.lotteryOrderService.save(testOrder);
 		// =================扣钱
-		boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(), testOrder.getBetAmount());
+	/*//	boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(), testOrder.getBetAmount());
 		if (BooleanUtils.isFalse(minusAmountResult)) {
 			// TODO:扣款失败，返回异常提示
 
@@ -165,13 +166,12 @@ public class LotteryBetController {
 		// =================生成流水,挪到返水服务里
 		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder), FinanceTradeDetailType.BET_DEDUCTIONS);
 */
-		
 		this.lotteryOrderManagerService.testInOrder(testOrder);
 		System.out.println("====================bet order lost time:" + (System.currentTimeMillis() - startTime));
-		return lotteryOrder;
+		return ResultData.ok();
 	}
 
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "/addbet", method = RequestMethod.GET)
 	public ResultData addBet(String jsbetData) {
 
@@ -198,21 +198,18 @@ public class LotteryBetController {
 
 		System.out.println("1");
 
-		int ret = 0;
 
 		ResultData rd = ResultData.ResultDataOK();
 
 		for (int i = 0; i < lsOrders.size(); i++) {
-
 			LotteryOrder lotOrder = lsOrders.get(i);
 			lotOrder.setAccountId(memberAccountService.getByUserId(currentUser.getId()).getId());
 			lotOrder.setOrderNo(OrderUtils.getOrderNo());
 
 			// =============================前置校验 List<LotteryOrder> lsOrders
-			ret = this.lotteryCalculateService.checkOrder(lotOrder);
-			if (ret != 0) {
-				rd.setErrorCode(ret);
-				rd.setMessage(GameError.getInstance().findErrorString(ret));
+			ResponseMsgData responseMsgData = this.lotteryCalculateService.checkOrder(lotOrder);
+			if (!responseMsgData.getIsSucceed()) {
+				rd.setMessage(responseMsgData.getMsg());
 				return rd;
 			}
 
@@ -243,7 +240,7 @@ public class LotteryBetController {
 
 		return rd;
 
-	}
+	}*/
 
 	@ResponseBody
 	@RequestMapping(value = "/cancelorder", method = RequestMethod.POST)
@@ -255,7 +252,7 @@ public class LotteryBetController {
 		try {
 			// 前置校验
 			boolean ret = false;
-			ResultData rd = ResultData.ResultDataOK();
+		//	ResultData rd = ResultData.ResultDataOK();
 
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
