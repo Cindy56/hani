@@ -86,6 +86,23 @@ public enum SscService implements LotteryService {
 		}
 	},
 
+	/** 时时彩后2大小单双 */
+	SSC_HOU2_DAXIAODANSHUANG("SSC_HOU2_DAXIAODANSHUANG", "时时彩后2大小单双") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+	},
+
 	/** 时时彩前2直选单式 */
 	SSC_QIAN2_ZHIXUANDAN("SSC_QIAN2_ZHIXUANDAN", "时时彩前2直选单式") {
 
@@ -2007,9 +2024,8 @@ public enum SscService implements LotteryService {
 
 		MemberPlayConfig memCfg = myMemberPlayConfigService.getMemberPlayConfigByUserId(lotteryOrder.getUser().getId());
 
-		if(memCfg==null)
-		{
-			System.out.println("userid = null ==> " +lotteryOrder.getUser().getId());
+		if (memCfg == null) {
+			System.out.println("userid = null ==> " + lotteryOrder.getUser().getId());
 			return GameError.errCodeMember;
 		}
 		String jsPlayCfg = memCfg.getPlayConfig();
@@ -2066,7 +2082,8 @@ public enum SscService implements LotteryService {
 
 		// 校验返水比例，奖金组是否符合规则
 		// 个人投注返点 = 个人最高奖金组 - 投注时奖金组 / 2000 × 投注金额
-		BigDecimal playModeCommissionRateCfg = (playModeMoneyMin.subtract(playModeMoney)).divide(new BigDecimal("2")).multiply(winningProbability);
+		BigDecimal playModeCommissionRateCfg = (playModeMoneyMin.subtract(playModeMoney)).divide(new BigDecimal("2"))
+				.multiply(winningProbability);
 
 		// 校验返点，是否正确
 		if (playModeCommissionRate.compareTo(playModeCommissionRateCfg) != 0)
