@@ -47,7 +47,7 @@ public class CheckString {
 	}
 
 	/**
-	 * 输入格式 "0123456,0123456";
+	 * 输入格式 "0123455-ture,0123456-false";
 	 * 
 	 * @param ls
 	 * @return
@@ -59,7 +59,7 @@ public class CheckString {
 
 		Boolean b = lss.contains(true);
 
-		return false;
+		return b;
 	}
 
 	/**

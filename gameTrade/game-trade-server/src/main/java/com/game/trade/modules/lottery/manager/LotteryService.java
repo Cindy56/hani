@@ -3,6 +3,7 @@ package com.game.trade.modules.lottery.manager;
 import java.math.BigDecimal;
 
 import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.lottery.entity.ResponseMsgData;
 import com.game.modules.order.entity.LotteryOrder;
 
 //拉奖
@@ -27,7 +28,7 @@ public interface LotteryService {
      * @parm betLotteryTimeNum 可以投注的时刻数据
      * @return
      */
-    int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum);
+    ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum);
 
     /**
      * 检查是否中奖 true:中奖 | false:未中奖

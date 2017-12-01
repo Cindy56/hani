@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.lottery.entity.ResponseMsgData;
 import com.game.modules.lottery.service.LotteryCalculateService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.modules.lottery.service.LotteryTimeNumServiceImpl;
@@ -55,7 +56,7 @@ public class LotteryCalculateServiceImpl implements LotteryCalculateService {
 
 	}
 
-	public int checkOrder(LotteryOrder lotteryOrder) {
+	public ResponseMsgData checkOrder(LotteryOrder lotteryOrder) {
 		
 		//获取当前彩种的时刻，
 		LotteryTimeNum betLotteryTimeNum = lotteryTimeNumService.findCurrentIssueNo(lotteryOrder.getLotteryCode());

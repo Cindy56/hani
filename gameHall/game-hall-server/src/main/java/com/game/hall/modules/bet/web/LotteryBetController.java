@@ -27,6 +27,7 @@ import com.game.hall.modules.bet.service.OrderUtils;
 import com.game.hall.modules.sys.utils.UserUtils;
 import com.game.modules.finance.service.FinanceTradeDetailService;
 import com.game.modules.lottery.entity.GameError;
+import com.game.modules.lottery.entity.ResponseMsgData;
 import com.game.modules.lottery.service.LotteryCalculateService;
 import com.game.modules.lottery.service.LotteryPlayConfigService;
 import com.game.modules.lottery.service.LotteryTimeNumService;
@@ -149,15 +150,15 @@ public class LotteryBetController {
 		testOrder.setStatus("0");
 
 		// =================调用check
-		int result = this.lotteryCalculateService.checkOrder(testOrder);
+		ResponseMsgData result = this.lotteryCalculateService.checkOrder(testOrder);
 		// =================入库
-//		 if(result != 0) {
-//			 return null;
-//		 }
-/*
+		 if(!result.getIsSucceed()) {
+			 return null;
+		 }
+
 		this.lotteryOrderService.save(testOrder);
 		// =================扣钱
-		boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(), testOrder.getBetAmount());
+	/*//	boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(), testOrder.getBetAmount());
 		if (BooleanUtils.isFalse(minusAmountResult)) {
 			// TODO:扣款失败，返回异常提示
 
@@ -198,21 +199,18 @@ public class LotteryBetController {
 
 		System.out.println("1");
 
-		int ret = 0;
 
 		ResultData rd = ResultData.ResultDataOK();
 
 		for (int i = 0; i < lsOrders.size(); i++) {
-
 			LotteryOrder lotOrder = lsOrders.get(i);
 			lotOrder.setAccountId(memberAccountService.getByUserId(currentUser.getId()).getId());
 			lotOrder.setOrderNo(OrderUtils.getOrderNo());
 
 			// =============================前置校验 List<LotteryOrder> lsOrders
-			ret = this.lotteryCalculateService.checkOrder(lotOrder);
-			if (ret != 0) {
-				rd.setErrorCode(ret);
-				rd.setMessage(GameError.getInstance().findErrorString(ret));
+			ResponseMsgData responseMsgData = this.lotteryCalculateService.checkOrder(lotOrder);
+			if (!responseMsgData.getIsSucceed()) {
+				rd.setMessage(responseMsgData.getMsg());
 				return rd;
 			}
 
@@ -232,8 +230,8 @@ public class LotteryBetController {
 
 		// BetData betData;
 
-		if (ret != 0)
-			return ResultData.ResultDataFail();
+		/*if (ret != 0)
+			return ResultData.ResultDataFail();*/
 
 		// ---------------------
 
