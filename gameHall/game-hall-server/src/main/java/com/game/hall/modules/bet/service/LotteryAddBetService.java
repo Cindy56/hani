@@ -210,8 +210,7 @@ public class LotteryAddBetService implements BetServiceApi {
 			int ret = myOrder.cancelByOrderNo(user, new Date(), orderIds.get(i));
 		}
 
-		ResultData rd = ResultData.ResultDataOK();
-		return rd;
+		return ResultData.ok();
 	}
 
 }

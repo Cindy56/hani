@@ -30,31 +30,16 @@ public class MailSiteController extends BaseController {
 	private MailSiteService mailSiteService;
 
 	private MailSite getMailSite() {
-		// TODO Auto-generated method stub
-
 		MailSite mail = new MailSite();
-		
-
 		mail.setUserId("userID2");
 		mail.preInsert();
-		
-		User user = new User();
-/*		user.setId("userid");
-		user.preInsert();
-		mail.setCreateBy(user);
-		mail.setUpdateBy(user);*/
-
-		
 		mail.setContext("context");
 		mail.setSender("sender");
 		mail.setReceiver("receiver");
-		//mail.setId("id");
 		mail.setLabel("label");
 		mail.setTitle("title");
-
 		mail.setDelFlag("0");
 		mail.setReadFlag("0");
-		
 		mail.setIsNewRecord(true);
 		return mail;
 	}
@@ -67,17 +52,12 @@ public class MailSiteController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/send", method = RequestMethod.POST)
-	public ResultData sendMail(/*MailSite mailSite*/) {
-
+	public ResultData sendMail(MailSite mailSite) {
 		
-		MailSite mailSite = getMailSite();
-		// 前置校验
-		if (false)
-			return ResultData.ResultDataFail();
-
+		// TODO 前置校验
 		mailSiteService.save(mailSite);
 
-		return ResultData.ResultDataOK();
+		return ResultData.ok();
 	}
 
 	/**
@@ -90,14 +70,11 @@ public class MailSiteController extends BaseController {
 	@RequestMapping(value = "/getmailbyuserid", method = RequestMethod.GET)
 	public ResultData getMailPage(int pageSize, int pageNo) {
 
-		// 前置校验
-		if (false)
-			return ResultData.ResultDataFail();
-
+		// TODO 前置校验
 		String userId = "user_id";
 		Page<MailSite> pMail = mailSiteService.findPageByUserId(userId, pageNo, pageSize);
 
-		ResultData rd = ResultData.ResultDataOK();
+		ResultData rd = ResultData.ok();
 		rd.setData(pMail);
 		
 		return rd;
@@ -113,13 +90,10 @@ public class MailSiteController extends BaseController {
 	@RequestMapping(value = "/delmailbyid", method = RequestMethod.POST)
 	public ResultData delMail(String mailId) {
 
-		// 前置校验
-		if (false)
-			return ResultData.ResultDataFail();
-		
+		// TODO 前置校验
 		mailSiteService.deleteById(mailId);
 
-		return ResultData.ResultDataOK();
+		return ResultData.ok();
 	}
 	
 	/**
@@ -132,16 +106,11 @@ public class MailSiteController extends BaseController {
 	@RequestMapping(value = "/getmailcontentbyid", method = RequestMethod.GET)
 	public ResultData getMailContent(String mailId) {
 
-		// 前置校验
-		if (false)
-			return ResultData.ResultDataFail();
-		
+		// TODO 前置校验
+	
 		MailSite mailsite = mailSiteService.selectById(mailId);
-
-		ResultData rd = ResultData.ResultDataOK();
-		rd.setData(mailsite);
 		
-		return rd;
+		return ResultData.ok(mailsite);
 	}
 
 }

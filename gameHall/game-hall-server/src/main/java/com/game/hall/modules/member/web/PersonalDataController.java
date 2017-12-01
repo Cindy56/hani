@@ -44,20 +44,12 @@ public class PersonalDataController {
 	@ResponseBody
 	@RequestMapping(value = "/personalData", method = RequestMethod.GET)
 	public ResultData personalData(String userId) {
-		ResultData rs = new ResultData();
 		List<Map<String,Object>> list = personalDataService.getUserMap(userId);
 		if(list.size() == 0) {
 			//该用户未绑定银行卡
-			rs.setErrorCode(001);
-			rs.setMessage("该用户未绑定银行卡");
-			rs.setData(list);
-		}else {
-			//查询银行卡信息成功
-			rs.setErrorCode(200);
-			rs.setMessage("查询成功");
-			rs.setData(list);		
+			return ResultData.error("该用户未绑定银行卡");
 		}
-		return rs;
+		return ResultData.ok(list);
 		
 	}
 	
@@ -121,11 +113,12 @@ public class PersonalDataController {
 		int i = personalDataService.insertCard(memberAccountCard);
 		if(i > 0) {
 			//插入银行卡成功
-			rs.setErrorCode(200);
+		/*	rs.setErrorCode(200);
 			rs.setMessage("新增银行卡成功");
-			rs.setData(null);		
+			rs.setData(null);	*/	
+			return ResultData.ok();
 		}
-		return rs;
+		return ResultData.error("更新失败");
 	}
 	
 		
@@ -143,16 +136,9 @@ public class PersonalDataController {
 		i= personalDataService.delCard(bankCardNo);
 		if(i > 0) {
 			//删除银行卡成功
-			rs.setErrorCode(200);
-			rs.setMessage("删除银行卡成功");
-			rs.setData(null);
-		}else {
-			//删除银行卡失败
-			rs.setErrorCode(001);
-			rs.setMessage("删除银行卡失败");
-			rs.setData(null);
+			return ResultData.ok();
 		}
-		return rs;
+		return ResultData.error("删除银行卡失败");
 
 		
 	}
@@ -167,22 +153,12 @@ public class PersonalDataController {
 	@ResponseBody
 	@RequestMapping(value = "/memberAccount", method = RequestMethod.GET)
 	public ResultData memberAccount(String userId) {
-		ResultData rs = new ResultData();
 		Map<String,Object> map = personalDataService.memberAccount(userId);
 		if(map == null) {
 			//查询该用户信息失败
-			rs.setErrorCode(001);
-			rs.setMessage("查询用户信息失败");
-			rs.setData(null);
-		}else {
-			//查询该用户信息成功
-			rs.setErrorCode(200);
-			rs.setMessage("查询账户信息成功");
-			rs.setData(map);		
+			return ResultData.error("查询用户信息失败");
 		}
-		return rs;
-
-		
+		return ResultData.ok(map);
 	}
 	
 	
@@ -196,21 +172,12 @@ public class PersonalDataController {
 	public ResultData modifyPersonalData(HttpServletRequest  request) { 
 		//获取前台提交的表单数据
 		 Map<String, String[]> map = request.getParameterMap();  	
-		 ResultData rs = new ResultData();
 		 int i = personalDataService.modifyMemberAccount(map);    
 		 if(i>=1) {
 			//修改成功
-				rs.setErrorCode(200);
-				rs.setMessage("修改成功");
-				rs.setData(null);		
-				return  rs;
-		 }else {
-				//修改失败
-				rs.setErrorCode(001);
-				rs.setMessage("修改失败");
-				rs.setData(null);		
-				return  rs;
+			return ResultData.ok();
 		 }
+		 return ResultData.error("修改失败");
 		
 	}
 	
@@ -224,19 +191,9 @@ public class PersonalDataController {
 		   if(verSecPassWord(userId,secPassWord)) {
 			//验证通过  更新安全密码
 			 int i = personalDataService.modifySec(userId, PassWordUtils.entryptPassword(newPassWord));	
-			 rs.setErrorCode(001);
-		     rs.setMessage("修改安全码成功");
-			 rs.setData(null);		 
-			 return rs;
-		   }else {
-		    //验证不通过
-			//修改失败
-				rs.setErrorCode(001);
-				rs.setMessage("输入的安全码错误");
-				rs.setData(null);		 
-				return rs;
+			 return ResultData.ok();
 		   }
-		
+		   return ResultData.error("输入的安全码错误");
 		
 	}
 	
@@ -312,13 +269,6 @@ public class PersonalDataController {
 		
 	}
 	
-	
-
-	
-	
-
-	
-	
 	//增加账户
 	@ResponseBody
 	@RequestMapping(value = "/insert", method = RequestMethod.GET)
@@ -343,11 +293,6 @@ public class PersonalDataController {
 	
 	@Test
 	public void test() {
-		
-
-
-	      
-	      
 		System.out.println(PassWordUtils.validatePassword("123", "cd78e9ac1a77553a7bec20d9e58715fb7c5b9108ee141b061c5da9b0"));
 	}
 

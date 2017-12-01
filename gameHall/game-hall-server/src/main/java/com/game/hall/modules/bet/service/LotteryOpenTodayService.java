@@ -39,67 +39,42 @@ public class LotteryOpenTodayService {
 	private LotteryOrderDao myOrder;
 
 	@Autowired
-	private AccountChargeDao myAccountCharge;
-
-	@Autowired
 	private LotteryPlayConfigService lotteryPlayConfigService;
 
-	@Autowired
-	private LotteryOpenTodayDao lotOpenToday;
-	// private BetServiceApi getBetServiceApi() {
-	// return (BetServiceApi) SpringContextHolder.getBean("myServiceClient");
-	// }
-	//
+
 
 	public ResultData openToday(String lotteryCode, Integer num) {
-
 		List<LotteryTimeNum> lsLots = myLotteryTimeNumService.findLotteryTimeNum(lotteryCode, num);
-
-		ResultData rd = ResultData.ResultDataOK();
-
-		rd.setData(lsLots);
-		return rd;
+		return ResultData.ok(lsLots);
 
 	}
 
 	public ResultData openCur(String lotteryCode) {
-
-		Date dt = new Date();
 		LotteryTimeNum lot = myLotteryTimeNumService.findCurrentIssueNo(lotteryCode);
-
-		ResultData rd = ResultData.ResultDataOK();
-
-		rd.setData(lot);
-		return rd;
+		return ResultData.ok(lot);
 	}
 
 	public ResultData getPlayConfig(String lotteryCode) {
 		if (myServiceClient != null)
 			return myServiceClient.curOpen(lotteryCode);
-
+		
 		LotteryPlayConfig lotteryPlayConfig = new LotteryPlayConfig();
 		LotteryType lotteryType = new LotteryType();
 		lotteryType.setCode(lotteryCode);
 		lotteryPlayConfig.setLotteryCode(lotteryType);
-
+		
 		List<LotteryPlayConfig> lsLot = lotteryPlayConfigService.findList(lotteryPlayConfig);
-
-		ResultData rd = ResultData.ResultDataOK();
-
-		rd.setData(lsLot);
-		return rd;
+		
+		return ResultData.ok(lsLot);
 	}
 
 	public ResultData getOrders(String userID, String lotteryName, int num) {
 		if (myServiceClient != null)
 			return myServiceClient.curOpen(lotteryName);
-
-		Date dt = new Date();
+		
 		List<LotteryOrder> lsLot = myOrder.findListById(userID, lotteryName, num);
-		ResultData rd = ResultData.ResultDataOK();
-
-		rd.setData(lsLot);
-		return rd;
+		
+		return ResultData.ok(lsLot);
 	}
 
 }

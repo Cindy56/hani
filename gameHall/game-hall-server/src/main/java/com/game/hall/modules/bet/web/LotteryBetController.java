@@ -106,7 +106,7 @@ public class LotteryBetController {
 	// @RequiresPermissions("finance:financeRecharge:view")
 	@RequestMapping(value = { "testAddBet" })
 	@ResponseBody
-	public LotteryOrder testAddBet(LotteryOrder lotteryOrder, Model model) throws Exception {
+	public ResultData testAddBet(LotteryOrder lotteryOrder, Model model) throws Exception {
 		long startTime = System.currentTimeMillis();
 		// =================模拟生成order
 		LotteryOrder testOrder = new LotteryOrder();
@@ -153,7 +153,7 @@ public class LotteryBetController {
 		ResponseMsgData result = this.lotteryCalculateService.checkOrder(testOrder);
 		// =================入库
 		 if(!result.getIsSucceed()) {
-			 return null;
+			 return ResultData.error(result.getMsg());
 		 }
 
 		this.lotteryOrderService.save(testOrder);
@@ -166,13 +166,12 @@ public class LotteryBetController {
 		// =================生成流水,挪到返水服务里
 		this.financeTradeDetailService.batchGenFinanceTradeDetail(Collections.singletonList(testOrder), FinanceTradeDetailType.BET_DEDUCTIONS);
 */
-		
 		this.lotteryOrderManagerService.testInOrder(testOrder);
 		System.out.println("====================bet order lost time:" + (System.currentTimeMillis() - startTime));
-		return lotteryOrder;
+		return ResultData.ok();
 	}
 
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "/addbet", method = RequestMethod.GET)
 	public ResultData addBet(String jsbetData) {
 
@@ -230,8 +229,8 @@ public class LotteryBetController {
 
 		// BetData betData;
 
-		/*if (ret != 0)
-			return ResultData.ResultDataFail();*/
+		if (ret != 0)
+			return ResultData.ResultDataFail();
 
 		// ---------------------
 
@@ -241,7 +240,7 @@ public class LotteryBetController {
 
 		return rd;
 
-	}
+	}*/
 
 	@ResponseBody
 	@RequestMapping(value = "/cancelorder", method = RequestMethod.POST)
@@ -253,7 +252,7 @@ public class LotteryBetController {
 		try {
 			// 前置校验
 			boolean ret = false;
-			ResultData rd = ResultData.ResultDataOK();
+		//	ResultData rd = ResultData.ResultDataOK();
 
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
