@@ -4,24 +4,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.game.modules.lottery.entity.LotteryTimeNum;
-import com.game.modules.lottery.service.LotteryCalculateService;
-import com.game.modules.lottery.service.LotteryTimeNumService;
+import com.game.modules.lottery.entity.ResponseMsgData;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.modules.sys.entity.Office;
 import com.game.modules.sys.entity.User;
@@ -190,7 +185,7 @@ public class LotteryCalBetTest extends AbstractJUnit4SpringContextTests {
 			//获取当前彩种的时刻，
 		LotteryTimeNum betLotteryTimeNum = lotteryTimeNumService.findCurrentIssueNo(bet1.getLotteryCode());
 			//校验
-	    int ret = SscService.valueOf(bet1.getBetType()).checkOrder(bet1, betLotteryTimeNum);
+		ResponseMsgData responseMsgData = SscService.valueOf(bet1.getBetType()).checkOrder(bet1, betLotteryTimeNum);
 		
 		
 		//-------------------------------------------------------

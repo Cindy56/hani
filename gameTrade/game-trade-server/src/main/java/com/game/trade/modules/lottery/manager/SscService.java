@@ -3,19 +3,21 @@ package com.game.trade.modules.lottery.manager;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.game.common.mapper.JsonMapper;
 import com.game.common.utils.SpringContextHolder;
 import com.game.common.utils.StringUtils;
-import com.game.modules.lottery.entity.GameError;
+import com.game.modules.lottery.entity.GameErrorEnum;
 import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.entity.LotteryTimeNum;
+import com.game.modules.lottery.entity.ResponseMsgData;
+import com.game.modules.lottery.entity.lotteryPlayMult;
 import com.game.modules.member.entity.MemberPlayConfig;
 import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.modules.lottery.MoneyTypeDecimal;
+import com.game.trade.modules.lottery.service.LotteryPlayConfigServiceImpl;
 import com.game.trade.util.CheckString;
 
 /**
@@ -34,25 +36,27 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
-				return 0;
+			ResponseMsgData responseMsgData = super.checkOrder(lotteryOrder, betLotteryTimeNum);
+			if (!responseMsgData.getIsSucceed()) {
+				return responseMsgData;
 			}
 			// 2、数据格式校验，投注内容必须是数字或减号以英文逗号或空格隔开的字符串，且至少包含一个数字
 			String betNumber = lotteryOrder.getBetDetail();
 			String formatRegex = "((\\d{1,10}|-){1},{1}){4}(\\d{1,10}|-){1}";
 			String containRegex = ".*\\d.*";
 			if (betNumber.matches(formatRegex) && betNumber.matches(containRegex)) {
-				return 0;
+				return ResponseMsgData.ok();
 			}
 			// 3、内容有效性校验，判断内容合法性，同位不允许出现重复号码
 			if (!LotteryUtils.checkRepeatNumber(betNumber)) {
-				return 0;
+				return ResponseMsgData.ok();
 			}
 			// 4、校验订单金额
 			int amount = LotteryUtils.orderCount1XingZhiXuan(lotteryOrder.getBetDetail());
-			return super.checkAmount(lotteryOrder, amount);
+			// return super.checkAmount(lotteryOrder, amount);
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -72,7 +76,7 @@ public enum SscService implements LotteryService {
 			// 判断一下是否中奖，未中奖直接返回金额为0
 			int winCount = LotteryUtils.winCountSsc1XinDingWei(openlotteryTimeNum.getOpenNum(),
 					lotteryOrder.getBetDetail());
-			if (!(winCount > 0)) {
+			if (winCount == 0) {
 				return BigDecimal.ZERO;
 			}
 
@@ -86,6 +90,30 @@ public enum SscService implements LotteryService {
 		}
 	},
 
+	/** 时时彩后2大小单双 */
+	SSC_HOU2_DAXIAODANSHUANG("SSC_HOU2_DAXIAODANSHUANG", "时时彩后2大小单双") {
+
+		@Override
+		public void trend(LotteryTimeNum openLotteryTimeNum) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (null == lotteryOrder || null == openLotteryTimeNum) {
+				return false;
+			}
+			return LotteryUtils.checkWinSscDaXiaoDanShuang(openLotteryTimeNum.getOpenNum().substring(6),
+					lotteryOrder.getBetDetail());
+		}
+
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+		}
+	},
+
 	/** 时时彩前2直选单式 */
 	SSC_QIAN2_ZHIXUANDAN("SSC_QIAN2_ZHIXUANDAN", "时时彩前2直选单式") {
 
@@ -95,9 +123,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 
-			return 1;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -123,9 +151,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 
-			return 1;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -152,16 +180,18 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+			/*if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
-			}
+			}*/
 			// TODO 2、数据格式校验
 			// TODO 3、内容有效性校验
 			// 4、校验订单金额
-			return super.checkAmount(lotteryOrder,
-					LotteryUtils.orderCountSsc2XingZuXuanFu(lotteryOrder.getBetDetail()));
+			/*return super.checkAmount(lotteryOrder,
+					LotteryUtils.orderCountSsc2XingZuXuanFu(lotteryOrder.getBetDetail()));*/
+			
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -187,8 +217,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -203,7 +233,8 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 4、校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanFu(lotteryOrder.getBetDetail()));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanFu(lotteryOrder.getBetDetail()));*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -230,7 +261,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
 
@@ -245,7 +276,10 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(0, 3));
 		}
 	},
 	/** 时时彩后2直选和值 */
@@ -257,7 +291,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
 
@@ -272,7 +306,10 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(6));
 		}
 	},
 
@@ -285,8 +322,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -294,7 +331,8 @@ public enum SscService implements LotteryService {
 			// TODO 3、内容有效性校验
 			// 4、校验订单金额
 			return super.checkAmount(lotteryOrder,
-					LotteryUtils.orderCountSsc2XingZuXuanFu(lotteryOrder.getBetDetail()));
+					LotteryUtils.orderCountSsc2XingZuXuanFu(lotteryOrder.getBetDetail()));*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -320,8 +358,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -329,7 +367,9 @@ public enum SscService implements LotteryService {
 			// TODO 3、内容有效性校验
 			// 4、校验订单金额
 			return super.checkAmount(lotteryOrder,
-					LotteryUtils.orderCountSsc2XingZuXuanFu(lotteryOrder.getBetDetail()));
+					LotteryUtils.orderCountSsc2XingZuXuanFu(lotteryOrder.getBetDetail()));*/
+			
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -356,8 +396,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+/*			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -372,7 +412,8 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 4、校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanDan(lotteryOrder.getBetDetail()));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanDan(lotteryOrder.getBetDetail()));*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -399,8 +440,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		/*	// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -415,7 +456,8 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 4、校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanDan(lotteryOrder.getBetDetail()));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanDan(lotteryOrder.getBetDetail()));*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -441,8 +483,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -457,7 +499,8 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 4、校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanDan(lotteryOrder.getBetDetail()));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanDan(lotteryOrder.getBetDetail()));*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -484,8 +527,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 1、对注单进行基础校验
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		/*	// 1、对注单进行基础校验
 			checkOrder(lotteryOrder, betLotteryTimeNum);
 			// 2、数据格式校验，万位、千位、百位由至少一位数字组成，十位、个位为减号，每个位置间以英文逗号隔开
 			String betNumber = lotteryOrder.getBetDetail();
@@ -498,7 +541,8 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 4、校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanFu(lotteryOrder.getBetDetail()));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanFu(lotteryOrder.getBetDetail()));*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -524,8 +568,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 1、对注单进行基础校验
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 1、对注单进行基础校验
 			checkOrder(lotteryOrder, betLotteryTimeNum);
 			// 2、数据格式校验，万位、千位、百位由至少一位数字组成，十位、个位为减号，每个位置间以英文逗号隔开
 			String betNumber = lotteryOrder.getBetDetail();
@@ -538,7 +582,8 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 4、校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanFu(lotteryOrder.getBetDetail()));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanFu(lotteryOrder.getBetDetail()));*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -564,8 +609,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 1、对注单进行基础校验
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 1、对注单进行基础校验
 			checkOrder(lotteryOrder, betLotteryTimeNum);
 			// 2、数据格式校验，万位、千位、百位由至少一位数字组成，十位、个位为减号，每个位置间以英文逗号隔开
 			String betNumber = lotteryOrder.getBetDetail();
@@ -578,7 +623,8 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 4、校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanFu(lotteryOrder.getBetDetail()));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSscZhiXuanFu(lotteryOrder.getBetDetail()));*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -605,7 +651,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// TODO Auto-generated method stub
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
@@ -621,7 +667,10 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(0, 5));
 		}
 	},
 	/** 时时彩中3直选和值 */
@@ -633,7 +682,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// TODO Auto-generated method stub
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
@@ -649,22 +698,11 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			// 如果没有中奖，直接返回金额为0
 			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
 				return BigDecimal.ZERO;
 			}
-
-			// 投注奖金组、投注倍数、投注模式
-			BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
-			BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
-			BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-			// 只可能有一注中奖号码
-			BigDecimal winCount = new BigDecimal(1);
-
-			// 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 * 中奖注数
-			return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(2, 7));
 		}
-
 	},
 	/** 时时彩后3直选和值 */
 	SSC_HOU3_ZHIXUANHE("SSC_HOU3_ZHIXUANHE", "时时彩后3直选和值") {
@@ -686,7 +724,10 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(4));
 		}
 
 	},
@@ -700,8 +741,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 基础校验，如果不能通过直接校验失败
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 基础校验，如果不能通过直接校验失败
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -722,8 +763,8 @@ public enum SscService implements LotteryService {
 				if (!dadi.contains(bet)) {
 					return 1;
 				}
-			}
-			return 0;
+			}*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -749,8 +790,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 基础校验，如果不能通过直接校验失败
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 基础校验，如果不能通过直接校验失败
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -771,8 +812,8 @@ public enum SscService implements LotteryService {
 				if (!dadi.contains(bet)) {
 					return 1;
 				}
-			}
-			return 0;
+			}*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -798,8 +839,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 基础校验，如果不能通过直接校验失败
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 基础校验，如果不能通过直接校验失败
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -820,8 +861,8 @@ public enum SscService implements LotteryService {
 				if (!dadi.contains(bet)) {
 					return 1;
 				}
-			}
-			return 0;
+			}*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -848,8 +889,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 对注单进行基础校验
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 对注单进行基础校验
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -859,7 +900,9 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSsc3XingZuXuan6(lotteryOrder));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSsc3XingZuXuan6(lotteryOrder));*/
+			
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -886,8 +929,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 对注单进行基础校验
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 对注单进行基础校验
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -897,7 +940,8 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSsc3XingZuXuan6(lotteryOrder));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSsc3XingZuXuan6(lotteryOrder));*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -925,8 +969,8 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
-			// 对注单进行基础校验
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+			/*// 对注单进行基础校验
 			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
@@ -936,7 +980,9 @@ public enum SscService implements LotteryService {
 				return 1;
 			}
 			// 校验订单金额
-			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSsc3XingZuXuan6(lotteryOrder));
+			return super.checkAmount(lotteryOrder, LotteryUtils.orderCountSsc3XingZuXuan6(lotteryOrder));*/
+			
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -963,9 +1009,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 
-			return 1;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -978,8 +1024,11 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (!checkWin(lotteryOrder, openLotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHun(lotteryOrder, openLotteryTimeNum.getOpenNum().substring(0, 5));
 		}
 	},
 	/** 时时彩中3混合组选 */
@@ -991,9 +1040,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 
-			return 1;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1006,8 +1055,11 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (!checkWin(lotteryOrder, openLotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHun(lotteryOrder, openLotteryTimeNum.getOpenNum().substring(2, 7));
 		}
 	},
 	/** 时时彩后3混合组选 */
@@ -1019,9 +1071,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 
-			return 1;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1034,8 +1086,11 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (!checkWin(lotteryOrder, openLotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHun(lotteryOrder, openLotteryTimeNum.getOpenNum().substring(4));
 		}
 	},
 
@@ -1071,7 +1126,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// TODO Auto-generated method stub
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
@@ -1125,7 +1180,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
 
@@ -1152,7 +1207,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
 
@@ -1180,7 +1235,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
 
@@ -1207,7 +1262,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
 
@@ -1234,7 +1289,7 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			return super.checkOrder(lotteryOrder, betLotteryTimeNum);
 		}
 
@@ -1260,9 +1315,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// TODO Auto-generated method stub
-			return 1;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1289,10 +1344,10 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			int superRet = super.checkOrder(lotteryOrder, betLotteryTimeNum);
-			if (superRet != 0) {
+			ResponseMsgData superRet = super.checkOrder(lotteryOrder, betLotteryTimeNum);
+			if (!superRet.getIsSucceed()) {
 				return superRet;
 			}
 			// 2、数据格式校验，
@@ -1301,28 +1356,17 @@ public enum SscService implements LotteryService {
 			String formatRegex = "^\\d{5}(,\\d{5})*$";
 
 			if (!betNumber.matches(formatRegex)) {
-				return 1;
+				return ResponseMsgData.error(GameErrorEnum.BET_DETIAL_INVALID);
 			}
-
 			String[] arrSubBet = betNumber.split(",");
 
 			List<String> lsSubBet = Arrays.asList(arrSubBet);
-
-			boolean ret0 = CheckString.hasSameNum(lsSubBet);
-
-			if (ret0)
-				return 1;
-			// for (int j = 0; j < arrSubBet.length; j++) {
-			// CheckString.hasSameLetter(arrSubBet[j]);
-			// }
-
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
 			int betNum = LotteryUtils.calBetNum5XingZhiXuanDanShi(lotteryOrder.getBetDetail());
 			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
-
 			if (!ret1)
-				return GameError.errCodeBettingMoney;
-			return 0;
+				return ResponseMsgData.error(GameErrorEnum.BETTING_MONEY_INVALID);
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1357,10 +1401,11 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
-				return 801;
+			ResponseMsgData responseMsgData=super.checkOrder(lotteryOrder, betLotteryTimeNum);
+			if (!responseMsgData.getIsSucceed()) {
+				return responseMsgData;
 			}
 			// 2、数据格式校验，
 			// 个十百千万位各至少选一个号码，组成一注，以逗号分割。不同位置可以重复
@@ -1368,7 +1413,7 @@ public enum SscService implements LotteryService {
 			String formatRegex = "^\\d{0,10},\\d{0,10},\\d{0,10},\\d{0,10},\\d{0,10}$";
 
 			if (!betNumber.matches(formatRegex)) {
-				return GameError.errCodeBetDetial;
+				return ResponseMsgData.error(GameErrorEnum.BET_DETIAL_INVALID);
 			}
 
 			String[] arrSubBet = betNumber.split(",");
@@ -1378,16 +1423,16 @@ public enum SscService implements LotteryService {
 			}*/
 			Boolean isSameNum = CheckString.hasSameNum(lsSubBet);
 			if(isSameNum)
-				return GameError.errCodeBetDetial;
+				return ResponseMsgData.error(GameErrorEnum.BET_DETIAL_INVALID);
 
 			// 4 校验投注金额 amount = betno * 2 * rate * moneytype
 			int betNum = LotteryUtils.calBetNum5XingZhiXuanFuShi(lotteryOrder.getBetDetail());
 			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
 
 			if (!ret1)
-				return GameError.errCodeBettingMoney;
+				return ResponseMsgData.error(GameErrorEnum.BETTING_MONEY_INVALID);
 
-			return 0;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1445,9 +1490,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+			/*if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
 			// 2、数据格式校验，
@@ -1464,8 +1509,8 @@ public enum SscService implements LotteryService {
 			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
 
 			if (!ret1)
-				return GameError.errCodeBettingMoney;
-			return 0;
+				return GameError.errCodeBettingMoney;*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1492,9 +1537,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+			/*if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
 			// 2、数据格式校验，
@@ -1520,8 +1565,8 @@ public enum SscService implements LotteryService {
 			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
 
 			if (!ret1)
-				return GameError.errCodeBettingMoney;
-			return GameError.errCodeOkay;
+				return GameError.errCodeBettingMoney;*/
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1547,9 +1592,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+			/*if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
 			// 2、数据格式校验，
@@ -1577,9 +1622,9 @@ public enum SscService implements LotteryService {
 			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
 
 			if (!ret1)
-				return GameError.errCodeBettingMoney;
+				return GameError.errCodeBettingMoney;*/
 
-			return 0;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1622,9 +1667,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+			/*if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
 			// 2、数据格式校验，
@@ -1652,9 +1697,9 @@ public enum SscService implements LotteryService {
 			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
 
 			if (!ret1)
-				return GameError.errCodeBettingMoney;
+				return GameError.errCodeBettingMoney;*/
 
-			return 0;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1697,9 +1742,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+			/*if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
 			// 2、数据格式校验，
@@ -1727,9 +1772,9 @@ public enum SscService implements LotteryService {
 			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
 
 			if (!ret1)
-				return GameError.errCodeBettingMoney;
+				return GameError.errCodeBettingMoney;*/
 
-			return 0;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1754,9 +1799,9 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+		public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 			// 1、对注单进行基础校验（注单期号、投注时间有效性、返水范围校验）
-			if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
+			/*if (super.checkOrder(lotteryOrder, betLotteryTimeNum) != 0) {
 				return 1;
 			}
 			// 2、数据格式校验，
@@ -1784,9 +1829,9 @@ public enum SscService implements LotteryService {
 			boolean ret1 = super.chkAmount(lotteryOrder, betNum);
 
 			if (!ret1)
-				return GameError.errCodeBettingMoney;
+				return GameError.errCodeBettingMoney;*/
 
-			return 0;
+			return ResponseMsgData.ok();
 		}
 
 		@Override
@@ -1984,22 +2029,22 @@ public enum SscService implements LotteryService {
 	 * @author Terry
 	 */
 	@Override
-	public int checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
+	public ResponseMsgData checkOrder(LotteryOrder lotteryOrder, LotteryTimeNum betLotteryTimeNum) {
 		// 如果传入参数为null，返回false，校验失败
 		if (null == lotteryOrder || null == betLotteryTimeNum) {
-			return GameError.errCodeInvalid;
+			return ResponseMsgData.error(GameErrorEnum.ORDER_INVALID);
 		}
 		// 期号检查,投注期号与当前期号作对比，如果不一致，返回false，校验失败
 		String currentIssueNo = lotteryOrder.getBetIssueNo();
 		if (StringUtils.isBlank(currentIssueNo) || !currentIssueNo.equals(betLotteryTimeNum.getLotteryIssueNo())) {
-			return GameError.errCodeIssuseNo;
+			return ResponseMsgData.error(GameErrorEnum.ISSUSE_NO_INVALID);
 		}
 		// 投注有效性检查，当前时间是否在当前有效投注时间段内，如果不在，返回false，校验失败
 		Long currentDate = System.currentTimeMillis();
 		Long startDate = betLotteryTimeNum.getBetStartDate().getTime();
 		Long endDate = betLotteryTimeNum.getBetHaltDate().getTime();
 		if (currentDate <= startDate || currentDate >= endDate) {
-			return GameError.errCodeIssuseNo;
+			return ResponseMsgData.error(GameErrorEnum.ISSUSE_NO_INVALID);
 		}
 
 		// 返水范围校验
@@ -2007,10 +2052,9 @@ public enum SscService implements LotteryService {
 
 		MemberPlayConfig memCfg = myMemberPlayConfigService.getMemberPlayConfigByUserId(lotteryOrder.getUser().getId());
 
-		if(memCfg==null)
-		{
-			System.out.println("userid = null ==> " +lotteryOrder.getUser().getId());
-			return GameError.errCodeMember;
+		if (memCfg == null) {
+			System.out.println("userid = null ==> " + lotteryOrder.getUser().getId());
+			return ResponseMsgData.error(GameErrorEnum.UNKNOWN_MEMBER_INVALID);
 		}
 		String jsPlayCfg = memCfg.getPlayConfig();
 		// LotteryPlayConfig lotPlayCfg = (LotteryPlayConfig)
@@ -2025,17 +2069,17 @@ public enum SscService implements LotteryService {
 				.collect(Collectors.toList());
 
 		if (lsPlayCfg == null || lsPlayCfg.size() <= 0)
-			return GameError.errCodeplayCode;
+			return ResponseMsgData.error(GameErrorEnum.PLAY_CODE_INVALID);
 		LotteryPlayConfig lotPlayCfg = lsPlayCfg.get(0);
 		if (lotPlayCfg == null)
-			return GameError.errCodeplayCode;
+			return ResponseMsgData.error(GameErrorEnum.PLAY_CODE_INVALID);
 
 		// 倍数限制
 
 		int betRateLimitcfg = lotPlayCfg.getBetRateLimit();
 		int betRate = lotteryOrder.getBetRate();
 		if (betRate <= 0 && betRate > betRateLimitcfg)
-			return GameError.errCodeBetRate;
+			return ResponseMsgData.error(GameErrorEnum.BET_RATE_INVALID);
 
 		BigDecimal winningProbabilityCfg = new BigDecimal(lotPlayCfg.getWinningProbability());
 		BigDecimal CommissionRateMaxCfg = lotPlayCfg.getCommissionRateMax();
@@ -2061,7 +2105,7 @@ public enum SscService implements LotteryService {
 
 		// 奖金组是否在范围内
 		if (playModeMoney.compareTo(playModeMoneyMin) > 0 || playModeMoney.compareTo(playModeMoneyMax) < 0) {
-			return GameError.errCodePlayModeMoney;
+			return ResponseMsgData.error(GameErrorEnum.PLAY_MODE_MONEY_INVALID);
 		}
 
 		// 校验返水比例，奖金组是否符合规则
@@ -2070,9 +2114,8 @@ public enum SscService implements LotteryService {
 
 		// 校验返点，是否正确
 		if (playModeCommissionRate.compareTo(playModeCommissionRateCfg) != 0)
-			return GameError.errCodePlayModeCommissionRate;
-
-		return 0;
+			return ResponseMsgData.error(GameErrorEnum.PLAY_MODE_COMMISSION_RATE_INVALID);
+		return ResponseMsgData.ok();
 	}
 
 	@Override
@@ -2086,11 +2129,64 @@ public enum SscService implements LotteryService {
 		BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
 		BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
 		BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-		// 只可能有一注中奖号码
-		BigDecimal winCount = new BigDecimal(1);
 
 		// 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 * 中奖注数
-		return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
+		return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(BigDecimal.ONE);
+	}
+
+	/**
+	 * 计算和值订单中奖金额
+	 * @param lotteryOrder 订单数据
+	 * @param openNum 开奖号码
+	 * @return 返回中奖金额
+	 * @author Terry
+	 */
+	public BigDecimal calculateOrderBounsHe(LotteryOrder lotteryOrder, String openNum) {
+		// 获取中奖概率
+		String lotteryPlayCode = lotteryOrder.getBetType();
+		LotteryPlayConfig playConfig = new LotteryPlayConfigServiceImpl().getByCode(lotteryPlayCode);
+		BigDecimal winProbability = calculateHeZhiProbability(playConfig, openNum);
+		// 获取平台抽水、单注金额、投注倍数、玩法模式计算参数、中奖注数
+		BigDecimal playModeCommissionRate = lotteryOrder.getPlayModeCommissionRate();
+		BigDecimal price = new BigDecimal(playConfig.getBetUnit());
+		BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
+		BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
+
+		// 奖金组 = 单注金额/中奖概率*（1-平台抽水）
+		BigDecimal amountUnit = price.divide(winProbability).multiply(BigDecimal.ONE.subtract(playModeCommissionRate));
+
+		// 中奖金额 = 奖金组 * 倍数 * 玩法模式 * 中奖注数
+		BigDecimal winAmount = amountUnit.multiply(betRate).multiply(playModeMoneyType).multiply(BigDecimal.ONE);
+		return winAmount;
+	}
+
+	/**
+	 * 混合组选计算订单中奖金额
+	 * @param lotteryOrder 订单数据
+	 * @param openNum 开奖号码
+	 * @return 返回订单中奖金额
+	 * @author Terry
+	 */
+	public BigDecimal calculateOrderBounsHun(LotteryOrder lotteryOrder, String openNum) {
+		String lotteryPlayCode = lotteryOrder.getBetType();
+		LotteryPlayConfig playConfig = new LotteryPlayConfigServiceImpl().getByCode(lotteryPlayCode);
+
+		// 获取中奖概率、单注金额、平台抽水
+		BigDecimal winProbability = calculateHunHeProbability(playConfig, openNum);
+		BigDecimal price = new BigDecimal(playConfig.getBetUnit());
+		BigDecimal playModeCommissionRate = lotteryOrder.getPlayModeCommissionRate();
+
+		// 奖金组 = 单注金额/中奖概率*（1-平台抽水）
+		BigDecimal amountUnit = price.divide(winProbability).multiply(BigDecimal.ONE.subtract(playModeCommissionRate));
+
+		// 投注倍数、玩法模式
+		BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
+		BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
+
+		// 中奖金额 = 奖金组 * 倍数 * 玩法模式 * 中奖注数
+		BigDecimal winAmount = amountUnit.multiply(betRate).multiply(playModeMoneyType).multiply(BigDecimal.ONE);
+
+		return winAmount;
 	}
 
 	/**
@@ -2101,7 +2197,6 @@ public enum SscService implements LotteryService {
 	 * @param betCount
 	 *            投注注数
 	 * @return 通过注单注数、单注金额、投注倍数预算投注金额，是否与订单金额保持一致，返回校验结果，通过返回true
-	 * @author Terry
 	 */
 	private int checkAmount(LotteryOrder lotteryOrder, int betCount) {
 		// 获取投注倍数、单注金额
@@ -2118,7 +2213,6 @@ public enum SscService implements LotteryService {
 
 	/**
 	 * 校验投注金额
-	 * 
 	 * @param lotteryOrder
 	 * @param betNum
 	 * @return
@@ -2132,4 +2226,56 @@ public enum SscService implements LotteryService {
 		return (amount.compareTo(lotteryOrder.getBetAmount()) == 0);
 	}
 
+	/**
+	 * 获取和值号码中奖概率
+	 * @param playConfig 玩法配置数据
+	 * @param openNum 开奖号码
+	 * @return 返回开奖号码和值中奖概率
+	 * @author Terry
+	 */
+	private BigDecimal calculateHeZhiProbability(LotteryPlayConfig playConfig, String openNum) {
+		// 根据玩法类型获取玩法多概率配置
+		String playMultStr = playConfig.getLotteryPlayMult();
+		// 转换配置数据为List集合方便迭代
+		JsonMapper jsonMapper = JsonMapper.getInstance();
+		List<lotteryPlayMult> multList = jsonMapper.fromJson(playMultStr,
+				jsonMapper.createCollectionType(List.class, lotteryPlayMult.class));
+		// 获取和值号码中奖概率
+		String openSum = LotteryUtils.openSum(openNum);
+		for (lotteryPlayMult lotteryPlayMult : multList) {
+			if (openSum.equals(lotteryPlayMult.getNumber())) {
+				BigDecimal result = new BigDecimal(lotteryPlayMult.getWinningProbability());
+				return result;
+			}
+		}
+		return BigDecimal.ZERO;
+	}
+
+	/**
+	 * 获取混合组选中奖概率
+	 * @param playConfig 玩法配置数据
+	 * @param openNum 开奖号码
+	 * @return 开奖号码中奖概率
+	 */
+	private BigDecimal calculateHunHeProbability(LotteryPlayConfig playConfig, String openNum) {
+		// 判断开奖号码是否是组3
+		String key = "HUNHE_ZU6";
+		if (openNum.matches(".*(\\d).*\\1.*")) {
+			key = "HUNHE_ZU3";
+		}
+		// 获取多概率数据
+		String winningProbability = playConfig.getLotteryPlayMult();
+		// 转换数据为List集合
+		JsonMapper jsonMapper = JsonMapper.getInstance();
+		List<lotteryPlayMult> probabilityList = jsonMapper.fromJson(winningProbability,
+				jsonMapper.createCollectionType(List.class, lotteryPlayMult.class));
+		// 迭代返回对应的概率
+		for (lotteryPlayMult lotteryPlayMult : probabilityList) {
+			if (key.equals(lotteryPlayMult.getNumber())) {
+				BigDecimal result = new BigDecimal(lotteryPlayMult.getWinningProbability());
+				return result;
+			}
+		}
+		return BigDecimal.ZERO;
+	}
 }

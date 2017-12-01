@@ -168,7 +168,7 @@
 							<input name="lotteryPlayMultList[{{idx}}].playCode" class="playCode" type="hidden" />
                         </td>
                         <td>
-                            <input id="lotteryPlayMultList{{idx}}_number" name="lotteryPlayMultList[{{idx}}].number" type="text" value="{{row.number}}" maxlength="10" class="input-small required"/>
+                            <input id="lotteryPlayMultList{{idx}}_number" name="lotteryPlayMultList[{{idx}}].number" type="text" value="{{row.number}}" maxlength="50" class="input-large required"/>
                         </td>
                         <td>
                             <input id="lotteryPlayMultList{{idx}}_winningProbability" name="lotteryPlayMultList[{{idx}}].winningProbability" type="number" max="1" step="0.00001" min="0" maxlength="10" value="{{row.winningProbability}}" class="input-small required"/>
@@ -265,7 +265,7 @@
 	        // 如果进入页面没有数据（新增），默认显示两条新增输入框
 	        if (0 == data.length) {
 	            addRow('#lotteryPlayMultList', lotteryPlayMultRowIdx++, lotteryPlayMultTpl, "");
-	            addRow('#lotteryPlayMultList', lotteryPlayMultRowIdx, lotteryPlayMultTpl, "");
+	            addRow('#lotteryPlayMultList', lotteryPlayMultRowIdx++, lotteryPlayMultTpl, "");
 	        }
 	        
 	        // 根据选择的玩法模式，决定中奖概率的录入方式

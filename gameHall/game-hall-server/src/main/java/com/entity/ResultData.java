@@ -1,34 +1,34 @@
 package com.entity;
 
+import com.game.modules.lottery.entity.ResponseMsgData;
+
 public class ResultData {
 
-	static public ResultData ResultDataOK()
-	{
-		ResultData rd = new ResultData();
-		rd.errorCode = 0;
-		rd.message = "OK";
-		return rd;
+	private Boolean isSucceed;
+	private String code;
+	private String message;
+	private Object data;
+	
+	public ResultData() {}
+	public ResultData(boolean isSucceed,String message,Object data) {
+		this.isSucceed = isSucceed;
+		this.data= data;
 	}
 	
-	static public ResultData ResultDataFail()
-	{
-		ResultData rd = new ResultData();
-		rd.errorCode = 1;
-		rd.message = "Fail";
-		return rd;
+	public Boolean getIsSucceed() {
+		return isSucceed;
 	}
-	/**
-	 * @return the errorCode
-	 */
-	public int getErrorCode() {
-		return errorCode;
+	public void setIsSucceed(Boolean isSucceed) {
+		this.isSucceed = isSucceed;
 	}
-	/**
-	 * @param errorCode the errorCode to set
-	 */
-	public void setErrorCode(int errorCode) {
-		this.errorCode = errorCode;
+	public String getCode() {
+		return code;
 	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	/**
 	 * @return the message
 	 */
@@ -53,8 +53,17 @@ public class ResultData {
 	public void setData(Object data) {
 		this.data = data;
 	}
-	private int errorCode;
-	private String message;
-	private Object data;
+	
+	public static ResultData ok() {
+		return new ResultData(true,"成功",null);
+	}
+	
+	public static ResultData ok(Object data) {
+		return new ResultData(true,"成功",data);
+	}
+	
+	public static ResultData error(String message) {
+		return new ResultData(false,message,null);
+	}
 
 }
