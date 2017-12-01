@@ -246,7 +246,7 @@ public class MemberAccountAddController extends BaseController {
 		memberAccount.setParentAgentId(sessionMemberId);
 		memberAccount.setParentAgentIds(sessionParentIds+sessionMemberId+",");
 		memberAccount.setBlance(new BigDecimal(0));
-		memberAccount.setBlanceFrozen("0");
+		memberAccount.setBlanceFrozen(new BigDecimal(0));
 		memberAccount.setStatus("0");
 		memberAccount.setCompanyId(seesionUser.getCompany().getId());
 		memberAccount.setOfficeId(seesionUser.getOffice().getId());

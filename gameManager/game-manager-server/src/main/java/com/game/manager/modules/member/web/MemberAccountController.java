@@ -144,7 +144,7 @@ public class MemberAccountController extends BaseController {
 			//设置默认金额
 			memberAccount.setBlance(new BigDecimal(0));
 			//设置默认冻结金额
-			memberAccount.setBlanceFrozen("0");
+			memberAccount.setBlanceFrozen(new BigDecimal(0));
 			//验证安全码长度
 			//@Length(min=0, max=50, message="安全密码长度必须介于 0 和 50 之间")
 			if(memberAccount.getSecPassword().length()<=0 && memberAccount.getSecPassword().length()>=50 ) {

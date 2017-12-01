@@ -34,7 +34,7 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 	private String qqNo;		// qq号码
 	private String mobileNo;		// 手机号码
 	private BigDecimal blance;		// 账户余额
-	private String blanceFrozen;		// 冻结金额
+	private BigDecimal blanceFrozen;		// 冻结金额
 	private String status;		// 状态
 	
 	public MemberAccount() {
@@ -185,11 +185,11 @@ public class MemberAccount extends DataEntity<MemberAccount> {
 		this.blance = blance;
 	}
 	
-	public String getBlanceFrozen() {
+	public BigDecimal getBlanceFrozen() {
 		return blanceFrozen;
 	}
 
-	public void setBlanceFrozen(String blanceFrozen) {
+	public void setBlanceFrozen(BigDecimal blanceFrozen) {
 		this.blanceFrozen = blanceFrozen;
 	}
 	

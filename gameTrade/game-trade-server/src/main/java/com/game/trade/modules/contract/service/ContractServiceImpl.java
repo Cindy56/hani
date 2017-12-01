@@ -172,7 +172,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			memberAccount.setCompanyId(seesionUser.getCompany().getId());
 			memberAccount.setOfficeId(seesionUser.getOffice().getId());
 			memberAccount.setBlance(new BigDecimal(0));
-			memberAccount.setBlanceFrozen("0");
+			memberAccount.setBlanceFrozen(new BigDecimal(0));
 			memberAccount.setStatus("0");
 			memberAccount.setUser(user);
 			//会员类型为股东
@@ -285,11 +285,21 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			//根据当前userid查询会员信息
 			MemberAccount sessionMember=memberAccountService.getByUserId(sessionUser.getId());
 			
-			//当前登录用户机构
+			//当前登录用户部门（会员）
 			Office userOffice=officeServiceFacade.get(sessionUser.getOffice().getId());
+			//当前登录用户
+			Office userCompany=officeServiceFacade.get(sessionUser.getCompany().getId());
 			
-			//代理下的角色
-			Role agentRole = this.systemServiceFacade.findRoleByOfficeId(userOffice.getId()).get(0);
+			
+			//会员下的角色
+			List<Role> listRole = this.systemServiceFacade.findRoleByOfficeId(userOffice.getId());
+			Role agent=null;
+			for(Role role : listRole) {
+				//找出代理角色
+				if(-1 != role.getName().indexOf("代理")) {
+					agent=role;
+				}
+			}
 			
 				/*//查询机构下面所有机构部门
 				List<Office> officeList=officeServiceFacade.findOfficesByParentId(userOffice.getParentId()+","+userOffice.getId());
@@ -303,7 +313,11 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 						agentRole = this.systemServiceFacade.findRoleByOfficeId(office.getId()).get(0);
 					}
 				}*/
-				//用户的部门为新建的公司模板
+			
+			
+			
+			
+			//用户的部门为新建的公司模板
 			user.setOffice(userOffice);
 			
 			//用户公司
@@ -314,20 +328,27 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			user.setNo("");
 			
 			//保存用户信息
-			user.getRoleList().add(agentRole);
+			user.getRoleList().add(agent);
 			user.setCurrentUser(contract.getCurrentUser());
 			user = systemServiceFacade.saveUser(user);
-			systemServiceFacade.assignUserToRole(agentRole,user);
+			systemServiceFacade.assignUserToRole(agent,user);
 			
 			MemberAccount memberAccount=new MemberAccount();
 			//获取当前用户信息 
 			User seesionUser = contract.getCurrentUser();
-			memberAccount.setParentAgentId(seesionUser.getId());
-			memberAccount.setParentAgentIds(seesionUser.getId()+","+user.getId());
-			memberAccount.setCompanyId(seesionUser.getCompany().getId());
-			memberAccount.setOfficeId(seesionUser.getOffice().getId());
+			
+			//上级的id
+			memberAccount.setParentAgentId(sessionMember.getId());
+			
+			
+			//上级的parent_ids+id
+			memberAccount.setParentAgentIds(sessionMember.getParentAgentIds()+sessionMember.getId());
+			
+			
+			memberAccount.setCompanyId(sessionMember.getCompanyId());
+			memberAccount.setOfficeId(sessionMember.getOfficeId());
 			memberAccount.setBlance(new BigDecimal(0));
-			memberAccount.setBlanceFrozen("0");
+			memberAccount.setBlanceFrozen(new BigDecimal(0));
 			memberAccount.setStatus("0");
 			memberAccount.setUser(user);
 			//会员类型为代理

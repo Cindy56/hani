@@ -111,7 +111,7 @@
 					${contract.accountId}
 				</td> --%>
 				<td>
-					${contract.openType}
+					${fns:getDictLabel(contract.openType, 'open_account_type', '')}
 				</td>
 				<td>
 					${fns:getDictLabel(contract.benefitType, 'contract_model', '')}
@@ -119,14 +119,14 @@
 				<td>
 					${fns:getDictLabel(contract.benefitCycle, 'contract_period', '')}
 				</td>
-				<td>
+				<td style="text-align: right;">
 					${contract.rentAmount}
 				</td>
-				<td>
+				<td style="text-align: right;">
 					${contract.openAmount}
 				</td>
-				<td>
-					${contract.contractTime}
+				<td style="text-align: right;">
+					${contract.contractTime}年
 				</td>
 				<td>
 					${contract.remark}
