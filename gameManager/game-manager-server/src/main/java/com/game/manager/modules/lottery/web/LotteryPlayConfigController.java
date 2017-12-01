@@ -163,7 +163,11 @@ public class LotteryPlayConfigController extends BaseController {
 		}
 		// 设置用户信息、多奖金数据
 		lotteryPlayConfig.setCurrentUser(UserUtils.getUser());
-		lotteryPlayConfig.setLotteryPlayMult(JsonMapper.toJsonString(lotteryPlayConfig.getLotteryPlayMultList()));
+		if ("1".equals(lotteryPlayConfig.getPlayType())) {
+			lotteryPlayConfig.setLotteryPlayMult(JsonMapper.toJsonString(lotteryPlayConfig.getLotteryPlayMultList()));
+		} else {
+			lotteryPlayConfig.setLotteryPlayMult(new String());
+		}
 
 		lotteryPlayConfigService.save(lotteryPlayConfig);
 		addMessage(redirectAttributes, "保存玩法信息成功");

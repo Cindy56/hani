@@ -49,12 +49,11 @@
             <tr>
                 <th>彩种名称</th>
                 <th>彩种类型</th>
-                <th>所属公司</th>
                 <th>是否自动开奖</th>
                 <th>是否启用</th>
-                <th>开奖周期</th>
+                <th>开奖周期(分钟)</th>
                 <th>每日开奖期数</th>
-                <th>每期投注最高金额</th>
+                <th>每期投注最高金额(元)</th>
                 <shiro:hasPermission name="lottery:lotteryType:edit"><th>操作</th></shiro:hasPermission>
             </tr>
         </thead>
@@ -68,16 +67,13 @@
                     ${fns:getDictLabelForList('lottery_category', lotteryType.parentCode, '')}
                 </td>
                 <td>
-                    ${lotteryType.companyId}
-                </td>
-                <td>
                     ${fns:getDictLabel(lotteryType.isAuto, 'yes_no', '')}
                 </td>
                 <td>
                     ${fns:getDictLabel(lotteryType.isEnable, 'yes_no', '')}
                 </td>
-                <td>
-                    ${fns:getDictLabel(lotteryType.isEnable, 'yes_no', '')}
+                <td style="text-align: right;">
+                    ${lotteryType.times}
                 </td>
                 <td style="text-align: right;">
                     ${lotteryType.times}
