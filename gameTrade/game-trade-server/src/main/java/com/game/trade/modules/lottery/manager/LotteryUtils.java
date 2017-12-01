@@ -277,28 +277,26 @@ public class LotteryUtils {
         return false;
     }
 
-    /**
-     * 时时彩直选和值
-     * @param openNum 开奖号码
-     * @param betNum 投注号码
-     * @return 中奖返回true
-     * @author Jerry
-     */
-    public static boolean checkWinSscZhiXuanHe(String openNum, String betNum) {
-        // 参数不合法，返回false
-        if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
-            return false;
-        }
-        String[] openNums = openNum.split(",");
-        List<Integer> openNumsList = Arrays.asList(openNums).stream().map(Integer::valueOf).collect(Collectors.toList());
-        String[] betNumArr = betNum.trim().split(",");
-        List<String> betNumsList = Arrays.asList(betNumArr);
-        String openSum = openNumsList.stream().reduce(0, (sum, sum1) -> sum + sum1).toString();
-        if (betNumsList.contains(openSum)) {
-            return true;
-        }
-        return false;
-    }
+	/**
+	 * 时时彩直选和值
+	 * @param openNum 开奖号码
+	 * @param betNum 投注号码
+	 * @return 中奖返回true
+	 * @author Jerry
+	 */
+	public static boolean checkWinSscZhiXuanHe(String openNum, String betNum) {
+		// 参数不合法，返回false
+		if (StringUtils.isBlank(openNum) || StringUtils.isBlank(betNum)) {
+			return false;
+		}
+		String[] betNumArr = betNum.trim().split(",");
+		List<String> betNumsList = Arrays.asList(betNumArr);
+		String openSum = openSum(openNum);
+		if (betNumsList.contains(openSum)) {
+			return true;
+		}
+		return false;
+	}
 
     /**
      * 供混合组选调用，判断号码中是否存在组三，组三是否中奖
@@ -992,7 +990,20 @@ public class LotteryUtils {
         }
     }
 
-    // -------------------------------|------------------------------------------------
+	/**
+	 * 通过开奖号码计算开奖和值
+	 * @param openNum 开奖号码
+	 * @return 返回开奖的各个号码之和
+	 * @author Terry
+	 */
+	public static String openSum(String openNum) {
+		String[] openNums = openNum.split(",");
+		List<Integer> openNumsList = Arrays.asList(openNums).stream().map(Integer::valueOf)
+				.collect(Collectors.toList());
+		return openNumsList.stream().reduce(0, (sum, sum1) -> sum + sum1).toString();
+	}
+
+	// -------------------------------|------------------------------------------------
 
     /**
      * 检查时时彩组选6是否中奖，支持多星

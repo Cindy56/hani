@@ -3,21 +3,21 @@ package com.game.trade.modules.lottery.manager;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.game.common.mapper.JsonMapper;
 import com.game.common.utils.SpringContextHolder;
 import com.game.common.utils.StringUtils;
-import com.game.modules.lottery.entity.GameError;
 import com.game.modules.lottery.entity.GameErrorEnum;
 import com.game.modules.lottery.entity.LotteryPlayConfig;
 import com.game.modules.lottery.entity.LotteryTimeNum;
 import com.game.modules.lottery.entity.ResponseMsgData;
+import com.game.modules.lottery.entity.lotteryPlayMult;
 import com.game.modules.member.entity.MemberPlayConfig;
 import com.game.modules.member.service.MemberPlayConfigService;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.modules.lottery.MoneyTypeDecimal;
+import com.game.trade.modules.lottery.service.LotteryPlayConfigServiceImpl;
 import com.game.trade.util.CheckString;
 
 /**
@@ -55,7 +55,7 @@ public enum SscService implements LotteryService {
 			}
 			// 4、校验订单金额
 			int amount = LotteryUtils.orderCount1XingZhiXuan(lotteryOrder.getBetDetail());
-		//	return super.checkAmount(lotteryOrder, amount);
+			// return super.checkAmount(lotteryOrder, amount);
 			return ResponseMsgData.ok();
 		}
 
@@ -76,7 +76,7 @@ public enum SscService implements LotteryService {
 			// 判断一下是否中奖，未中奖直接返回金额为0
 			int winCount = LotteryUtils.winCountSsc1XinDingWei(openlotteryTimeNum.getOpenNum(),
 					lotteryOrder.getBetDetail());
-			if (!(winCount > 0)) {
+			if (winCount == 0) {
 				return BigDecimal.ZERO;
 			}
 
@@ -101,10 +101,17 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public boolean checkWin(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
-			// TODO Auto-generated method stub
-			return false;
+			if (null == lotteryOrder || null == openLotteryTimeNum) {
+				return false;
+			}
+			return LotteryUtils.checkWinSscDaXiaoDanShuang(openLotteryTimeNum.getOpenNum().substring(6),
+					lotteryOrder.getBetDetail());
 		}
 
+		@Override
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
+			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+		}
 	},
 
 	/** 时时彩前2直选单式 */
@@ -269,7 +276,10 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(0, 3));
 		}
 	},
 	/** 时时彩后2直选和值 */
@@ -296,7 +306,10 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(6));
 		}
 	},
 
@@ -654,7 +667,10 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(0, 5));
 		}
 	},
 	/** 时时彩中3直选和值 */
@@ -682,22 +698,11 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			// 如果没有中奖，直接返回金额为0
 			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
 				return BigDecimal.ZERO;
 			}
-
-			// 投注奖金组、投注倍数、投注模式
-			BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
-			BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
-			BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-			// 只可能有一注中奖号码
-			BigDecimal winCount = new BigDecimal(1);
-
-			// 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 * 中奖注数
-			return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(2, 7));
 		}
-
 	},
 	/** 时时彩后3直选和值 */
 	SSC_HOU3_ZHIXUANHE("SSC_HOU3_ZHIXUANHE", "时时彩后3直选和值") {
@@ -719,7 +724,10 @@ public enum SscService implements LotteryService {
 
 		@Override
 		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+			if (!checkWin(lotteryOrder, openlotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHe(lotteryOrder, openlotteryTimeNum.getOpenNum().substring(4));
 		}
 
 	},
@@ -1016,8 +1024,11 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (!checkWin(lotteryOrder, openLotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHun(lotteryOrder, openLotteryTimeNum.getOpenNum().substring(0, 5));
 		}
 	},
 	/** 时时彩中3混合组选 */
@@ -1044,8 +1055,11 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (!checkWin(lotteryOrder, openLotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHun(lotteryOrder, openLotteryTimeNum.getOpenNum().substring(2, 7));
 		}
 	},
 	/** 时时彩后3混合组选 */
@@ -1072,8 +1086,11 @@ public enum SscService implements LotteryService {
 		}
 
 		@Override
-		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openlotteryTimeNum) {
-			return super.calculateOrderBonus(lotteryOrder, openlotteryTimeNum);
+		public BigDecimal calculateOrderBonus(LotteryOrder lotteryOrder, LotteryTimeNum openLotteryTimeNum) {
+			if (!checkWin(lotteryOrder, openLotteryTimeNum)) {
+				return BigDecimal.ZERO;
+			}
+			return super.calculateOrderBounsHun(lotteryOrder, openLotteryTimeNum.getOpenNum().substring(4));
 		}
 	},
 
@@ -2035,9 +2052,8 @@ public enum SscService implements LotteryService {
 
 		MemberPlayConfig memCfg = myMemberPlayConfigService.getMemberPlayConfigByUserId(lotteryOrder.getUser().getId());
 
-		if(memCfg==null)
-		{
-			System.out.println("userid = null ==> " +lotteryOrder.getUser().getId());
+		if (memCfg == null) {
+			System.out.println("userid = null ==> " + lotteryOrder.getUser().getId());
 			return ResponseMsgData.error(GameErrorEnum.UNKNOWN_MEMBER_INVALID);
 		}
 		String jsPlayCfg = memCfg.getPlayConfig();
@@ -2113,11 +2129,64 @@ public enum SscService implements LotteryService {
 		BigDecimal playModeMoney = new BigDecimal(lotteryOrder.getPlayModeMoney());
 		BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
 		BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
-		// 只可能有一注中奖号码
-		BigDecimal winCount = new BigDecimal(1);
 
 		// 中奖金额 = 奖金组 * 投注倍数 * 投注模式对应面值 * 中奖注数
-		return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(winCount);
+		return playModeMoney.multiply(betRate).multiply(playModeMoneyType).multiply(BigDecimal.ONE);
+	}
+
+	/**
+	 * 计算和值订单中奖金额
+	 * @param lotteryOrder 订单数据
+	 * @param openNum 开奖号码
+	 * @return 返回中奖金额
+	 * @author Terry
+	 */
+	public BigDecimal calculateOrderBounsHe(LotteryOrder lotteryOrder, String openNum) {
+		// 获取中奖概率
+		String lotteryPlayCode = lotteryOrder.getBetType();
+		LotteryPlayConfig playConfig = new LotteryPlayConfigServiceImpl().getByCode(lotteryPlayCode);
+		BigDecimal winProbability = calculateHeZhiProbability(playConfig, openNum);
+		// 获取平台抽水、单注金额、投注倍数、玩法模式计算参数、中奖注数
+		BigDecimal playModeCommissionRate = lotteryOrder.getPlayModeCommissionRate();
+		BigDecimal price = new BigDecimal(playConfig.getBetUnit());
+		BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
+		BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
+
+		// 奖金组 = 单注金额/中奖概率*（1-平台抽水）
+		BigDecimal amountUnit = price.divide(winProbability).multiply(BigDecimal.ONE.subtract(playModeCommissionRate));
+
+		// 中奖金额 = 奖金组 * 倍数 * 玩法模式 * 中奖注数
+		BigDecimal winAmount = amountUnit.multiply(betRate).multiply(playModeMoneyType).multiply(BigDecimal.ONE);
+		return winAmount;
+	}
+
+	/**
+	 * 混合组选计算订单中奖金额
+	 * @param lotteryOrder 订单数据
+	 * @param openNum 开奖号码
+	 * @return 返回订单中奖金额
+	 * @author Terry
+	 */
+	public BigDecimal calculateOrderBounsHun(LotteryOrder lotteryOrder, String openNum) {
+		String lotteryPlayCode = lotteryOrder.getBetType();
+		LotteryPlayConfig playConfig = new LotteryPlayConfigServiceImpl().getByCode(lotteryPlayCode);
+
+		// 获取中奖概率、单注金额、平台抽水
+		BigDecimal winProbability = calculateHunHeProbability(playConfig, openNum);
+		BigDecimal price = new BigDecimal(playConfig.getBetUnit());
+		BigDecimal playModeCommissionRate = lotteryOrder.getPlayModeCommissionRate();
+
+		// 奖金组 = 单注金额/中奖概率*（1-平台抽水）
+		BigDecimal amountUnit = price.divide(winProbability).multiply(BigDecimal.ONE.subtract(playModeCommissionRate));
+
+		// 投注倍数、玩法模式
+		BigDecimal betRate = new BigDecimal(lotteryOrder.getBetRate());
+		BigDecimal playModeMoneyType = getParamByType(lotteryOrder);
+
+		// 中奖金额 = 奖金组 * 倍数 * 玩法模式 * 中奖注数
+		BigDecimal winAmount = amountUnit.multiply(betRate).multiply(playModeMoneyType).multiply(BigDecimal.ONE);
+
+		return winAmount;
 	}
 
 	/**
@@ -2128,7 +2197,6 @@ public enum SscService implements LotteryService {
 	 * @param betCount
 	 *            投注注数
 	 * @return 通过注单注数、单注金额、投注倍数预算投注金额，是否与订单金额保持一致，返回校验结果，通过返回true
-	 * @author Terry
 	 */
 	private int checkAmount(LotteryOrder lotteryOrder, int betCount) {
 		// 获取投注倍数、单注金额
@@ -2145,7 +2213,6 @@ public enum SscService implements LotteryService {
 
 	/**
 	 * 校验投注金额
-	 * 
 	 * @param lotteryOrder
 	 * @param betNum
 	 * @return
@@ -2159,4 +2226,56 @@ public enum SscService implements LotteryService {
 		return (amount.compareTo(lotteryOrder.getBetAmount()) == 0);
 	}
 
+	/**
+	 * 获取和值号码中奖概率
+	 * @param playConfig 玩法配置数据
+	 * @param openNum 开奖号码
+	 * @return 返回开奖号码和值中奖概率
+	 * @author Terry
+	 */
+	private BigDecimal calculateHeZhiProbability(LotteryPlayConfig playConfig, String openNum) {
+		// 根据玩法类型获取玩法多概率配置
+		String playMultStr = playConfig.getLotteryPlayMult();
+		// 转换配置数据为List集合方便迭代
+		JsonMapper jsonMapper = JsonMapper.getInstance();
+		List<lotteryPlayMult> multList = jsonMapper.fromJson(playMultStr,
+				jsonMapper.createCollectionType(List.class, lotteryPlayMult.class));
+		// 获取和值号码中奖概率
+		String openSum = LotteryUtils.openSum(openNum);
+		for (lotteryPlayMult lotteryPlayMult : multList) {
+			if (openSum.equals(lotteryPlayMult.getNumber())) {
+				BigDecimal result = new BigDecimal(lotteryPlayMult.getWinningProbability());
+				return result;
+			}
+		}
+		return BigDecimal.ZERO;
+	}
+
+	/**
+	 * 获取混合组选中奖概率
+	 * @param playConfig 玩法配置数据
+	 * @param openNum 开奖号码
+	 * @return 开奖号码中奖概率
+	 */
+	private BigDecimal calculateHunHeProbability(LotteryPlayConfig playConfig, String openNum) {
+		// 判断开奖号码是否是组3
+		String key = "HUNHE_ZU6";
+		if (openNum.matches(".*(\\d).*\\1.*")) {
+			key = "HUNHE_ZU3";
+		}
+		// 获取多概率数据
+		String winningProbability = playConfig.getLotteryPlayMult();
+		// 转换数据为List集合
+		JsonMapper jsonMapper = JsonMapper.getInstance();
+		List<lotteryPlayMult> probabilityList = jsonMapper.fromJson(winningProbability,
+				jsonMapper.createCollectionType(List.class, lotteryPlayMult.class));
+		// 迭代返回对应的概率
+		for (lotteryPlayMult lotteryPlayMult : probabilityList) {
+			if (key.equals(lotteryPlayMult.getNumber())) {
+				BigDecimal result = new BigDecimal(lotteryPlayMult.getWinningProbability());
+				return result;
+			}
+		}
+		return BigDecimal.ZERO;
+	}
 }
