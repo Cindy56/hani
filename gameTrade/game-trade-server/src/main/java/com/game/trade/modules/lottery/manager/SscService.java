@@ -2035,16 +2035,10 @@ public enum SscService implements LotteryService {
 
 		MemberPlayConfig memCfg = myMemberPlayConfigService.getMemberPlayConfigByUserId(lotteryOrder.getUser().getId());
 
-<<<<<<< HEAD
 		if(memCfg==null)
 		{
 			System.out.println("userid = null ==> " +lotteryOrder.getUser().getId());
 			return ResponseMsgData.error(GameErrorEnum.UNKNOWN_MEMBER_INVALID);
-=======
-		if (memCfg == null) {
-			System.out.println("userid = null ==> " + lotteryOrder.getUser().getId());
-			return GameError.errCodeMember;
->>>>>>> branch 'game-1.0' of https://github.com/allen5460/core.git
 		}
 		String jsPlayCfg = memCfg.getPlayConfig();
 		// LotteryPlayConfig lotPlayCfg = (LotteryPlayConfig)
@@ -2100,8 +2094,7 @@ public enum SscService implements LotteryService {
 
 		// 校验返水比例，奖金组是否符合规则
 		// 个人投注返点 = 个人最高奖金组 - 投注时奖金组 / 2000 × 投注金额
-		BigDecimal playModeCommissionRateCfg = (playModeMoneyMin.subtract(playModeMoney)).divide(new BigDecimal("2"))
-				.multiply(winningProbability);
+		BigDecimal playModeCommissionRateCfg = (playModeMoneyMin.subtract(playModeMoney)).divide(new BigDecimal("2")).multiply(winningProbability);
 
 		// 校验返点，是否正确
 		if (playModeCommissionRate.compareTo(playModeCommissionRateCfg) != 0)
