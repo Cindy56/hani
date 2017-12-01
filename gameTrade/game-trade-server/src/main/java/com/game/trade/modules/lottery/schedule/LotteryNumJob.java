@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.game.modules.lottery.dto.OpenCaiResult;
 import com.game.modules.lottery.exception.LotteryNumDrawException;
 import com.game.trade.modules.lottery.manager.LotteryBonusService;
+import com.game.trade.modules.lottery.manager.LotteryCommissionService;
 import com.game.trade.modules.lottery.manager.LotteryNumDrawService;
 import com.game.trade.modules.lottery.service.LotteryTimeNumServiceImpl;
 
@@ -37,6 +38,8 @@ public class LotteryNumJob implements Job {
 	private LotteryNumDrawService lotteryNumDrawService ;
 	@Autowired
 	private LotteryBonusService lotteryBonusService ;
+	@Autowired
+	private LotteryCommissionService lotteryCommissionService;
 	
 	/* *
 	 * 获取当前任务的key,比如:SSC_CQ:21071118085
@@ -80,9 +83,22 @@ public class LotteryNumJob implements Job {
 	        	@Override
 	        	public void run() {
 	        		try {
-						Thread.sleep(3000);
+						Thread.sleep(2000);
 						 //派奖
 				        lotteryBonusService.calculateOrderBonusFromDB(lotteryCode,issueNo);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+	        	}
+	        }.run();
+	        
+	        new Thread() {
+	        	@Override
+	        	public void run() {
+	        		try {
+						Thread.sleep(2000);
+						 //返水服务
+						lotteryCommissionService.calculateOrderCommissionFromDB(lotteryCode,issueNo);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

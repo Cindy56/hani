@@ -122,10 +122,10 @@ public class LotteryBetController {
 		MemberAccount currentAccount = memberAccountService.getByUserId(currentUser.getId());
 		testOrder.setAccountId(currentAccount.getId());
 
-		// Random rand = new Random();
+		 Random rand = new Random();
 
-		// StringBuilder betNumber = new StringBuilder();
-		// betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
+		 StringBuilder betNumber = new StringBuilder();
+		 betNumber.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
 
 		int randNum = testLotteryBetController.getInstance().getRandmonNum();
 
@@ -135,7 +135,7 @@ public class LotteryBetController {
 
 		testOrder.setBetType("SSC_5XING_ZHIXUANDAN");
 
-		testOrder.setBetDetail("");
+		testOrder.setBetDetail(betNumber.toString());
 
 		testOrder.setBetAmount(new BigDecimal(4));
 		testOrder.setBetRate(2);
@@ -151,12 +151,13 @@ public class LotteryBetController {
 
 		// =================调用check
 		ResponseMsgData result = this.lotteryCalculateService.checkOrder(testOrder);
-		// =================入库
+		
 		 if(!result.getIsSucceed()) {
 			 return ResultData.error(result.getMsg());
 		 }
 
-		this.lotteryOrderService.save(testOrder);
+		// =================入库
+//		this.lotteryOrderService.save(testOrder);
 		// =================扣钱
 	/*//	boolean minusAmountResult = this.memberAccountService.minusAmount(currentAccount.getId(), testOrder.getBetAmount());
 		if (BooleanUtils.isFalse(minusAmountResult)) {
