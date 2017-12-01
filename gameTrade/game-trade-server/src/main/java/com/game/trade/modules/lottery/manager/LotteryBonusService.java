@@ -3,11 +3,12 @@ package com.game.trade.modules.lottery.manager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.game.modules.finance.entity.FinanceTradeDetail;
 import com.game.modules.finance.service.FinanceTradeDetailService.FinanceTradeDetailType;
 import com.game.modules.order.entity.LotteryOrder;
 import com.game.trade.modules.finance.service.FinanceTradeDetailServiceImpl;
@@ -23,6 +24,8 @@ import com.game.trade.modules.order.service.LotteryOrderServiceImpl;
  */
 @Service
 public class LotteryBonusService {
+	private static final ExecutorService threadPool = Executors.newFixedThreadPool(50);
+	
 //	@Autowired
 //	private SystemService systemService;
 	@Autowired
@@ -33,10 +36,6 @@ public class LotteryBonusService {
 	private LotteryOrderServiceImpl lotteryOrderService;
 	@Autowired
 	private FinanceTradeDetailServiceImpl financeTradeDetailService;
-	
-	@Autowired
-	private LotteryCommissionService lotteryCommissionService;
-	
 	/**
 	 * 根据期号查询等待派奖的订单,查数据库，
 	 * 批量调用、计算
@@ -51,21 +50,27 @@ public class LotteryBonusService {
 		List<LotteryOrder>  orderList = this.lotteryOrderService.findList(orderVO);
 		//批量调用calculateOrderBonus计算
 		
-		this.calculateOrderBonus(orderList);
-		
-        new Thread() {
-        	@Override
-        	public void run() {
-        		try {
-					Thread.sleep(3000);
-					 //返水服务
-					lotteryCommissionService.calculateOrderCommissionFromDB(lotteryCode,betIssueNo);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+	    
+	    int totalCount = orderList.size();
+	    int pageSize = 1000;
+	    int pageCount = totalCount/pageSize == 0 ? totalCount/pageSize : totalCount /pageSize + 1;
+	        
+	    for(int i=1 ;i <= pageCount;i++){
+	    	List<LotteryOrder> subList = null;
+			if (i == pageCount) {  
+				subList = orderList.subList((i-1) * pageSize, totalCount);   
+			} else {
+				subList = orderList.subList((i-1) * pageSize, pageSize*(i));  
+			}
+			threadPool.execute(new Runnable() {
+				@Override
+				public void run() {
+					calculateOrderBonus(orderList);
 				}
-        	}
-        }.run();
+			});
+	    }
 		
+//		this.calculateOrderBonus(orderList);
 		return;
 	}
 	
