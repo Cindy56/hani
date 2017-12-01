@@ -70,10 +70,16 @@ public class ContractAgentController extends BaseController {
 
 	@RequiresPermissions("contract:agent:contract:view")
 	@RequestMapping(value = "form")
-	public String form(Contract contract, Model model) {
+	public String form(Contract contract, Model model, RedirectAttributes redirectAttributes) {
 		User sessionUser=UserUtils.getUser();
 		//当前登录用户公司id
-		sessionUser.getOffice().getId();
+		String companyId=sessionUser.getCompany().getId();
+		//查询当前登录用户所属公司状态
+		Contract company=contractService.getContractByUserId(sessionUser.getId(),companyId);
+		if(null==company || !"3".equals(company.getStatus())) {
+			addMessage(redirectAttributes, "对不起，您的所属公司暂未启用，不能开设代理！");
+			return "redirect:"+Global.getAdminPath()+"/contract/contractAgent/?repage";
+		}
 		//根据公司id查contract_lottery表，公司彩种玩法配置
 		String lottery_config="[{\"isNewRecord\":true,\"lotteryCode\":{\"isNewRecord\":true,\"code\":\"SSC_CQ\",\"name\":\"重庆时时彩\"},\"playCode\":\"SSC_CQ_QSZX\",\"name\":\"前三直选\",\"playType\":\"x\",\"winningProbability\":\"0.001\",\"commissionRateMax\":\"0.15\",\"commissionRateMin\":\"0.02\",\"betRateLimit\":\"10000\",\"isEnable\":\"1\"},{\"isNewRecord\":true,\"lotteryCode\":{\"isNewRecord\":true,\"code\":\"SSC_CQ\",\"name\":\"重庆时时彩\"},\"playCode\":\"SSC_CQ_QSZX2\",\"name\":\"前三组选\",\"playType\":\"x\",\"winningProbability\":\"0.006\",\"commissionRateMax\":\"0.15\",\"commissionRateMin\":\"0.02\",\"betRateLimit\":\"10000\",\"isEnable\":\"1\"},{\"isNewRecord\":true,\"lotteryCode\":{\"isNewRecord\":true,\"code\":\"SSC_CQ\",\"name\":\"重庆时时彩\"},\"playCode\":\"SSC_CQ_QEZX\",\"name\":\"前二直选\",\"playType\":\"x\",\"winningProbability\":\"0.009\",\"commissionRateMax\":\"0.15\",\"commissionRateMin\":\"0.02\",\"betRateLimit\":\"10000\",\"isEnable\":\"1\"},{\"isNewRecord\":true,\"lotteryCode\":{\"isNewRecord\":true,\"code\":\"SSC_CQ\",\"name\":\"重庆时时彩\"},\"playCode\":\"SSC_CQ_QEZX2\",\"name\":\"前二组选\",\"playType\":\"x\",\"winningProbability\":\"0.018\",\"commissionRateMax\":\"0.15\",\"commissionRateMin\":\"0.02\",\"betRateLimit\":\"10000\",\"isEnable\":\"1\"},{\"isNewRecord\":true,\"lotteryCode\":{\"isNewRecord\":true,\"code\":\"SSC_CQ\",\"name\":\"重庆时时彩\"},\"playCode\":\"SSC_CQ_QS\",\"name\":\"前三\",\"playType\":\"x\",\"winningProbability\":\"0.09\",\"commissionRateMax\":\"0.15\",\"commissionRateMin\":\"0.02\",\"betRateLimit\":\"10000\",\"isEnable\":\"1\"},{\"isNewRecord\":true,\"lotteryCode\":{\"isNewRecord\":true,\"code\":\"SSC_CQ\",\"name\":\"重庆时时彩\"},\"playCode\":\"SSC_5XING_ZHIXUANFU\",\"name\":\"时时彩5星直选复式\",\"playType\":\"x\",\"winningProbability\":\"0.00001\",\"commissionRateMax\":\"0.15\",\"commissionRateMin\":\"0.02\",\"betRateLimit\":\"10000\",\"isEnable\":\"1\"},{\"isNewRecord\":true,\"lotteryCode\":{\"isNewRecord\":true,\"code\":\"SSC_CQ\",\"name\":\"重庆时时彩\"},\"playCode\":\"SSC_5XING_ZHIXUANDAN\",\"name\":\"时时彩5星直选单式\",\"playType\":\"x\",\"winningProbability\":\"0.00001\",\"commissionRateMax\":\"0.15\",\"commissionRateMin\":\"0.02\",\"betRateLimit\":\"10000\",\"isEnable\":\"1\"}]";
 		Map<String, List<LotteryPlayConfig>> resetMap = memberPlayConfigService.formatPlayConfig(lottery_config);
@@ -87,7 +93,7 @@ public class ContractAgentController extends BaseController {
 	@Transactional(readOnly=false)
 	public String save(Contract contract, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, contract)){
-			return form(contract, model);
+			return form(contract, model,redirectAttributes);
 		}
 		User seesionUser = UserUtils.getUser();
 		contract.setCurrentUser(seesionUser);

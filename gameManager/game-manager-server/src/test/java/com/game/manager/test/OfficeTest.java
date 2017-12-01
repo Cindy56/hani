@@ -53,5 +53,9 @@ public class OfficeTest {
 		systemServiceFacade.findRoleByOfficeId(officeId);
 	}
 	
+	@Test
+	public void addMember() {
+		
+	}
 	
 }

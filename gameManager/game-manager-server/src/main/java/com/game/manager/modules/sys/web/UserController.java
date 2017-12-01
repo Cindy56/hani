@@ -254,7 +254,7 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequiresPermissions("sys:user:edit")
+	/*@RequiresPermissions("sys:user:edit")*/
 	@RequestMapping(value = "checkLoginName")
 	public String checkLoginName(String oldLoginName, String loginName) {
 		if (loginName !=null && loginName.equals(oldLoginName)) {

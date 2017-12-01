@@ -3,6 +3,8 @@
  */
 package com.game.trade.modules.contract.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.game.common.persistence.CrudDao;
 import com.game.common.persistence.annotation.MyBatisDao;
 import com.game.modules.contract.entity.Contract;
@@ -14,5 +16,5 @@ import com.game.modules.contract.entity.Contract;
  */
 @MyBatisDao
 public interface ContractDao extends CrudDao<Contract> {
-	
+	public Contract getContractByUserId(@Param("userId")String userId,@Param("companyId")String companyId);
 }

@@ -8,6 +8,25 @@
 		$(document).ready(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
+				ignore:[],
+				rules: {
+					userName: {
+						remote: {
+							url:"${ctx}/sys/user/checkLoginName",
+							data:{
+								loginName:function(){
+									return $("input[name='userName']").val(); 
+								},
+								oldLoginName:function(){
+									return "${contract.userName}";
+								}
+							}
+						}
+					}
+				},
+				messages: {
+					userName: {remote: "登录名已存在"},
+				}, 
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
 					form.submit();
@@ -20,6 +39,7 @@
 					} else {
 						error.insertAfter(element);
 					}
+					$("#ck").click();
 				}
 			});
 		});
@@ -71,13 +91,19 @@
 				$("#fd").show();
 			}
 		}
+		
+		function add(){
+			$(".commissionSelect").each(function(){
+				$(this).index();//option:selected
+			});
+		}
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/contract/contractAgent/">代理列表</a></li>
 		<!-- <li class="active"><a href="${ctx}/contract/contractAgent/form?id=${contract.id}">代理<shiro:hasPermission name="contract:agent:contract:edit">${not empty contract.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="contract:agent:contract:edit">查看</shiro:lacksPermission></a></li> -->
-		<li class="active" onclick="contractShow(this)"><a href="javascript:void(0);">代理<shiro:hasPermission name="contract:agent:contract:edit">${not empty contract.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="contract:agent:contract:edit">查看</shiro:lacksPermission></a></li>
+		<li class="active" onclick="contractShow(this)" id="ck"><a href="javascript:void(0);">代理<shiro:hasPermission name="contract:agent:contract:edit">${not empty contract.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="contract:agent:contract:edit">查看</shiro:lacksPermission></a></li>
 		<li class="" onclick="fdShow(this)"><a href="javascript:void(0);">返点信息</a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="contract" action="${ctx}/contract/contractAgent/save" method="post" class="form-horizontal">
@@ -247,12 +273,12 @@
 								<th>金额（单位：万）</th>
 								<th>金额（单位：万）</th>
 								<th>分红比例（单位：%）</th>
-								<shiro:hasPermission name="contract:company:contract:edit"><!-- <th width="10">&nbsp;</th> --></shiro:hasPermission>
+								<shiro:hasPermission name="contract:agent:contract:edit"><!-- <th width="10">&nbsp;</th> --></shiro:hasPermission>
 							</tr>
 						</thead>
 						<tbody id="contractConfigList" >
 						</tbody>
-						<shiro:hasPermission name="contract:company:contract:edit"><tfoot>
+						<shiro:hasPermission name="contract:agent:contract:edit"><tfoot>
 							<tr><td colspan="5"><a href="javascript:" onclick="addRow('#contractConfigList', contractConfigRowIdx, contractConfigTpl);contractConfigRowIdx = contractConfigRowIdx + 1;" class="btn" id="xz">新增</a></td></tr>
 						</tfoot></shiro:hasPermission>
 					</table><!-- contractConfigTpl --> 
@@ -276,7 +302,7 @@
 							<td>
 								<input id="contractConfigList{{idx}}_beniftRate" name="contractConfigList[{{idx}}].beniftRate" type="number" value="{{row.beniftRate}}" class="input-small required" min="0" maxlength="4" onkeyup="if(isNaN(value))execCommand('undo');if(this.value>100){this.value=100}"/>
 							</td>
-							<shiro:hasPermission name="contract:company:contract:edit"><td class="text-center" width="10">
+							<shiro:hasPermission name="contract:agent:contract:edit"><td class="text-center" width="10">
 								{{#delBtn}}<span class="close" onclick="delRow(this, '#contractConfigList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
 							</td></shiro:hasPermission>
 						</tr>//-->
@@ -358,6 +384,10 @@
 					<a href="javascript:void(0);">返点信息</a>
 				</li>
 			</ul> -->
+			
+			<input type="button" value="+" onclick="add();"> 
+			<input type="button" value="-" onclick="del();"> 
+			
 			<div style="margin-left: 20px">
 				<c:set var="index" value="0" />
 				<c:forEach items="${contract.map}" var="repeatMap" >
@@ -377,7 +407,7 @@
 									<input type="hidden" name="playList[${index}].betRateLimit" value="${LotteryPlayConfig.betRateLimit}"/>
 									<input type="hidden" name="playList[${index}].commissionRateMin" value="${LotteryPlayConfig.commissionRateMin}"/>
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${LotteryPlayConfig.name}:
-									<select name="playList[${index}].commissionRateMax">
+									<select name="playList[${index}].commissionRateMax" class="commissionSelect">
 										<c:forEach items="${LotteryPlayConfig.map.awardList}" var="awardList">
 											<option  name="${LotteryPlayConfig.playCode}" value="${awardList.commissionRate}">${awardList.awardMoney}(${awardList.commissionRate*100}%)</option>
 										</c:forEach>
