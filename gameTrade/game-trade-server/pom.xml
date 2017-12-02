@@ -24,5 +24,42 @@
 		    <!-- <scope>test</scope> -->
 		</dependency>
 	</dependencies>	
+	<build>
+		<plugins>
+			<!-- war 打包插件, 设定war包名称不带版本号 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<packagingExcludes>
+						<!-- WEB-INF/classes/com/thinkgem/jeesite/** -->
+						WEB-INF/classes/org/apache/ibatis/**,
+						WEB-INF/classes/org/mybatis/spring/**
+					</packagingExcludes>
+					<warSourceExcludes>
+						static/bootstrap/2.3.1/docs/**,
+						static/ckeditor/_samples/**,
+						static/ckfinder/_samples/**,
+						static/ckfinder/help/**,
+						static/compressor*/**,
+						static/jquery-jbox/2.3/docs/**,
+						static/jquery-jbox/2.3/Skins2/**,
+						static/jquery-validation/1.11.0/demo/**,
+						static/jquery-ztree/3.5.12/demo/**,
+						static/My97DatePicker/docs/**,
+						static/supcan/doc/**,
+						static/SuperSlide/demo/**,
+						static/treeTable/demo/**<!-- , -->
+						<!-- userfiles/** --><!-- ,/**/*.jsp -->,
+						test/**
+					</warSourceExcludes>
+					<webappDirectory>${project.build.directory}/${project.artifactId}</webappDirectory><!-- 
+					<webXml>${project.basedir}/target/jspweb.xml</webXml> -->
+					<warName>trade</warName>
+				</configuration>
+			</plugin>			
+		</plugins>
+	</build>	
 	
 </project>
