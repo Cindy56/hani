@@ -262,7 +262,7 @@ public class LotteryTimeNumServiceImpl
 			//保存开奖时刻信息
     		lotteryTimeNumDao.batchTimeNum(list);
     		//保存timetaskList
-    	//	timeTaskService.addJobs(timeTaskList);
+    		timeTaskService.addJobs(timeTaskList);
 		}
     }
   

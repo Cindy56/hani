@@ -68,6 +68,9 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 	@Autowired
 	private TodoTaskService todoTaskService;
 	
+	@Autowired
+	private ContractDao contractDao;
+	
 	//开户类型1公司，2代理
 	private static final String COMPANY ="1";
 	private static final String AGENT ="2";
@@ -187,7 +190,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			memberAccountService.save(memberAccount);
 			
 			contract.setAccountId(memberAccount.getId());
-			contract.setCompanyId(seesionUser.getCompany().getId());
+			contract.setCompanyId(company.getId());
 			contract.setUser(user);
 			
 			//设置公司状态为审核中
@@ -275,20 +278,22 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 		//this.save(contract);
 		//保存用户信息
 		if(StringUtils.isBlank(contract.getId())) {
+			/****************保存user信息start************/
 			User user=contract.getUser();
 			
 			String userName=contract.getUserName();
 			
 			user.setLoginName(userName);
-			
+			//获取当前用户信息 
 			User sessionUser=contract.getCurrentUser();
+			
 			//根据当前userid查询会员信息
 			MemberAccount sessionMember=memberAccountService.getByUserId(sessionUser.getId());
 			
 			//当前登录用户部门（会员）
 			Office userOffice=officeServiceFacade.get(sessionUser.getOffice().getId());
 			//当前登录用户
-			Office userCompany=officeServiceFacade.get(sessionUser.getCompany().getId());
+//			Office userCompany=officeServiceFacade.get(sessionUser.getCompany().getId());
 			
 			
 			//会员下的角色
@@ -313,15 +318,10 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 						agentRole = this.systemServiceFacade.findRoleByOfficeId(office.getId()).get(0);
 					}
 				}*/
-			
-			
-			
-			
-			//用户的部门为新建的公司模板
-			user.setOffice(userOffice);
-			
+			//用户的部门为
+			user.setOffice(sessionUser.getOffice());
 			//用户公司
-			user.setCompany(sessionUser.getOffice());
+			user.setCompany(sessionUser.getCompany());
 			
 			//用户姓名
 			user.setName(contract.getUserName());
@@ -330,21 +330,21 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			//保存用户信息
 			user.getRoleList().add(agent);
 			user.setCurrentUser(contract.getCurrentUser());
+			user.setMobile(contract.getMobileNo());
+			//user类型：1系统管理员，2部门经理，3普通用户
+			user.setUserType("3");
+			
 			user = systemServiceFacade.saveUser(user);
+			
 			systemServiceFacade.assignUserToRole(agent,user);
+			/****************保存user信息end************/
 			
+			 /****************保存会员信息start*************/
 			MemberAccount memberAccount=new MemberAccount();
-			//获取当前用户信息 
-			User seesionUser = contract.getCurrentUser();
-			
 			//上级的id
 			memberAccount.setParentAgentId(sessionMember.getId());
-			
-			
 			//上级的parent_ids+id
-			memberAccount.setParentAgentIds(sessionMember.getParentAgentIds()+sessionMember.getId());
-			
-			
+			memberAccount.setParentAgentIds(sessionMember.getParentAgentIds()+sessionMember.getId()+",");
 			memberAccount.setCompanyId(sessionMember.getCompanyId());
 			memberAccount.setOfficeId(sessionMember.getOfficeId());
 			memberAccount.setBlance(new BigDecimal(0));
@@ -361,7 +361,9 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			//保存会员信息
 			memberAccount.setCurrentUser(contract.getCurrentUser());
 			memberAccountService.save(memberAccount);
+			/****************保存会员信息end***************/
 			
+			/****************保存返点信息start***************/
 			//保存代理返点配置信息
 			List<LotteryPlayConfig> playConfigList = contract.getPlayList();
 			String playConfig = JsonMapper.toJsonString(playConfigList);
@@ -372,16 +374,18 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			memberPlayConfig.setUserName(contract.getUser().getName());
 			memberPlayConfig.setCurrentUser(contract.getCurrentUser());
 			memberPlayConfigService.save(memberPlayConfig);
+			/****************保存返点信息end***************/
 			
 			contract.setAccountId(memberAccount.getId());
-			contract.setCompanyId(seesionUser.getCompany().getId());
+			contract.setCompanyId(memberAccount.getCompanyId());
 			contract.setUser(user);
 			
+			/****************保存待办任务start***************/
 			//设置代理状态为审核中
 			contract.setStatus("0");
 			//1公司开户，2代理开户
 			contract.setOpenType("2");
-			//保存代办任务
+			//保存待办任务
 			TodoTask todo=new TodoTask();
 			todo.setTitle("代理开户提醒");	//任务标题
 			todo.setContent(contract.getCompanyName()+"开户");	//任务正文
@@ -391,6 +395,7 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			todo.setReceiverId(contract.getCurrentUser());	//处理者
 			todo.setCurrentUser(contract.getCurrentUser());
 			todoTaskService.save(todo);
+			/****************保存待办任务end***************/
 			
 		}
 		super.save(contract);
@@ -427,6 +432,11 @@ public class ContractServiceImpl extends CrudService<ContractDao, Contract> impl
 			}
 		}
 		return contract;
+	}
+
+	@Override
+	public Contract getContractByUserId(String userId, String companyId) {
+		return contractDao.getContractByUserId(userId,companyId);
 	} 
 	
 }

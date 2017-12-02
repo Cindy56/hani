@@ -248,6 +248,8 @@ public class MemberAccountAddController extends BaseController {
 		memberAccount.setBlance(new BigDecimal(0));
 		memberAccount.setBlanceFrozen(new BigDecimal(0));
 		memberAccount.setStatus("0");
+		//会员类型为玩家
+		memberAccount.setAccountType("3");
 		memberAccount.setCompanyId(seesionUser.getCompany().getId());
 		memberAccount.setOfficeId(seesionUser.getOffice().getId());
 		memberAccount.setUser(user);

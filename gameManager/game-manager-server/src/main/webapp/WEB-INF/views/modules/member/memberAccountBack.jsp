@@ -89,7 +89,7 @@
 			<div class="control-group">
 				<label class="control-label">姓名:</label>
 				<div class="controls">
-					<form:input path="user.name" htmlEscape="false" maxlength="5" minlength="2" class="required" placeholder="请输姓名"/>
+					<form:input path="user.name" htmlEscape="false" maxlength="10" minlength="2" class="required" placeholder="请输姓名"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
@@ -144,13 +144,13 @@
 			<!-- 用户信息 end-->
 			
 			<!-- 会员信息start -->			
-			<div class="control-group">
+			<%-- <div class="control-group">
 				<label class="control-label">会员类型：</label>
 				<div class="controls">
 						 <form:radiobuttons path="account.accountType" items="${fns:getDictList('member_type')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
-			</div>
+			</div> --%>
 			<%-- 		
 			<div class="control-group">
 				<div style="display:inline">
@@ -271,6 +271,8 @@
 					<a href="javascript:void(0);">返点信息</a>
 				</li>
 			</ul> -->
+			<input type="button" value="+"> 
+			<input type="button" value="-"> 
 			<div style="margin-left: 20px">
 				<c:set var="index" value="0" />
 				<c:forEach items="${repeatMap}" var="repeatMap" >
@@ -290,7 +292,7 @@
 									<input type="hidden" name="playList[${index}].betRateLimit" value="${LotteryPlayConfig.betRateLimit}"/>
 									<input type="hidden" name="playList[${index}].commissionRateMin" value="${LotteryPlayConfig.commissionRateMin}"/>
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${LotteryPlayConfig.name}:
-									<select name="playList[${index}].commissionRateMax">
+									<select name="playList[${index}].commissionRateMax" class="commissionSelect">
 										<c:forEach items="${LotteryPlayConfig.map.awardList}" var="awardList">
 											<option  name="${LotteryPlayConfig.playCode}" value="${awardList.commissionRate}">${awardList.awardMoney}(${awardList.commissionRate*100}%)</option>
 										</c:forEach>
@@ -308,7 +310,7 @@
 		
 		
 		<div class="form-actions">
-			<shiro:hasPermission name="member:memberAccount:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="memberadd:memberAccount:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<!-- <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/> -->
 		</div>
 	</form:form>

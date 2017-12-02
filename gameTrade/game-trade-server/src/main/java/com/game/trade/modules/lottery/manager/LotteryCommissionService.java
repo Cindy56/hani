@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -31,7 +33,8 @@ import com.google.common.collect.Lists;
  */
 @Service
 public class LotteryCommissionService {
-
+	
+	private static final ExecutorService threadPool = Executors.newFixedThreadPool(50);
 	@Autowired
 	private MemberAccountServiceImpl memberAccountService;
 	
@@ -57,11 +60,38 @@ public class LotteryCommissionService {
 		orderVO.setLotteryCode(lotteryCode);
 		orderVO.setBetIssueNo(betIssueNo);
 		List<LotteryOrder>  orderList = this.lotteryOrderService.findList(orderVO);
-		//批量调用calculateMemberCommission计算 会员返点
+		if(CollectionUtils.isEmpty(orderList)) {
+			return ;
+		}
+		int totalCount=orderList.size();
+		int pageSize = 1000;
+	    int pageCount = totalCount/pageSize == 0 ? totalCount/pageSize : totalCount /pageSize + 1;
+	        
+	    for(int i=1 ;i <= pageCount;i++){
+	    	List<LotteryOrder> subList = null;
+			if (i == pageCount) {  
+				subList = orderList.subList((i-1) * pageSize, totalCount);   
+			} else {
+				subList = orderList.subList((i-1) * pageSize, pageSize*(i));  
+			}
+			threadPool.execute(new Runnable() {
+				@Override
+				public void run() {
+					calculateMemberCommission(orderList);
+				}
+			});
+	    }
+		/*//批量调用calculateMemberCommission计算 会员返点
 		for (LotteryOrder lotteryOrder : orderList) {
 			this.calculateMemberCommission(lotteryOrder);
-		}
+		}*/
 		return;
+	}
+	
+	public void calculateMemberCommission(List<LotteryOrder>  orderList) {
+		orderList.stream().forEach(order->{
+			calculateMemberCommission(order);
+		});
 	}
 	
 	/**

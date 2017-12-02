@@ -149,7 +149,6 @@ public class LotteryPlayConfig extends DataEntity<LotteryPlayConfig> {
 		this.playType = playType;
 	}
 
-	@Length(min = 0, max = 10, message = "中奖概率长度必须介于 0 和 10 之间")
 	public String getWinningProbability() {
 		return winningProbability;
 	}

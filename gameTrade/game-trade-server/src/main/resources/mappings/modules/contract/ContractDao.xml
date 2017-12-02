@@ -184,4 +184,14 @@
 		WHERE id = #{id}
 	</update>
 	
+	<select id="getContractByUserId" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM contract a
+		<include refid="contractJoins"/>
+		WHERE a.del_flag='0'
+		and a.user_id=#{userId}
+		and a.company_id=#{companyId}
+	</select>
+	
 </mapper>
