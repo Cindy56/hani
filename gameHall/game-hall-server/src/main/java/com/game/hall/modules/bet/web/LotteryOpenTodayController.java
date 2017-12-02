@@ -40,9 +40,9 @@ public class LotteryOpenTodayController {
 	 @RequestMapping(value = "/getopentoday", method = RequestMethod.GET)
 	 public ResultData getOpenToday(String lotteryName, int num) {
 	
-	 ResultData rd = lotteryAddBetService.openToday(lotteryName, num);
+	// ResultData rd = lotteryAddBetService.openToday(lotteryName, num);
 	
-	 return null;
+	 return lotteryAddBetService.openToday(lotteryName, num);
 	 }
 	
 	 /**

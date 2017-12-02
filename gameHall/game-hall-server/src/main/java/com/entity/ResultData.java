@@ -13,6 +13,7 @@ public class ResultData {
 	public ResultData(boolean isSucceed,String message,Object data) {
 		this.isSucceed = isSucceed;
 		this.data= data;
+		this.message= message;
 	}
 	
 	public Boolean getIsSucceed() {
