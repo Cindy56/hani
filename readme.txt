@@ -1,8 +1,8 @@
 
-ºóÌ¨¹ÜÀíÏµÍ³£ºxxxManger£¬ xxxManager-client, xxxManager-api(8010,8020,8030)
-Ç°Ì¨Í¶×¢´óÌü gameHall(8110,8120,8130)
-¿ª½±ÖĞĞÄ gameDraw(8210,8220,8230)
-Ö§¸¶ÖĞĞÄ gamePay(8310,8320,8330)
-redis¼¯Èº 1ÍÏ2
-mongdb¼¯Èº
-mysql Ö÷´Ó
+åå°ç®¡ç†ç³»ç»Ÿï¼šxxxMangerï¼Œ xxxManager-client, xxxManager-api(8010,8020,8030)
+å‰å°æŠ•æ³¨å¤§å… gameHall(8110,8120,8130)
+å¼€å¥–ä¸­å¿ƒ gameDraw(8210,8220,8230)
+æ”¯ä»˜ä¸­å¿ƒ gamePay(8310,8320,8330)
+redisé›†ç¾¤ 1æ‹–2
+mongdbé›†ç¾¤
+mysql ä¸»ä» 1
