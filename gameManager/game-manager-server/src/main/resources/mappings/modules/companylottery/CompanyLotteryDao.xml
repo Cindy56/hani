@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.manager.modules.companylottery.dao.CompanyLotteryDao">
+    
+	<sql id="companyLotteryColumns">
+		a.id AS "id",
+		a.company_id AS "companyId",
+		a.lottery_code AS "lotteryCode",
+		a.lottery_play AS "lotteryPlay",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="companyLotteryJoins">
+	</sql>
+    
+	<select id="get" resultType="CompanyLottery">
+		SELECT 
+			<include refid="companyLotteryColumns"/>
+		FROM company_lottery a
+		<include refid="companyLotteryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CompanyLottery">
+		SELECT 
+			<include refid="companyLotteryColumns"/>
+		FROM company_lottery a
+		<include refid="companyLotteryJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CompanyLottery">
+		SELECT 
+			<include refid="companyLotteryColumns"/>
+		FROM company_lottery a
+		<include refid="companyLotteryJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO company_lottery(
+			id,
+			company_id,
+			lottery_code,
+			lottery_play,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{companyId},
+			#{lotteryCode},
+			#{lotteryPlay},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE company_lottery SET 	
+			company_id = #{companyId},
+			lottery_code = #{lotteryCode},
+			lottery_play = #{lotteryPlay},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE company_lottery SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

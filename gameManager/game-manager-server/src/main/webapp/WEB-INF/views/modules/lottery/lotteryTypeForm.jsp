@@ -161,11 +161,11 @@
                                 	<span class="help-inline"><font color="red">*</font></span>
                                 </th>
                                 <th>
-                                	开奖周期时间
+                                	开奖周期(分钟/期)
                                 	<span class="help-inline"><font color="red">*</font></span>
                                 </th>
                                 <th>
-                                	每期封单时间
+                                	封单时间(秒钟)
                                 	<span class="help-inline"><font color="red">*</font></span>
                                 </th>
                                 <shiro:hasPermission name="lottery:lotteryType:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
